@@ -8,9 +8,7 @@ Project Jupyter is a non-profit, open-source project that aims to support intera
 
 A Jupyter **notebook** allows you to merge text (written in Markdown, see below), images, HTML, LateX, code, and code output. It is a JSON file. The notebook is composed of *cells* that can be either code or text. 
 
-
 A Jupyter **kernel** is programming language-specific process that executes the code contained in a Jupyter notebook. 
-
 
 The **cells** can be run one by one. Or use the top-down menu from *Run* -> *run all cells* or *Kernel* -> *Restart Kernel and Run All Cells*
 
