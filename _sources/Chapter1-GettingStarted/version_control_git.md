@@ -1,0 +1,140 @@
+# Version Control & GitHub
+
+
+## Versio Control
+Version Control is a system that organize and tracks the version of codes.
+
+
+```{figure} phdcomics_finaldoc.gif
+:width: 300px
+---
+name: PhD Comics - version 
+alt: PhD Comics, Version Control of a PhD
+---
+Versions of a research paper. File nameing and tracked changes can become messy. From PhD Comics.
+```
+
+It keeps track of the changes and who made the changes. See further discussion on [The Turing Way](https://the-turing-way.netlify.app/reproducible-research/vcs/vcs-workflow.html) {cite:p}`the_turing_way_community_2022_6909298`. Here are the main points.
+
+
+```{figure} TW_main-branch.png
+---
+name: main-branch
+alt: An illustration of a main branch 
+---
+An illustration of a **main branch** from The Turing Way [^TW].
+```
+At each commit, Git will track the changes. Several people can work on the same file, and version control will recognize conflict and provides option to resolve it. It is good practice to make the **main branch** the cleanest branches. Create additional branches to work on specific parts of the project.
+
+
+```{figure} TW_sub-branch.png
+---
+name: sub-branch
+alt: An illustration of a sub branch that gets created, committed, and merged.
+---
+An illustration of multiple sub branches that get created, committed, and merged to the **main branch**. From The Turing Way [^TW].
+```
+
+	
+What is the difference between git and GitHub?
+
+*git* is a software: You can use it to track changes only on your computer
+*[GitHub](https://github.com/)* is a platform that can host your repository. There are other platforms like [Bitbucket](https://bitbucket.org/), [GitLab](https://about.gitlab.com/).
+
+
+
+
+## Set up Git
+
+You need to set up your user name and your e-mail
+
+        > git config --global user.name "supereismo"
+        > git config --global user.email "superseismo@uw.edu"
+
+Use the same user name as your GitHub account. On GitHub, you will see who has made the modifications to the repository.
+
+You need to do it only once on your computer.
+
+## GitHub
+### Create a GitHub account
+
+Create a GitHub account using the same user name and email address as in your git config. Free accounts make you have all of your repository open to the public. Pro (for a fee) accounts allow you to keep repositories private.
+
+
+**Using GitHub desktop App**
+
+GitHub has a Command Line Interface to use with the Terminal. Check out the Github CLI [Cheat Sheet](https://education.github.com/git-cheat-sheet-education.pdf).
+
+
+GitHub has a GUI [desktop app](https://desktop.github.com/) for all OS. The desktop app handles the CLI in a user friendly API (Application Programming Interface). The workflow and visualization are really friendly and it is recommended to use from the laptop environment. In JupyterHubs from remote servers, it is still necessary to use CLI.
+
+**Notes on GitHub enhanced authentification**
+GitHub offers 3 ways to enhance authentification. Download the Android/iOS GitHub Mobile app. Just like Duo, GitHub will use the phone for additional layers of authentification.
+
+* Username + Password with two-factor authentification (2FA), which requires the GitHub Mobile App.
+* [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token): Click on the upper right account -> Settings -> Developer settings (left sidebar) -> Personal access tokens (left sidebar). Then `generate new token`, add a descriptive name, give it an expiration (or not), grant specific permission to the token, `Generate token`, copy using the clipboard icon, save into a local text file. Keep the file somewhere on local, inacessible from other cloud storage (e.g., Dropbox or Gdrive). **The token replaces the password**.
+* SSH keys. Create new SSH keys. See an example on how to set up the key [here](https://gist.github.com/bradlipovsky/bcccc59be7b0e9d1b3c0f386d182f856).
+
+
+More details [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github) on GitHub authentification.
+
+### Creating a Repository
+
+You are going to create your first repository. Congrats! We briefly go over some best practices inspired by {cite:p}`software_carpentries_intermediate`. Good repository content are:
+- **README.md**: Center piece of the docmumentation. Markdown/text file that describes the purpose of the repository and contain some explanation of what this repository is about. It also contains any information that the contributor sees as important: installation guide, licensing, contribution gudelines, code of conduct, citation, badges and links to Colab or Binder notebooks, ... See [Software Carpentries Intermediate REsearch Software Development in Python](https://carpentries-incubator.github.io/python-intermediate-development/) for more details. Find a list of repositories with great readme [here](https://github.com/matiassingers/awesome-readme). Some of the line items to add:
+    * Installation/Deployment
+    * Basic Usage: step-by-step instructions to use the software
+    * Contributing: detail the type of contributions welcome
+    * Contact information / getting help: guidelines on how to get in touch
+    * Credits/Acknowledgement: Specific the academic publication to cite (e.g., add a bibtex text in a code box like this):
+        ```
+         @software{MLGeo, 
+         authors = {The GeoSMART team}, 
+         year = 2022, 
+         doi = {Not yet}
+         }
+        ```
+    * License: a short description, or automatically generated license. See below.
+ 
+- **License**: Critical: without a license no one can reuse and modify the software. Find a detailed description of the various software vs data license in the [Turing Way](https://the-turing-way.netlify.app/reproducible-research/licensing/licensing-software.html). [Choosealicense](https://choosealicense.com/) is a nice guide to help you find the appropriate license.
+
+- Fix the virtual environment for users to be able to re-use the software. Add an environment file environment.yml or requirements.txt
+
+
+1. **From the browser**:
+    * Connect to your GitHub account
+    * On the top right of your homepage, click `"+"` and `New repository` and choose a name.
+    * Check "Add a README.md"
+    * Choose a license
+    * Create repository
+    * Clone the repository to your local.
+
+
+2. **From the GitHub Desktop app**:
+    * Click `Add` on the top of the left sidebar
+    * Click `Create new repository` and choose: Name, short description, local path (avoid a home directory on other cloud (Dropbox or Github) to reduce headaches), initialize with a README, choose license, choose Git Ignore (most likely programming language)
+    * Open in Visual Studio Code or other prefered editor.
+    * Check that the GitHub page is up to date
+    * Fetch, Push, Pull, etc
+
+3. **From the CLI**:
+
+Initialize a local directory as a git repository:
+```
+git init
+git add *
+git commit -m "my first commit"
+git push
+```
+Be aware of the need to use passwords or tokens. Your configuration may also be incomplete, so re run configuration listed above.
+
+
+## Working as a team with GitHub
+
+The main branch should remain the clean, official version for the public. 
+
+* Use **GitHub Issues** to post bugs or performance issues, so that the contributors can keep track and address them. When posting an issue, be clear
+
+[^TW]:{cite:p}`the_turing_way_community_2022_6909298`
+
+[^SC]:{cite:p}`software_carpentries_intermediate`
