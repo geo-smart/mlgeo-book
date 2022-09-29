@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+  push:
+    paths:
+      - 'book/**'
+      - '.github/workflows/deploy.yaml'
+      - '.github/actions/**'
+
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - uses: ./.github/actions/buildresources
+      with:
+        jb-cache: false
+        publish-to-gh: true
+        jb-save: true
+        token:  ${{ secrets.GITHUB_TOKEN }}
