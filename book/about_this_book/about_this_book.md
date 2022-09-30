@@ -38,3 +38,13 @@ By the end of the quarter, the students should be able to:
 Each week, students will write a short report about either a paper or a webinar. Use the template on canvas and answer the questions when appropriate. Submissions of the report PDF are due Wednesdays at 11:59 pm PDT on canvas. The instructor will spend 15 minutes Monday morning summarizing the reading and webinar reports. Papers can be found and/or uploaded on a shared private course Google Drive [here](https://drive.google.com/drive/folders/1dyxfslCLzFFTYtX_vbjudlzaXvOxkepe?usp=sharing) (only accessible with a UW email address).
 
 # Github with tutorials and homeworks
+
+The course [GitHub](https://github.com/UW-ESS-DS/MLGeo-Autmn22) has the tutorial notebooks. CLone the tutorial
+
+        git clone "https://github.com/UW-ESS-DS/MLGeo-Autmn22"
+
+To force-reset the repository from the main branch
+        git reset --hard origin/main
+        git pull
+
+Make your own repository (MLGEO2022_UWNETID). Copy the environment.yml file and the tutorials into your own reposistory to run and modify them.
