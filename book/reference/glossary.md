@@ -1,8 +1,20 @@
 # Glossaries
 
+## Definitions
+```{glossary}
+
+Node: refers to computing unit a single CPU with multiple cores, a dedicated memory, and a dedicated storage. Terminology used in HPC.
+
+instance: refers to a computing unit, like a node. Terminology used in Cloud.
+
+```
+
 ## Tools and Technology (general)
 
+
 ```{glossary}
+
+
 [Binder](https://mybinder.org)
   A free, public service for running reproducible interactive computing
   environments. Binder is a 100% open source infrastructure that is run by
