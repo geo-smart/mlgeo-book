@@ -1,4 +1,4 @@
-# Python Ecosystem
+# Chap 1.1 Python Ecosystem
 
 ## What do you need to run your Python code?
 - Python. Most packages work with Python3. Your laptop may already come with one. We recommend downloading Anaconda, which comes with a version of python, and aliasing $python$ to the binary executable python specific to conda.
