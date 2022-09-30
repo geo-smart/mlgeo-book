@@ -48,7 +48,7 @@ What is the difference between git and GitHub?
 
 You need to set up your user name and your e-mail
 
-        > git config --global user.name "supereismo"
+        > git config --global user.name "superseismo"
         > git config --global user.email "superseismo@uw.edu"
 
 Use the same user name as your GitHub account. On GitHub, you will see who has made the modifications to the repository.
@@ -78,9 +78,22 @@ GitHub offers 3 ways to enhance authentification. Download the Android/iOS GitHu
 
 More details [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github) on GitHub authentification.
 
+### Using an existing Repository
+
+You can create 2 copies of a repository:
+    - A **Fork** (top right click) creates a totally independent copy of the repository. You can modify code as needed and this will not change the original repository
+    - A **Clone** (also top bar) creates a copy of the original repository, but is linked to the original repository that will continue to be synchronized.
+    Do so with the following commands:
+        git clone "https://github.com/superseismo/example.git"
+
 ### Creating a Repository
 
-You are going to create your first repository. Congrats! We briefly go over some best practices inspired by {cite:p}`software_carpentries_intermediate`. Good repository content are:
+You are going to create your first repository. Congrats! Go on the browser, In the upper-right corner of any page, use the  drop-down menu, and select **New repository**. It will ask you a series of default settings.
+
+We briefly go over some best practices inspired by {cite:p}`software_carpentries_intermediate`. 
+
+
+Good repository content are:
 - **README.md**: Center piece of the docmumentation. Markdown/text file that describes the purpose of the repository and contain some explanation of what this repository is about. It also contains any information that the contributor sees as important: installation guide, licensing, contribution gudelines, code of conduct, citation, badges and links to Colab or Binder notebooks, ... See [Software Carpentries Intermediate REsearch Software Development in Python](https://carpentries-incubator.github.io/python-intermediate-development/) for more details. Find a list of repositories with great readme [here](https://github.com/matiassingers/awesome-readme). Some of the line items to add:
     * Installation/Deployment
     * Basic Usage: step-by-step instructions to use the software
@@ -100,6 +113,18 @@ You are going to create your first repository. Congrats! We briefly go over some
 
 - Fix the virtual environment for users to be able to re-use the software. Add an environment file environment.yml or requirements.txt
 
+To add files to your repository:
+        git add mycode.py
+        git commit -m "upload a slick python code"
+        git status
+        git push
+
+(*) Everytime you start working on your repository, make sure you have the up-to-date version on your local environment. In CLI, this means:
+        git pull
+
+
+To modify ``mycode.py``, use the command:
+        git checkout mycode.py
 
 1. **From the browser**:
     * Connect to your GitHub account
@@ -138,3 +163,5 @@ The main branch should remain the clean, official version for the public.
 [^TW]:{cite:p}`the_turing_way_community_2022_6909298`
 
 [^SC]:{cite:p}`software_carpentries_intermediate`
+
+
