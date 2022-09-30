@@ -122,7 +122,6 @@ To add files to your repository:
 (*) Everytime you start working on your repository, make sure you have the up-to-date version on your local environment. In CLI, this means:
         git pull
 
-
 To modify ``mycode.py``, use the command:
         git checkout mycode.py
 
@@ -158,6 +157,9 @@ Be aware of the need to use passwords or tokens. Your configuration may also be 
 
 The main branch should remain the clean, official version for the public. 
 
+* Use **Pull requests** to allow others to suggest code changes to a repos. 
+
+
 * Use **GitHub Issues** to post bugs or performance issues, so that the contributors can keep track and address them. When posting an issue, be clear
 
 [^TW]:{cite:p}`the_turing_way_community_2022_6909298`
@@ -165,3 +167,15 @@ The main branch should remain the clean, official version for the public.
 [^SC]:{cite:p}`software_carpentries_intermediate`
 
 
+
+## MLGeo @ UW notes.
+
+The course repository is [here](https://github.com/UW-ESS-DS/MLGeo-Autmn22). Clone it to your jupyterlab environment:
+
+        git clone "h"ttps://github.com/UW-ESS-DS/MLGeo-Autmn22"
+        cd MLGeo-Autmn22
+        git status
+
+To force reset the repository from the main branch
+        git reset --hard origin/main
+        git pull
