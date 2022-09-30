@@ -28,29 +28,31 @@ Install [anaconda](https://www.anaconda.com/products/individual).
 * Tools for managing environment
 
 ### Basic conda commands
-`conda info`
 
-Check conda version to make sure its installed.
 
-`env list`
+      conda info
 
-List out available environments (the starred * environment is the current activate environment).
+... to check conda version to make sure its installed.
 
-`conda env create --file environment.yml`
+      env list
 
-Create conda environment from environment file.
+... to list out available environments (the starred * environment is the current activate environment).
 
-`conda env remove --yes --name myenv`
+      conda env create --file environment.yml
 
-Removing the conda environment.
+... to create conda environment from environment file.
 
-`conda activate myenv`
+      conda env remove --yes --name myenv
 
-Activate a conda enivronment by name. Inside the environment, there are other ways to add libraries. Use `conda install` or `pip3 install` to add packages that will be automatically saved.
+... to delete the conda environment.
 
-`conda deactivate`
+      conda activate myenv
 
-Deactivate the current cona environment.
+... to activate a conda enivronment by the env name `myenv`. Inside the environment, there are other ways to add libraries. Use `conda install` or `pip3 install` to add packages that will be automatically saved.
+
+      conda deactivate
+
+... to deactivate the current cona environment.
 
 <br>
 
