@@ -3,10 +3,11 @@
 ## Definitions
 ```{glossary}
 
-Node: refers to computing unit a single CPU with multiple cores, a dedicated memory, and a dedicated storage. Terminology used in HPC.
+**Node**: refers to computing unit a single CPU with multiple cores, a dedicated memory, and a dedicated storage. Terminology used in HPC.
 
-instance: refers to a computing unit, like a node. Terminology used in Cloud.
+**instance**: refers to a computing unit, like a node. Terminology used in Cloud.
 
+**Core**: a processing unit of a CPU or GPU
 ```
 
 ## Tools and Technology (general)
