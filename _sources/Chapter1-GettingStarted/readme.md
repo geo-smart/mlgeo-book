@@ -10,4 +10,10 @@
 
 ## Starting from Zero.
 
-Resources from the software carepentries. Practice.
+Resources from the software carepentries. 
+
+Please review the software carpentries in:
+* [Unix](https://swcarpentry.github.io/shell-novice/)
+* [Git](https://swcarpentry.github.io/git-novice/), though this will be extensively reviewed in class
+* [Python](https://swcarpentry.github.io/python-novice-inflammation/): manipulate variables types including arrays and lists, for loops, if statements, create functions
+* [Plotting with Matplotlib](https://swcarpentry.github.io/python-novice-inflammation/03-matplotlib/index.html): ability to make simple plots, including subplots, labeling axis.

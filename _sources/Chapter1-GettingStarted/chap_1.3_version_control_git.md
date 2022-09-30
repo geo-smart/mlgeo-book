@@ -174,7 +174,6 @@ The main branch should remain the clean, official version for the public.
 [^SC]:{cite:p}`software_carpentries_intermediate`
 
 
-
 :warning: **MLGEO 2022 cohort**
 
 The course repository is [here](https://github.com/UW-ESS-DS/MLGeo-Autmn22). Clone it to your jupyterlab environment:
@@ -183,7 +182,7 @@ The course repository is [here](https://github.com/UW-ESS-DS/MLGeo-Autmn22). Clo
         cd MLGeo-Autmn22
         git status
 
-To force reset the repository from the main branch
+To force-reset the repository from the main branch
         git reset --hard origin/main
         git pull
 
