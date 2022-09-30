@@ -1,7 +1,7 @@
 # Version Control & GitHub
 
 
-## Versio Control
+## Version Control
 Version Control is a system that organize and tracks the version of codes.
 
 
