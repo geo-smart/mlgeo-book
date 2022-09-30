@@ -126,7 +126,11 @@ To modify ``mycode.py``, use the command:
         git checkout mycode.py
 
 
-:warning: for the MLGeo2022 course, create your own repository under the UW-ESS-DS GitHub organization under the name: MLGEO2022_UWNETID
+:warning: for the MLGeo2022 course, you will have 2 repositories:
+    - create your own repository under the UW-ESS-DS GitHub organization under the name: MLGEO2022_UWNETID. 
+    - the course repository, please clone:
+            git clone "https://github.com/UW-ESS-DS/MLGeo-Autmn22"
+Then copy the ``environment.yml`` file from the MLGeo2022 course into your own repository.
 
 1. **From the browser**:
     * Connect to your GitHub account
@@ -171,7 +175,7 @@ The main branch should remain the clean, official version for the public.
 
 
 
-## MLGeo @ UW notes.
+:warning: **MLGEO 2022 cohort**
 
 The course repository is [here](https://github.com/UW-ESS-DS/MLGeo-Autmn22). Clone it to your jupyterlab environment:
 
@@ -184,4 +188,4 @@ To force reset the repository from the main branch
         git pull
 
 
-Copy the tutorials and homeworks into your own repository
+Copy the tutorials and homeworks into your own repository (MLGEO2022_UWNETID)
