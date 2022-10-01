@@ -61,7 +61,7 @@ You need to do it only once on your computer.
 Create a GitHub account using the same user name and email address as in your git config. Free accounts make you have all of your repository open to the public. Pro (for a fee) accounts allow you to keep repositories private.
 
 
-**Using GitHub desktop App**
+### Use the GitHub desktop App
 
 GitHub has a Command Line Interface to use with the Terminal. Check out the Github CLI [Cheat Sheet](https://education.github.com/git-cheat-sheet-education.pdf).
 
@@ -78,7 +78,7 @@ GitHub offers 3 ways to enhance authentification. Download the Android/iOS GitHu
 
 More details [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github) on GitHub authentification.
 
-### Using an existing Repository
+### Use an existing Repository
 
 You can create 2 copies of a repository:
     - A **Fork** (top right click) creates a totally independent copy of the repository. You can modify code as needed and this will not change the original repository
@@ -86,7 +86,7 @@ You can create 2 copies of a repository:
     Do so with the following commands:
         git clone "https://github.com/superseismo/example.git"
 
-### Creating a Repository
+### Create a new Repository
 
 You are going to create your first repository. Congrats! Go on the browser, In the upper-right corner of any page, use the  drop-down menu, and select **New repository**. It will ask you a series of default settings.
 
@@ -160,7 +160,7 @@ git push
 Be aware of the need to use passwords or tokens. Your configuration may also be incomplete, so re run configuration listed above.
 
 
-## Working as a team with GitHub
+## Work as a team with GitHub
 
 The main branch should remain the clean, official version for the public. 
 
@@ -173,12 +173,12 @@ The main branch should remain the clean, official version for the public.
 
 [^SC]:{cite:p}`software_carpentries_intermediate`
 
+## Note for MLGeo 2022 cohort
+        :warning: **MLGEO 2022 cohort**
 
-:warning: **MLGEO 2022 cohort**
+The course repository is [here](https://github.com/UW-ESS-DS/MLGeo-Autumn22). Clone it to your jupyterlab environment:
 
-The course repository is [here](https://github.com/UW-ESS-DS/MLGeo-Autmn22). Clone it to your jupyterlab environment:
-
-        git clone "https://github.com/UW-ESS-DS/MLGeo-Autmn22"
+        git clone "https://github.com/UW-ESS-DS/MLGeo-Autumn22"
         cd MLGeo-Autmn22
         git status
 
@@ -187,4 +187,4 @@ To force-reset the repository from the main branch
         git pull
 
 
-Copy the tutorials and homeworks into your own repository (MLGEO2022_UWNETID)
+Copy the homeworks into your own repository (MLGEO2022_UWNETID). You can play with the tutorials in the MLGeo-Autumn22, but if there is a hard reset it will overwrite your notebook. Use your own repository to keep your own work. 
