@@ -10,10 +10,10 @@
 
 ## Starting from Zero.
 
-Resources from the software carepentries. 
+It is possible! The resources below are helpful to get started. It is expected in MLGeo at UW that students can demonstrate their abilities on most of the course content in the software carpentries:
 
 Please review the software carpentries in:
-* [Unix](https://swcarpentry.github.io/shell-novice/)
-* [Git](https://swcarpentry.github.io/git-novice/), though this will be extensively reviewed in class
+* All Lessons on [Unix](https://swcarpentry.github.io/shell-novice/)
+* Lessons on [Git](https://swcarpentry.github.io/git-novice/), though this will be extensively reviewed in class
 * [Python](https://swcarpentry.github.io/python-novice-inflammation/): manipulate variables types including arrays and lists, for loops, if statements, create functions
 * [Plotting with Matplotlib](https://swcarpentry.github.io/python-novice-inflammation/03-matplotlib/index.html): ability to make simple plots, including subplots, labeling axis.
