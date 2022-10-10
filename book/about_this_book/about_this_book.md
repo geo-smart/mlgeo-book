@@ -2,7 +2,7 @@
 
 The **GeoS**cience **MA**chine Learning **R**esources and **T**raining (GeoSMART) framework provides an educational pathway and a foundation in open source scientific ecosystems and progresses through general ML theory, toolkits, and deployment on Cloud computing.
 
-This book is used in the course offered at the University of Washington: Machine Learning in the Geosciences (AUTUMN 2022 - ESS 490C/590C). The corresponding GitHub repository with notebooks for the tutorials and homeworks is [MLGeo](https://github.com/UW-ESS-DS/ESS490-590-Autmn22). Find the Docker image for the corresponding jupyter hub [MLGeoImage](https://github.com/UW-ESS-DS/MLGeo-image).
+This book is used in the course offered at the University of Washington: Machine Learning in the Geoscienes (AUTMN 2022 - ESS 490C/590C). The corresponding GitHub repository with notebooks for the tutorials and homeworks is [MLGeo](https://github.com/UW-ESS-DS/MLGeo-Autumn22). Find the Docker image for the corresponding jupyter hub [MLGeo Image](https://github.com/UW-ESS-DS/MLGeo-image).
 
 Instructor: Marine Denolle (mdenolle@uw.edu)
 Supported by: the GeoSMART team (Stefan Todoran, Nicoleta Cristea, Anthony Arendt, Scott Henderson, Ziheng Sun)
@@ -34,14 +34,27 @@ By the end of the quarter, the students should be able to:
 - Module 5: (weeks 7 and 8) Machine Learning
 - Module 6: (weeks 9 and 10) Deep Learning
 
+# Technical Skills Building
+Throughout the course, the students will build skills in shell, version control using git and GitHub, python programming, high-performance computing strategies, and simple data visualization using python. 
+- _Shell_ is introduced early in the course, and manipulated if needed
+- _Version Control_ is introduced early in the course and used at every lecture
+- _Python Programming_ is progressively introduced, specifically the use of packages: numpy, (geo)pandas, sklearn, keras, pytorch.
+- _Visualization in Python_ is introduced early as Matplolib and Plotly, and used in every python lecture.
+- _High performance computing_ skills will be aquired in the second half part of the course and during the development of the final project.
+
 # Readings and Webinars
 Each week, students will write a short report about either a paper or a webinar. Use the template on canvas and answer the questions when appropriate. Submissions of the report PDF are due Wednesdays at 11:59 pm PDT on canvas. The instructor will spend 15 minutes Monday morning summarizing the reading and webinar reports. Papers can be found and/or uploaded on a shared private course Google Drive [here](https://drive.google.com/drive/folders/1dyxfslCLzFFTYtX_vbjudlzaXvOxkepe?usp=sharing) (only accessible with a UW email address).
 
 # Github with tutorials and homeworks
 
-The course [GitHub](https://github.com/UW-ESS-DS/MLGeo-Autmn22) has the tutorial notebooks. CLone the tutorial
+The course [GitHub](https://github.com/UW-ESS-DS/MLGeo-Autumn22) has the tutorial notebooks. Clone the tutorial
 
         git clone "https://github.com/UW-ESS-DS/MLGeo-Autmn22"
+
+To update the local repository from the remote version
+        git fetch
+        git merge
+        git pull
 
 To force-reset the repository from the main branch
         git reset --hard origin/main
