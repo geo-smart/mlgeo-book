@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>2.2 Pandas &#8212; ML Geo Curriculum</title>
+    <title>2.2 Pandas, Basic Mapping &#8212; ML Geo Curriculum</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -171,7 +171,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   2.2 Pandas
+   2.2 Pandas, Basic Mapping
   </a>
  </li>
  <li class="toctree-l1">
@@ -524,7 +524,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>2.2 Pandas</h1>
+                <h1>2.2 Pandas, Basic Mapping</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -536,30 +536,59 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="pandas">
-<h1>2.2 Pandas<a class="headerlink" href="#pandas" title="Permalink to this headline">#</a></h1>
-<p><strong>An intro</strong> to structured, tabular data. In this lesson,</p>
-<p>Use the python package <code class="docutils literal notranslate"><span class="pre">pandas</span></code> to store and manipulate dataframes.</p>
-<p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> can read CSV but also many text files that are more or less formated as one observation per row and one column for each feature.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="pandas-basic-mapping">
+<h1>2.2 Pandas, Basic Mapping<a class="headerlink" href="#pandas-basic-mapping" title="Permalink to this headline">#</a></h1>
+<p>This section aims to provide new skills in python to handle structured “table” data.</p>
+<p>Learning outcome:</p>
+<ul class="simple">
+<li><p>Manipulation of data frames (describing, filtering, …)</p></li>
+<li><p>Learn about Lambda functions</p></li>
+<li><p>Intro to datetime objects</p></li>
+<li><p>Plotting data from data frames (histograms and maps)</p></li>
+<li><p>Introduction to Plotly</p></li>
+<li><p>Introduction to CSV &amp; Parquet</p></li>
+</ul>
+<p>We will work on several structured data sets: sensor metadata, seismic data product (earthquake catalog).</p>
+<p>First, we import all the modules we need:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+<span class="c1"># pio.renderers.default = &#39;vscode&#39; # writes as standalone html, </span>
+<span class="c1"># pio.renderers.default = &#39;iframe&#39; # writes files as standalone html, </span>
+<span class="c1"># pio.renderers.default = &#39;png&#39; # writes files as standalone pnl, </span>
+<span class="c1"># try notebook, jupyterlab, png, vscode, iframe</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The python package pandas is very useful to read csv files, but also many text files that are more or less formated as one observation per row and one column for each feature.</p>
+<p>As an example, we are going to look at the list of seismic stations from the Northern California seismic network, available here:</p>
+<p><a class="reference external" href="http://ncedc.org/ftp/pub/doc/NC.info/NC.channel.summary.day">http://ncedc.org/ftp/pub/doc/NC.info/NC.channel.summary.day</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://ncedc.org/ftp/pub/doc/NC.info/NC.channel.summary.day&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>First we import useful packages. The package request is useful to read data from a web page.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">io</span>
-<span class="kn">import</span> <span class="nn">pickle</span> <span class="c1"># package to read a specific data forma</span>
-<span class="kn">import</span> <span class="nn">requests</span> <span class="c1"># package to query URLs</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span> <span class="c1"># python package that can handle time objects</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>As an example, we are going to look at the list of seismic stations from the Northern California seismic network, available here:</p>
-<p><a class="reference external" href="http://ncedc.org/ftp/pub/doc/NC.info/NC.channel.summary.day">http://ncedc.org/ftp/pub/doc/NC.info/NC.channel.summary.day</a></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://ncedc.org/ftp/pub/doc/NC.info/NC.channel.summary.day&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -584,6 +613,124 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1984/01/01,00:00:00</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>911.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>2006/01/04,19:19:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>911.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>SHZ</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>1994/11/28,00:00:00</td>
+      <td>2006/01/04,19:19:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>911.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AAS</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1984/11/27,18:45:00</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>38.43014</td>
+      <td>-121.10959</td>
+      <td>31.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AAS</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>3000/01/01,00:00:00</td>
+      <td>38.43014</td>
+      <td>-121.10959</td>
+      <td>31.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>There are two aways of looking at a particular column:</p>
 <div class="cell docutils container">
@@ -592,10 +739,42 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        AAR
+1        AAR
+2        AAR
+3        AAS
+4        AAS
+        ... 
+6135     WMP
+6136     WMP
+6137     WMP
+6138     WMP
+6139    WWVB
+Name: station, Length: 6140, dtype: object
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        AAR
+1        AAR
+2        AAR
+3        AAS
+4        AAS
+        ... 
+6135     WMP
+6136     WMP
+6137     WMP
+6138     WMP
+6139    WWVB
+Name: station, Length: 6140, dtype: object
 </pre></div>
 </div>
 </div>
@@ -607,10 +786,44 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>station                       AAR
+network                        NC
+channel                       EHZ
+location                       --
+rate                        100.0
+start_time    1984/01/01,00:00:00
+end_time      1987/05/01,00:00:00
+latitude                 39.27594
+longitude              -121.02696
+elevation                   911.0
+depth                         0.0
+dip                         -90.0
+azimuth                       0.0
+Name: 0, dtype: object
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        AAR
+1        AAR
+2        AAR
+3        AAS
+4        AAS
+        ... 
+6135     WMP
+6136     WMP
+6137     WMP
+6138     WMP
+6139    WWVB
+Name: station, Length: 6140, dtype: object
 </pre></div>
 </div>
 </div>
@@ -622,11 +835,32 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        AAR
+1        AAR
+2        AAR
+3        AAS
+4        AAS
+        ... 
+6135     WMP
+6136     WMP
+6137     WMP
+6138     WMP
+6139    WWVB
+Name: station, Length: 6140, dtype: object
+</pre></div>
+</div>
+</div>
 </div>
 <p>We can also access a single value within a column:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;station&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;AAR&#39;
 </pre></div>
 </div>
 </div>
@@ -638,6 +872,221 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2993</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2994</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2995</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>2002/10/16,23:59:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2996</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>2002/10/17,00:00:00</td>
+      <td>2006/01/24,18:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2997</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHN</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3066</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNE</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2000/07/12,00:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3067</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNN</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3068</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNN</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2000/07/12,00:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3069</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNZ</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3070</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNZ</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2000/07/12,00:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>78 rows × 13 columns</p>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -645,6 +1094,221 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2993</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2994</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2995</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>2002/10/16,23:59:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2996</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>2002/10/17,00:00:00</td>
+      <td>2006/01/24,18:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2997</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHN</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3212</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LHZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3213</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LHZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>3000/01/01,00:00:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3214</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNE</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3215</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNN</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3216</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>117 rows × 13 columns</p>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -652,6 +1316,221 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2993</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2994</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2995</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>2002/10/16,23:59:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2996</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>2002/10/17,00:00:00</td>
+      <td>2006/01/24,18:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>2997</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHN</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3212</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LHZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3213</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LHZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>3000/01/01,00:00:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3214</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNE</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3215</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNN</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3216</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>117 rows × 13 columns</p>
+</div></div></div>
 </div>
 <p>We can access to a brief summary of the data:</p>
 <div class="cell docutils container">
@@ -660,10 +1539,32 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count     6140
+unique     893
+top       KCPB
+freq        78
+Name: station, dtype: object
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">elevation</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    6140.000000
+mean      650.942248
+std       681.708404
+min     -1388.000000
+25%       146.750000
+50%       406.000000
+75%       918.000000
+max      3680.000000
+Name: elevation, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -675,6 +1576,18 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>rate          92.544982
+latitude      37.930985
+longitude   -121.440088
+elevation    650.942248
+depth         17.581270
+dip          -45.894137
+azimuth       18.549186
+dtype: float64
+</pre></div>
+</div>
+</div>
 </div>
 <p>In the case of a categorical variable, we can get the list of possile values that this variable can take:</p>
 <div class="cell docutils container">
@@ -683,11 +1596,42 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;EHZ&#39;, &#39;SHZ&#39;, &#39;HHE&#39;, &#39;HHN&#39;, &#39;HHZ&#39;, &#39;HNE&#39;, &#39;HNN&#39;, &#39;HNZ&#39;, &#39;LHE&#39;,
+       &#39;LHN&#39;, &#39;LHZ&#39;, &#39;ELE&#39;, &#39;ELN&#39;, &#39;ELZ&#39;, &#39;SLE&#39;, &#39;SLN&#39;, &#39;SLZ&#39;, &#39;LCE&#39;,
+       &#39;LCL&#39;, &#39;LCQ&#39;, &#39;LOG&#39;, &#39;OCF&#39;, &#39;VCO&#39;, &#39;VEA&#39;, &#39;VEC&#39;, &#39;VEP&#39;, &#39;VFP&#39;,
+       &#39;VKI&#39;, &#39;GAN&#39;, &#39;GNS&#39;, &#39;GPL&#39;, &#39;GST&#39;, &#39;VDT&#39;, &#39;VEI&#39;, &#39;VPB&#39;, &#39;EHE&#39;,
+       &#39;EHN&#39;, &#39;BNE&#39;, &#39;BNN&#39;, &#39;BN1&#39;, &#39;BN2&#39;, &#39;BN3&#39;, &#39;BV1&#39;, &#39;EP1&#39;, &#39;EP2&#39;,
+       &#39;EP3&#39;, &#39;HDO&#39;, &#39;HN1&#39;, &#39;HN2&#39;, &#39;HN3&#39;, &#39;HV1&#39;, &#39;SP2&#39;, &#39;SP3&#39;, &#39;BNZ&#39;,
+       &#39;LDO&#39;, &#39;HJ2&#39;, &#39;HJ3&#39;, &#39;HJZ&#39;, &#39;ACE&#39;, &#39;GEL&#39;, &#39;GLA&#39;, &#39;GLO&#39;, &#39;ATT&#39;,
+       &#39;SHE&#39;, &#39;SHN&#39;, &#39;BHE&#39;, &#39;BHN&#39;, &#39;BHZ&#39;, &#39;LNE&#39;, &#39;LNN&#39;, &#39;LNZ&#39;, &#39;MHE&#39;,
+       &#39;MHN&#39;, &#39;MHZ&#39;, &#39;MNE&#39;, &#39;MNN&#39;, &#39;MNZ&#39;, &#39;HH2&#39;, &#39;HH3&#39;, &#39;LH2&#39;, &#39;LH3&#39;,
+       &#39;SP1&#39;, &#39;DP1&#39;, &#39;DP2&#39;, &#39;DP3&#39;, &#39;HLE&#39;, &#39;HLN&#39;, &#39;HLZ&#39;, &#39;XNE&#39;, &#39;XNN&#39;,
+       &#39;XNZ&#39;, &#39;EH1&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
 </div>
 <p>and get the number of times that each value is taken:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>KCPB     78
+KMPB     72
+JSGB     69
+KHMB     63
+CCH1     60
+         ..
+PL21      1
+LSS       1
+IRG1A     1
+AGI       1
+BVLB      1
+Name: station, Length: 893, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -702,6 +1646,22 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       260.057752
+1       260.057752
+2       260.057752
+3      -619.942248
+4      -619.942248
+           ...    
+6135    427.057752
+6136    427.057752
+6137    427.057752
+6138    427.057752
+6139   -649.942248
+Name: elevation, Length: 6140, dtype: float64
+</pre></div>
+</div>
+</div>
 </div>
 <p>The second option is to use the apply function:</p>
 <div class="cell docutils container">
@@ -713,11 +1673,242 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1984/01/01,00:00:00</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>260.057752</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>2006/01/04,19:19:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>260.057752</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>SHZ</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>1994/11/28,00:00:00</td>
+      <td>2006/01/04,19:19:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>260.057752</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AAS</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1984/11/27,18:45:00</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>38.43014</td>
+      <td>-121.10959</td>
+      <td>-619.942248</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AAS</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>3000/01/01,00:00:00</td>
+      <td>38.43014</td>
+      <td>-121.10959</td>
+      <td>-619.942248</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>6135</th>
+      <td>WMP</td>
+      <td>NC</td>
+      <td>SHN</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>1995/07/02,12:00:00</td>
+      <td>2002/05/08,22:30:00</td>
+      <td>35.64059</td>
+      <td>-118.78570</td>
+      <td>427.057752</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6136</th>
+      <td>WMP</td>
+      <td>NC</td>
+      <td>SHZ</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>1995/03/02,19:00:00</td>
+      <td>1995/07/02,12:00:00</td>
+      <td>35.64059</td>
+      <td>-118.78570</td>
+      <td>427.057752</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6137</th>
+      <td>WMP</td>
+      <td>NC</td>
+      <td>SHZ</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>1995/07/02,12:00:00</td>
+      <td>2002/05/08,22:30:00</td>
+      <td>35.64059</td>
+      <td>-118.78570</td>
+      <td>427.057752</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6138</th>
+      <td>WMP</td>
+      <td>NC</td>
+      <td>SHZ</td>
+      <td>10</td>
+      <td>20.0</td>
+      <td>1995/07/02,12:00:00</td>
+      <td>1999/05/11,23:59:00</td>
+      <td>35.64059</td>
+      <td>-118.78570</td>
+      <td>427.057752</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6139</th>
+      <td>WWVB</td>
+      <td>NC</td>
+      <td>ATT</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1984/01/01,00:00:00</td>
+      <td>1999/03/20,23:59:00</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>-649.942248</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>6140 rows × 13 columns</p>
+</div></div></div>
 </div>
 <p>We can also carry out simple operations on coulumns, provided they make sense.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">network</span> <span class="o">+</span> <span class="s1">&#39; - &#39;</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">station</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        NC - AAR
+1        NC - AAR
+2        NC - AAR
+3        NC - AAS
+4        NC - AAS
+          ...    
+6135     NC - WMP
+6136     NC - WMP
+6137     NC - WMP
+6138     NC - WMP
+6139    NC - WWVB
+Length: 6140, dtype: object
 </pre></div>
 </div>
 </div>
@@ -729,11 +1920,45 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>station
+AAR      3
+AAS      3
+ABJ      4
+ABR      3
+ADW      3
+        ..
+VRC      4
+VSP      2
+VWB      1
+WMP     10
+WWVB     1
+Name: station, Length: 893, dtype: int64
+</pre></div>
+</div>
+</div>
 </div>
 <p>Or I want to know what is the lowest and the highest elevation for each station:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;station&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">elevation</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>station
+AAR      911.0
+AAS       31.0
+ABJ      434.0
+ABR       -1.0
+ADW      228.0
+         ...  
+VRC     1666.0
+VSP     1545.0
+VWB     1736.0
+WMP     1078.0
+WWVB       1.0
+Name: elevation, Length: 893, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -744,11 +1969,46 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>station
+AAR      911.0
+AAS       31.0
+ABJ      434.0
+ABR       -1.0
+ADW      228.0
+         ...  
+VRC     1666.0
+VSP     1545.0
+VWB     1736.0
+WMP     1078.0
+WWVB       1.0
+Name: elevation, Length: 893, dtype: float64
+</pre></div>
+</div>
+</div>
 </div>
 <p>We can have access to the data type of each column:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>station        object
+network        object
+channel        object
+location       object
+rate          float64
+start_time     object
+end_time       object
+latitude      float64
+longitude     float64
+elevation     float64
+depth         float64
+dip           float64
+azimuth       float64
+dtype: object
 </pre></div>
 </div>
 </div>
@@ -774,6 +2034,23 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>station
+AAR    1984-01-01 00:00:00
+AAS    1984-11-27 18:45:00
+ABJ    1984-01-01 00:00:00
+ABR    1984-01-01 00:00:00
+ADW    1984-01-01 00:00:00
+               ...        
+VRC    1993-09-23 22:20:00
+VSP    1993-09-24 22:05:00
+VWB    1985-01-01 00:00:00
+WMP    1995-03-02 19:00:00
+WWVB   1984-01-01 00:00:00
+Length: 893, dtype: datetime64[ns]
+</pre></div>
+</div>
+</div>
 </div>
 <p>The agg function allows to carry out several operations to each group of rows:</p>
 <div class="cell docutils container">
@@ -782,6 +2059,94 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>min</th>
+      <th>max</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AAR</th>
+      <td>911.0</td>
+      <td>911.0</td>
+    </tr>
+    <tr>
+      <th>AAS</th>
+      <td>31.0</td>
+      <td>31.0</td>
+    </tr>
+    <tr>
+      <th>ABJ</th>
+      <td>434.0</td>
+      <td>434.0</td>
+    </tr>
+    <tr>
+      <th>ABR</th>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>ADW</th>
+      <td>228.0</td>
+      <td>228.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>VRC</th>
+      <td>1666.0</td>
+      <td>1666.0</td>
+    </tr>
+    <tr>
+      <th>VSP</th>
+      <td>1545.0</td>
+      <td>1545.0</td>
+    </tr>
+    <tr>
+      <th>VWB</th>
+      <td>1736.0</td>
+      <td>1736.0</td>
+    </tr>
+    <tr>
+      <th>WMP</th>
+      <td>1078.0</td>
+      <td>1078.0</td>
+    </tr>
+    <tr>
+      <th>WWVB</th>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>893 rows × 2 columns</p>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -789,6 +2154,94 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AAR</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th>AAS</th>
+      <td>1984-11-27 18:45:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>ABJ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2019-06-26 19:17:00</td>
+    </tr>
+    <tr>
+      <th>ABR</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1997-08-04 21:02:00</td>
+    </tr>
+    <tr>
+      <th>ADW</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2006-04-20 01:08:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>VRC</th>
+      <td>1993-09-23 22:20:00</td>
+      <td>2001-07-12 16:50:00</td>
+    </tr>
+    <tr>
+      <th>VSP</th>
+      <td>1993-09-24 22:05:00</td>
+      <td>2001-07-12 16:50:00</td>
+    </tr>
+    <tr>
+      <th>VWB</th>
+      <td>1985-01-01 00:00:00</td>
+      <td>1985-03-25 19:00:00</td>
+    </tr>
+    <tr>
+      <th>WMP</th>
+      <td>1995-03-02 19:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>WWVB</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1999-03-20 23:59:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>893 rows × 2 columns</p>
+</div></div></div>
 </div>
 <p>We can also make groups by selecting the values of two categorical variables:</p>
 <div class="cell docutils container">
@@ -797,6 +2250,102 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th>channel</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">AAR</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th>SHZ</th>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">AAS</th>
+      <th>EHZ</th>
+      <td>1984-11-27 18:45:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>SHZ</th>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-24 18:00:00</td>
+    </tr>
+    <tr>
+      <th>ABJ</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2019-06-26 19:17:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th rowspan="4" valign="top">WMP</th>
+      <th>EHZ</th>
+      <td>1995-03-02 19:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>SHE</th>
+      <td>1995-07-02 12:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>SHN</th>
+      <td>1995-07-02 12:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>SHZ</th>
+      <td>1995-03-02 19:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>WWVB</th>
+      <th>ATT</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1999-03-20 23:59:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>3725 rows × 2 columns</p>
+</div></div></div>
 </div>
 <p>Previously, we just printed the output, but we can also store it in a new variable:</p>
 <div class="cell docutils container">
@@ -812,6 +2361,68 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th>channel</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">AAR</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th>SHZ</th>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">AAS</th>
+      <th>EHZ</th>
+      <td>1984-11-27 18:45:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>SHZ</th>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-24 18:00:00</td>
+    </tr>
+    <tr>
+      <th>ABJ</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2019-06-26 19:17:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>When we select only some rows, the index is not automatically reset to start at 0. We can do it manually. Many functions in pandas have also an option to reset the index, and option to transform the dataframe in place, instead of saving the results in another variable.</p>
 <div class="cell docutils container">
@@ -820,6 +2431,113 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>channel</th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AAR</td>
+      <td>EHZ</td>
+      <td>1984-01-01 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AAR</td>
+      <td>SHZ</td>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AAS</td>
+      <td>EHZ</td>
+      <td>1984-11-27 18:45:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AAS</td>
+      <td>SHZ</td>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-24 18:00:00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ABJ</td>
+      <td>EHZ</td>
+      <td>1984-01-01 00:00:00</td>
+      <td>2019-06-26 19:17:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3720</th>
+      <td>WMP</td>
+      <td>EHZ</td>
+      <td>1995-03-02 19:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>3721</th>
+      <td>WMP</td>
+      <td>SHE</td>
+      <td>1995-07-02 12:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>3722</th>
+      <td>WMP</td>
+      <td>SHN</td>
+      <td>1995-07-02 12:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>3723</th>
+      <td>WMP</td>
+      <td>SHZ</td>
+      <td>1995-03-02 19:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>3724</th>
+      <td>WWVB</td>
+      <td>ATT</td>
+      <td>1984-01-01 00:00:00</td>
+      <td>1999-03-20 23:59:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>3725 rows × 4 columns</p>
+</div></div></div>
 </div>
 <p>It is also possible to sort the dataset by value.</p>
 <div class="cell docutils container">
@@ -828,6 +2546,103 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th>channel</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>PG1</th>
+      <th>HV1</th>
+      <td>1983-06-27 00:00:00</td>
+      <td>1993-11-10 18:00:00</td>
+    </tr>
+    <tr>
+      <th>AAR</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">HQR</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1992-10-19 18:45:00</td>
+    </tr>
+    <tr>
+      <th>ELE</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1992-10-19 18:45:00</td>
+    </tr>
+    <tr>
+      <th>ELN</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1992-10-19 18:45:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>PBIB</th>
+      <th>HNE</th>
+      <td>2020-11-19 00:00:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>PPBB</th>
+      <th>HNE</th>
+      <td>2020-11-19 00:00:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">KBN</th>
+      <th>HNE</th>
+      <td>2021-02-26 00:48:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>HNN</th>
+      <td>2021-02-26 00:48:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>HNZ</th>
+      <td>2021-02-26 00:48:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>3725 rows × 2 columns</p>
+</div></div></div>
 </div>
 <p>We can apply the sorting to several columns:</p>
 <div class="cell docutils container">
@@ -836,6 +2651,104 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th>channel</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>PG1</th>
+      <th>HV1</th>
+      <td>1983-06-27 00:00:00</td>
+      <td>1993-11-10 18:00:00</td>
+    </tr>
+    <tr>
+      <th>PGC</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1984-04-12 18:00:00</td>
+    </tr>
+    <tr>
+      <th>AFO</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1984-04-23 00:00:00</td>
+    </tr>
+    <tr>
+      <th>MCH</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1984-08-01 19:31:00</td>
+    </tr>
+    <tr>
+      <th>MCN</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1984-09-22 16:45:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">PPBB</th>
+      <th>VEI</th>
+      <td>2020-11-19 00:00:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>VPB</th>
+      <td>2020-11-19 00:00:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">KBN</th>
+      <th>HNE</th>
+      <td>2021-02-26 00:48:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>HNN</th>
+      <td>2021-02-26 00:48:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>HNZ</th>
+      <td>2021-02-26 00:48:00</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>3725 rows × 2 columns</p>
+</div></div></div>
 </div>
 <p>A useful pandas function is the merge functions that allows you two merge two dataframes that have some columns in common, but have also different columns that you may want to compare with each other.</p>
 <p>For example, I have two earthquake catalogs. The 2007-2009 was established using data from a temporary experiment, and the 2004-2011 was established using data from a permanent seismic network. I would like to know if some earthquakes are detected by a network, but not by the other.</p>
@@ -900,6 +2813,281 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year_x</th>
+      <th>month_x</th>
+      <th>day_x</th>
+      <th>hour_x</th>
+      <th>minute_x</th>
+      <th>second_x</th>
+      <th>cc_x</th>
+      <th>nchannel_x</th>
+      <th>date</th>
+      <th>year_y</th>
+      <th>month_y</th>
+      <th>day_y</th>
+      <th>hour_y</th>
+      <th>minute_y</th>
+      <th>second_y</th>
+      <th>cc_y</th>
+      <th>nchannel_y</th>
+      <th>_merge</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>487</th>
+      <td>2007</td>
+      <td>10</td>
+      <td>13</td>
+      <td>9</td>
+      <td>57</td>
+      <td>1.70</td>
+      <td>0.094065</td>
+      <td>15</td>
+      <td>2007-10-13 09:57:01.700</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>489</th>
+      <td>2007</td>
+      <td>10</td>
+      <td>29</td>
+      <td>9</td>
+      <td>2</td>
+      <td>17.30</td>
+      <td>0.079188</td>
+      <td>18</td>
+      <td>2007-10-29 09:02:17.300</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>501</th>
+      <td>2007</td>
+      <td>12</td>
+      <td>21</td>
+      <td>5</td>
+      <td>12</td>
+      <td>58.85</td>
+      <td>0.082917</td>
+      <td>18</td>
+      <td>2007-12-21 05:12:58.850</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>503</th>
+      <td>2007</td>
+      <td>12</td>
+      <td>21</td>
+      <td>5</td>
+      <td>13</td>
+      <td>48.80</td>
+      <td>0.087369</td>
+      <td>18</td>
+      <td>2007-12-21 05:13:48.800</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>505</th>
+      <td>2007</td>
+      <td>12</td>
+      <td>31</td>
+      <td>5</td>
+      <td>52</td>
+      <td>16.25</td>
+      <td>0.212977</td>
+      <td>15</td>
+      <td>2007-12-31 05:52:16.250</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>673</th>
+      <td>2009</td>
+      <td>2</td>
+      <td>2</td>
+      <td>12</td>
+      <td>47</td>
+      <td>27.65</td>
+      <td>0.087397</td>
+      <td>18</td>
+      <td>2009-02-02 12:47:27.650</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>679</th>
+      <td>2009</td>
+      <td>3</td>
+      <td>16</td>
+      <td>3</td>
+      <td>2</td>
+      <td>6.65</td>
+      <td>0.078042</td>
+      <td>18</td>
+      <td>2009-03-16 03:02:06.650</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>680</th>
+      <td>2009</td>
+      <td>3</td>
+      <td>25</td>
+      <td>4</td>
+      <td>20</td>
+      <td>30.35</td>
+      <td>0.068622</td>
+      <td>21</td>
+      <td>2009-03-25 04:20:30.350</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>683</th>
+      <td>2009</td>
+      <td>4</td>
+      <td>2</td>
+      <td>1</td>
+      <td>9</td>
+      <td>36.75</td>
+      <td>0.084087</td>
+      <td>21</td>
+      <td>2009-04-02 01:09:36.750</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>684</th>
+      <td>2009</td>
+      <td>4</td>
+      <td>2</td>
+      <td>3</td>
+      <td>27</td>
+      <td>33.15</td>
+      <td>0.079341</td>
+      <td>21</td>
+      <td>2009-04-02 03:27:33.150</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+  </tbody>
+</table>
+<p>93 rows × 18 columns</p>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -907,6 +3095,281 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year_x</th>
+      <th>month_x</th>
+      <th>day_x</th>
+      <th>hour_x</th>
+      <th>minute_x</th>
+      <th>second_x</th>
+      <th>cc_x</th>
+      <th>nchannel_x</th>
+      <th>date</th>
+      <th>year_y</th>
+      <th>month_y</th>
+      <th>day_y</th>
+      <th>hour_y</th>
+      <th>minute_y</th>
+      <th>second_y</th>
+      <th>cc_y</th>
+      <th>nchannel_y</th>
+      <th>_merge</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>715</th>
+      <td>2007</td>
+      <td>10</td>
+      <td>13</td>
+      <td>9</td>
+      <td>50</td>
+      <td>59.75</td>
+      <td>0.097495</td>
+      <td>23</td>
+      <td>2007-10-13 09:50:49.750</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>716</th>
+      <td>2007</td>
+      <td>10</td>
+      <td>13</td>
+      <td>9</td>
+      <td>54</td>
+      <td>59.65</td>
+      <td>0.106908</td>
+      <td>23</td>
+      <td>2007-10-13 09:54:49.650</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>718</th>
+      <td>2007</td>
+      <td>10</td>
+      <td>13</td>
+      <td>9</td>
+      <td>56</td>
+      <td>51.80</td>
+      <td>0.088420</td>
+      <td>23</td>
+      <td>2007-10-13 09:56:41.800</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>719</th>
+      <td>2007</td>
+      <td>10</td>
+      <td>13</td>
+      <td>9</td>
+      <td>57</td>
+      <td>11.75</td>
+      <td>0.208753</td>
+      <td>23</td>
+      <td>2007-10-13 09:57:01.750</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>720</th>
+      <td>2007</td>
+      <td>10</td>
+      <td>13</td>
+      <td>9</td>
+      <td>57</td>
+      <td>41.60</td>
+      <td>0.088150</td>
+      <td>23</td>
+      <td>2007-10-13 09:57:31.600</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>930</th>
+      <td>2009</td>
+      <td>4</td>
+      <td>2</td>
+      <td>3</td>
+      <td>31</td>
+      <td>35.80</td>
+      <td>0.078478</td>
+      <td>26</td>
+      <td>2009-04-02 03:31:25.800</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>933</th>
+      <td>2009</td>
+      <td>4</td>
+      <td>26</td>
+      <td>21</td>
+      <td>14</td>
+      <td>35.35</td>
+      <td>0.115993</td>
+      <td>26</td>
+      <td>2009-04-26 21:14:25.350</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>936</th>
+      <td>2009</td>
+      <td>4</td>
+      <td>26</td>
+      <td>21</td>
+      <td>17</td>
+      <td>18.35</td>
+      <td>0.088909</td>
+      <td>26</td>
+      <td>2009-04-26 21:17:08.350</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>937</th>
+      <td>2009</td>
+      <td>4</td>
+      <td>26</td>
+      <td>21</td>
+      <td>23</td>
+      <td>4.65</td>
+      <td>0.119792</td>
+      <td>26</td>
+      <td>2009-04-26 21:22:54.650</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+    <tr>
+      <th>938</th>
+      <td>2009</td>
+      <td>4</td>
+      <td>26</td>
+      <td>21</td>
+      <td>23</td>
+      <td>7.50</td>
+      <td>0.109887</td>
+      <td>26</td>
+      <td>2009-04-26 21:22:57.500</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>left_only</td>
+    </tr>
+  </tbody>
+</table>
+<p>104 rows × 18 columns</p>
+</div></div></div>
 </div>
 </section>
 
