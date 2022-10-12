@@ -651,50 +651,6 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     station network channel location   rate           start_time  \
-0        AAR      NC     EHZ       --  100.0  1984/01/01,00:00:00   
-1        AAR      NC     EHZ       --  100.0  1987/05/01,00:00:00   
-2        AAR      NC     SHZ       --   20.0  1994/11/28,00:00:00   
-3        AAS      NC     EHZ       --  100.0  1984/11/27,18:45:00   
-4        AAS      NC     EHZ       --  100.0  1987/05/01,00:00:00   
-...      ...     ...     ...      ...    ...                  ...   
-6135     WMP      NC     SHN       --   20.0  1995/07/02,12:00:00   
-6136     WMP      NC     SHZ       --   20.0  1995/03/02,19:00:00   
-6137     WMP      NC     SHZ       --   20.0  1995/07/02,12:00:00   
-6138     WMP      NC     SHZ       10   20.0  1995/07/02,12:00:00   
-6139    WWVB      NC     ATT       --  100.0  1984/01/01,00:00:00   
-
-                 end_time  latitude  longitude  elevation  depth   dip  \
-0     1987/05/01,00:00:00  39.27594 -121.02696      911.0    0.0 -90.0   
-1     2006/01/04,19:19:00  39.27594 -121.02696      911.0    0.0 -90.0   
-2     2006/01/04,19:19:00  39.27594 -121.02696      911.0    0.0 -90.0   
-3     1987/05/01,00:00:00  38.43014 -121.10959       31.0    0.0 -90.0   
-4     3000/01/01,00:00:00  38.43014 -121.10959       31.0    0.0 -90.0   
-...                   ...       ...        ...        ...    ...   ...   
-6135  2002/05/08,22:30:00  35.64059 -118.78570     1078.0    0.0   0.0   
-6136  1995/07/02,12:00:00  35.64059 -118.78570     1078.0    0.0 -90.0   
-6137  2002/05/08,22:30:00  35.64059 -118.78570     1078.0    0.0 -90.0   
-6138  1999/05/11,23:59:00  35.64059 -118.78570     1078.0    0.0 -90.0   
-6139  1999/03/20,23:59:00   0.00000    0.00000        1.0    0.0   0.0   
-
-      azimuth  
-0         0.0  
-1         0.0  
-2         0.0  
-3         0.0  
-4         0.0  
-...       ...  
-6135      0.0  
-6136      0.0  
-6137      0.0  
-6138      0.0  
-6139      0.0  
-
-[6140 rows x 13 columns]
-</pre></div>
-</div>
-</div>
 </div>
 <p>We will download earthquake waveforms from Ariane’s earthquake catalog of repeating earthquakes</p>
 </section>
@@ -712,169 +668,6 @@ title="Print to PDF"
 <span class="n">data_db_sql</span><span class="o">=</span><span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM data_db_sql&quot;</span><span class="p">)</span>
 
 <span class="c1"># I think that is how things work, but i can&#39;t seem to query the database...</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">OperationalError</span><span class="g g-Whitespace">                          </span>Traceback (most recent call last)
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/engine/base.py</span> in <span class="ni">_commit_impl</span><span class="nt">(self, autocommit)</span>
-<span class="g g-Whitespace">    </span><span class="mi">927</span>         <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">928</span>             <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">dialect</span><span class="o">.</span><span class="n">do_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">929</span>         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/engine/default.py</span> in <span class="ni">do_commit</span><span class="nt">(self, dbapi_connection)</span>
-<span class="g g-Whitespace">    </span><span class="mi">668</span>     <span class="k">def</span> <span class="nf">do_commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbapi_connection</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">669</span>         <span class="n">dbapi_connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">670</span> 
-
-<span class="ne">OperationalError</span>: database is locked
-
-<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
-
-<span class="ne">OperationalError</span><span class="g g-Whitespace">                          </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">9</span><span class="o">-</span><span class="n">f93b2f8a9a9a</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;sqlite:///ncedc_stations_sql.db&#39;</span><span class="p">,</span><span class="n">echo</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">db_sql</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">data_sql</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s1">&#39;data_db_sql&#39;</span><span class="p">,</span><span class="n">db_sql</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>\
-<span class="g g-Whitespace">      </span><span class="mi">6</span>                <span class="n">if_exists</span><span class="o">=</span><span class="s1">&#39;append&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">data_db_sql</span><span class="o">=</span><span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM data_db_sql&quot;</span><span class="p">)</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/pandas/core/generic.py</span> in <span class="ni">to_sql</span><span class="nt">(self, name, con, schema, if_exists, index, index_label, chunksize, dtype, method)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2777</span>         <span class="kn">from</span> <span class="nn">pandas.io</span> <span class="kn">import</span> <span class="n">sql</span>
-<span class="g g-Whitespace">   </span><span class="mi">2778</span> 
-<span class="ne">-&gt; </span><span class="mi">2779</span>         <span class="n">sql</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">2780</span>             <span class="bp">self</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2781</span>             <span class="n">name</span><span class="p">,</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/pandas/io/sql.py</span> in <span class="ni">to_sql</span><span class="nt">(frame, name, con, schema, if_exists, index, index_label, chunksize, dtype, method)</span>
-<span class="g g-Whitespace">    </span><span class="mi">599</span>         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">600</span> 
-<span class="ne">--&gt; </span><span class="mi">601</span>     <span class="n">pandas_sql</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">602</span>         <span class="n">frame</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">603</span>         <span class="n">name</span><span class="p">,</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/pandas/io/sql.py</span> in <span class="ni">to_sql</span><span class="nt">(self, frame, name, if_exists, index, index_label, schema, chunksize, dtype, method)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1417</span>                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;inf cannot be used with MySQL&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
-<span class="g g-Whitespace">   </span><span class="mi">1418</span>             <span class="k">else</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1419</span>                 <span class="k">raise</span> <span class="n">err</span>
-<span class="g g-Whitespace">   </span><span class="mi">1420</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1421</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">islower</span><span class="p">():</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/pandas/io/sql.py</span> in <span class="ni">to_sql</span><span class="nt">(self, frame, name, if_exists, index, index_label, schema, chunksize, dtype, method)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1409</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1410</span>         <span class="k">try</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1411</span>             <span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">chunksize</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1412</span>         <span class="k">except</span> <span class="n">exc</span><span class="o">.</span><span class="n">SQLAlchemyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1413</span>             <span class="c1"># GH34431</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/pandas/io/sql.py</span> in <span class="ni">insert</span><span class="nt">(self, chunksize, method)</span>
-<span class="g g-Whitespace">    </span><span class="mi">843</span> 
-<span class="g g-Whitespace">    </span><span class="mi">844</span>                 <span class="n">chunk_iter</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">arr</span><span class="p">[</span><span class="n">start_i</span><span class="p">:</span><span class="n">end_i</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">])</span>
-<span class="ne">--&gt; </span><span class="mi">845</span>                 <span class="n">exec_insert</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">chunk_iter</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">846</span> 
-<span class="g g-Whitespace">    </span><span class="mi">847</span>     <span class="k">def</span> <span class="nf">_query_iterator</span><span class="p">(</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/contextlib.py</span> in <span class="ni">__exit__</span><span class="nt">(self, type, value, traceback)</span>
-<span class="g g-Whitespace">    </span><span class="mi">122</span>         <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">123</span>             <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">124</span>                 <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">125</span>             <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">126</span>                 <span class="k">return</span> <span class="kc">False</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/pandas/io/sql.py</span> in <span class="ni">run_transaction</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1170</span>                 <span class="k">yield</span> <span class="n">tx</span>
-<span class="g g-Whitespace">   </span><span class="mi">1171</span>             <span class="k">else</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1172</span>                 <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">connectable</span>
-<span class="g g-Whitespace">   </span><span class="mi">1173</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1174</span>     <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/engine/base.py</span> in <span class="ni">__exit__</span><span class="nt">(self, type_, value, traceback)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2276</span>             <span class="k">except</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2277</span>                 <span class="k">with</span> <span class="n">util</span><span class="o">.</span><span class="n">safe_reraise</span><span class="p">():</span>
-<span class="ne">-&gt; </span><span class="mi">2278</span>                     <span class="bp">self</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">2279</span>         <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2280</span>             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deactivated_from_connection</span><span class="p">:</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/util/langhelpers.py</span> in <span class="ni">__exit__</span><span class="nt">(self, type_, value, traceback)</span>
-<span class="g g-Whitespace">     </span><span class="mi">68</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_exc_info</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># remove potential circular references</span>
-<span class="g g-Whitespace">     </span><span class="mi">69</span>             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">warn_only</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">70</span>                 <span class="n">compat</span><span class="o">.</span><span class="n">raise_</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">71</span>                     <span class="n">exc_value</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">72</span>                     <span class="n">with_traceback</span><span class="o">=</span><span class="n">exc_tb</span><span class="p">,</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/util/compat.py</span> in <span class="ni">raise_</span><span class="nt">(***failed resolving arguments***)</span>
-<span class="g g-Whitespace">    </span><span class="mi">209</span> 
-<span class="g g-Whitespace">    </span><span class="mi">210</span>         <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">211</span>             <span class="k">raise</span> <span class="n">exception</span>
-<span class="g g-Whitespace">    </span><span class="mi">212</span>         <span class="k">finally</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">213</span>             <span class="c1"># credit to</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/engine/base.py</span> in <span class="ni">__exit__</span><span class="nt">(self, type_, value, traceback)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2273</span>         <span class="k">if</span> <span class="n">type_</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2274</span>             <span class="k">try</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">2275</span>                 <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">2276</span>             <span class="k">except</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2277</span>                 <span class="k">with</span> <span class="n">util</span><span class="o">.</span><span class="n">safe_reraise</span><span class="p">():</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/engine/base.py</span> in <span class="ni">commit</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2263</span> 
-<span class="g g-Whitespace">   </span><span class="mi">2264</span>         <span class="k">try</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">2265</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_do_commit</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">2266</span>         <span class="k">finally</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2267</span>             <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/engine/base.py</span> in <span class="ni">_do_commit</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2438</span> 
-<span class="g g-Whitespace">   </span><span class="mi">2439</span>             <span class="k">try</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">2440</span>                 <span class="bp">self</span><span class="o">.</span><span class="n">_connection_commit_impl</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">2441</span>             <span class="k">finally</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2442</span>                 <span class="c1"># whether or not commit succeeds, cancel any</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/engine/base.py</span> in <span class="ni">_connection_commit_impl</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2409</span> 
-<span class="g g-Whitespace">   </span><span class="mi">2410</span>     <span class="k">def</span> <span class="nf">_connection_commit_impl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">2411</span>         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">_commit_impl</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">2412</span> 
-<span class="g g-Whitespace">   </span><span class="mi">2413</span>     <span class="k">def</span> <span class="nf">_close_impl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">try_deactivate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/engine/base.py</span> in <span class="ni">_commit_impl</span><span class="nt">(self, autocommit)</span>
-<span class="g g-Whitespace">    </span><span class="mi">928</span>             <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">dialect</span><span class="o">.</span><span class="n">do_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">929</span>         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">930</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_handle_dbapi_exception</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">931</span> 
-<span class="g g-Whitespace">    </span><span class="mi">932</span>     <span class="k">def</span> <span class="nf">_savepoint_impl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/engine/base.py</span> in <span class="ni">_handle_dbapi_exception</span><span class="nt">(self, e, statement, parameters, cursor, context)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1927</span>                 <span class="n">util</span><span class="o">.</span><span class="n">raise_</span><span class="p">(</span><span class="n">newraise</span><span class="p">,</span> <span class="n">with_traceback</span><span class="o">=</span><span class="n">exc_info</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">from_</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1928</span>             <span class="k">elif</span> <span class="n">should_wrap</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1929</span>                 <span class="n">util</span><span class="o">.</span><span class="n">raise_</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1930</span>                     <span class="n">sqlalchemy_exception</span><span class="p">,</span> <span class="n">with_traceback</span><span class="o">=</span><span class="n">exc_info</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">from_</span><span class="o">=</span><span class="n">e</span>
-<span class="g g-Whitespace">   </span><span class="mi">1931</span>                 <span class="p">)</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/util/compat.py</span> in <span class="ni">raise_</span><span class="nt">(***failed resolving arguments***)</span>
-<span class="g g-Whitespace">    </span><span class="mi">209</span> 
-<span class="g g-Whitespace">    </span><span class="mi">210</span>         <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">211</span>             <span class="k">raise</span> <span class="n">exception</span>
-<span class="g g-Whitespace">    </span><span class="mi">212</span>         <span class="k">finally</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">213</span>             <span class="c1"># credit to</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/engine/base.py</span> in <span class="ni">_commit_impl</span><span class="nt">(self, autocommit)</span>
-<span class="g g-Whitespace">    </span><span class="mi">926</span>                 <span class="bp">self</span><span class="o">.</span><span class="n">_log_info</span><span class="p">(</span><span class="s2">&quot;COMMIT&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">927</span>         <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">928</span>             <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">dialect</span><span class="o">.</span><span class="n">do_commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">929</span>         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">930</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_handle_dbapi_exception</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-<span class="nn">~/opt/anaconda3/envs/uwdsgeo/lib/python3.9/site-packages/sqlalchemy/engine/default.py</span> in <span class="ni">do_commit</span><span class="nt">(self, dbapi_connection)</span>
-<span class="g g-Whitespace">    </span><span class="mi">667</span> 
-<span class="g g-Whitespace">    </span><span class="mi">668</span>     <span class="k">def</span> <span class="nf">do_commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbapi_connection</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">669</span>         <span class="n">dbapi_connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">670</span> 
-<span class="g g-Whitespace">    </span><span class="mi">671</span>     <span class="k">def</span> <span class="nf">do_close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbapi_connection</span><span class="p">):</span>
-
-<span class="ne">OperationalError</span>: (sqlite3.OperationalError) database is locked
-<span class="p">(</span><span class="n">Background</span> <span class="n">on</span> <span class="n">this</span> <span class="n">error</span> <span class="n">at</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">sqlalche</span><span class="o">.</span><span class="n">me</span><span class="o">/</span><span class="n">e</span><span class="o">/</span><span class="mi">14</span><span class="o">/</span><span class="n">e3q8</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -936,13 +729,6 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;_id&#39;: ObjectId(&#39;607d8ca5b270e79aecc45e18&#39;), &#39;year&#39;: 2007, &#39;month&#39;: 10, &#39;day&#39;: 13, &#39;hour&#39;: 9, &#39;minute&#39;: 55, &#39;second&#39;: 3.9, &#39;cc&#39;: 0.10682520309805875, &#39;nchannel&#39;: 15, &#39;date&#39;: datetime.datetime(2007, 10, 13, 9, 55, 3, 900000)}
-Collection(Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_aware=False, connect=True), &#39;NCEDC&#39;), &#39;stations&#39;)
-Collection(Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_aware=False, connect=True), &#39;NCEDC&#39;), &#39;earthquakes&#39;)
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="benchmarking-exercise">
@@ -963,16 +749,6 @@ Collection(Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2 µs, sys: 0 ns, total: 2 µs
-Wall time: 4.29 µs
-Pandas sorted
-CPU times: user 2 µs, sys: 0 ns, total: 2 µs
-Wall time: 4.05 µs
-Mongo sorted
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -984,16 +760,6 @@ Mongo sorted
 <span class="o">%</span><span class="k">time</span>
 <span class="n">mydb</span><span class="p">[</span><span class="s2">&quot;earthquakes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span> <span class="c1"># sort the mongoDB</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mongo sorted&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2 µs, sys: 11 µs, total: 13 µs
-Wall time: 14.1 µs
-Pandas sorted
-CPU times: user 1e+03 ns, sys: 0 ns, total: 1e+03 ns
-Wall time: 3.81 µs
-Mongo sorted
 </pre></div>
 </div>
 </div>
@@ -1011,16 +777,6 @@ Mongo sorted
          <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$station&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span>\
   <span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mongo group by station&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2 µs, sys: 0 ns, total: 2 µs
-Wall time: 3.81 µs
-Pandas group by stations
-CPU times: user 2 µs, sys: 0 ns, total: 2 µs
-Wall time: 4.05 µs
-Mongo group by station
 </pre></div>
 </div>
 </div>
