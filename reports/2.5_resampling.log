@@ -17,19 +17,40 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import pandas as pd
-import json
+import requests, zipfile, io, gzip, glob, os
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 %matplotlib inline
+
+sta="P395"
+file_url="http://geodesy.unr.edu/gps_timeseries/tenv/IGS14/"+ sta + ".tenv"
+r = requests.get(file_url).text.splitlines()  # download, read text, split lines into a list
+ue=[];un=[];uv=[];se=[];sn=[];sv=[];date=[];date_year=[];df=[]
+for iday in r:  # this loops through the days of data
+    crap=iday.split()
+    if len(crap)<10:
+      continue
+    date.append((crap[1]))
+    date_year.append(float(crap[2]))
+    ue.append(float(crap[6])*1000)
+    un.append(float(crap[7])*1000)
+    uv.append(float(crap[8])*1000)
+#             # errors
+    se.append(float(crap[10])*1000)
+    sn.append(float(crap[11])*1000)
+    sv.append(float(crap[12])*1000)
+
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-Input [0;32mIn [1][0m, in [0;36m<cell line: 1>[0;34m()[0m
-[0;32m----> 1[0m [38;5;28;01mimport[39;00m [38;5;21;01mpandas[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpd[39;00m
-[1;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01mjson[39;00m
-[1;32m      3[0m [38;5;28;01mimport[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpyplot[39;00m [38;5;28;01mas[39;00m [38;5;21;01mplt[39;00m
+Input [0;32mIn [1][0m, in [0;36m<cell line: 2>[0;34m()[0m
+[1;32m      1[0m [38;5;28;01mimport[39;00m [38;5;21;01mrequests[39;00m[38;5;241m,[39m [38;5;21;01mzipfile[39;00m[38;5;241m,[39m [38;5;21;01mio[39;00m[38;5;241m,[39m [38;5;21;01mgzip[39;00m[38;5;241m,[39m [38;5;21;01mglob[39;00m[38;5;241m,[39m [38;5;21;01mos[39;00m
+[0;32m----> 2[0m [38;5;28;01mimport[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpyplot[39;00m [38;5;28;01mas[39;00m [38;5;21;01mplt[39;00m
+[1;32m      3[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
+[1;32m      4[0m [38;5;28;01mimport[39;00m [38;5;21;01mpandas[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpd[39;00m
 
-[0;31mModuleNotFoundError[0m: No module named 'pandas'
-ModuleNotFoundError: No module named 'pandas'
+[0;31mModuleNotFoundError[0m: No module named 'matplotlib'
+ModuleNotFoundError: No module named 'matplotlib'
 
