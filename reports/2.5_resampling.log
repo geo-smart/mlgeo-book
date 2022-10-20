@@ -22,25 +22,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 %matplotlib inline
-
-sta="P395"
-file_url="http://geodesy.unr.edu/gps_timeseries/tenv/IGS14/"+ sta + ".tenv"
-r = requests.get(file_url).text.splitlines()  # download, read text, split lines into a list
-ue=[];un=[];uv=[];se=[];sn=[];sv=[];date=[];date_year=[];df=[]
-for iday in r:  # this loops through the days of data
-    crap=iday.split()
-    if len(crap)<10:
-      continue
-    date.append((crap[1]))
-    date_year.append(float(crap[2]))
-    ue.append(float(crap[6])*1000)
-    un.append(float(crap[7])*1000)
-    uv.append(float(crap[8])*1000)
-#             # errors
-    se.append(float(crap[10])*1000)
-    sn.append(float(crap[11])*1000)
-    sv.append(float(crap[12])*1000)
-
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m

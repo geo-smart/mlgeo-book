@@ -542,13 +542,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#cross-validation">
-   2. Cross validation
+  <a class="reference internal nav-link" href="#bootstrapping">
+   2. Bootstrapping
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bootstrapping">
-   3. Bootstrapping
+  <a class="reference internal nav-link" href="#cross-validation">
+   3. Cross validation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -591,13 +591,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#cross-validation">
-   2. Cross validation
+  <a class="reference internal nav-link" href="#bootstrapping">
+   2. Bootstrapping
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bootstrapping">
-   3. Bootstrapping
+  <a class="reference internal nav-link" href="#cross-validation">
+   3. Cross validation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -624,9 +624,7 @@ title="Print to PDF"
 <h1>Resampling Methods for Basic Regression<a class="headerlink" href="#resampling-methods-for-basic-regression" title="Permalink to this headline">#</a></h1>
 <p>Data has natural variability that often needs to be accounted for in statistical analysis. There are several strategies to map the data variability into the data-inferred model using resampling methods.
 Resampling methods involve repeatedly drawing samples from a training set and re-fitting a model. The collection of best-fit models provide a confidence in model fitting.</p>
-<section id="data-geodetic-time-series">
-<h2>1. Data: Geodetic time series<a class="headerlink" href="#data-geodetic-time-series" title="Permalink to this headline">#</a></h2>
-<p>For this tutorial, we use a GPS time series in the Pacific Northwest and explore the long term motions due to the Cascadia subduction zone. We will download GPS time series from the University of Nevada - Reno, <span class="xref myst">data center</span>.</p>
+<p>First off all, import some useful modules:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">zipfile</span><span class="o">,</span> <span class="nn">io</span><span class="o">,</span> <span class="nn">gzip</span><span class="o">,</span> <span class="nn">glob</span><span class="o">,</span> <span class="nn">os</span>
@@ -634,8 +632,16 @@ Resampling methods involve repeatedly drawing samples from a training set and re
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
-
-<span class="n">sta</span><span class="o">=</span><span class="s2">&quot;P395&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="data-geodetic-time-series">
+<h2>1. Data: Geodetic time series<a class="headerlink" href="#data-geodetic-time-series" title="Permalink to this headline">#</a></h2>
+<p>For this tutorial, we use a GPS time series in the Pacific Northwest and explore the long term motions due to the Cascadia subduction zone. We will download GPS time series from the University of Nevada - Reno, <span class="xref myst">data center</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sta</span><span class="o">=</span><span class="s2">&quot;P395&quot;</span>
 <span class="n">file_url</span><span class="o">=</span><span class="s2">&quot;http://geodesy.unr.edu/gps_timeseries/tenv/IGS14/&quot;</span><span class="o">+</span> <span class="n">sta</span> <span class="o">+</span> <span class="s2">&quot;.tenv&quot;</span>
 <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>  <span class="c1"># download, read text, split lines into a list</span>
 <span class="n">ue</span><span class="o">=</span><span class="p">[];</span><span class="n">un</span><span class="o">=</span><span class="p">[];</span><span class="n">uv</span><span class="o">=</span><span class="p">[];</span><span class="n">se</span><span class="o">=</span><span class="p">[];</span><span class="n">sn</span><span class="o">=</span><span class="p">[];</span><span class="n">sv</span><span class="o">=</span><span class="p">[];</span><span class="n">date</span><span class="o">=</span><span class="p">[];</span><span class="n">date_year</span><span class="o">=</span><span class="p">[];</span><span class="n">df</span><span class="o">=</span><span class="p">[]</span>
@@ -671,7 +677,7 @@ Resampling methods involve repeatedly drawing samples from a training set and re
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make a folium map of the station location</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -761,8 +767,42 @@ The smaller the error, the “better” the fit (we will discuss later that a fi
 </div>
 </div>
 </section>
+<section id="bootstrapping">
+<h2>2. Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">#</a></h2>
+<p>Commonly used to provide a measure of accuracy of a parameter estimate or of a given statistical learning method. Random sampling <strong>with replacement</strong> cross-validation iterator. Contrary to cross-validation, bootstrapping allows some samples to occur several times in each splits. However a sample that occurs in the train split will never occur in the test split and vice-versa.
+For linear regression fit, standard errors are automatically calculated in regression toolbox. But if the model is more complicated, bootstrapping provides one way to calculate these errors.</p>
+<p>Scikit-learn seems to have deprecated the bootstrap function, but we can find <code class="docutils literal notranslate"><span class="pre">resample</span></code> in the <code class="docutils literal notranslate"><span class="pre">utils</span></code> module. Make sure you use <code class="docutils literal notranslate"><span class="pre">replace=True</span></code>.
+For reproducible results, you can select a fixed <code class="docutils literal notranslate"><span class="pre">random_state=int</span></code> to be kept in the workflow. Usually bootstrapping is done over many times (unlike K-fold cross validation).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">resample</span>
+<span class="n">k</span><span class="o">=</span><span class="mi">1000</span>
+<span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="c1"># initalize a vector to store the regression values</span>
+<span class="n">mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">r2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">iik</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>    
+    <span class="n">ii</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">)),</span><span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">n_samples</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span><span class="c1"># new indices</span>
+    <span class="n">E_b</span><span class="p">,</span> <span class="n">t_b</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+    <span class="c1"># now fit the data on the training set.</span>
+    <span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+    <span class="c1"># Fit on training data:</span>
+    <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_b</span><span class="p">,</span><span class="n">E_b</span><span class="p">)</span>
+    <span class="n">Epred_val</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="c1"># test on the validation set.</span>
+
+    <span class="c1"># The coefficients</span>
+    <span class="n">vel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+
+<span class="c1"># the data shows cleary a trend, so the predictions of the trends are close to each other:</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean of the velocity estimates </span><span class="si">%f</span><span class="s2">4.2 and the standard deviation </span><span class="si">%f</span><span class="s2">4.2&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="cross-validation">
-<h2>2. Cross validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">#</a></h2>
+<h2>3. Cross validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">#</a></h2>
 <p>A model validation technique to assess how generalizable a statistical analysis is to independent data set is <strong>cross-validation</strong>. There are several tutorials on <span class="xref myst">cross-validation</span>.</p>
 <p>Cross-validation divides the data set between a <em>training</em> set and a <em>validation</em> set:</p>
 <div>
@@ -804,25 +844,25 @@ From scikit-learn: concept for training and validation set.
 <span class="n">regr_val</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
 <span class="c1"># Fit on training data:</span>
 <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">E_train</span><span class="p">)</span>
-<span class="c1"># Fit on validation data:</span>
-<span class="n">regr_val</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_val</span><span class="p">,</span><span class="n">E_val</span><span class="p">)</span>
 <span class="c1"># We will first predict the fit:</span>
-<span class="n">Epred</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
-<span class="n">Epred_val</span><span class="o">=</span><span class="n">regr_val</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
+<span class="n">Epred</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_train</span><span class="p">)</span> 
+<span class="n">Epred_val</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_val</span><span class="p">)</span> 
 
 <span class="c1"># The coefficients</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training set: Coefficient / Velocity eastward (mm/year): &#39;</span><span class="p">,</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Validation set: Coefficient / Velocity eastward (mm/year): &#39;</span><span class="p">,</span> <span class="n">regr_val</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean squared error (mm): </span><span class="si">%.2f</span><span class="s1">&#39;</span>
-      <span class="o">%</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MSE (mean square error) on training set (mm): </span><span class="si">%.2f</span><span class="s1">&#39;</span>
+      <span class="o">%</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">E_train</span><span class="p">))</span>
 <span class="c1"># The coefficient of determination: 1 is perfect prediction</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of determination: </span><span class="si">%.2f</span><span class="s1">&#39;</span>
-      <span class="o">%</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of determination on training set: </span><span class="si">%.2f</span><span class="s1">&#39;</span>
+      <span class="o">%</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">E_train</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MSE on validation set (mm): </span><span class="si">%.2f</span><span class="s1"> and coefficient of determiniation on </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">Epred_val</span><span class="p">,</span> <span class="n">E_val</span><span class="p">),</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">Epred_val</span><span class="p">,</span> <span class="n">E_val</span><span class="p">)))</span>
+
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">E</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;East (mm)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">Epred</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">Epred_val</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">Epred</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_val</span><span class="p">,</span><span class="n">Epred_val</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="s1">&#39;fit on training&#39;</span><span class="p">,</span><span class="s1">&#39;fit on validation&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Random selection for data split&#39;</span><span class="p">)</span>
 </pre></div>
@@ -842,71 +882,30 @@ From scikit-learn: concept for training and validation set.
 
 <span class="c1"># now fit the data on the training set.</span>
 <span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-<span class="n">regr_val</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
 <span class="c1"># Fit on training data:</span>
 <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">E_train</span><span class="p">)</span>
-<span class="c1"># Fit on validation data:</span>
-<span class="n">regr_val</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_val</span><span class="p">,</span><span class="n">E_val</span><span class="p">)</span>
 <span class="c1"># We will first predict the fit:</span>
 <span class="n">Epred</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
-<span class="n">Epred_val</span><span class="o">=</span><span class="n">regr_val</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
+<span class="n">Epred_val</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_val</span><span class="p">)</span> 
 
 <span class="c1"># The coefficients</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training set: Coefficient / Velocity eastward (mm/year): &#39;</span><span class="p">,</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Validation set: Coefficient / Velocity eastward (mm/year): &#39;</span><span class="p">,</span> <span class="n">regr_val</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; Training set: Coefficient / Velocity eastward (mm/year): &#39;</span><span class="p">,</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean squared error (mm): </span><span class="si">%.2f</span><span class="s1">&#39;</span>
-      <span class="o">%</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">))</span>
-<span class="c1"># The coefficient of determination: 1 is perfect prediction</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of determination: </span><span class="si">%.2f</span><span class="s1">&#39;</span>
-      <span class="o">%</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Validation set MSE (mm) and Coef of Determination: </span><span class="si">%.2f</span><span class="s1">,</span><span class="si">%.2f</span><span class="s1">&#39;</span> 
+<span class="o">%</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E_val</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">),</span><span class="n">r2_score</span><span class="p">(</span><span class="n">E_val</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)))</span>
+
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">Epred</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">Epred_val</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_val</span><span class="p">,</span><span class="n">Epred_val</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="s1">&#39;fit on training&#39;</span><span class="p">,</span><span class="s1">&#39;fit on validation&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Chronological selection for data split&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="bootstrapping">
-<h2>3. Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">#</a></h2>
-<p>Commonly used to provide a measure of accuracy of a parameter estimate or of a given statistical learning method. Random sampling <strong>with replacement</strong> cross-validation iterator. Contrary to cross-validation, bootstrapping allows some samples to occur several times in each splits. However a sample that occurs in the train split will never occur in the test split and vice-versa.
-For linear regression fit, standard errors are automatically calculated in regression toolbox. But if the model is more complicated, bootstrapping provides one way to calculate these errors.</p>
-<p>Scikit-learn seems to have deprecated the bootstrap function, but we can find <code class="docutils literal notranslate"><span class="pre">resample</span></code> in the <code class="docutils literal notranslate"><span class="pre">utils</span></code> module. Make sure you use <code class="docutils literal notranslate"><span class="pre">replace=True</span></code>.
-For reproducible results, you can select a fixed <code class="docutils literal notranslate"><span class="pre">random_state=int</span></code> to be kept in the workflow. Usually bootstrapping is done over many times (unlike K-fold cross validation).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">resample</span>
-<span class="n">k</span><span class="o">=</span><span class="mi">1000</span>
-<span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="c1"># initalize a vector to store the regression values</span>
-<span class="n">mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-<span class="n">r2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-<span class="n">i</span><span class="o">=</span><span class="mi">0</span>
-<span class="k">for</span> <span class="n">iik</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>    
-    <span class="n">ii</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">)),</span><span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">n_samples</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span><span class="c1"># new indices</span>
-    <span class="n">E_b</span><span class="p">,</span> <span class="n">t_b</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
-    <span class="c1"># now fit the data on the training set.</span>
-    <span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-    <span class="n">regr_val</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-    <span class="c1"># Fit on training data:</span>
-    <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_b</span><span class="p">,</span><span class="n">E_b</span><span class="p">)</span>
-    <span class="n">Epred</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
-
-    <span class="c1"># The coefficients</span>
-    <span class="n">vel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
-
-<span class="c1"># the data shows cleary a trend, so the predictions of the trends are close to each other:</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean of the velocity estimates </span><span class="si">%f</span><span class="s2">4.2 and the standard deviation </span><span class="si">%f</span><span class="s2">4.2&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -926,27 +925,26 @@ Advantages: it has far less bias with respect to the training data. It does not 
 <span class="n">loo</span> <span class="o">=</span> <span class="n">LeaveOneOut</span><span class="p">()</span>
 
 <span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span> <span class="c1"># initalize a vector to store the regression values</span>
-<span class="n">mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
+<span class="n">mse_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">mse_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
 <span class="n">r2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
 <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
-<span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">loo</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">E</span><span class="p">):</span>    
+<span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">loo</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">E</span><span class="p">):</span>    
     <span class="n">E_train</span><span class="p">,</span> <span class="n">E_val</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">E</span><span class="p">[</span><span class="n">val_index</span><span class="p">]</span>
     <span class="n">t_train</span><span class="p">,</span> <span class="n">t_val</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">val_index</span><span class="p">]</span>
     <span class="c1"># now fit the data on the training set.</span>
     <span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-    <span class="n">regr_val</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
     <span class="c1"># Fit on training data:</span>
     <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">E_train</span><span class="p">)</span>
-    <span class="c1"># Fit on validation data:</span>
-    <span class="n">regr_val</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_val</span><span class="p">,</span><span class="n">E_val</span><span class="p">)</span>
     <span class="c1"># We will first predict the fit:</span>
-    <span class="n">Epred</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
-    <span class="n">Epred_val</span><span class="o">=</span><span class="n">regr_val</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
+    <span class="n">Epred_train</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_train</span><span class="p">)</span> 
+    <span class="n">Epred_val</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_val</span><span class="p">)</span> 
 
     <span class="c1"># The coefficients</span>
     <span class="n">vel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">mse</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)</span>
-    <span class="n">r2s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">r2_score</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)</span>
+    <span class="n">mse_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E_train</span><span class="p">,</span> <span class="n">Epred_train</span><span class="p">)</span>
+    <span class="n">mse_val</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E_val</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)</span>
+    <span class="n">r2s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">r2_score</span><span class="p">(</span><span class="n">E_val</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)</span>
     <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
 
 <span class="c1"># the data shows cleary a trend, so the predictions of the trends are close to each other:</span>
@@ -966,37 +964,38 @@ Advantages: it has far less bias with respect to the training data. It does not 
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+
+<span class="c1"># let&#39;s try on 10-folds, 10 adjacent split of the data.</span>
 <span class="n">k</span><span class="o">=</span><span class="mi">10</span>
 <span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
 
 <span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="c1"># initalize a vector to store the regression values</span>
-<span class="n">mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">mse_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">mse_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
 <span class="n">r2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
 <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
-<span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">E</span><span class="p">):</span>    
+<span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">val_index</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">E</span><span class="p">):</span>    
     <span class="n">E_train</span><span class="p">,</span> <span class="n">E_val</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">E</span><span class="p">[</span><span class="n">val_index</span><span class="p">]</span>
     <span class="n">t_train</span><span class="p">,</span> <span class="n">t_val</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">val_index</span><span class="p">]</span>
     <span class="c1"># now fit the data on the training set.</span>
     <span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-    <span class="n">regr_val</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
     <span class="c1"># Fit on training data:</span>
     <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">E_train</span><span class="p">)</span>
-    <span class="c1"># Fit on validation data:</span>
-    <span class="n">regr_val</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_val</span><span class="p">,</span><span class="n">E_val</span><span class="p">)</span>
     <span class="c1"># We will first predict the fit:</span>
-    <span class="n">Epred</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
-    <span class="n">Epred_val</span><span class="o">=</span><span class="n">regr_val</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
+    <span class="n">Epred_train</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_train</span><span class="p">)</span> 
+    <span class="n">Epred_val</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_val</span><span class="p">)</span> 
 
     <span class="c1"># The coefficients</span>
     <span class="n">vel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">mse</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)</span>
-    <span class="n">r2s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">r2_score</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)</span>
+    <span class="n">mse_val</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E_val</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)</span>
+    <span class="n">mse_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E_train</span><span class="p">,</span> <span class="n">Epred_train</span><span class="p">)</span>
+    <span class="n">r2s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">r2_score</span><span class="p">(</span><span class="n">E_train</span><span class="p">,</span> <span class="n">Epred_train</span><span class="p">)</span>
     <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
 
 <span class="c1"># the data shows cleary a trend, so the predictions of the trends are close to each other:</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean of the velocity estimates </span><span class="si">%f</span><span class="s2">4.2 and the standard deviation </span><span class="si">%f</span><span class="s2">4.2&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean of the velocity estimates </span><span class="si">%4.2f</span><span class="s2"> and the standard deviation </span><span class="si">%4.2f</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
 <span class="c1"># the test error is the average of the mean-square-errors</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CV = </span><span class="si">%f</span><span class="s2">4.2&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mse</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean MSE for training set : </span><span class="si">%4.2f</span><span class="s2"> and the validation set: </span><span class="si">%4.2f</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mse_train</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mse_val</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
