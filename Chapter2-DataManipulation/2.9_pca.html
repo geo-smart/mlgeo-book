@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Dimensionality Reduction &#8212; ML Geo Curriculum</title>
+    <title>Principal Component Analysis &#8212; ML Geo Curriculum</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -55,8 +55,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Logistic regression" href="../Chapter3-MachineLearning/logistic_regression.html" />
-    <link rel="prev" title="2.5 Resampling Methods" href="2.5_resampling.html" />
+    <link rel="next" title="Dimensionality Reduction" href="2.10_dimension_reduction.html" />
+    <link rel="prev" title="Chap 2.6: Feature engineering" href="2.8_feature_engineering.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -172,17 +172,47 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="2.1_Data_Definitions.html">
+   2.1 Data Definitions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.2_Numpy_arrays.html">
+   2.1 Numpy Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="2.3_pandas.html">
    2.2 Pandas, Basic Mapping
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="2.5_resampling.html">
+  <a class="reference internal" href="2.4_xarrays.html">
+   Xarrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.5_data_formats.html">
+   Data Formats
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.6_resampling.html">
    2.5 Resampling Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.8_feature_engineering.html">
+   Chap 2.6: Feature engineering
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
+   Principal Component Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.10_dimension_reduction.html">
    Dimensionality Reduction
   </a>
  </li>
@@ -367,7 +397,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://mybinder.org/v2/gh/geo-smart/curriculum-book/main?urlpath=lab/tree/book/Chapter2-DataManipulation/PCA.ipynb"
+        <a href="https://mybinder.org/v2/gh/geo-smart/curriculum-book/main?urlpath=lab/tree/book/Chapter2-DataManipulation/2.9_pca.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -427,7 +457,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/geo-smart/curriculum-book/issues/new?title=Issue%20on%20page%20%2FChapter2-DataManipulation/PCA.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/geo-smart/curriculum-book/issues/new?title=Issue%20on%20page%20%2FChapter2-DataManipulation/2.9_pca.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -444,7 +474,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/geo-smart/curriculum-book/edit/main/book/Chapter2-DataManipulation/PCA.ipynb"
+        <a href="https://github.com/geo-smart/curriculum-book/edit/main/book/Chapter2-DataManipulation/2.9_pca.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -472,7 +502,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/Chapter2-DataManipulation/PCA.ipynb"
+        <a href="../_sources/Chapter2-DataManipulation/2.9_pca.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -531,17 +561,17 @@ title="Print to PDF"
     </div>
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#principal-component-analysis">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
    Principal Component Analysis
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#independent-component-analysis">
    Independent Component Analysis
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#other-techniques">
    Other Techniques
   </a>
@@ -555,7 +585,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Dimensionality Reduction</h1>
+                <h1>Principal Component Analysis</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -565,17 +595,17 @@ title="Print to PDF"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#principal-component-analysis">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
    Principal Component Analysis
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#independent-component-analysis">
    Independent Component Analysis
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#other-techniques">
    Other Techniques
   </a>
@@ -590,24 +620,8 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="dimensionality-reduction">
-<h1>Dimensionality Reduction<a class="headerlink" href="#dimensionality-reduction" title="Permalink to this headline">#</a></h1>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>⚠️ Under Construction !</p>
-</div>
-<p>Ideally, one would not need to extract or select feature in the input data. However, reducing the dimensionality as a separate pre-processing steps may be advantageous:</p>
-<ol class="simple">
-<li><p>The complexity of the algorithm depends on the number of input dimensions and size of the data.</p></li>
-<li><p>If some features are unecessary, not extracting them saves compute time</p></li>
-<li><p>Simpler models are more robust on small datasets</p></li>
-<li><p>Fewer features lead to a better understanding of the data.</p></li>
-<li><p>Visualization is easier in fewer dimensions.</p></li>
-</ol>
-<p>Feature <em>selection</em> finds the dimensions that explain the data without loss of information and ends with a smaller dimensionality of the input data. A <em>forward selection</em> approach starts with one variable that decreases the error the most and add one by one. A <em>backward selection</em> starts with all variables and removes them one by one.</p>
-<p>Feature <em>extraction</em> finds a new set of dimension as a combination of the original dimensions. They can be supervised or unsupervised depending on the output information. Examples are <strong>Principal Component Analysis</strong>, <strong>Linear Discriminant Analysis</strong></p>
-<section id="principal-component-analysis">
-<h2>Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this headline">#</a></h2>
+  <section id="principal-component-analysis">
+<h1>Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this headline">#</a></h1>
 <p>PCA is an unsupervised learning method that finds the mapping from the input to a lower dimemsional space with minimum loss of information. First, we will download again our GPS time series from Oregon.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -618,6 +632,7 @@ title="Print to PDF"
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
 </pre></div>
 </div>
 </div>
@@ -638,10 +653,6 @@ title="Print to PDF"
     <span class="n">ue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
     <span class="n">un</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
     <span class="n">uv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
-<span class="c1">#             # errors</span>
-    <span class="n">se</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
-    <span class="n">sn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">11</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
-    <span class="n">sv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">12</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -666,16 +677,15 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Vertical motions (mm)&#39;)
-</pre></div>
 </div>
-<img alt="../_images/PCA_3_1.png" src="../_images/PCA_3_1.png" />
-</div>
-</div>
-<p>PCA idenditfies the axis that accounts for the largest amount of variance in the training set. PCA uses the <em>(Singular Value Decomposition (SVD)</em> to decompose the training set matrix <span class="math notranslate nohighlight">\(\mathbf{X} \)</span>:</p>
+<p>PCA idenditfies the axis that accounts for the largest amount of variance in the data. Let’s  <span class="math notranslate nohighlight">\(\mathbf{Y} = y_1,\cdots,y_n \)</span>  be the data. The steps to PCA are:</p>
+<ul class="simple">
+<li><p>center and standardize the data by substracting mean (<span class="math notranslate nohighlight">\(\mu=\sum_i^n y_i/n\)</span>) and scaling with the variance (<span class="math notranslate nohighlight">\(\sigma^2 = 1/n\sum_1^n ( y_i^2-\mu^2 )\)</span>). The transformed data becomes: <span class="math notranslate nohighlight">\(z_i= y_i/\sigma\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>).</p></li>
+<li><p>Calculate the covariance matrix of the data:</p></li>
+</ul>
+<p>PCA uses the <em>(Singular Value Decomposition (SVD)</em> to decompose the covariance matrix <span class="math notranslate nohighlight">\(\mathbf{C} \)</span>:</p>
 <p><span class="math notranslate nohighlight">\(\mathbf{X} = \mathbf{U} \Sigma \mathbf{V}^T ,\)</span></p>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{V}^T\)</span> contains the eigenvectors, or principal components. The <em>PCs</em> are normalized, centered around zero</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{V}^T\)</span> contains the eigenvectors, or principal components. The <em>PCs</em> are normalized, centered around zero.</p>
 <p>The <em>1st principal component</em> eigenvector that has the highest eigenvalue in the direction that has the highest variance.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -683,12 +693,6 @@ title="Print to PDF"
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">E</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">U</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(5544,)
-(5544, 3)
 </pre></div>
 </div>
 </div>
@@ -702,11 +706,6 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PCA(n_components=3)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -715,23 +714,11 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-0.87703534 -0.48030093  0.01095535]
- [-0.03891661  0.04829678 -0.99807461]
- [ 0.47884706 -0.87577305 -0.06104966]]
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The 3 PCs&#39; explained variance</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1027.59775258   28.57033447    2.99835588]
 </pre></div>
 </div>
 </div>
@@ -755,13 +742,6 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-45.30638709 -26.35979131]
--2703.718641927921
-</pre></div>
-</div>
-<img alt="../_images/PCA_10_1.png" src="../_images/PCA_10_1.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -779,26 +759,12 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.97019478 0.02697436 0.00283086]
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Variance explained with cumulated PCs&#39;)
-</pre></div>
-</div>
-<img alt="../_images/PCA_11_2.png" src="../_images/PCA_11_2.png" />
-</div>
 </div>
 <p>Now we see that 97% of the variance is explained by the first PC. We can reduce the dimension of our system by only working with a single dimension. Another way to choose the number of dimensions is to select the minimum of PCs that would explain 95% of the variance.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span><span class="o">&gt;=</span><span class="mf">0.95</span><span class="p">)</span> <span class="o">+</span><span class="mi">1</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;minimum dimension size to explain 95</span><span class="si">% o</span><span class="s2">f the variance &quot;</span><span class="p">,</span><span class="n">d</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>minimum dimension size to explain 95% of the variance  1
 </pre></div>
 </div>
 </div>
@@ -809,12 +775,6 @@ title="Print to PDF"
 <span class="n">X_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;original shape:   &quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;transformed shape:&quot;</span><span class="p">,</span> <span class="n">X_pca</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>original shape:    (5544, 3)
-transformed shape: (5544, 1)
 </pre></div>
 </div>
 </div>
@@ -839,7 +799,7 @@ transformed shape: (5544, 1)
 <p><em>SVD</em> can be computationally intensive for larger dimensions. It is recommended to use a <strong>randomized PCA</strong> to approximate the first principal components. Scikit-learn automatically switches to randomized PCA in either the following happens: data size &gt; 500, number of vectors is &gt; 500 and the number of PCs selected is less than 80% of either one.</p>
 </section>
 <section id="independent-component-analysis">
-<h2>Independent Component Analysis<a class="headerlink" href="#independent-component-analysis" title="Permalink to this headline">#</a></h2>
+<h1>Independent Component Analysis<a class="headerlink" href="#independent-component-analysis" title="Permalink to this headline">#</a></h1>
 <p>ICA is used to estimate sources given noisy measurements. It is frequently used in Geodesy to isolate contributions from earthquakes and hydrology.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -865,17 +825,6 @@ transformed shape: (5544, 1)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.495126    0.07841108 -1.31840023]
- [ 0.64019598  1.34570272 -1.94657351]
- [ 0.28913069  0.9500949  -1.646886  ]
- ...
- [-0.38561943 -0.71624672  1.34043406]
- [-0.50777458 -1.24052539  1.74176784]
- [-0.5550078  -0.90265774 -1.54534953]]
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -893,15 +842,6 @@ transformed shape: (5544, 1)
 <span class="c1"># For comparison, compute PCA</span>
 <span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">H</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  <span class="c1"># Reconstruct signals based on orthogonal components</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-45.33296614 -42.49104648  46.03237582]
- [-88.65967063 -21.17141674  44.06103072]
- [-44.58616869 -61.72404768  91.74446972]] [[1.  1.  1. ]
- [0.5 2.  1. ]
- [1.5 1.  2. ]]
 </pre></div>
 </div>
 </div>
@@ -925,13 +865,10 @@ transformed shape: (5544, 1)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/PCA_20_0.png" src="../_images/PCA_20_0.png" />
-</div>
 </div>
 </section>
 <section id="other-techniques">
-<h2>Other Techniques<a class="headerlink" href="#other-techniques" title="Permalink to this headline">#</a></h2>
+<h1>Other Techniques<a class="headerlink" href="#other-techniques" title="Permalink to this headline">#</a></h1>
 <ol class="simple">
 <li><p>Random Projections
 <a class="reference external" href="https://scikit-learn.org/stable/modules/random_projection.html">https://scikit-learn.org/stable/modules/random_projection.html</a></p></li>
@@ -940,7 +877,6 @@ transformed shape: (5544, 1)
 <li><p>t-Distributed stochastic neighbor embedding</p></li>
 <li><p>Linear discriminant analysis</p></li>
 </ol>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -970,17 +906,17 @@ transformed shape: (5544, 1)
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="2.5_resampling.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="2.8_feature_engineering.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">2.5 Resampling Methods</p>
+            <p class="prev-next-title">Chap 2.6: Feature engineering</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="../Chapter3-MachineLearning/logistic_regression.html" title="next page">
+    <a class='right-next' id="next-link" href="2.10_dimension_reduction.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Logistic regression</p>
+        <p class="prev-next-title">Dimensionality Reduction</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

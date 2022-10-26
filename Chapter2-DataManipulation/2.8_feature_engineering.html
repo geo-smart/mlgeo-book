@@ -1,0 +1,1549 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Chap 2.6: Feature engineering &#8212; ML Geo Curriculum</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Principal Component Analysis" href="2.9_pca.html" />
+    <link rel="prev" title="2.5 Resampling Methods" href="2.6_resampling.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/GeoSMART_logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ML Geo Curriculum</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../about_this_book/about_this_book.html">
+                    Machine Learning in the Geosciences
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://geo-smart.github.io/index.html">
+   Geosmart website
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/acknowledgements.html">
+   Acknowlegments
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 1 - Open Source Ecosystem with Python
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/readme.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.1_python_environment.html">
+   1.1 Python Ecosystem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.2_jupyter_environment.html">
+   1.2 Jupyter Environment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.3_version_control_git.html">
+   1.3 Version Control &amp; GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.4_computational_environments.html">
+   1.4 Computing Environments
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 2 - Data Manipulation
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.1_Data_Definitions.html">
+   2.1 Data Definitions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.2_Numpy_arrays.html">
+   2.1 Numpy Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.3_pandas.html">
+   2.2 Pandas, Basic Mapping
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.4_xarrays.html">
+   Xarrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.5_data_formats.html">
+   Data Formats
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.6_resampling.html">
+   2.5 Resampling Methods
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Chap 2.6: Feature engineering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.9_pca.html">
+   Principal Component Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.10_dimension_reduction.html">
+   Dimensionality Reduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 3 - Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/logistic_regression.html">
+   Logistic regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/kmeans.html">
+   K-means clustering - Tutorial
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 4 - Deep Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/MultiLayerPerceptron.html">
+   Multi Layer Perceptrons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/week9_cnn.html">
+   Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/cnn_LeNet.html">
+   Convolutional neural networks with PyTorch
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/autoen.html">
+   Auto-encoders
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/ModelTraining.html">
+   Training Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/week9_training.html">
+   Deep Neural Networks and their training
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/neural_networks_PyTorch.html">
+   Using PyTorch to build, train, and use neural networks: A short introduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 5 - Model Evaluation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter5-ModelEvaluation/week7_classification_model_fit.html">
+   Classification
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 6 - Workflow Management and Reproducibility
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter6-ModelWorkflows/readme.html">
+   This chapter focuces on model workflow and ML reproducibility
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 7- Introduction to Cloud Computing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/cloudmaven">
+   Browser Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/Denolle-Lab/azure">
+   Terraform Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://tljh.jupyter.org/en/latest/">
+   Cloud Provider ML Jupyterhubs
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/glossary.html">
+   Glossaries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/geo-smart/curriculum-book/main?urlpath=lab/tree/book/Chapter2-DataManipulation/2.8_feature_engineering.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book/issues/new?title=Issue%20on%20page%20%2FChapter2-DataManipulation/2.8_feature_engineering.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book/edit/main/book/Chapter2-DataManipulation/2.8_feature_engineering.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Chapter2-DataManipulation/2.8_feature_engineering.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Chap 2.6: Feature engineering
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#statistical-features">
+   2.6.2 Statistical Features
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-mean">
+     The mean
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-variance">
+     The Variance
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-skewness">
+     The skewness
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#kurtosis">
+     Kurtosis
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#temporal-features">
+   2.6.3 temporal features
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#spectral-features">
+   2.6.4 Spectral features
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fourier-transform">
+     Fourier Transform
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nyquist">
+     Nyquist
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#uncertainties">
+     Uncertainties
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#short-time-fourier-transform-sftf">
+       Short-Time Fourier Transform (SFTF)
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#wavelet-transform">
+       Wavelet transform
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#automated-feature-extraction">
+   Automated Feature Extraction
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-synthetic-noise">
+   create synthetic noise
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Chap 2.6: Feature engineering</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Chap 2.6: Feature engineering
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#statistical-features">
+   2.6.2 Statistical Features
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-mean">
+     The mean
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-variance">
+     The Variance
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-skewness">
+     The skewness
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#kurtosis">
+     Kurtosis
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#temporal-features">
+   2.6.3 temporal features
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#spectral-features">
+   2.6.4 Spectral features
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fourier-transform">
+     Fourier Transform
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#nyquist">
+     Nyquist
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#uncertainties">
+     Uncertainties
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#short-time-fourier-transform-sftf">
+       Short-Time Fourier Transform (SFTF)
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#wavelet-transform">
+       Wavelet transform
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#automated-feature-extraction">
+   Automated Feature Extraction
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-synthetic-noise">
+   create synthetic noise
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="chap-2-6-feature-engineering">
+<h1>Chap 2.6: Feature engineering<a class="headerlink" href="#chap-2-6-feature-engineering" title="Permalink to this headline">#</a></h1>
+<p>The process of feature engineering is of manipulating, transforming, selecting raw data into features that can be used in statistical analysis of prediction.</p>
+<ul class="simple">
+<li><p>statistical features</p></li>
+<li><p>temporal features</p></li>
+<li><p>spectral features (Fourier and Wavelet transforms)</p></li>
+</ul>
+<p>We will first calculate some of the features individually on a seismic data set, then we will use a python toolbox to calculate them automatically.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import modules for seismic data and feature extraction</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+
+<span class="c1"># time series feature extraction python toolbox:</span>
+<span class="kn">import</span> <span class="nn">tsfresh</span>
+
+<span class="c1"># seismic python toolbox</span>
+<span class="kn">import</span> <span class="nn">obspy</span>
+<span class="kn">import</span> <span class="nn">obspy.clients.fdsn.client</span> <span class="k">as</span> <span class="nn">fdsn</span>
+<span class="kn">from</span> <span class="nn">obspy</span> <span class="kn">import</span> <span class="n">UTCDateTime</span>
+
+
+<span class="kn">import</span> <span class="nn">h5py</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First, we download seismic data from Puget Sound for a large M8.2 earthquake that happened in Alaska, July 29, 2021.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download seismic data</span>
+<span class="n">network</span> <span class="o">=</span> <span class="s1">&#39;UW&#39;</span>
+<span class="n">station</span> <span class="o">=</span> <span class="s1">&#39;RATT&#39;</span>
+<span class="n">channel</span> <span class="o">=</span> <span class="s1">&#39;HHZ&#39;</span><span class="c1"># this channel gives a low frequency, 1Hz signal.</span>
+<span class="n">Tstart</span> <span class="o">=</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">29</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">Tend</span> <span class="o">=</span> <span class="n">Tstart</span><span class="o">+</span><span class="mi">7200</span><span class="c1"># UTCDateTime(year=2022, month=10, day=8)</span>
+<span class="n">fdsn_client</span> <span class="o">=</span> <span class="n">fdsn</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;IRIS&#39;</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">fdsn_client</span><span class="o">.</span><span class="n">get_waveforms</span><span class="p">(</span><span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="n">station</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span> <span class="n">starttime</span><span class="o">=</span><span class="n">Tstart</span><span class="p">,</span> \
+    <span class="n">endtime</span><span class="o">=</span><span class="n">Tend</span><span class="p">,</span> <span class="n">attach_response</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Z</span><span class="o">.</span><span class="n">merge</span><span class="p">();</span> <span class="n">Z</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 Trace(s) in Stream:
+UW.RATT..HHZ | 2021-07-29T06:15:00.000001Z - 2021-07-29T08:15:00.000001Z | 100.0 Hz, 720001 samples
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the time series</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,(</span><span class="n">Tend</span><span class="o">-</span><span class="n">Tstart</span><span class="p">),</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time since origin (s)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;M8.2 2021/07/29 recorded at UW.RATT.HHZ&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Counts&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_feature_engineering_4_0.png" src="../_images/2.8_feature_engineering_4_0.png" />
+</div>
+</div>
+<p>Now, only seismologists work on obspy stream, so we will convert the data into numpy arrays:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To calculate the statistical features of the data, we will first look at the data distribution, P(z):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="mi">100</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;ground motion&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_feature_engineering_8_0.png" src="../_images/2.8_feature_engineering_8_0.png" />
+</div>
+</div>
+<p>We now calculated the distribution of the data, <code class="docutils literal notranslate"><span class="pre">p</span></code>, in 100 bins.</p>
+</section>
+<section id="statistical-features">
+<h1>2.6.2 Statistical Features<a class="headerlink" href="#statistical-features" title="Permalink to this headline">#</a></h1>
+<p>Let be <span class="math notranslate nohighlight">\(P(z)\)</span> the distribution of the data <span class="math notranslate nohighlight">\(z\)</span>.</p>
+<section id="the-mean">
+<h2>The mean<a class="headerlink" href="#the-mean" title="Permalink to this headline">#</a></h2>
+<div>
+<img src="mean.png" alt="mean" height=300  />
+</div>
+<p>Image taken from this <span class="xref myst">blog</span>.</p>
+<p>The mean is the sum of the values divided by the number of data points. It is the first raw moment of a distribution.
+<span class="math notranslate nohighlight">\(\mu = \int_{-\infty}^\infty zP(z)dz\)</span>, where z the ground motion value (bin) and <span class="math notranslate nohighlight">\(P(z)\)</span> is the distribution of the data.</p>
+</section>
+<section id="the-variance">
+<h2>The Variance<a class="headerlink" href="#the-variance" title="Permalink to this headline">#</a></h2>
+ <div>
+<img src="variance.png" alt="variance" height=200  />
+</div>
+<p>The variance is the second <em>centralized</em> moment. <em>Centralized</em> means that the distribution is shifted around the mean. It calculates how spread out is a distribution.</p>
+<p><span class="math notranslate nohighlight">\(\sigma^2 = \int_{-\infty}^\infty (z-\mu)^2P(z)dz\)</span></p>
+<p>The standard deviation is the square root of the variance, <span class="math notranslate nohighlight">\(\sigma\)</span>. A high variance indicates a wide distribution.</p>
+</section>
+<section id="the-skewness">
+<h2>The skewness<a class="headerlink" href="#the-skewness" title="Permalink to this headline">#</a></h2>
+<p>Skewness is the third <em>standardized</em> moment. The <em>standardized</em> moment is scaled by the standard deviation. It measures the relative size of the two tails of the distribution.</p>
+<p><span class="math notranslate nohighlight">\(m_3= \int_{-\infty}^\infty \frac{(z - \mu)^3}{\sigma^3}P(z)dz\)</span></p>
+<p>With the cubic exponent, it is possible that the skewness is negative.</p>
+ <div>
+<img src="skewness.png" alt="skewness" height=200  />
+</div>
+<p>Image taken from this <span class="xref myst">blog</span>.</p>
+<p>A positively skewed distribution is one where most of the weight is at the end of the distribution. A negatively skewed distribution is one where most of the weight is at the beginning of the distribution.</p>
+</section>
+<section id="kurtosis">
+<h2>Kurtosis<a class="headerlink" href="#kurtosis" title="Permalink to this headline">#</a></h2>
+<p>Kurtosis measures the combine size of the two tails relative to the whole distribution. It is the fourth centralized and standardized moment.</p>
+<p><span class="math notranslate nohighlight">\(m_4= \int_{-\infty}^\infty (\frac{z-\mu}{\sigma})^4P(z)dz\)</span></p>
+ <div>
+<img src="kurtosis.png" alt="kurtosis" height=200  />
+</div>
+The laplace, normal, and uniform distributions have a mean of 0 and a variance of 1. But their kurtosis is 3, 0, and -1.2.
+<p>Python functions to calculate the moments might be:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">raw_moment</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span><span class="o">**</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">central_moment</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">raw_moment</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now calculate the mean, variance, skewness, and kurtosis of the data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># enter answers here using the functions for the moment.</span>
+<span class="c1"># the mean:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">raw_moment</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># the variance:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">central_moment</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># the skewness</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">central_moment</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="n">central_moment</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># the kurtosis</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">central_moment</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="o">/</span><span class="n">central_moment</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-1.5586696440861216e-13
+19059318218.65704
+0.144572326613743
+109.22237948156209
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also use the numpy and scipy modules to get these values</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;the mean is </span><span class="si">%4.2f</span><span class="s1">, the variance is </span><span class="si">%4.2f</span><span class="s1">, the skewness is </span><span class="si">%4.2f</span><span class="s1">, the kurtosis is </span><span class="si">%4.2f</span><span class="s1">&#39;</span>
+ <span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">z</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">skew</span><span class="p">(</span><span class="n">z</span><span class="p">),</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kurtosis</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">fisher</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>the mean is -0.00, the variance is 19059318218.66, the skewness is 0.14, the kurtosis is 109.22
+</pre></div>
+</div>
+</div>
+</div>
+<p>These values may mean nothing without some additional context. We can download seismic noise data to see if the earthquake waveforms is statistically different from the noise. For that, we will download the same length of data prior to the earthquake:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download seismic data 2 hours prior to the earthquake.</span>
+<span class="c1"># modify below.</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">fdsn_client</span><span class="o">.</span><span class="n">get_waveforms</span><span class="p">(</span><span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="n">station</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span> <span class="n">starttime</span><span class="o">=</span><span class="n">Tstart</span><span class="o">-</span><span class="mi">7200</span><span class="p">,</span> \
+    <span class="n">endtime</span><span class="o">=</span><span class="n">Tstart</span><span class="p">,</span> <span class="n">attach_response</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">N</span><span class="o">.</span><span class="n">merge</span><span class="p">();</span> <span class="n">N</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+<span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the data</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,(</span><span class="n">Tend</span><span class="o">-</span><span class="n">Tstart</span><span class="p">),</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;2 hours before earthquake origin&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Noise recorded at UW.RATT.HHZ&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Counts&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_feature_engineering_18_0.png" src="../_images/2.8_feature_engineering_18_0.png" />
+</div>
+</div>
+<p>Calculate and plot the distribution of ground motion noise values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># type below</span>
+<span class="n">pn</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;noise&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;ground motion&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_feature_engineering_20_0.png" src="../_images/2.8_feature_engineering_20_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;the mean is </span><span class="si">%4.2f</span><span class="s1">, the variance is </span><span class="si">%4.2f</span><span class="s1">, the skewness is </span><span class="si">%4.2f</span><span class="s1">, the kurtosis is </span><span class="si">%4.2f</span><span class="s1">&#39;</span>
+ <span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">skew</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">kurtosis</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">fisher</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>the mean is -0.00, the variance is 1273.08, the skewness is -0.09, the kurtosis is 0.39
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compare the values. You notice that for both quake and noise, the mean is small compared to absolute values; skewness is small (it’s mostly symmetric). But the variance and the kurtosis are high for earthquakes. In fact, these two are used to detect earthquakes.</p>
+</section>
+</section>
+<section id="temporal-features">
+<h1>2.6.3 temporal features<a class="headerlink" href="#temporal-features" title="Permalink to this headline">#</a></h1>
+<p>These are calculated based on the time series, such as: absolute energy, autocorrelation, centroid, entropy, zero crossing rate etc.</p>
+</section>
+<section id="spectral-features">
+<h1>2.6.4 Spectral features<a class="headerlink" href="#spectral-features" title="Permalink to this headline">#</a></h1>
+<p>The data can be projected onto series of orthogonal basis to represent the multiple scale of the data. The <strong>Fourier transform</strong> is the most utilized data transform to explore the frequencies that compose the signal.</p>
+<section id="fourier-transform">
+<h2>Fourier Transform<a class="headerlink" href="#fourier-transform" title="Permalink to this headline">#</a></h2>
+<p>We use the Scipy Fourier <a class="reference external" href="%21https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.rfft.html#scipy.fftpack.rfft">package</a> to transform the two time series (earthquake and noise).</p>
+<p>The Fourier transform is a decomposition of the time series onto a orthonormal basis of cosine and sine functions. The Fourier transform of a time series <span class="math notranslate nohighlight">\(f(t)\)</span> (but similarly if the variable is space <span class="math notranslate nohighlight">\(x\)</span>).</p>
+<p><span class="math notranslate nohighlight">\(\hat{F}(f) = \int_{-\infty}^\infty f(t) \exp^{-i2\pi ft} dt\)</span></p>
+<p><span class="math notranslate nohighlight">\(\hat{F}(f)\)</span> is the complex Fourier value at frequency <span class="math notranslate nohighlight">\(f\)</span>. The FOurier transform determines what frequency(ies) dominate the time series.</p>
+</section>
+<section id="nyquist">
+<h2>Nyquist<a class="headerlink" href="#nyquist" title="Permalink to this headline">#</a></h2>
+<p>The Fourier transform we will use in this class takes a discrete time series of real numbers. The time series is sampled with <span class="math notranslate nohighlight">\(N\)</span> samples per seconds. If the time series span <span class="math notranslate nohighlight">\(T\)</span> seconds regularly, then the sampling rate of the data <span class="math notranslate nohighlight">\(dt=T/N\)</span>. The highest frequency that can be resolved in a discrete time series, called the Nyquist frequency, is limited by <span class="math notranslate nohighlight">\(dt\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(F_{Nyq} = \frac{1}{2dt N}\)</span></p>
+<p>Effectively, one cannot constrain signals within two time samples from the data.</p>
+</section>
+<section id="uncertainties">
+<h2>Uncertainties<a class="headerlink" href="#uncertainties" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>The discrete Fourier Transform yields an approximation of the FT. The shorter the time series, the least accurate is the FT. This means that the FT on short time windows is less accurate</p></li>
+<li><p>The FT assumes (and requires) the periodicity of the series, meaning that the finite/trimmed time series would repeat in time. To enforce this, we  <strong>taper</strong> the time series so that the first and last points are equal (to zero).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.fftpack</span> <span class="kn">import</span> <span class="n">fft</span><span class="p">,</span> <span class="n">ifft</span><span class="p">,</span> <span class="n">fftfreq</span><span class="p">,</span> <span class="n">next_fast_len</span>
+
+<span class="n">npts</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span>
+<span class="c1">## FFT the signals</span>
+<span class="c1"># fill up until 2^N value to speed up the FFT</span>
+<span class="n">Nfft</span> <span class="o">=</span> <span class="n">next_fast_len</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="c1"># this will be an even number</span>
+<span class="n">freqVec</span> <span class="o">=</span> <span class="n">fftfreq</span><span class="p">(</span><span class="n">Nfft</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">Z</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">Zhat</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">Nfft</span><span class="p">)</span><span class="c1">#/np.sqrt(Z[0].stats.npts)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Please see the Obspy documentation to find out about the <a class="reference external" href="%21https://docs.obspy.org/master/packages/autogen/obspy.core.trace.Trace.taper.html#supported-methods">taper</a> function.
+Plot the amplitude and phase spectra</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zhat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">Nfft</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">Zhat</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_feature_engineering_26_0.png" src="../_images/2.8_feature_engineering_26_0.png" />
+</div>
+</div>
+<p>You will note above that the phase values are randomly distributed between -pi and pi. We can check it by showing the distribution of the phase and amplitude spectra.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># your turn. Plot the histograms of the phase and amplitude spectrum</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zhat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">Nfft</span><span class="p">),</span><span class="mi">100</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_feature_engineering_28_0.png" src="../_images/2.8_feature_engineering_28_0.png" />
+</div>
+</div>
+<p>We can also analyze the spectral characteristics of the noise time series. Below,</p>
+<ol class="simple">
+<li><p>compute the Fourier transform</p></li>
+<li><p>plot the phase and amplitude spectra</p></li>
+<li><p>plot the distribution of the phase and amplitude values</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute Fourier transform of the noise time series</span>
+
+<span class="n">npts1</span> <span class="o">=</span> <span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span>
+<span class="c1">## FFT the signals</span>
+<span class="c1"># fill up until 2^N value to speed up the FFT</span>
+<span class="n">Nfft1</span> <span class="o">=</span> <span class="n">next_fast_len</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="c1"># this will be an even number</span>
+<span class="n">freqVec1</span> <span class="o">=</span> <span class="n">fftfreq</span><span class="p">(</span><span class="n">Nfft1</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)[:</span><span class="n">Nfft1</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># taper the data to enable periodicity</span>
+<span class="n">N</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+<span class="c1"># Fourier transform</span>
+<span class="n">Nhat</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">Nfft1</span><span class="p">)</span><span class="c1">#/np.sqrt(Z[0].stats.npts)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the phase and amplitude spectra</span>
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Nhat</span><span class="p">[:</span><span class="n">Nfft1</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">Nfft1</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">Nhat</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_feature_engineering_31_0.png" src="../_images/2.8_feature_engineering_31_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Overlay the spectrum of the data and the spectrum of the noise</span>
+
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zhat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">Nfft</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Nhat</span><span class="p">[:</span><span class="n">Nfft1</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">Nfft1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">);</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (m/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Earthquake&#39;</span><span class="p">,</span><span class="s1">&#39;Noise&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mf">1e-5</span><span class="p">,</span><span class="mf">1e4</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1e-05, 10000.0)
+</pre></div>
+</div>
+<img alt="../_images/2.8_feature_engineering_32_1.png" src="../_images/2.8_feature_engineering_32_1.png" />
+</div>
+</div>
+<section id="short-time-fourier-transform-sftf">
+<h3>Short-Time Fourier Transform (SFTF)<a class="headerlink" href="#short-time-fourier-transform-sftf" title="Permalink to this headline">#</a></h3>
+<p>In time-dependent and multi-scale problems, it may be interesting to extract data features from the short time Fourier transform.</p>
+<p>The STFT is a Fourier Transform applied to short (overlapping) windows to resolve the frequencies over different times in the series.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">stft</span>
+
+<span class="n">nperseg</span><span class="o">=</span><span class="mi">1000</span>
+<span class="n">z</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">Zxx</span> <span class="o">=</span> <span class="n">stft</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="n">nperseg</span><span class="p">,</span><span class="n">noverlap</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">))))</span>
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span><span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="mi">3600</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">)),</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s1">&#39;gouraud&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;STFT Magnitude&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency [Hz]&#39;</span><span class="p">)</span>
+<span class="c1"># ax[0].set_xlabel(&#39;Time [Hours]&#39;)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">40</span><span class="p">)</span>
+
+
+<span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">Zxx</span> <span class="o">=</span> <span class="n">stft</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="n">nperseg</span><span class="p">,</span><span class="n">noverlap</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">))))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="mi">3600</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">)),</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s1">&#39;gouraud&#39;</span><span class="p">)</span>
+<span class="c1"># ax[1].set_title(&#39;Noise Magnitude&#39;)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency [Hz]&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time [Hours]&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">40</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1767563.2884356107
+47.86349029869899
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/js/lzmy975n0l5bjbmr9db291m00000gn/T/ipykernel_18412/1691094658.py:8: RuntimeWarning: divide by zero encountered in log10
+  ax[0].pcolormesh(t/3600, f, np.log10(np.abs(Zxx)), vmin=-1, vmax=3.5, shading=&#39;gouraud&#39;)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.1, 40)
+</pre></div>
+</div>
+<img alt="../_images/2.8_feature_engineering_34_3.png" src="../_images/2.8_feature_engineering_34_3.png" />
+</div>
+</div>
+</section>
+<section id="wavelet-transform">
+<h3>Wavelet transform<a class="headerlink" href="#wavelet-transform" title="Permalink to this headline">#</a></h3>
+<p>The wavelet transform projects the time series onto a 2D space of <em>time</em> and <em>scale</em> axis. The <em>scale</em> is a representation of the frequency scale of the data. The waveletn transforms uses a series of functions called <em>wavelets</em> to linearly decompose the signals. Unlike the <em>sine</em> functions of the Fourier transform, the <em>wavelets</em> have finite durations and are localized in time:</p>
+ <div>
+<img src="Wavelet-Out1.jpeg" alt="wavelet" height=100  />
+</div>
+<p>Image from this <span class="xref myst">article</span>.</p>
+<p>There exist many canonical wavelet families. The difference between families are typically their shape, compactness, and smoothness. Typically, one chooses one family for the specific time series. Wavelets have finite energy and zero mean.</p>
+<p>The time-scale representation of of a time series is a <em>scaleogram</em>. <em>scales</em> can be converted to pseudo frequencies: If <span class="math notranslate nohighlight">\(f_c\)</span> is the central frequency of the wavelet and the scale is <span class="math notranslate nohighlight">\(a\)</span>, then the pseuo-frequency is <span class="math notranslate nohighlight">\(f_a = f_c/a\)</span>.</p>
+ <div>
+<img src="wavelet_families.png" alt="wavelet" height=300  />
+</div>
+<p>Image from this <span class="xref myst">article</span>.</p>
+<p>The wavelet transform becomes:</p>
+<p><span class="math notranslate nohighlight">\(\hat{F}(a,b) = \frac{1}{\sqrt{a}} \int_{-\infty}^\infty f(t) \bar{\Psi} (\frac{t-b}{a}) dt\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\bar{\Psi}\)</span> is the mother wavelet scaled by a factor of <span class="math notranslate nohighlight">\(a\)</span> and translated/shifted by <span class="math notranslate nohighlight">\(b\)</span>. The wavelet transform is scaled by the continuous and “infinite number of values” of <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> are continuous. The <em>Discrete Wavelet Transform</em> is the wavelet transform performed on a finite number of scales and shifts.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.signal</span> <span class="k">as</span> <span class="nn">signal</span>
+
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,(</span><span class="n">Tend</span><span class="o">-</span><span class="n">Tstart</span><span class="p">)</span><span class="o">+</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)</span>
+<span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
+
+<span class="c1"># use the number of scales</span>
+<span class="n">w</span> <span class="o">=</span> <span class="mf">6.</span>
+
+<span class="c1"># relate scales with frequencies</span>
+<span class="c1"># freq = np.linspace(0, fs/2, 100)</span>
+<span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">fs</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">widths</span> <span class="o">=</span> <span class="n">w</span><span class="o">*</span><span class="n">fs</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">freq</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+
+<span class="n">cwtm</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">cwt</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">morlet2</span><span class="p">,</span> <span class="n">widths</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calculating the time-frequency representation of large time series</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cwtmatr = signal.cwt(z, signal.morlet, widths)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cwtm</span><span class="p">)),</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">t</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="n">freq</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">freq</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+           <span class="n">vmax</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_feature_engineering_38_0.png" src="../_images/2.8_feature_engineering_38_0.png" />
+</div>
+</div>
+<p>TF transforms take computational time in the workflow, let’s compare:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> cwtm = signal.cwt(z, signal.morlet2, widths, w=w)
+<span class="o">%</span><span class="k">timeit</span> f, t, Zxx = stft(n, fs=100, nperseg=nperseg,noverlap=200)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.19 s ± 51.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+4.09 ms ± 103 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<p>From these transform, we can extract similar statistical features</p>
+</section>
+</section>
+</section>
+<section id="automated-feature-extraction">
+<h1>Automated Feature Extraction<a class="headerlink" href="#automated-feature-extraction" title="Permalink to this headline">#</a></h1>
+<p>There are toolboxes to extract features from the data, including feautres done the tranfsform. We will use <code class="docutils literal notranslate"><span class="pre">Tsfresh</span></code>, some of the best maintained and comprehensive python toolbox.</p>
+<p>Most toolboxes require the input to be <code class="docutils literal notranslate"><span class="pre">pandas</span></code>. First, we convert the data into pndas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tsfresh</span>
+<span class="kn">from</span> <span class="nn">tsfresh</span> <span class="kn">import</span> <span class="n">extract_features</span>
+
+<span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;quake&#39;</span><span class="p">:</span><span class="n">z</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span><span class="s1">&#39;noise&#39;</span><span class="p">:</span><span class="n">n</span><span class="p">[:</span><span class="mi">10</span><span class="p">]})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>quake</th>
+      <th>noise</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.846266e-07</td>
+      <td>2.521154e-16</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>6.547340e-07</td>
+      <td>3.453891e-15</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.164720e-06</td>
+      <td>1.572369e-14</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2.527529e-06</td>
+      <td>5.897371e-14</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extracted_features</span> <span class="o">=</span> <span class="n">extract_features</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column_id</span><span class="o">=</span><span class="s2">&quot;quake&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature Extraction:   0%|          | 0/10 [00:00&lt;?, ?it/s]/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3432: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3432: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3432: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3432: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/feature_calculators.py:1515: RuntimeWarning: invalid value encountered in divide
+  similarity_ratio = A / B
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/feature_calculators.py:1515: RuntimeWarning: invalid value encountered in divide
+  similarity_ratio = A / B
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3432: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/feature_calculators.py:1515: RuntimeWarning: invalid value encountered in divide
+  similarity_ratio = A / B
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/feature_calculators.py:1515: RuntimeWarning: invalid value encountered in divide
+  similarity_ratio = A / B
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/feature_calculators.py:1515: RuntimeWarning: invalid value encountered in divide
+  similarity_ratio = A / B
+Feature Extraction:   0%|          | 0/10 [00:00&lt;?, ?it/s]/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3432: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3432: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3432: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3432: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/feature_calculators.py:1515: RuntimeWarning: invalid value encountered in divide
+  similarity_ratio = A / B
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/feature_calculators.py:1515: RuntimeWarning: invalid value encountered in divide
+  similarity_ratio = A / B
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/feature_calculators.py:1515: RuntimeWarning: invalid value encountered in divide
+  similarity_ratio = A / B
+
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/feature_calculators.py:1515: RuntimeWarning: invalid value encountered in divide
+  similarity_ratio = A / B
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3432: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/feature_calculators.py:1515: RuntimeWarning: invalid value encountered in divide
+  similarity_ratio = A / B
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">RemoteTraceback</span><span class="g g-Whitespace">                           </span>Traceback (most recent call last)
+<span class="ne">Remote</span>Traceback: 
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Traceback (most recent call last):</span>
+<span class="sd">  File &quot;/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/multiprocessing/pool.py&quot;, line 125, in worker</span>
+<span class="sd">    result = (True, func(*args, **kwds))</span>
+<span class="sd">  File &quot;/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/utilities/distribution.py&quot;, line 38, in _function_with_partly_reduce</span>
+<span class="sd">    results = list(itertools.chain.from_iterable(results))</span>
+<span class="sd">  File &quot;/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/utilities/distribution.py&quot;, line 37, in &lt;genexpr&gt;</span>
+<span class="sd">    results = (map_function(chunk, **kwargs) for chunk in chunk_list)</span>
+<span class="sd">  File &quot;/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/extraction.py&quot;, line 358, in _do_extraction_on_chunk</span>
+<span class="sd">    return list(_f())</span>
+<span class="sd">  File &quot;/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/extraction.py&quot;, line 345, in _f</span>
+<span class="sd">    result = func(data, param=parameter_list)</span>
+<span class="sd">  File &quot;/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/feature_calculators.py&quot;, line 1282, in ar_coefficient</span>
+<span class="sd">    calculated_AR = AR(x_as_list)</span>
+<span class="sd">  File &quot;/Users/marinedenolle/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/statsmodels/tsa/ar_model.py&quot;, line 822, in __init__</span>
+<span class="sd">    raise NotImplementedError(</span>
+<span class="ne">NotImplementedError</span>: AR has been removed from statsmodels and replaced with statsmodels.tsa.ar_model.AutoReg.
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="ne">NotImplementedError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">79</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">extracted_features</span> <span class="o">=</span> <span class="n">extract_features</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column_id</span><span class="o">=</span><span class="s2">&quot;quake&quot;</span><span class="p">)</span>
+
+<span class="nn">File ~/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/extraction.py:153,</span> in <span class="ni">extract_features</span><span class="nt">(timeseries_container, default_fc_parameters, kind_to_fc_parameters, column_id, column_sort, column_kind, column_value, chunksize, n_jobs, show_warnings, disable_progressbar, impute_function, profile, profiling_filename, profiling_sorting, distributor)</span>
+<span class="g g-Whitespace">    </span><span class="mi">150</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">151</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">153</span> <span class="n">result</span> <span class="o">=</span> <span class="n">_do_extraction</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df_melt</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">154</span>                         <span class="n">column_id</span><span class="o">=</span><span class="n">column_id</span><span class="p">,</span> <span class="n">column_value</span><span class="o">=</span><span class="n">column_value</span><span class="p">,</span> <span class="n">column_kind</span><span class="o">=</span><span class="n">column_kind</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">155</span>                         <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunksize</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">156</span>                         <span class="n">disable_progressbar</span><span class="o">=</span><span class="n">disable_progressbar</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">157</span>                         <span class="n">default_fc_parameters</span><span class="o">=</span><span class="n">default_fc_parameters</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">158</span>                         <span class="n">kind_to_fc_parameters</span><span class="o">=</span><span class="n">kind_to_fc_parameters</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">159</span>                         <span class="n">distributor</span><span class="o">=</span><span class="n">distributor</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">161</span> <span class="c1"># Impute the result if requested</span>
+<span class="g g-Whitespace">    </span><span class="mi">162</span> <span class="k">if</span> <span class="n">impute_function</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">File ~/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/feature_extraction/extraction.py:295,</span> in <span class="ni">_do_extraction</span><span class="nt">(df, column_id, column_value, column_kind, default_fc_parameters, kind_to_fc_parameters, n_jobs, chunk_size, disable_progressbar, distributor)</span>
+<span class="g g-Whitespace">    </span><span class="mi">292</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;the passed distributor is not an DistributorBaseClass object&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">294</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">default_fc_parameters</span><span class="o">=</span><span class="n">default_fc_parameters</span><span class="p">,</span> <span class="n">kind_to_fc_parameters</span><span class="o">=</span><span class="n">kind_to_fc_parameters</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">295</span> <span class="n">result</span> <span class="o">=</span> <span class="n">distributor</span><span class="o">.</span><span class="n">map_reduce</span><span class="p">(</span><span class="n">_do_extraction_on_chunk</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_in_chunks</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">296</span>                                 <span class="n">function_kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">297</span> <span class="n">distributor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="nn">    299 # Return a dataframe</span> in <span class="ni">the typical form </span><span class="nt">(id as index and feature names as columns)</span>
+
+<span class="nn">File ~/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tsfresh/utilities/distribution.py:149,</span> in <span class="ni">DistributorBaseClass.map_reduce</span><span class="nt">(self, map_function, data, function_kwargs, chunk_size, data_length)</span>
+<span class="g g-Whitespace">    </span><span class="mi">146</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">147</span>     <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distribute</span><span class="p">(</span><span class="n">_function_with_partly_reduce</span><span class="p">,</span> <span class="n">chunk_generator</span><span class="p">,</span> <span class="n">map_kwargs</span><span class="p">),</span>
+<span class="ne">--&gt; </span><span class="mi">149</span> <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">151</span> <span class="k">return</span> <span class="n">result</span>
+
+<span class="nn">File ~/.conda/envs/mlgeo_sk/lib/python3.9/site-packages/tqdm/std.py:1195,</span> in <span class="ni">tqdm.__iter__</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1192</span> <span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time</span>
+<span class="g g-Whitespace">   </span><span class="mi">1194</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1195</span>     <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1196</span>         <span class="k">yield</span> <span class="n">obj</span>
+<span class="g g-Whitespace">   </span><span class="mi">1197</span>         <span class="c1"># Update and possibly print the progressbar.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1198</span>         <span class="c1"># Note: does not call self.update(1) for speed optimisation.</span>
+
+<span class="nn">File ~/.conda/envs/mlgeo_sk/lib/python3.9/multiprocessing/pool.py:870,</span> in <span class="ni">IMapIterator.next</span><span class="nt">(self, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">868</span> <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">869</span>     <span class="k">return</span> <span class="n">value</span>
+<span class="ne">--&gt; </span><span class="mi">870</span> <span class="k">raise</span> <span class="n">value</span>
+
+<span class="ne">NotImplementedError</span>: AR has been removed from statsmodels and replaced with statsmodels.tsa.ar_model.AutoReg.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extracted_features</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="create-synthetic-noise">
+<h1>create synthetic noise<a class="headerlink" href="#create-synthetic-noise" title="Permalink to this headline">#</a></h1>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Chapter2-DataManipulation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="2.6_resampling.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">2.5 Resampling Methods</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="2.9_pca.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Principal Component Analysis</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By eScience Institute, University of Washington<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
