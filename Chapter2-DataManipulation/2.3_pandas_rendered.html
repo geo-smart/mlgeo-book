@@ -1,0 +1,3984 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>2.3 Pandas, Basic Mapping &#8212; ML Geo Curriculum</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2.4 Xarrays" href="2.4_xarrays.html" />
+    <link rel="prev" title="2.2 Numpy Arrays" href="2.2_Numpy_arrays.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/GeoSMART_logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ML Geo Curriculum</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../about_this_book/about_this_book.html">
+                    Machine Learning in the Geosciences
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://geo-smart.github.io/index.html">
+   Geosmart website
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/acknowledgements.html">
+   Acknowlegments
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 1 - Open Source Ecosystem with Python
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/readme.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.1_python_environment.html">
+   1.1 Python Ecosystem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.2_jupyter_environment.html">
+   1.2 Jupyter Environment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.3_version_control_git.html">
+   1.3 Version Control &amp; GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.4_computational_environments.html">
+   1.4 Computing Environments
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 2 - Data Manipulation
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.1_Data_Definitions.html">
+   2.1 Data Definitions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.2_Numpy_arrays.html">
+   2.2 Numpy Arrays
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   2.3 Pandas, Basic Mapping
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.4_xarrays.html">
+   2.4 Xarrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.5_data_formats.html">
+   2.5 Data Formats
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.6_resampling.html">
+   2.6 Resampling Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.8_feature_engineering.html">
+   2.6: Feature engineering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.9_pca.html">
+   2.7 Principal Component Analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.10_dimension_reduction.html">
+   2.9 Dimensionality Reduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 3 - Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/logistic_regression.html">
+   Logistic regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/kmeans.html">
+   K-means clustering - Tutorial
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 4 - Deep Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/MultiLayerPerceptron.html">
+   Multi Layer Perceptrons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/week9_cnn.html">
+   Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/cnn_LeNet.html">
+   Convolutional neural networks with PyTorch
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/autoen.html">
+   Auto-encoders
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/ModelTraining.html">
+   Training Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/week9_training.html">
+   Deep Neural Networks and their training
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/neural_networks_PyTorch.html">
+   Using PyTorch to build, train, and use neural networks: A short introduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 5 - Model Evaluation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter5-ModelEvaluation/week7_classification_model_fit.html">
+   Classification
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 6 - Workflow Management and Reproducibility
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter6-ModelWorkflows/readme.html">
+   This chapter focuces on model workflow and ML reproducibility
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 7- Introduction to Cloud Computing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/cloudmaven">
+   Browser Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/Denolle-Lab/azure">
+   Terraform Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://tljh.jupyter.org/en/latest/">
+   Cloud Provider ML Jupyterhubs
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/glossary.html">
+   Glossaries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/geo-smart/curriculum-book/main?urlpath=lab/tree/book/Chapter2-DataManipulation/2.3_pandas_rendered.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book/issues/new?title=Issue%20on%20page%20%2FChapter2-DataManipulation/2.3_pandas_rendered.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book/edit/main/book/Chapter2-DataManipulation/2.3_pandas_rendered.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Chapter2-DataManipulation/2.3_pandas_rendered.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   2.3 Pandas, Basic Mapping
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-basics-of-pandas">
+   The Basics of Pandas
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reading-a-dataframe-from-a-csv-file">
+   Reading a DataFrame from a CSV file
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#simple-python-functions">
+     Simple Python Functions
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mapping-using-plotly">
+     Mapping using Plotly
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-pandas-from-a-text-file">
+     Create a Pandas from a text file.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pandas-data-selection">
+     Pandas: data selection
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#csv-vs-parquet">
+     CSV vs Parquet
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>2.3 Pandas, Basic Mapping</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   2.3 Pandas, Basic Mapping
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-basics-of-pandas">
+   The Basics of Pandas
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reading-a-dataframe-from-a-csv-file">
+   Reading a DataFrame from a CSV file
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#simple-python-functions">
+     Simple Python Functions
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mapping-using-plotly">
+     Mapping using Plotly
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-pandas-from-a-text-file">
+     Create a Pandas from a text file.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pandas-data-selection">
+     Pandas: data selection
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#csv-vs-parquet">
+     CSV vs Parquet
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="pandas-basic-mapping">
+<h1>2.3 Pandas, Basic Mapping<a class="headerlink" href="#pandas-basic-mapping" title="Permalink to this headline">#</a></h1>
+<p>This section aims to provide new skills in python to handle structured “table” data.</p>
+<p>Learning outcome:</p>
+<ul class="simple">
+<li><p>Manipulation of data frames (describing, filtering, …)</p></li>
+<li><p>Learn about Lambda functions</p></li>
+<li><p>Intro to datetime objects</p></li>
+<li><p>Plotting data from data frames (histograms and maps)</p></li>
+<li><p>Introduction to Plotly</p></li>
+<li><p>Introduction to CSV &amp; Parquet</p></li>
+</ul>
+<p>We will work on several structured data sets: sensor metadata, seismic data product (earthquake catalog).</p>
+<p>First, we import all the modules we need:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+<span class="c1"># pio.renderers.default = &#39;vscode&#39; # writes as standalone html, </span>
+<span class="c1"># pio.renderers.default = &#39;iframe&#39; # writes files as standalone html, </span>
+<span class="c1"># pio.renderers.default = &#39;png&#39; # writes files as standalone pnl, </span>
+<span class="c1"># try notebook, jupyterlab, png, vscode, iframe</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="the-basics-of-pandas">
+<h1>The Basics of Pandas<a class="headerlink" href="#the-basics-of-pandas" title="Permalink to this headline">#</a></h1>
+<p>Pandas are composed of <code class="docutils literal notranslate"><span class="pre">Series</span></code> and <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>. <code class="docutils literal notranslate"><span class="pre">Series</span></code> are columns with attributes or keys. The <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> is a multi-dimensional table made up of <code class="docutils literal notranslate"><span class="pre">Series</span></code>.</p>
+<p>We can create a DataFrame composed of series from scratch using Python dictionary:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;temperature&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">36</span><span class="p">,</span><span class="mi">37</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span>
+    <span class="s1">&#39;precipitation&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">my_pd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_pd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   temperature  precipitation
+0           36              3
+1           37              1
+2           30              0
+3           50              0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each (key,value) item in the dataframe correspond to a value in <code class="docutils literal notranslate"><span class="pre">data</span></code>. To get the keys of the dataframe, type:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_pd</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;temperature&#39;, &#39;precipitation&#39;], dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>get a specific <code class="docutils literal notranslate"><span class="pre">Series</span></code> (different from the array)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">my_pd</span><span class="o">.</span><span class="n">temperature</span><span class="p">[:])</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">my_pd</span><span class="o">.</span><span class="n">temperature</span><span class="p">[:]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    36
+1    37
+2    30
+3    50
+Name: temperature, dtype: int64
+&lt;class &#39;pandas.core.series.Series&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>to get the <em>value</em> of a specific key (e.g., temperature), at a specific index (e.g., 2) type:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">my_pd</span><span class="o">.</span><span class="n">temperature</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">my_pd</span><span class="o">.</span><span class="n">temperature</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>30
+&lt;class &#39;numpy.int64&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="reading-a-dataframe-from-a-csv-file">
+<h1>Reading a DataFrame from a CSV file<a class="headerlink" href="#reading-a-dataframe-from-a-csv-file" title="Permalink to this headline">#</a></h1>
+<p>We can read a pandas directly from a standard file. Here you will read a catatalog of earthquakes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quake</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;Global_Quakes_IRIS.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now you use the <code class="docutils literal notranslate"><span class="pre">head</span></code> function to display what is in the file</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># enter answer here</span>
+<span class="n">quake</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>depth</th>
+      <th>magnitude</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2010-07-02 06:04:03.570</td>
+      <td>-13.6098</td>
+      <td>166.6541</td>
+      <td>34400.0</td>
+      <td>6.3</td>
+      <td>VANUATU ISLANDS</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2010-07-04 21:55:52.370</td>
+      <td>39.6611</td>
+      <td>142.5792</td>
+      <td>30100.0</td>
+      <td>6.3</td>
+      <td>NEAR EAST COAST OF HONSHU</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2010-07-10 11:43:33.000</td>
+      <td>11.1664</td>
+      <td>146.0823</td>
+      <td>16900.0</td>
+      <td>6.3</td>
+      <td>SOUTH OF MARIANA ISLANDS</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2010-07-12 00:11:20.060</td>
+      <td>-22.2789</td>
+      <td>-68.3159</td>
+      <td>109400.0</td>
+      <td>6.2</td>
+      <td>NORTHERN CHILE</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2010-07-14 08:32:21.850</td>
+      <td>-38.0635</td>
+      <td>-73.4649</td>
+      <td>25700.0</td>
+      <td>6.6</td>
+      <td>NEAR COAST OF CENTRAL CHILE</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Display the depth using two ways to use the pandas object</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">quake</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        34400.0
+1        30100.0
+2        16900.0
+3       109400.0
+4        25700.0
+          ...   
+1780     10000.0
+1781    105000.0
+1782    608510.0
+1783     10000.0
+1784     35440.0
+Name: depth, Length: 1785, dtype: float64
+0        34400.0
+1        30100.0
+2        16900.0
+3       109400.0
+4        25700.0
+          ...   
+1780     10000.0
+1781    105000.0
+1782    608510.0
+1783     10000.0
+1784     35440.0
+Name: depth, Length: 1785, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calculate basic statitics of the data using the function <code class="docutils literal notranslate"><span class="pre">describe</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quake</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>depth</th>
+      <th>magnitude</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>1785.000000</td>
+      <td>1785.000000</td>
+      <td>1785.000000</td>
+      <td>1785.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.840700</td>
+      <td>40.608674</td>
+      <td>82773.187675</td>
+      <td>6.382403</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>30.579308</td>
+      <td>125.558363</td>
+      <td>146988.302031</td>
+      <td>0.429012</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-69.782500</td>
+      <td>-179.957200</td>
+      <td>0.000000</td>
+      <td>6.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-19.905100</td>
+      <td>-73.832200</td>
+      <td>12000.000000</td>
+      <td>6.100000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>-4.478900</td>
+      <td>113.077800</td>
+      <td>24400.000000</td>
+      <td>6.300000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>27.161700</td>
+      <td>145.305700</td>
+      <td>58000.000000</td>
+      <td>6.600000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>74.391800</td>
+      <td>179.998100</td>
+      <td>685500.000000</td>
+      <td>9.100000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Calculate mean and median of specific <code class="docutils literal notranslate"><span class="pre">Series</span></code>, for example depth.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># answer it here</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">median</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>82773.18767507003
+24400.0
+</pre></div>
+</div>
+</div>
+</div>
+<section id="simple-python-functions">
+<h2>Simple Python Functions<a class="headerlink" href="#simple-python-functions" title="Permalink to this headline">#</a></h2>
+<p>We will now practice how to modify the content of the DataFrame using functions. We will take the example that we want to change the depth values from meters to kilometers. First we can define this operation as a function</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this function converts a value in meters to a value in kilometers</span>
+<span class="n">m2km</span> <span class="o">=</span> <span class="mi">1000</span> <span class="c1"># this is defined as a global variable</span>
+<span class="k">def</span> <span class="nf">meters2kilometers</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="n">m2km</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># now test it using the first element of the quake DataFrame</span>
+<span class="n">meters2kilometers</span><span class="p">(</span><span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>34.4
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s define another function that uses a local instead of global variable</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">meters2kilometers2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">m2km2</span><span class="o">=</span><span class="mi">1000</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="n">m2km2</span>
+<span class="c1"># m2km2 is a local variable and cannot be called outside of the function. Prove it next by inquiring its value in the next cell.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">m2km2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="nb">print</span><span class="p">(</span><span class="n">m2km2</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;m2km2&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now discuss the <strong>lambda</strong> functions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># now we apply it on the entire Series</span>
+<span class="n">meters2kilometers</span><span class="p">(</span><span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        34.40
+1        30.10
+2        16.90
+3       109.40
+4        25.70
+         ...  
+1780     10.00
+1781    105.00
+1782    608.51
+1783     10.00
+1784     35.44
+Name: depth, Length: 1785, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also define this very basic function as a <strong>lambda</strong> function. There are several ways of doing an operation on all rows of a column. The first option is to use the map function.</p>
+<p>If you are not familiar with lambda function in Python, look at:</p>
+<p><a class="reference external" href="https://realpython.com/python-lambda/">https://realpython.com/python-lambda/</a></p>
+<p>We will practice a bit lambda functions</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now the equivalent in lambda is:</span>
+<span class="n">lambda_meters2kilometers</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">/</span><span class="mi">1000</span>
+<span class="c1"># x is the variable</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># apply it to the entire series</span>
+<span class="n">lambda_meters2kilometers</span><span class="p">(</span><span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        34.40
+1        30.10
+2        16.90
+3       109.40
+4        25.70
+         ...  
+1780     10.00
+1781    105.00
+1782    608.51
+1783     10.00
+1784     35.44
+Name: depth, Length: 1785, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># you can add several variables into lambda functions</span>
+<span class="n">remove_anything</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span><span class="n">x</span><span class="o">-</span><span class="n">y</span>
+<span class="n">remove_anything</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+</div>
+</div>
+<p>This did not affect the values of the DataFrame, check it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quake</span><span class="o">.</span><span class="n">depth</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        34400.0
+1        30100.0
+2        16900.0
+3       109400.0
+4        25700.0
+          ...   
+1780     10000.0
+1781    105000.0
+1782    608510.0
+1783     10000.0
+1784     35440.0
+Name: depth, Length: 1785, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Instead, you could overwrite <code class="docutils literal notranslate"><span class="pre">quake.depth=X</span></code>. Try two approaches but just do it once!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#type answer below</span>
+<span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="o">=</span><span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># or like this</span>
+<span class="c1"># quake.depth=quake.depth.apply(lambda x:x/1000)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot a histogram of the depth distributions using matplotlib function <code class="docutils literal notranslate"><span class="pre">hist</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># answer here</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Quake depth (km)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use the interactive plotting package Plotly. First we will show a histogram of the event depth using the function <code class="docutils literal notranslate"><span class="pre">histogram</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">quake</span><span class="p">,</span>   <span class="c1">#specify what dataframe to use</span>
+             <span class="n">x</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span>  <span class="c1">#specify the variable for the histogram </span>
+             <span class="n">nbins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>       <span class="c1">#number of bins for the histogram </span>
+             <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>     <span class="c1">#dimensions of the figure</span>
+             <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">);</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>We will now make a new plot of the location of the earthquakes. We will use Plotly tool.</p>
+<p>The markersize will be scaled with the earthquake magnitude. To do so, we add a <code class="docutils literal notranslate"><span class="pre">marker_size</span></code> series in the DataFrame</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quake</span><span class="p">[</span><span class="s1">&#39;marker_size&#39;</span><span class="p">]</span> <span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">quake</span><span class="p">[</span><span class="s1">&#39;magnitude&#39;</span><span class="p">]))</span> <span class="c1"># add marker size as exp(mag)</span>
+<span class="n">quake</span><span class="p">[</span><span class="s1">&#39;magnitude bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">quake</span><span class="p">[</span><span class="s1">&#39;magnitude&#39;</span><span class="p">])</span> <span class="c1"># add marker size as exp(mag)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mapping-using-plotly">
+<h2>Mapping using Plotly<a class="headerlink" href="#mapping-using-plotly" title="Permalink to this headline">#</a></h2>
+<p>Now we will plot the earthquakes locations on a map using the Plotly package. More tutorials on <a class="reference external" href="https://plotly.com/">Plotly</a>. Input of the function in the function is self-explanatory and typical of Python’s function. The code <a class="reference external" href="https://plotly.com/python/scatter-plots-on-maps/">documentation</a> of Plotly scatter_geo lists the variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter_geo</span><span class="p">(</span><span class="n">quake</span><span class="p">,</span>
+                     <span class="n">lat</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> 
+                     <span class="n">range_color</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span>
+                     <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+                     <span class="n">size</span><span class="o">=</span><span class="s1">&#39;marker_size&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;magnitude&#39;</span><span class="p">,</span>
+                     <span class="n">hover_name</span><span class="o">=</span><span class="s2">&quot;description&quot;</span><span class="p">,</span>
+                     <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">,</span><span class="s1">&#39;magnitude&#39;</span><span class="p">,</span><span class="s1">&#39;depth&#39;</span><span class="p">]);</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_geos</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span> <span class="n">showcountries</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_geos</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span> <span class="n">showcountries</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">projection_type</span><span class="o">=</span><span class="s2">&quot;orthographic&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The data was sorted by time. We now want to sort and show the data instead by magnitude. We use the pandas function <code class="docutils literal notranslate"><span class="pre">sort</span></code> to create a new DataFrame with sorted values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quakes2plot</span><span class="o">=</span><span class="n">quake</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;magnitude bin&#39;</span><span class="p">)</span>
+
+<span class="n">quakes2plot</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>depth</th>
+      <th>magnitude</th>
+      <th>description</th>
+      <th>marker_size</th>
+      <th>magnitude bin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2010-07-02 06:04:03.570</td>
+      <td>-13.6098</td>
+      <td>166.6541</td>
+      <td>34.40</td>
+      <td>6.3</td>
+      <td>VANUATU ISLANDS</td>
+      <td>544.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>1112</th>
+      <td>2017-08-31 17:06:55.750</td>
+      <td>-1.1590</td>
+      <td>99.6881</td>
+      <td>43.14</td>
+      <td>6.3</td>
+      <td>SOUTHERN SUMATRA</td>
+      <td>544.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>1111</th>
+      <td>2017-08-27 04:17:51.010</td>
+      <td>-1.4513</td>
+      <td>148.0803</td>
+      <td>8.00</td>
+      <td>6.3</td>
+      <td>ADMIRALTY ISLANDS REGION</td>
+      <td>544.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>1110</th>
+      <td>2017-08-19 02:00:52.550</td>
+      <td>-17.9609</td>
+      <td>-178.8406</td>
+      <td>544.00</td>
+      <td>6.4</td>
+      <td>FIJI ISLANDS REGION</td>
+      <td>601.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>1108</th>
+      <td>2017-08-13 03:08:10.560</td>
+      <td>-3.7682</td>
+      <td>101.6228</td>
+      <td>31.00</td>
+      <td>6.4</td>
+      <td>SOUTHERN SUMATRA</td>
+      <td>601.0</td>
+      <td>6.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Now we will plot again using Plotly</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter_geo</span><span class="p">(</span><span class="n">quakes2plot</span><span class="p">,</span>
+                     <span class="n">lat</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> 
+                     <span class="n">range_color</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span>
+                     <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+                     <span class="n">size</span><span class="o">=</span><span class="s1">&#39;marker_size&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;magnitude&#39;</span><span class="p">,</span>
+                     <span class="n">hover_name</span><span class="o">=</span><span class="s2">&quot;description&quot;</span><span class="p">,</span>
+                     <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">,</span><span class="s1">&#39;magnitude&#39;</span><span class="p">,</span><span class="s1">&#39;depth&#39;</span><span class="p">]);</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_geos</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span> <span class="n">showcountries</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># fig.update_geos(resolution=110, showcountries=True,projection_type=&quot;orthographic&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</section>
+<section id="create-a-pandas-from-a-text-file">
+<h2>Create a Pandas from a text file.<a class="headerlink" href="#create-a-pandas-from-a-text-file" title="Permalink to this headline">#</a></h2>
+<p>The python package pandas is very useful to read csv files, but also many text files that are more or less formated as one observation per row and one column for each feature.</p>
+<p>As an example, we are going to look at the list of seismic stations from the Northern California seismic network, available <a class="reference external" href="http://ncedc.org/ftp/pub/doc/NC.info/NC.channel.summary.day">here</a>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://ncedc.org/ftp/pub/doc/NC.info/NC.channel.summary.day&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this gets the file linked in the URL page and convert it to a string</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this will convert the string, decode it , and make it a table</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)),</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">)))</span>
+<span class="c1"># because columns/keys were not assigned, assign them now</span>
+<span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">,</span> <span class="s1">&#39;network&#39;</span><span class="p">,</span> <span class="s1">&#39;channel&#39;</span><span class="p">,</span> <span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="s1">&#39;rate&#39;</span><span class="p">,</span> <span class="s1">&#39;start_time&#39;</span><span class="p">,</span> <span class="s1">&#39;end_time&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;elevation&#39;</span><span class="p">,</span> <span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="s1">&#39;dip&#39;</span><span class="p">,</span> <span class="s1">&#39;azimuth&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let us look at the data. They are now stored into a pandas dataframe.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1984/01/01,00:00:00</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>911.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>2006/01/04,19:19:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>911.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>SHZ</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>1994/11/28,00:00:00</td>
+      <td>2006/01/04,19:19:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>911.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AAS</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1984/11/27,18:45:00</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>38.43014</td>
+      <td>-121.10959</td>
+      <td>31.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AAS</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>2021/08/13,16:50:00</td>
+      <td>38.43014</td>
+      <td>-121.10959</td>
+      <td>31.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We can output the first element of the DataFrame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>station                       AAR
+network                        NC
+channel                       EHZ
+location                       --
+rate                        100.0
+start_time    1984/01/01,00:00:00
+end_time      1987/05/01,00:00:00
+latitude                 39.27594
+longitude              -121.02696
+elevation                   911.0
+depth                         0.0
+dip                         -90.0
+azimuth                       0.0
+Name: 0, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        AAR
+1        AAR
+2        AAR
+3        AAS
+4        AAS
+        ... 
+7151     WMP
+7152     WMP
+7153     WMP
+7154     WMP
+7155    WWVB
+Name: station, Length: 7156, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>The DataFrame may have bad values. A typical data cleaning involves removing Nan and Zeros for instance.</p>
+<p>Use Plotly to map the stations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="o">!=</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter_geo</span><span class="p">(</span><span class="n">data</span><span class="p">,</span>
+                     <span class="n">lat</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> 
+                     <span class="n">range_color</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span>
+                     <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+                     <span class="n">hover_name</span><span class="o">=</span><span class="s2">&quot;station&quot;</span><span class="p">,</span>
+                     <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">,</span><span class="s1">&#39;station&#39;</span><span class="p">,</span><span class="s1">&#39;channel&#39;</span><span class="p">,</span><span class="s1">&#39;rate&#39;</span><span class="p">]);</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_geos</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span> <span class="n">showcountries</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter_mapbox</span><span class="p">(</span><span class="n">data</span><span class="p">,</span>
+                     <span class="n">lat</span><span class="o">=</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="s1">&#39;longitude&#39;</span><span class="p">,</span> 
+                     <span class="n">range_color</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span><span class="n">mapbox_style</span><span class="o">=</span><span class="s2">&quot;carto-positron&quot;</span><span class="p">,</span>
+                     <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                     <span class="n">hover_name</span><span class="o">=</span><span class="s2">&quot;station&quot;</span><span class="p">,</span>
+                     <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">,</span><span class="s1">&#39;station&#39;</span><span class="p">,</span><span class="s1">&#39;channel&#39;</span><span class="p">,</span><span class="s1">&#39;rate&#39;</span><span class="p">]);</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Northern California Seismic Network&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</section>
+<section id="pandas-data-selection">
+<h2>Pandas: data selection<a class="headerlink" href="#pandas-data-selection" title="Permalink to this headline">#</a></h2>
+<p>We can filter the data with the value taken by a given column:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="o">==</span><span class="s1">&#39;KCPB&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3407</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3408</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3409</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>2002/10/16,23:59:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3410</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>2002/10/17,00:00:00</td>
+      <td>2006/01/24,18:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3411</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHN</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3480</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNE</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2000/07/12,00:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3481</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNN</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3482</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNN</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2000/07/12,00:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3483</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNZ</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3484</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNZ</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2000/07/12,00:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>78 rows × 13 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select two stations, use the typical &quot;OR&quot; |</span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="o">==</span><span class="s1">&#39;KCPB&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="o">==</span><span class="s1">&#39;KHBB&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3407</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3408</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3409</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>2002/10/16,23:59:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3410</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>2002/10/17,00:00:00</td>
+      <td>2006/01/24,18:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3411</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHN</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3666</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LHZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>2022/08/09,18:00:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3667</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LHZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2022/08/09,18:00:00</td>
+      <td>3000/01/01,00:00:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3668</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNE</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3669</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNN</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3670</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>123 rows × 13 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select two stations, use the typical &quot;AND&quot; &amp;</span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="o">==</span><span class="s1">&#39;KCPB&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">channel</span><span class="o">==</span><span class="s1">&#39;HNZ&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3457</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>HNZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>2002/10/17,00:00:00</td>
+      <td>2006/10/18,00:08:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3458</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>HNZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>2006/10/18,00:08:00</td>
+      <td>2010/11/01,22:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3459</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>HNZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>2010/11/01,22:00:00</td>
+      <td>2011/07/13,00:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3460</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>HNZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>2011/07/13,00:00:00</td>
+      <td>2011/09/07,19:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3461</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>HNZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>2011/09/07,19:00:00</td>
+      <td>2015/10/29,18:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3462</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>HNZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>2015/10/29,18:00:00</td>
+      <td>2016/04/28,16:39:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3463</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>HNZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>2016/04/28,16:39:00</td>
+      <td>3000/01/01,00:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># or like this</span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;KCPB&#39;</span><span class="p">,</span> <span class="s1">&#39;KHBB&#39;</span><span class="p">])]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3407</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3408</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3409</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>2002/10/16,23:59:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3410</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>2002/10/17,00:00:00</td>
+      <td>2006/01/24,18:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3411</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHN</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3666</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LHZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>2022/08/09,18:00:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3667</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LHZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2022/08/09,18:00:00</td>
+      <td>3000/01/01,00:00:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3668</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNE</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3669</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNN</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3670</th>
+      <td>KHBB</td>
+      <td>NC</td>
+      <td>LNZ</td>
+      <td>--</td>
+      <td>1.0</td>
+      <td>2015/10/29,21:18:00</td>
+      <td>2016/04/28,16:56:00</td>
+      <td>40.65990</td>
+      <td>-123.21966</td>
+      <td>1864.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>123 rows × 13 columns</p>
+</div></div></div>
+</div>
+<p>We can filter the data with the value taken by a given column:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="o">==</span><span class="s1">&#39;KCPB&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3407</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3408</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3409</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>2002/01/24,23:50:00</td>
+      <td>2002/10/16,23:59:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3410</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHE</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>2002/10/17,00:00:00</td>
+      <td>2006/01/24,18:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3411</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>BHN</td>
+      <td>--</td>
+      <td>50.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3480</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNE</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2000/07/12,00:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>3481</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNN</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3482</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNN</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2000/07/12,00:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3483</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNZ</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>1999/08/03,00:00:00</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3484</th>
+      <td>KCPB</td>
+      <td>NC</td>
+      <td>MNZ</td>
+      <td>--</td>
+      <td>10.0</td>
+      <td>2000/06/06,16:00:00</td>
+      <td>2000/07/12,00:00:00</td>
+      <td>39.68631</td>
+      <td>-123.58242</td>
+      <td>1261.0</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>78 rows × 13 columns</p>
+</div></div></div>
+</div>
+<p>We can access to a brief summary of the data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count     7136
+unique     905
+top       KCPB
+freq        78
+Name: station, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">elevation</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    7136.000000
+mean      665.036617
+std       670.177475
+min     -1388.000000
+25%       164.000000
+50%       446.000000
+75%       925.000000
+max      3680.000000
+Name: elevation, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can perform standard operations on the whole data set:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\otodo\AppData\Local\Temp\ipykernel_24676\531903386.py:1: FutureWarning:
+
+The default value of numeric_only in DataFrame.mean is deprecated. In a future version, it will default to False. In addition, specifying &#39;numeric_only=None&#39; is deprecated. Select only valid columns or specify the value of numeric_only to silence this warning.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>rate          87.692383
+latitude      38.053684
+longitude   -121.828840
+elevation    665.036617
+depth         15.064938
+dip          -41.758688
+azimuth       17.735987
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the case of a categorical variable, we can get the list of possile values that this variable can take:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;EHZ&#39;, &#39;SHZ&#39;, &#39;HHE&#39;, &#39;HHN&#39;, &#39;HHZ&#39;, &#39;HNE&#39;, &#39;HNN&#39;, &#39;HNZ&#39;, &#39;LHE&#39;,
+       &#39;LHN&#39;, &#39;LHZ&#39;, &#39;ACE&#39;, &#39;GAN&#39;, &#39;GEL&#39;, &#39;GLA&#39;, &#39;GLO&#39;, &#39;GNS&#39;, &#39;GPL&#39;,
+       &#39;LCE&#39;, &#39;LCQ&#39;, &#39;VCO&#39;, &#39;VDT&#39;, &#39;VEC&#39;, &#39;VEI&#39;, &#39;VPB&#39;, &#39;ELE&#39;, &#39;ELN&#39;,
+       &#39;ELZ&#39;, &#39;SLE&#39;, &#39;SLN&#39;, &#39;SLZ&#39;, &#39;LCL&#39;, &#39;LOG&#39;, &#39;OCF&#39;, &#39;VEA&#39;, &#39;VEP&#39;,
+       &#39;VFP&#39;, &#39;VKI&#39;, &#39;GST&#39;, &#39;EHE&#39;, &#39;EHN&#39;, &#39;BNE&#39;, &#39;BNN&#39;, &#39;BN1&#39;, &#39;BN2&#39;,
+       &#39;BN3&#39;, &#39;BV1&#39;, &#39;EP1&#39;, &#39;EP2&#39;, &#39;EP3&#39;, &#39;HDO&#39;, &#39;HN1&#39;, &#39;HN2&#39;, &#39;HN3&#39;,
+       &#39;HV1&#39;, &#39;SP2&#39;, &#39;SP3&#39;, &#39;BNZ&#39;, &#39;LDO&#39;, &#39;HJ2&#39;, &#39;HJ3&#39;, &#39;HJZ&#39;, &#39;SHE&#39;,
+       &#39;SHN&#39;, &#39;BHE&#39;, &#39;BHN&#39;, &#39;BHZ&#39;, &#39;LNE&#39;, &#39;LNN&#39;, &#39;LNZ&#39;, &#39;MHE&#39;, &#39;MHN&#39;,
+       &#39;MHZ&#39;, &#39;MNE&#39;, &#39;MNN&#39;, &#39;MNZ&#39;, &#39;HH2&#39;, &#39;HH3&#39;, &#39;LH2&#39;, &#39;LH3&#39;, &#39;SP1&#39;,
+       &#39;DP1&#39;, &#39;DP2&#39;, &#39;DP3&#39;, &#39;HLE&#39;, &#39;HLN&#39;, &#39;HLZ&#39;, &#39;XNE&#39;, &#39;XNN&#39;, &#39;XNZ&#39;,
+       &#39;EH1&#39;, &#39;VM1&#39;, &#39;VM2&#39;, &#39;VM3&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<p>and get the number of times that each value is taken:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>KCPB    78
+JSGB    73
+KMPB    72
+KHMB    63
+CCH1    60
+        ..
+LAMB     1
+LBA      1
+PBY      1
+MCW      1
+MMW      1
+Name: station, Length: 905, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The second option is to use the apply function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_elevation_mean</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">elevation</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">remean_elevation</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="n">row</span><span class="o">.</span><span class="n">elevation</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">elevation</span> <span class="o">-</span> <span class="n">data_elevation_mean</span>
+    <span class="k">return</span> <span class="n">row</span>
+<span class="n">data</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">remean_elevation</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;columns&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>network</th>
+      <th>channel</th>
+      <th>location</th>
+      <th>rate</th>
+      <th>start_time</th>
+      <th>end_time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+      <th>depth</th>
+      <th>dip</th>
+      <th>azimuth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1984/01/01,00:00:00</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>154.125816</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>2006/01/04,19:19:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>154.125816</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AAR</td>
+      <td>NC</td>
+      <td>SHZ</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>1994/11/28,00:00:00</td>
+      <td>2006/01/04,19:19:00</td>
+      <td>39.27594</td>
+      <td>-121.02696</td>
+      <td>154.125816</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AAS</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1984/11/27,18:45:00</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>38.43014</td>
+      <td>-121.10959</td>
+      <td>-725.874184</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AAS</td>
+      <td>NC</td>
+      <td>EHZ</td>
+      <td>--</td>
+      <td>100.0</td>
+      <td>1987/05/01,00:00:00</td>
+      <td>2021/08/13,16:50:00</td>
+      <td>38.43014</td>
+      <td>-121.10959</td>
+      <td>-725.874184</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>7150</th>
+      <td>WMP</td>
+      <td>NC</td>
+      <td>SHE</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>1995/07/02,12:00:00</td>
+      <td>2002/05/08,22:30:00</td>
+      <td>35.64059</td>
+      <td>-118.78570</td>
+      <td>321.125816</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>90.0</td>
+    </tr>
+    <tr>
+      <th>7151</th>
+      <td>WMP</td>
+      <td>NC</td>
+      <td>SHN</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>1995/07/02,12:00:00</td>
+      <td>2002/05/08,22:30:00</td>
+      <td>35.64059</td>
+      <td>-118.78570</td>
+      <td>321.125816</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7152</th>
+      <td>WMP</td>
+      <td>NC</td>
+      <td>SHZ</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>1995/03/02,19:00:00</td>
+      <td>1995/07/02,12:00:00</td>
+      <td>35.64059</td>
+      <td>-118.78570</td>
+      <td>321.125816</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7153</th>
+      <td>WMP</td>
+      <td>NC</td>
+      <td>SHZ</td>
+      <td>--</td>
+      <td>20.0</td>
+      <td>1995/07/02,12:00:00</td>
+      <td>2002/05/08,22:30:00</td>
+      <td>35.64059</td>
+      <td>-118.78570</td>
+      <td>321.125816</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7154</th>
+      <td>WMP</td>
+      <td>NC</td>
+      <td>SHZ</td>
+      <td>10</td>
+      <td>20.0</td>
+      <td>1995/07/02,12:00:00</td>
+      <td>1999/05/11,23:59:00</td>
+      <td>35.64059</td>
+      <td>-118.78570</td>
+      <td>321.125816</td>
+      <td>0.0</td>
+      <td>-90.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>7136 rows × 13 columns</p>
+</div></div></div>
+</div>
+<p>We can also carry out simple operations on columns, provided they make sense.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">network</span> <span class="o">+</span> <span class="s1">&#39; - &#39;</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">station</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       NC - AAR
+1       NC - AAR
+2       NC - AAR
+3       NC - AAS
+4       NC - AAS
+          ...   
+7150    NC - WMP
+7151    NC - WMP
+7152    NC - WMP
+7153    NC - WMP
+7154    NC - WMP
+Length: 7136, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>A useful feature is to group the rows depending on the value of a categorical variable, and then apply the same operation to all the groups. For instance, I want to know how many times each station appears in the file:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;station&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">station</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>station
+AAR     3
+AAS     3
+ABJ     4
+ABR     3
+ADW     3
+       ..
+VCL     2
+VRC     4
+VSP     2
+VWB     1
+WMP    10
+Name: station, Length: 905, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can have access to the data type of each column:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>station        object
+network        object
+channel        object
+location       object
+rate          float64
+start_time     object
+end_time       object
+latitude      float64
+longitude     float64
+elevation     float64
+depth         float64
+dip           float64
+azimuth       float64
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, pandas does not recognize the start_time and end_time columns as a datetime format, so we cannot use datetime operations on them. We first need to convert these columns into a datetime format:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">start_time</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;start_time&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>str
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Transform column from string into datetime format</span>
+<span class="n">startdate</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;start_time&#39;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y/%m/</span><span class="si">%d</span><span class="s1">,%H:%M:%S&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;start_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">startdate</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;start_time&#39;</span><span class="p">]</span> <span class="p">)</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;start_time&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      1984-01-01 00:00:00
+1      1987-05-01 00:00:00
+2      1994-11-28 00:00:00
+3      1984-11-27 18:45:00
+4      1987-05-01 00:00:00
+               ...        
+7150   1995-07-02 12:00:00
+7151   1995-07-02 12:00:00
+7152   1995-03-02 19:00:00
+7153   1995-07-02 12:00:00
+7154   1995-07-02 12:00:00
+Name: start_time, Length: 7136, dtype: datetime64[ns]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas._libs.tslibs.timestamps.Timestamp
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;end_time&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       1987/05/01,00:00:00
+1       2006/01/04,19:19:00
+2       2006/01/04,19:19:00
+3       1987/05/01,00:00:00
+4       2021/08/13,16:50:00
+               ...         
+7150    2002/05/08,22:30:00
+7151    2002/05/08,22:30:00
+7152    1995/07/02,12:00:00
+7153    2002/05/08,22:30:00
+7154    1999/05/11,23:59:00
+Name: end_time, Length: 7136, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># do the same for end times</span>
+<span class="c1"># Avoid &#39;OutOfBoundsDatetime&#39; error with year 3000</span>
+<span class="n">enddate</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;end_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;3000&#39;</span><span class="p">,</span> <span class="s1">&#39;2025&#39;</span><span class="p">)</span>
+<span class="n">enddate</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">enddate</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y/%m/</span><span class="si">%d</span><span class="s1">,%H:%M:%S&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;end_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">enddate</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now look when each seismic station was installed:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;station&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">start_time</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>station
+AAR   1984-01-01 00:00:00
+AAS   1984-11-27 18:45:00
+ABJ   1984-01-01 00:00:00
+ABR   1984-01-01 00:00:00
+ADW   1984-01-01 00:00:00
+              ...        
+VCL   1984-01-01 00:00:00
+VRC   1993-09-23 22:20:00
+VSP   1993-09-24 22:05:00
+VWB   1985-01-01 00:00:00
+WMP   1995-03-02 19:00:00
+Length: 905, dtype: datetime64[ns]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">agg</span></code> function allows to carry out several operations to each group of rows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;station&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">elevation</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>min</th>
+      <th>max</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AAR</th>
+      <td>911.0</td>
+      <td>911.0</td>
+    </tr>
+    <tr>
+      <th>AAS</th>
+      <td>31.0</td>
+      <td>31.0</td>
+    </tr>
+    <tr>
+      <th>ABJ</th>
+      <td>434.0</td>
+      <td>434.0</td>
+    </tr>
+    <tr>
+      <th>ABR</th>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>ADW</th>
+      <td>228.0</td>
+      <td>228.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>VCL</th>
+      <td>2048.0</td>
+      <td>2048.0</td>
+    </tr>
+    <tr>
+      <th>VRC</th>
+      <td>1666.0</td>
+      <td>1666.0</td>
+    </tr>
+    <tr>
+      <th>VSP</th>
+      <td>1545.0</td>
+      <td>1545.0</td>
+    </tr>
+    <tr>
+      <th>VWB</th>
+      <td>1736.0</td>
+      <td>1736.0</td>
+    </tr>
+    <tr>
+      <th>WMP</th>
+      <td>1078.0</td>
+      <td>1078.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>905 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>Select the stations that were deployed first and recovered last</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;station&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;start_time&#39;</span><span class="p">:</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;end_time&#39;</span><span class="p">:</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AAR</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th>AAS</th>
+      <td>1984-11-27 18:45:00</td>
+      <td>2021-08-13 16:50:00</td>
+    </tr>
+    <tr>
+      <th>ABJ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2019-06-26 19:17:00</td>
+    </tr>
+    <tr>
+      <th>ABR</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1997-08-04 21:02:00</td>
+    </tr>
+    <tr>
+      <th>ADW</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2006-04-20 01:08:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>VCL</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>1985-03-25 21:30:00</td>
+    </tr>
+    <tr>
+      <th>VRC</th>
+      <td>1993-09-23 22:20:00</td>
+      <td>2001-07-12 16:50:00</td>
+    </tr>
+    <tr>
+      <th>VSP</th>
+      <td>1993-09-24 22:05:00</td>
+      <td>2001-07-12 16:50:00</td>
+    </tr>
+    <tr>
+      <th>VWB</th>
+      <td>1985-01-01 00:00:00</td>
+      <td>1985-03-25 19:00:00</td>
+    </tr>
+    <tr>
+      <th>WMP</th>
+      <td>1995-03-02 19:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>905 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>We can also make groups by selecting the values of two categorical variables:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;station&#39;</span><span class="p">,</span> <span class="s1">&#39;channel&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;start_time&#39;</span><span class="p">:</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;end_time&#39;</span><span class="p">:</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th>channel</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">AAR</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th>SHZ</th>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">AAS</th>
+      <th>EHZ</th>
+      <td>1984-11-27 18:45:00</td>
+      <td>2021-08-13 16:50:00</td>
+    </tr>
+    <tr>
+      <th>SHZ</th>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-24 18:00:00</td>
+    </tr>
+    <tr>
+      <th>ABJ</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2019-06-26 19:17:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">WMP</th>
+      <th>EHN</th>
+      <td>1995-07-02 12:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>EHZ</th>
+      <td>1995-03-02 19:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>SHE</th>
+      <td>1995-07-02 12:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>SHN</th>
+      <td>1995-07-02 12:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>SHZ</th>
+      <td>1995-03-02 19:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>4289 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>Previously, we just printed the output, but we can also store it in a new variable:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_grouped</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;station&#39;</span><span class="p">,</span> <span class="s1">&#39;channel&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;start_time&#39;</span><span class="p">:</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;end_time&#39;</span><span class="p">:</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_grouped</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th>channel</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">AAR</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th>SHZ</th>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">AAS</th>
+      <th>EHZ</th>
+      <td>1984-11-27 18:45:00</td>
+      <td>2021-08-13 16:50:00</td>
+    </tr>
+    <tr>
+      <th>SHZ</th>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-24 18:00:00</td>
+    </tr>
+    <tr>
+      <th>ABJ</th>
+      <th>EHZ</th>
+      <td>1984-01-01 00:00:00</td>
+      <td>2019-06-26 19:17:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>When we select only some rows, the index is not automatically reset to start at 0. We can do it manually. Many functions in pandas have also an option to reset the index, and option to transform the dataframe in place, instead of saving the results in another variable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_grouped</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>channel</th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AAR</td>
+      <td>EHZ</td>
+      <td>1984-01-01 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AAR</td>
+      <td>SHZ</td>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AAS</td>
+      <td>EHZ</td>
+      <td>1984-11-27 18:45:00</td>
+      <td>2021-08-13 16:50:00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AAS</td>
+      <td>SHZ</td>
+      <td>1994-11-28 00:00:00</td>
+      <td>2006-01-24 18:00:00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ABJ</td>
+      <td>EHZ</td>
+      <td>1984-01-01 00:00:00</td>
+      <td>2019-06-26 19:17:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>4284</th>
+      <td>WMP</td>
+      <td>EHN</td>
+      <td>1995-07-02 12:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>4285</th>
+      <td>WMP</td>
+      <td>EHZ</td>
+      <td>1995-03-02 19:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>4286</th>
+      <td>WMP</td>
+      <td>SHE</td>
+      <td>1995-07-02 12:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>4287</th>
+      <td>WMP</td>
+      <td>SHN</td>
+      <td>1995-07-02 12:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+    <tr>
+      <th>4288</th>
+      <td>WMP</td>
+      <td>SHZ</td>
+      <td>1995-03-02 19:00:00</td>
+      <td>2002-05-08 22:30:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>4289 rows × 4 columns</p>
+</div></div></div>
+</div>
+<p>It is also possible to sort the dataset by value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_grouped</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;start_time&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th>channel</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>PG1</th>
+      <th>HV1</th>
+      <td>1983-06-27</td>
+      <td>1993-11-10 18:00:00</td>
+    </tr>
+    <tr>
+      <th>AAR</th>
+      <th>EHZ</th>
+      <td>1984-01-01</td>
+      <td>2006-01-04 19:19:00</td>
+    </tr>
+    <tr>
+      <th>LWH</th>
+      <th>EHZ</th>
+      <td>1984-01-01</td>
+      <td>2020-03-17 20:50:00</td>
+    </tr>
+    <tr>
+      <th>LWD</th>
+      <th>EHZ</th>
+      <td>1984-01-01</td>
+      <td>1986-09-25 21:30:00</td>
+    </tr>
+    <tr>
+      <th>LTN</th>
+      <th>EHZ</th>
+      <td>1984-01-01</td>
+      <td>1988-07-26 23:50:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">BTI</th>
+      <th>VCO</th>
+      <td>2022-09-28</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>VDT</th>
+      <td>2022-09-28</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>VEC</th>
+      <td>2022-09-28</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>GEL</th>
+      <td>2022-09-28</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>VPB</th>
+      <td>2022-09-28</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>4289 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>We can apply the sorting to several columns:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_grouped</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;start_time&#39;</span><span class="p">,</span> <span class="s1">&#39;end_time&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>start_time</th>
+      <th>end_time</th>
+    </tr>
+    <tr>
+      <th>station</th>
+      <th>channel</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>PG1</th>
+      <th>HV1</th>
+      <td>1983-06-27</td>
+      <td>1993-11-10 18:00:00</td>
+    </tr>
+    <tr>
+      <th>PGC</th>
+      <th>EHZ</th>
+      <td>1984-01-01</td>
+      <td>1984-04-12 18:00:00</td>
+    </tr>
+    <tr>
+      <th>AFO</th>
+      <th>EHZ</th>
+      <td>1984-01-01</td>
+      <td>1984-04-23 00:00:00</td>
+    </tr>
+    <tr>
+      <th>MCH</th>
+      <th>EHZ</th>
+      <td>1984-01-01</td>
+      <td>1984-08-01 19:31:00</td>
+    </tr>
+    <tr>
+      <th>MCN</th>
+      <th>EHZ</th>
+      <td>1984-01-01</td>
+      <td>1984-09-22 16:45:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">BTI</th>
+      <th>VCO</th>
+      <td>2022-09-28</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>VDT</th>
+      <td>2022-09-28</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>VEC</th>
+      <td>2022-09-28</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>VEI</th>
+      <td>2022-09-28</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+    <tr>
+      <th>VPB</th>
+      <td>2022-09-28</td>
+      <td>2025-01-01 00:00:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>4289 rows × 2 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="csv-vs-parquet">
+<h2>CSV vs Parquet<a class="headerlink" href="#csv-vs-parquet" title="Permalink to this headline">#</a></h2>
+<p>Parquet is a compressed data format that stores and compress the culumns. It is fast for I/O and compact formt.</p>
+<p>Save <code class="docutils literal notranslate"><span class="pre">data</span></code> into a CSV file:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> data.to_csv(&quot;my_metadata.csv&quot;)
+<span class="o">!</span>ls -lh my_metadata.csv
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>91.8 ms ± 11.7 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;ls&#39; is not recognized as an internal or external command,
+operable program or batch file.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Try and save in Parquet, compare time and memory</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> data.to_parquet(&quot;my_metadata.pq&quot;)
+<span class="o">!</span>ls -lh my_metadata.pq
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Chapter2-DataManipulation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="2.2_Numpy_arrays.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">2.2 Numpy Arrays</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="2.4_xarrays.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2.4 Xarrays</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By eScience Institute, University of Washington<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
