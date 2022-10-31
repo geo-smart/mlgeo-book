@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>2.9 Principal Component Analysis &#8212; ML Geo Curriculum</title>
+    <title>Dimensionality Reduction &#8212; ML Geo Curriculum</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -208,7 +208,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   2.9 Principal Component Analysis
+   Dimensionality Reduction
   </a>
  </li>
  <li class="toctree-l1">
@@ -561,17 +561,34 @@ title="Print to PDF"
     </div>
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   2.9 Principal Component Analysis
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#principal-component-analysis">
+   Principal Component Analysis
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#substract-the-mean-of-the-data">
+     1. Substract the mean of the data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#svd-of-the-covariance-matrix">
+     2. SVD of the covariance matrix
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multi-sensors-pca">
+   Multi-sensors PCA
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#independent-component-analysis">
    Independent Component Analysis
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#other-techniques">
    Other Techniques
   </a>
@@ -585,7 +602,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>2.9 Principal Component Analysis</h1>
+                <h1>Dimensionality Reduction</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -595,17 +612,34 @@ title="Print to PDF"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   2.9 Principal Component Analysis
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#principal-component-analysis">
+   Principal Component Analysis
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#substract-the-mean-of-the-data">
+     1. Substract the mean of the data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#svd-of-the-covariance-matrix">
+     2. SVD of the covariance matrix
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multi-sensors-pca">
+   Multi-sensors PCA
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#independent-component-analysis">
    Independent Component Analysis
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#other-techniques">
    Other Techniques
   </a>
@@ -620,15 +654,39 @@ title="Print to PDF"
                 
               <div>
                 
-  <section id="principal-component-analysis">
-<h1>2.9 Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this headline">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="dimensionality-reduction">
+<h1>Dimensionality Reduction<a class="headerlink" href="#dimensionality-reduction" title="Permalink to this headline">#</a></h1>
+<p>Ideally, one would not need to extract or select feature in the input data. However, reducing the dimensionality as a separate pre-processing steps may be advantageous:</p>
+<ol class="simple">
+<li><p>The complexity of the algorithm depends on the number of input dimensions and size of the data.</p></li>
+<li><p>If some features are unecessary, not extracting them saves compute time</p></li>
+<li><p>Simpler models are more robust on small datasets</p></li>
+<li><p>Fewer features lead to a better understanding of the data.</p></li>
+<li><p>Visualization is easier in fewer dimensions.</p></li>
+</ol>
+<p>Feature <em>selection</em> finds the dimensions that explain the data without loss of information and ends with a smaller dimensionality of the input data. A <em>forward selection</em> approach starts with one variable that decreases the error the most and add one by one. A <em>backward selection</em> starts with all variables and removes them one by one.</p>
+<p>Feature <em>extraction</em> finds a new set of dimension as a combination of the original dimensions. They can be supervised or unsupervised depending on the output information. Examples are <strong>Principal Component Analysis</strong>, <strong>Independent Component Analysis</strong> <strong>Linear Discriminant Analysis</strong></p>
+<section id="principal-component-analysis">
+<h2>Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this headline">#</a></h2>
 <p>PCA is an unsupervised learning method that finds the mapping from the input to a lower dimemsional space with minimum loss of information. First, we will download again our GPS time series from Oregon.</p>
+<p>PCA idenditfies the axis that accounts for the largest amount of variance in the data. Let’s  <span class="math notranslate nohighlight">\(\mathbf{Y} = \mathbf{y}_1,\cdots,\mathbf{y}_n \)</span> be the data ,measured <span class="math notranslate nohighlight">\(n\)</span> times over multiple fields of measurements (the length of <span class="math notranslate nohighlight">\(\mathbf{y})\)</span>. Each <strong>column</strong> of <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> is different measurements for single experiments (e.g., single time stamps). Each column of <span class="math notranslate nohighlight">\( \mathbf{Y} \)</span> is the same measurement repeated over several experiments (or time).  The steps to PCA are:</p>
+<ol class="simple">
+<li><p>center and standardize the data by substracting mean of each row of <span class="math notranslate nohighlight">\(\mathbf{Y} \)</span>  (all measurements at a single experiment or time stamp)</p></li>
+<li><p>Calculate the covariance matrix of the de-meaned data <span class="math notranslate nohighlight">\(\mathbf{C}  =  \frac{1}{n-1} \mathbf{Y}^{\ast}\mathbf{Y}\)</span>. By definition, the covariance matrix is positive symmetric, and thus can be diagonalized.</p></li>
+<li><p>Calculate the Singular Value Decomposition (SVD) of the covariance matrix <span class="math notranslate nohighlight">\(\mathbf{C} \)</span>.</p></li>
+</ol>
+<p>PCA uses the <em>(Singular Value Decomposition (SVD)</em> to decompose the data covariance matrix <span class="math notranslate nohighlight">\(\mathbf{C} \)</span>:</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{X} = \mathbf{U} \Sigma \mathbf{V}^T ,\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{V}^T\)</span> contains the eigenvectors, or principal components. The <em>PCs</em> are normalized, centered around zero.</p>
+<p>The <em>1st principal component</em> eigenvector that has the highest eigenvalue in the direction that has the highest variance.</p>
+<p>We will start simple with 10000 data points measured for 2 variables.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import useful modules</span>
 <span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">zipfile</span><span class="o">,</span> <span class="nn">io</span><span class="o">,</span> <span class="nn">gzip</span><span class="o">,</span> <span class="nn">glob</span><span class="o">,</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">ln</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
@@ -637,6 +695,104 @@ title="Print to PDF"
 </div>
 </div>
 </div>
+<p>We will start with fake data, a 2D cloud point of 10,000 measurements over 2 variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create fake data</span>
+<span class="n">xC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>      <span class="c1"># Center of data (mean)</span>
+<span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>   <span class="c1"># Principal axes</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>            <span class="c1"># Rotate cloud by pi/3</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>     <span class="c1"># Rotation matrix</span>
+              <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]])</span>
+<span class="n">nPoints</span> <span class="o">=</span> <span class="mi">10000</span>            <span class="c1"># Create 10,000 points</span>
+
+<span class="c1"># create the cloud of points by multiplying (np.matmul is also called by @)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">R</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nPoints</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">xC</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="n">nPoints</span><span class="p">))</span>
+<span class="c1"># print the shape of teh array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># plot the data</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 10000)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-6.0, 8.0)
+</pre></div>
+</div>
+<img alt="../_images/2.9_pca_4_2.png" src="../_images/2.9_pca_4_2.png" />
+</div>
+</div>
+<section id="substract-the-mean-of-the-data">
+<h3>1. Substract the mean of the data<a class="headerlink" href="#substract-the-mean-of-the-data" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Remove the mean of the data</span>
+<span class="n">Xavg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Compute mean</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">Xavg</span><span class="p">,(</span><span class="n">nPoints</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>       <span class="c1"># Mean-subtracted data</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 10000)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="svd-of-the-covariance-matrix">
+<h3>2. SVD of the covariance matrix<a class="headerlink" href="#svd-of-the-covariance-matrix" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find principal components (SVD): </span>
+<span class="c1"># use the option full_matrices =0 will calculate the covariance of B</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">VT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">B</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nPoints</span><span class="p">),</span><span class="n">full_matrices</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot the results</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>   <span class="c1"># Plot data to overlay PCA</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+
+<span class="n">theta</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.01</span><span class="p">)</span>
+
+<span class="c1"># 1-std confidence interval</span>
+<span class="n">Xstd</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)])</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Xavg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">Xstd</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">Xavg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">Xstd</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Xavg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">Xstd</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">Xavg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">Xstd</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Xavg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">Xstd</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">Xavg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">Xstd</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Plot principal components U[:,0]S[0] and U[:,1]S[1]</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Xavg</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Xavg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">]]),</span>
+         <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Xavg</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Xavg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">]]),</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;cyan&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Xavg</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Xavg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">]]),</span>
+         <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Xavg</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Xavg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">]]),</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;cyan&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.9_pca_10_0.png" src="../_images/2.9_pca_10_0.png" />
+</div>
+</div>
+<p>Now let’s work on the 3D component of the surface motions recorded at a GPS data. The 3D components are the displacements in Earth, North, Vertical/Upward. the 3 fields are measured daily over years.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download data and save into a pandas.</span>
@@ -653,56 +809,113 @@ title="Print to PDF"
     <span class="n">ue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
     <span class="n">un</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
     <span class="n">uv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+<span class="c1"># Extract the three data dimensions</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ue</span><span class="p">)</span><span class="c1"># East component</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">un</span><span class="p">)</span><span class="c1"># North component</span>
+<span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span><span class="c1"># Vertical component</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract the three data dimensions</span>
-<span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ue</span><span class="p">)</span><span class="c1"># East component</span>
-<span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">un</span><span class="p">)</span><span class="c1"># North component</span>
-<span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span><span class="c1"># Vertical component</span>
-
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the data</span>
 <span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
-<span class="c1"># viridis = cm.get_cmap(&#39;viridis&#39;, len(E))</span>
-<span class="c1"># print(viridis)</span>
-<span class="c1"># ax.scatter(E,N,U,cmap=viridis,norm=True);ax.grid(True)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">U</span><span class="p">);</span><span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;East motions (mm)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;North motions (mm)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;Vertical motions (mm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.9_pca_13_0.png" src="../_images/2.9_pca_13_0.png" />
 </div>
-<p>PCA idenditfies the axis that accounts for the largest amount of variance in the data. Let’s  <span class="math notranslate nohighlight">\(\mathbf{Y} = y_1,\cdots,y_n \)</span>  be the data. The steps to PCA are:</p>
-<ul class="simple">
-<li><p>center and standardize the data by substracting mean (<span class="math notranslate nohighlight">\(\mu=\sum_i^n y_i/n\)</span>) and scaling with the variance (<span class="math notranslate nohighlight">\(\sigma^2 = 1/n\sum_1^n ( y_i^2-\mu^2 )\)</span>). The transformed data becomes: <span class="math notranslate nohighlight">\(z_i= y_i/\sigma\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>).</p></li>
-<li><p>Calculate the covariance matrix of the data:</p></li>
-</ul>
-<p>PCA uses the <em>(Singular Value Decomposition (SVD)</em> to decompose the covariance matrix <span class="math notranslate nohighlight">\(\mathbf{C} \)</span>:</p>
-<p><span class="math notranslate nohighlight">\(\mathbf{X} = \mathbf{U} \Sigma \mathbf{V}^T ,\)</span></p>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{V}^T\)</span> contains the eigenvectors, or principal components. The <em>PCs</em> are normalized, centered around zero.</p>
-<p>The <em>1st principal component</em> eigenvector that has the highest eigenvalue in the direction that has the highest variance.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Organize your data in a matrix</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">E</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">U</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s organize our GPS data in a matrix</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">E</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">U</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">nPoints</span><span class="o">=</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">{</span>
+    <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;hide-output&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(6086,)
+(3, 6086)
 </pre></div>
 </div>
 </div>
 </div>
-<p>In <em>PCA</em>, the input data is centered but not scaled for each feature before applying the SVD.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
-<span class="n">pca</span><span class="o">=</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="c1"># retain all 3 components</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Remove the mean of the data</span>
+<span class="n">Xavg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Compute mean</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">Xavg</span><span class="p">,(</span><span class="n">nPoints</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>       <span class="c1"># Mean-subtracted data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find principal components (SVD): </span>
+<span class="c1"># use the option full_matrices =0 will calculate the covariance of B</span>
+<span class="n">U1</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">VT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">B</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nPoints</span><span class="p">),</span><span class="n">full_matrices</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">S</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Eigen values of the 3D motions&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[35.32745808  5.43102533  1.79619328]
+</pre></div>
+</div>
+<img alt="../_images/2.9_pca_16_1.png" src="../_images/2.9_pca_16_1.png" />
+</div>
+</div>
+<p>There are 3 components of motion, but the majority of the motion is explained in 1 direction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">U1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-0.88025917  0.04281483 -0.47255761]
+ [-0.47388028 -0.02872139  0.88012076]
+ [ 0.0241097   0.9986701   0.04557137]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The first eigenvector that explains most of the variance is oriented in the East direction.</p>
+<p>Now let’s calculate the PCA values by removing the means of the rows of the data matrix. To remove a vector of values from matrices, we have to subtract 2 matrices. So we build an array of</p>
+<p>We will use the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> package. The model <code class="docutils literal notranslate"><span class="pre">PCA</span></code> deals with the data transformation (removing mean and standardizing), calculate the covariance, and the SVD.</p>
+<p><strong>WARNING:</strong> Numpy and sklean do not organize the data in the same dimension.</p>
+<ul class="simple">
+<li><p>Using sklearn, organize the data for each field as a column.</p></li>
+<li><p>Using numpy, organize the data for each field as a row.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span> <span class="c1"># this is the SKLEAN model</span>
+<span class="n">pca</span><span class="o">=</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span><span class="c1"># retain all 3 components</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PCA(n_components=3)
 </pre></div>
 </div>
 </div>
@@ -714,6 +927,13 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-0.88025917 -0.47388028  0.0241097 ]
+ [-0.04281483  0.02872139 -0.9986701 ]
+ [ 0.47255761 -0.88012076 -0.04557137]]
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -722,23 +942,24 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1248.23439358   29.50088343    3.22684049]
+</pre></div>
 </div>
+</div>
+</div>
+<p>Now you see that most of the variance is explained by the first PC. What azimuth is the direction of the first PC?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_vector</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span> <span class="ow">or</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
-    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">,</span>
-                    <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                    <span class="n">shrinkA</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shrinkB</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">arrowprops</span><span class="o">=</span><span class="n">arrowprops</span><span class="p">)</span>
-
-<span class="c1"># plot data</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">v</span><span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">mean_</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">draw_vector</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">mean_</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pca</span><span class="o">.</span><span class="n">mean_</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="n">azimuth</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
+<span class="k">if</span> <span class="n">azimuth</span> <span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span><span class="n">azimuth</span><span class="o">+=</span><span class="mi">360</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;direction of the plate &quot;</span><span class="p">,</span><span class="n">azimuth</span><span class="p">,</span><span class="s2">&quot; degrees from North&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>direction of the plate  241.70456397212095  degrees from North
 </pre></div>
 </div>
 </div>
@@ -748,7 +969,7 @@ title="Print to PDF"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The 3 PCs&#39; explained variance ratio: how much of the variance is explained by each component</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of dimensions&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Explained variance &#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Variance explained with each PC&#39;</span><span class="p">)</span>
@@ -759,12 +980,26 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.97445067 0.02303025 0.00251908]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Variance explained with cumulated PCs&#39;)
+</pre></div>
+</div>
+<img alt="../_images/2.9_pca_27_2.png" src="../_images/2.9_pca_27_2.png" />
+</div>
 </div>
 <p>Now we see that 97% of the variance is explained by the first PC. We can reduce the dimension of our system by only working with a single dimension. Another way to choose the number of dimensions is to select the minimum of PCs that would explain 95% of the variance.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span><span class="o">&gt;=</span><span class="mf">0.95</span><span class="p">)</span> <span class="o">+</span><span class="mi">1</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;minimum dimension size to explain 95</span><span class="si">% o</span><span class="s2">f the variance &quot;</span><span class="p">,</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>minimum dimension size to explain 95% of the variance  1
 </pre></div>
 </div>
 </div>
@@ -778,28 +1013,115 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the azimuth of the displacement vector</span>
-<span class="n">X_new</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">X_pca</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_new</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_new</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">);</span>
-
-<span class="c1"># Print out the azimuth and norm </span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="n">azimuth</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
-<span class="k">if</span> <span class="n">azimuth</span> <span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span><span class="n">azimuth</span><span class="o">+=</span><span class="mi">360</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;direction of the plate &quot;</span><span class="p">,</span><span class="n">azimuth</span><span class="p">,</span><span class="s2">&quot; degrees from North&quot;</span><span class="p">)</span>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>original shape:    (3, 6086)
+transformed shape: (3, 1)
 </pre></div>
 </div>
 </div>
 </div>
+<p>Inverse Transform back to the original data, but with only the first PC</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the azimuth of the displacement vector</span>
+<span class="n">X_new</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">X_pca</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X_new</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_new</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">X_new</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Original data&#39;</span><span class="p">,</span><span class="s1">&#39;Reconstructed Data&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(3, 6086)
+</pre></div>
+</div>
+<img alt="../_images/2.9_pca_32_1.png" src="../_images/2.9_pca_32_1.png" />
+</div>
+</div>
 <p><em>SVD</em> can be computationally intensive for larger dimensions. It is recommended to use a <strong>randomized PCA</strong> to approximate the first principal components. Scikit-learn automatically switches to randomized PCA in either the following happens: data size &gt; 500, number of vectors is &gt; 500 and the number of PCs selected is less than 80% of either one.</p>
 </section>
+</section>
+<section id="multi-sensors-pca">
+<h2>Multi-sensors PCA<a class="headerlink" href="#multi-sensors-pca" title="Permalink to this headline">#</a></h2>
+<p>We will now explore the cases of single motion component (vertical), but multiple sensors. We will download California GPS stations</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gps_loc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;gps_locations.csv&#39;</span><span class="p">)</span>
+<span class="n">gps_loc</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>elevation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AB01</td>
+      <td>52.21</td>
+      <td>-174.20</td>
+      <td>25.48</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AB02</td>
+      <td>52.97</td>
+      <td>-168.85</td>
+      <td>192.80</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AB04</td>
+      <td>63.66</td>
+      <td>-170.57</td>
+      <td>136.55</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AB06</td>
+      <td>54.89</td>
+      <td>-163.42</td>
+      <td>500.43</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AB07</td>
+      <td>55.35</td>
+      <td>-160.48</td>
+      <td>89.57</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
 <section id="independent-component-analysis">
-<h1>Independent Component Analysis<a class="headerlink" href="#independent-component-analysis" title="Permalink to this headline">#</a></h1>
+<h2>Independent Component Analysis<a class="headerlink" href="#independent-component-analysis" title="Permalink to this headline">#</a></h2>
 <p>ICA is used to estimate sources given noisy measurements. It is frequently used in Geodesy to isolate contributions from earthquakes and hydrology.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -868,7 +1190,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="other-techniques">
-<h1>Other Techniques<a class="headerlink" href="#other-techniques" title="Permalink to this headline">#</a></h1>
+<h2>Other Techniques<a class="headerlink" href="#other-techniques" title="Permalink to this headline">#</a></h2>
 <ol class="simple">
 <li><p>Random Projections
 <a class="reference external" href="https://scikit-learn.org/stable/modules/random_projection.html">https://scikit-learn.org/stable/modules/random_projection.html</a></p></li>
@@ -877,6 +1199,7 @@ title="Print to PDF"
 <li><p>t-Distributed stochastic neighbor embedding</p></li>
 <li><p>Linear discriminant analysis</p></li>
 </ol>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
