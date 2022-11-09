@@ -6,7 +6,7 @@ This book will cover strategies to design a Machine-Learning project in the geos
 
 * Motivate the need for Machine Learning in your scientific project. 
 
-Perform litterature review of the scientific outstanding questions and solutions proposed in the literature. What would be the steps to solve the problem manually? What are the limitations of the current solutions? Will a new ML algorithm be generalizable enough to be applied to 10+ other research problems? What is the 5-10 year potential of the particular problem given new technology, new research facility, new societal relevance? Are there comparable problems for which the tools can be reused?
+Perform literature review of the scientific outstanding questions and solutions proposed in the literature. What would be the steps to solve the problem manually? What are the limitations of the current solutions? Will a new ML algorithm be generalizable enough to be applied to 10+ other research problems? What is the 5-10 year potential of the particular problem given new technology, new research facility, new societal relevance? Are there comparable problems for which the tools can be reused?
 
 * What is the state of the data?
 
@@ -15,7 +15,7 @@ Is there a lot of data, and labeled data? Is there human expertise available? Wi
 
 ## 2. **Organize the project - Chapter 1**
 
-Start a GitHub, a Readme.md, create an environment with a YML file, human and machine readible files and folder.  Make sure the project name has not been used before.
+Start a GitHub, a Readme.md, create an environment with a YML file, human and machine readable files and folder.  Make sure the project name has not been used before.
 
 ## 3. **Data download - Chapter 1**
 
