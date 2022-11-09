@@ -40,7 +40,7 @@ Throughout the course, the students will build skills in shell, version control 
 - _Version Control_ is introduced early in the course and used at every lecture
 - _Python Programming_ is progressively introduced, specifically the use of packages: numpy, (geo)pandas, sklearn, keras, pytorch.
 - _Visualization in Python_ is introduced early as Matplolib and Plotly, and used in every python lecture.
-- _High performance computing_ skills will be aquired in the second half part of the course and during the development of the final project.
+- _High performance computing_ skills will be acquired in the second half part of the course and during the development of the final project.
 
 # Readings and Webinars
 Each week, students will write a short report about either a paper or a webinar. Use the template on canvas and answer the questions when appropriate. Submissions of the report PDF are due Wednesdays at 11:59 pm PDT on canvas. The instructor will spend 15 minutes Monday morning summarizing the reading and webinar reports. Papers can be found and/or uploaded on a shared private course Google Drive [here](https://drive.google.com/drive/folders/1dyxfslCLzFFTYtX_vbjudlzaXvOxkepe?usp=sharing) (only accessible with a UW email address).
