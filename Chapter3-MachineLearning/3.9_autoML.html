@@ -1,0 +1,1971 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>3.9 AutoML &#8212; ML Geo Curriculum</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.1 Neural Networks" href="../Chapter4-DeepLearning/mlgeo_4.1_neural_networks.html" />
+    <link rel="prev" title="3.10 Ensemble learning" href="3.8_ensemble_learning.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/GeoSMART_logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ML Geo Curriculum</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../about_this_book/about_this_book.html">
+                    Machine Learning in the Geosciences
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://geo-smart.github.io/index.html">
+   Geosmart website
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/acknowledgements.html">
+   Acknowlegments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/0_mlgeo_project.html">
+   Primer
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 1 - Open Source Ecosystem with Python
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/readme.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.1_python_environment.html">
+   1.1 Python Ecosystem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.2_jupyter_environment.html">
+   1.2 Jupyter Environment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.3_version_control_git.html">
+   1.3 Version Control &amp; GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.4_computational_environments.html">
+   1.4 Computing Environments
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 2 - Data Manipulation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.1_Data_Definitions.html">
+   2.1 Data Definitions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.2_Numpy_arrays.html">
+   2.2 Numpy Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.3_pandas_rendered.html">
+   2.3 Pandas, Basic Mapping
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.4_xarrays.html">
+   2.4 Xarrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.5_data_formats_rendered.html">
+   2.5 Data Formats
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.6_resampling.html">
+   2.6 Resampling Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.7_data_spectral_transforms.html">
+   2.7 Spectral Transforms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.8_feature_engineering.html">
+   2.8 Feature engineering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.9_pca.html">
+   2.9 Dimensionality Reduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.10_MLready_data.html">
+   2.10 ML-ready data
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 3 - Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.1_clustering.html">
+   Clustering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2_classification_regression.html">
+   3.1 Classification and Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3_binary_classification.html">
+   <strong>
+    Classification
+   </strong>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4_multiclass_classification.html">
+   3.4 Multiclass Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.5_logistic_regression.html">
+   Logistic regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.6_randomForest_regression.html">
+   3.6 Random Forests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.7_hyperparameter_tuning.html">
+   3.5 Hyperparameter Tuning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.8_ensemble_learning.html">
+   3.10 Ensemble learning
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   3.9 AutoML
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 4 - Deep Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.1_neural_networks.html">
+   4.1 Neural Networks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 5 - Model Evaluation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter5-ModelEvaluation/README.html">
+   Model Evaluation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 6 - Workflow Management and Reproducibility
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter6-ModelWorkflows/readme.html">
+   This chapter focuces on model workflow and ML reproducibility
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 7- Introduction to Cloud Computing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/cloudmaven">
+   Browser Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/Denolle-Lab/azure">
+   Terraform Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://tljh.jupyter.org/en/latest/">
+   Cloud Provider ML Jupyterhubs
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/glossary.html">
+   Glossaries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/geo-smart/curriculum-book/main?urlpath=lab/tree/book/Chapter3-MachineLearning/3.9_autoML.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book/issues/new?title=Issue%20on%20page%20%2FChapter3-MachineLearning/3.9_autoML.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book/edit/main/book/Chapter3-MachineLearning/3.9_autoML.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Chapter3-MachineLearning/3.9_autoML.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   3.9 AutoML
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#first-we-get-data-ready">
+     First we get data ready
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#display-the-data-columns">
+     Display the data columns
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#check-the-data-shape">
+   Check the data shape
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#split-training-and-testing">
+   Split training and testing
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#run-pycaret-no-hassle">
+   Run PyCaret (no hassle)
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compare-models">
+     Compare Models
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-best-model">
+   Get Best Model
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model-interpretation">
+     Model Interpretation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#evaluate-more-metrics">
+   Evaluate More Metrics
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#troubleshooting">
+   TroubleShooting
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>3.9 AutoML</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   3.9 AutoML
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#first-we-get-data-ready">
+     First we get data ready
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#display-the-data-columns">
+     Display the data columns
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#check-the-data-shape">
+   Check the data shape
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#split-training-and-testing">
+   Split training and testing
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#run-pycaret-no-hassle">
+   Run PyCaret (no hassle)
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compare-models">
+     Compare Models
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-best-model">
+   Get Best Model
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model-interpretation">
+     Model Interpretation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#evaluate-more-metrics">
+   Evaluate More Metrics
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#troubleshooting">
+   TroubleShooting
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="automl">
+<h1>3.9 AutoML<a class="headerlink" href="#automl" title="Permalink to this headline">#</a></h1>
+<p>Automated workflow for hyper-parameter tuning and optimal model finder</p>
+<p>In this tutorial, we will try some cool technique that has been used widely to make AI/ML less tedious and boost your ML workflow efficiency.</p>
+<p>If you have learnt <a class="reference internal" href="3.6_randomForest_regression.html"><span class="doc std std-doc">3.6</span></a>, you might be amazed but also annoyed by all those parameter tuning efforts and many back-n-forth iterations needed to figure out which configuration will be optimal for your case. It has been known as the major reason for low productivity in the AI/ML world. People come up with an idea that it seems most work in that tuning and iteration are very simple, can we automate it? The answer is yes, and that will be the technique we will introduce here: AutoML.</p>
+<p>There are many AutoML solutions on the market, e.g., AutoKeras, auto-sklearn, H2O, Auto-WEKA, etc. Here we will focus on <a class="reference external" href="https://pycaret.gitbook.io/docs/get-started/installation">PyCaret</a> which is a popular one in both academia and industry and very easy to use.</p>
+<p>In the following tutorial, we will use the Pycaret Docker Image to run the tutorial. In Terminal, call <code class="docutils literal notranslate"><span class="pre">docker</span></code> to pull the PyCaret image and start a jupyter notebook:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">pycaret</span><span class="o">/</span><span class="n">full</span>
+<span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8888</span><span class="p">:</span><span class="mi">8888</span> <span class="o">-</span><span class="n">e</span> <span class="n">GRANT_SUDO</span><span class="o">=</span><span class="n">yes</span> <span class="n">pycaret</span><span class="o">/</span><span class="n">full</span>
+</pre></div>
+</div>
+<p>You will then be able to edit a notebook with the following cells:</p>
+<section id="first-we-get-data-ready">
+<h2>First we get data ready<a class="headerlink" href="#first-we-get-data-ready" title="Permalink to this headline">#</a></h2>
+<p>As usual, data collection is the first step. To better demonstrate the point of AutoML, we will use the same data as <a class="reference internal" href="3.6_randomForest_regression.html"><span class="doc std std-doc">3.6 Random Forest</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">wget</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting wget
+  Using cached wget-3.2-py3-none-any.whl
+Installing collected packages: wget
+Successfully installed wget-3.2
+Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">wget</span>
+<span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;https://docs.google.com/uc?export=download&amp;id=1pko9oRmCllAxipZoa3aoztGZfPAD2iwj&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;temps.csv&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="display-the-data-columns">
+<h2>Display the data columns<a class="headerlink" href="#display-the-data-columns" title="Permalink to this headline">#</a></h2>
+<p>Show the columns and settle on the target variables and the input variables. In this chapter, we will use</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pandas is used for data manipulation</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Read in data and display first 5 rows</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;temps.csv&#39;</span><span class="p">)</span>
+<span class="n">features</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;year&#39;, &#39;month&#39;, &#39;day&#39;, &#39;week&#39;, &#39;temp_2&#39;, &#39;temp_1&#39;, &#39;average&#39;, &#39;actual&#39;,
+       &#39;forecast_noaa&#39;, &#39;forecast_acc&#39;, &#39;forecast_under&#39;, &#39;friend&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Temp_2 : Maximum temperature on 2 days prior to today.</p></li>
+<li><p>Temp_1: Maximum temperature on yesterday.</p></li>
+<li><p>Average: Historical temperature average</p></li>
+<li><p>Actual: Actual measure temperature on today.</p></li>
+<li><p>Forecast_NOAA: Temperature values forecasted by NOAA</p></li>
+<li><p>Friend: Forecasted by Friend (Randomly selected number within plus-minus 20 of Average temperature)</p></li>
+</ul>
+<p>We will use the <code class="docutils literal notranslate"><span class="pre">actual</span></code> as the label, and all the other variables as features.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="check-the-data-shape">
+<h1>Check the data shape<a class="headerlink" href="#check-the-data-shape" title="Permalink to this headline">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">features</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(348, 12)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># One-hot encode the data using pandas get_dummies</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+<span class="c1"># Display the first 5 rows of the last 12 columns</span>
+<span class="n">features</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">5</span><span class="p">:]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>average</th>
+      <th>actual</th>
+      <th>forecast_noaa</th>
+      <th>forecast_acc</th>
+      <th>forecast_under</th>
+      <th>friend</th>
+      <th>week_Fri</th>
+      <th>week_Mon</th>
+      <th>week_Sat</th>
+      <th>week_Sun</th>
+      <th>week_Thurs</th>
+      <th>week_Tues</th>
+      <th>week_Wed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>45.6</td>
+      <td>45</td>
+      <td>43</td>
+      <td>50</td>
+      <td>44</td>
+      <td>29</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>45.7</td>
+      <td>44</td>
+      <td>41</td>
+      <td>50</td>
+      <td>44</td>
+      <td>61</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>45.8</td>
+      <td>41</td>
+      <td>43</td>
+      <td>46</td>
+      <td>47</td>
+      <td>56</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>45.9</td>
+      <td>40</td>
+      <td>44</td>
+      <td>48</td>
+      <td>46</td>
+      <td>53</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>46.0</td>
+      <td>44</td>
+      <td>46</td>
+      <td>46</td>
+      <td>46</td>
+      <td>41</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="split-training-and-testing">
+<h1>Split training and testing<a class="headerlink" href="#split-training-and-testing" title="Permalink to this headline">#</a></h1>
+<p>As we already did all the quality checks in <a class="reference internal" href="3.6_randomForest_regression.html"><span class="doc std std-doc">3.6</span></a>, we will not repeat them here and directly go to AutoML experiment. First, split the data into training and testing subsets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_df</span> <span class="o">=</span> <span class="n">features</span><span class="p">[:</span><span class="mi">300</span><span class="p">]</span>
+<span class="n">test_df</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="mi">300</span><span class="p">:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Data for Modeling: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">train_df</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unseen Data For Predictions: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">test_df</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data for Modeling: (300, 18)
+Unseen Data For Predictions: (48, 18)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>temp_2</th>
+      <th>temp_1</th>
+      <th>average</th>
+      <th>actual</th>
+      <th>forecast_noaa</th>
+      <th>forecast_acc</th>
+      <th>forecast_under</th>
+      <th>friend</th>
+      <th>week_Fri</th>
+      <th>week_Mon</th>
+      <th>week_Sat</th>
+      <th>week_Sun</th>
+      <th>week_Thurs</th>
+      <th>week_Tues</th>
+      <th>week_Wed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2016</td>
+      <td>1</td>
+      <td>1</td>
+      <td>45</td>
+      <td>45</td>
+      <td>45.6</td>
+      <td>45</td>
+      <td>43</td>
+      <td>50</td>
+      <td>44</td>
+      <td>29</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2016</td>
+      <td>1</td>
+      <td>2</td>
+      <td>44</td>
+      <td>45</td>
+      <td>45.7</td>
+      <td>44</td>
+      <td>41</td>
+      <td>50</td>
+      <td>44</td>
+      <td>61</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2016</td>
+      <td>1</td>
+      <td>3</td>
+      <td>45</td>
+      <td>44</td>
+      <td>45.8</td>
+      <td>41</td>
+      <td>43</td>
+      <td>46</td>
+      <td>47</td>
+      <td>56</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2016</td>
+      <td>1</td>
+      <td>4</td>
+      <td>44</td>
+      <td>41</td>
+      <td>45.9</td>
+      <td>40</td>
+      <td>44</td>
+      <td>48</td>
+      <td>46</td>
+      <td>53</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2016</td>
+      <td>1</td>
+      <td>5</td>
+      <td>41</td>
+      <td>40</td>
+      <td>46.0</td>
+      <td>44</td>
+      <td>46</td>
+      <td>46</td>
+      <td>46</td>
+      <td>41</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>295</th>
+      <td>2016</td>
+      <td>11</td>
+      <td>9</td>
+      <td>63</td>
+      <td>71</td>
+      <td>52.4</td>
+      <td>65</td>
+      <td>48</td>
+      <td>56</td>
+      <td>52</td>
+      <td>42</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>296</th>
+      <td>2016</td>
+      <td>11</td>
+      <td>10</td>
+      <td>71</td>
+      <td>65</td>
+      <td>52.2</td>
+      <td>64</td>
+      <td>52</td>
+      <td>54</td>
+      <td>51</td>
+      <td>38</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>297</th>
+      <td>2016</td>
+      <td>11</td>
+      <td>11</td>
+      <td>65</td>
+      <td>64</td>
+      <td>51.9</td>
+      <td>63</td>
+      <td>50</td>
+      <td>53</td>
+      <td>52</td>
+      <td>55</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>298</th>
+      <td>2016</td>
+      <td>11</td>
+      <td>12</td>
+      <td>64</td>
+      <td>63</td>
+      <td>51.7</td>
+      <td>59</td>
+      <td>50</td>
+      <td>52</td>
+      <td>52</td>
+      <td>63</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>299</th>
+      <td>2016</td>
+      <td>11</td>
+      <td>13</td>
+      <td>63</td>
+      <td>59</td>
+      <td>51.4</td>
+      <td>55</td>
+      <td>48</td>
+      <td>56</td>
+      <td>50</td>
+      <td>64</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>300 rows × 18 columns</p>
+</div></div></div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="run-pycaret-no-hassle">
+<h1>Run PyCaret (no hassle)<a class="headerlink" href="#run-pycaret-no-hassle" title="Permalink to this headline">#</a></h1>
+<p>Directly get to the point. Expect PyCaret to tell you what is going wrong. It should be able to automatically recognize the columns and assign appropriate data types to them.</p>
+<p>First step, PyCaret need you to confirm the data columns are correctly parsed and their data types match their values. If yes, please enter in the popup text field.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycaret.regression</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">exp_reg101</span> <span class="o">=</span> <span class="n">setup</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">train_df</span><span class="p">,</span> 
+                   <span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;actual&#39;</span><span class="p">,</span>
+                   <span class="c1"># imputation_type=&#39;iterative&#39;, </span>
+                   <span class="n">fold_shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                   <span class="n">session_id</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_05365_row42_col1 {
+  background-color: lightgreen;
+}
+</style>
+<table id="T_05365_">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >Description</th>
+      <th class="col_heading level0 col1" >Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_05365_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_05365_row0_col0" class="data row0 col0" >session_id</td>
+      <td id="T_05365_row0_col1" class="data row0 col1" >123</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_05365_row1_col0" class="data row1 col0" >Target</td>
+      <td id="T_05365_row1_col1" class="data row1 col1" >actual</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_05365_row2_col0" class="data row2 col0" >Original Data</td>
+      <td id="T_05365_row2_col1" class="data row2 col1" >(300, 18)</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_05365_row3_col0" class="data row3 col0" >Missing Values</td>
+      <td id="T_05365_row3_col1" class="data row3 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_05365_row4_col0" class="data row4 col0" >Numeric Features</td>
+      <td id="T_05365_row4_col1" class="data row4 col1" >15</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row5" class="row_heading level0 row5" >5</th>
+      <td id="T_05365_row5_col0" class="data row5 col0" >Categorical Features</td>
+      <td id="T_05365_row5_col1" class="data row5 col1" >2</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row6" class="row_heading level0 row6" >6</th>
+      <td id="T_05365_row6_col0" class="data row6 col0" >Ordinal Features</td>
+      <td id="T_05365_row6_col1" class="data row6 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row7" class="row_heading level0 row7" >7</th>
+      <td id="T_05365_row7_col0" class="data row7 col0" >High Cardinality Features</td>
+      <td id="T_05365_row7_col1" class="data row7 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row8" class="row_heading level0 row8" >8</th>
+      <td id="T_05365_row8_col0" class="data row8 col0" >High Cardinality Method</td>
+      <td id="T_05365_row8_col1" class="data row8 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row9" class="row_heading level0 row9" >9</th>
+      <td id="T_05365_row9_col0" class="data row9 col0" >Transformed Train Set</td>
+      <td id="T_05365_row9_col1" class="data row9 col1" >(209, 27)</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row10" class="row_heading level0 row10" >10</th>
+      <td id="T_05365_row10_col0" class="data row10 col0" >Transformed Test Set</td>
+      <td id="T_05365_row10_col1" class="data row10 col1" >(91, 27)</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row11" class="row_heading level0 row11" >11</th>
+      <td id="T_05365_row11_col0" class="data row11 col0" >Shuffle Train-Test</td>
+      <td id="T_05365_row11_col1" class="data row11 col1" >True</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row12" class="row_heading level0 row12" >12</th>
+      <td id="T_05365_row12_col0" class="data row12 col0" >Stratify Train-Test</td>
+      <td id="T_05365_row12_col1" class="data row12 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row13" class="row_heading level0 row13" >13</th>
+      <td id="T_05365_row13_col0" class="data row13 col0" >Fold Generator</td>
+      <td id="T_05365_row13_col1" class="data row13 col1" >KFold</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row14" class="row_heading level0 row14" >14</th>
+      <td id="T_05365_row14_col0" class="data row14 col0" >Fold Number</td>
+      <td id="T_05365_row14_col1" class="data row14 col1" >10</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row15" class="row_heading level0 row15" >15</th>
+      <td id="T_05365_row15_col0" class="data row15 col0" >CPU Jobs</td>
+      <td id="T_05365_row15_col1" class="data row15 col1" >-1</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row16" class="row_heading level0 row16" >16</th>
+      <td id="T_05365_row16_col0" class="data row16 col0" >Use GPU</td>
+      <td id="T_05365_row16_col1" class="data row16 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row17" class="row_heading level0 row17" >17</th>
+      <td id="T_05365_row17_col0" class="data row17 col0" >Log Experiment</td>
+      <td id="T_05365_row17_col1" class="data row17 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row18" class="row_heading level0 row18" >18</th>
+      <td id="T_05365_row18_col0" class="data row18 col0" >Experiment Name</td>
+      <td id="T_05365_row18_col1" class="data row18 col1" >reg-default-name</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row19" class="row_heading level0 row19" >19</th>
+      <td id="T_05365_row19_col0" class="data row19 col0" >USI</td>
+      <td id="T_05365_row19_col1" class="data row19 col1" >b76e</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row20" class="row_heading level0 row20" >20</th>
+      <td id="T_05365_row20_col0" class="data row20 col0" >Imputation Type</td>
+      <td id="T_05365_row20_col1" class="data row20 col1" >simple</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row21" class="row_heading level0 row21" >21</th>
+      <td id="T_05365_row21_col0" class="data row21 col0" >Iterative Imputation Iteration</td>
+      <td id="T_05365_row21_col1" class="data row21 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row22" class="row_heading level0 row22" >22</th>
+      <td id="T_05365_row22_col0" class="data row22 col0" >Numeric Imputer</td>
+      <td id="T_05365_row22_col1" class="data row22 col1" >mean</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row23" class="row_heading level0 row23" >23</th>
+      <td id="T_05365_row23_col0" class="data row23 col0" >Iterative Imputation Numeric Model</td>
+      <td id="T_05365_row23_col1" class="data row23 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row24" class="row_heading level0 row24" >24</th>
+      <td id="T_05365_row24_col0" class="data row24 col0" >Categorical Imputer</td>
+      <td id="T_05365_row24_col1" class="data row24 col1" >constant</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row25" class="row_heading level0 row25" >25</th>
+      <td id="T_05365_row25_col0" class="data row25 col0" >Iterative Imputation Categorical Model</td>
+      <td id="T_05365_row25_col1" class="data row25 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row26" class="row_heading level0 row26" >26</th>
+      <td id="T_05365_row26_col0" class="data row26 col0" >Unknown Categoricals Handling</td>
+      <td id="T_05365_row26_col1" class="data row26 col1" >least_frequent</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row27" class="row_heading level0 row27" >27</th>
+      <td id="T_05365_row27_col0" class="data row27 col0" >Normalize</td>
+      <td id="T_05365_row27_col1" class="data row27 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row28" class="row_heading level0 row28" >28</th>
+      <td id="T_05365_row28_col0" class="data row28 col0" >Normalize Method</td>
+      <td id="T_05365_row28_col1" class="data row28 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row29" class="row_heading level0 row29" >29</th>
+      <td id="T_05365_row29_col0" class="data row29 col0" >Transformation</td>
+      <td id="T_05365_row29_col1" class="data row29 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row30" class="row_heading level0 row30" >30</th>
+      <td id="T_05365_row30_col0" class="data row30 col0" >Transformation Method</td>
+      <td id="T_05365_row30_col1" class="data row30 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row31" class="row_heading level0 row31" >31</th>
+      <td id="T_05365_row31_col0" class="data row31 col0" >PCA</td>
+      <td id="T_05365_row31_col1" class="data row31 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row32" class="row_heading level0 row32" >32</th>
+      <td id="T_05365_row32_col0" class="data row32 col0" >PCA Method</td>
+      <td id="T_05365_row32_col1" class="data row32 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row33" class="row_heading level0 row33" >33</th>
+      <td id="T_05365_row33_col0" class="data row33 col0" >PCA Components</td>
+      <td id="T_05365_row33_col1" class="data row33 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row34" class="row_heading level0 row34" >34</th>
+      <td id="T_05365_row34_col0" class="data row34 col0" >Ignore Low Variance</td>
+      <td id="T_05365_row34_col1" class="data row34 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row35" class="row_heading level0 row35" >35</th>
+      <td id="T_05365_row35_col0" class="data row35 col0" >Combine Rare Levels</td>
+      <td id="T_05365_row35_col1" class="data row35 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row36" class="row_heading level0 row36" >36</th>
+      <td id="T_05365_row36_col0" class="data row36 col0" >Rare Level Threshold</td>
+      <td id="T_05365_row36_col1" class="data row36 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row37" class="row_heading level0 row37" >37</th>
+      <td id="T_05365_row37_col0" class="data row37 col0" >Numeric Binning</td>
+      <td id="T_05365_row37_col1" class="data row37 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row38" class="row_heading level0 row38" >38</th>
+      <td id="T_05365_row38_col0" class="data row38 col0" >Remove Outliers</td>
+      <td id="T_05365_row38_col1" class="data row38 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row39" class="row_heading level0 row39" >39</th>
+      <td id="T_05365_row39_col0" class="data row39 col0" >Outliers Threshold</td>
+      <td id="T_05365_row39_col1" class="data row39 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row40" class="row_heading level0 row40" >40</th>
+      <td id="T_05365_row40_col0" class="data row40 col0" >Remove Multicollinearity</td>
+      <td id="T_05365_row40_col1" class="data row40 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row41" class="row_heading level0 row41" >41</th>
+      <td id="T_05365_row41_col0" class="data row41 col0" >Multicollinearity Threshold</td>
+      <td id="T_05365_row41_col1" class="data row41 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row42" class="row_heading level0 row42" >42</th>
+      <td id="T_05365_row42_col0" class="data row42 col0" >Remove Perfect Collinearity</td>
+      <td id="T_05365_row42_col1" class="data row42 col1" >True</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row43" class="row_heading level0 row43" >43</th>
+      <td id="T_05365_row43_col0" class="data row43 col0" >Clustering</td>
+      <td id="T_05365_row43_col1" class="data row43 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row44" class="row_heading level0 row44" >44</th>
+      <td id="T_05365_row44_col0" class="data row44 col0" >Clustering Iteration</td>
+      <td id="T_05365_row44_col1" class="data row44 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row45" class="row_heading level0 row45" >45</th>
+      <td id="T_05365_row45_col0" class="data row45 col0" >Polynomial Features</td>
+      <td id="T_05365_row45_col1" class="data row45 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row46" class="row_heading level0 row46" >46</th>
+      <td id="T_05365_row46_col0" class="data row46 col0" >Polynomial Degree</td>
+      <td id="T_05365_row46_col1" class="data row46 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row47" class="row_heading level0 row47" >47</th>
+      <td id="T_05365_row47_col0" class="data row47 col0" >Trignometry Features</td>
+      <td id="T_05365_row47_col1" class="data row47 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row48" class="row_heading level0 row48" >48</th>
+      <td id="T_05365_row48_col0" class="data row48 col0" >Polynomial Threshold</td>
+      <td id="T_05365_row48_col1" class="data row48 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row49" class="row_heading level0 row49" >49</th>
+      <td id="T_05365_row49_col0" class="data row49 col0" >Group Features</td>
+      <td id="T_05365_row49_col1" class="data row49 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row50" class="row_heading level0 row50" >50</th>
+      <td id="T_05365_row50_col0" class="data row50 col0" >Feature Selection</td>
+      <td id="T_05365_row50_col1" class="data row50 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row51" class="row_heading level0 row51" >51</th>
+      <td id="T_05365_row51_col0" class="data row51 col0" >Feature Selection Method</td>
+      <td id="T_05365_row51_col1" class="data row51 col1" >classic</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row52" class="row_heading level0 row52" >52</th>
+      <td id="T_05365_row52_col0" class="data row52 col0" >Features Selection Threshold</td>
+      <td id="T_05365_row52_col1" class="data row52 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row53" class="row_heading level0 row53" >53</th>
+      <td id="T_05365_row53_col0" class="data row53 col0" >Feature Interaction</td>
+      <td id="T_05365_row53_col1" class="data row53 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row54" class="row_heading level0 row54" >54</th>
+      <td id="T_05365_row54_col0" class="data row54 col0" >Feature Ratio</td>
+      <td id="T_05365_row54_col1" class="data row54 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row55" class="row_heading level0 row55" >55</th>
+      <td id="T_05365_row55_col0" class="data row55 col0" >Interaction Threshold</td>
+      <td id="T_05365_row55_col1" class="data row55 col1" >None</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row56" class="row_heading level0 row56" >56</th>
+      <td id="T_05365_row56_col0" class="data row56 col0" >Transform Target</td>
+      <td id="T_05365_row56_col1" class="data row56 col1" >False</td>
+    </tr>
+    <tr>
+      <th id="T_05365_level0_row57" class="row_heading level0 row57" >57</th>
+      <td id="T_05365_row57_col0" class="data row57 col0" >Transform Target Method</td>
+      <td id="T_05365_row57_col1" class="data row57 col1" >box-cox</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<section id="compare-models">
+<h2>Compare Models<a class="headerlink" href="#compare-models" title="Permalink to this headline">#</a></h2>
+<p>Once you confirmed the data types are correct, run the comparison using one single line of code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best</span> <span class="o">=</span> <span class="n">compare_models</span><span class="p">(</span><span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ransac&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_01899_ th {
+  text-align: left;
+}
+#T_01899_row0_col0, #T_01899_row1_col0, #T_01899_row1_col1, #T_01899_row1_col2, #T_01899_row1_col3, #T_01899_row1_col4, #T_01899_row1_col5, #T_01899_row1_col6, #T_01899_row2_col0, #T_01899_row2_col1, #T_01899_row2_col2, #T_01899_row2_col3, #T_01899_row2_col4, #T_01899_row2_col5, #T_01899_row2_col6, #T_01899_row3_col0, #T_01899_row3_col1, #T_01899_row3_col2, #T_01899_row3_col3, #T_01899_row3_col4, #T_01899_row3_col5, #T_01899_row3_col6, #T_01899_row4_col0, #T_01899_row4_col1, #T_01899_row4_col2, #T_01899_row4_col3, #T_01899_row4_col4, #T_01899_row4_col5, #T_01899_row4_col6, #T_01899_row5_col0, #T_01899_row5_col1, #T_01899_row5_col2, #T_01899_row5_col3, #T_01899_row5_col4, #T_01899_row5_col5, #T_01899_row5_col6, #T_01899_row6_col0, #T_01899_row6_col1, #T_01899_row6_col2, #T_01899_row6_col3, #T_01899_row6_col4, #T_01899_row6_col5, #T_01899_row6_col6, #T_01899_row7_col0, #T_01899_row7_col1, #T_01899_row7_col2, #T_01899_row7_col3, #T_01899_row7_col4, #T_01899_row7_col5, #T_01899_row7_col6, #T_01899_row8_col0, #T_01899_row8_col1, #T_01899_row8_col2, #T_01899_row8_col3, #T_01899_row8_col4, #T_01899_row8_col5, #T_01899_row8_col6, #T_01899_row9_col0, #T_01899_row9_col1, #T_01899_row9_col2, #T_01899_row9_col3, #T_01899_row9_col4, #T_01899_row9_col5, #T_01899_row9_col6, #T_01899_row10_col0, #T_01899_row10_col1, #T_01899_row10_col2, #T_01899_row10_col3, #T_01899_row10_col4, #T_01899_row10_col5, #T_01899_row10_col6, #T_01899_row11_col0, #T_01899_row11_col1, #T_01899_row11_col2, #T_01899_row11_col3, #T_01899_row11_col4, #T_01899_row11_col5, #T_01899_row11_col6, #T_01899_row12_col0, #T_01899_row12_col1, #T_01899_row12_col2, #T_01899_row12_col3, #T_01899_row12_col4, #T_01899_row12_col5, #T_01899_row12_col6, #T_01899_row13_col0, #T_01899_row13_col1, #T_01899_row13_col2, #T_01899_row13_col3, #T_01899_row13_col4, #T_01899_row13_col5, #T_01899_row13_col6, #T_01899_row14_col0, #T_01899_row14_col1, #T_01899_row14_col2, #T_01899_row14_col3, #T_01899_row14_col4, #T_01899_row14_col5, #T_01899_row14_col6, #T_01899_row15_col0, #T_01899_row15_col1, #T_01899_row15_col2, #T_01899_row15_col3, #T_01899_row15_col4, #T_01899_row15_col5, #T_01899_row15_col6, #T_01899_row16_col0, #T_01899_row16_col1, #T_01899_row16_col2, #T_01899_row16_col3, #T_01899_row16_col4, #T_01899_row16_col5, #T_01899_row16_col6, #T_01899_row17_col0, #T_01899_row17_col1, #T_01899_row17_col2, #T_01899_row17_col3, #T_01899_row17_col4, #T_01899_row17_col5, #T_01899_row17_col6, #T_01899_row18_col0, #T_01899_row18_col1, #T_01899_row18_col2, #T_01899_row18_col3, #T_01899_row18_col4, #T_01899_row18_col5, #T_01899_row18_col6, #T_01899_row19_col0, #T_01899_row19_col1, #T_01899_row19_col2, #T_01899_row19_col3, #T_01899_row19_col4, #T_01899_row19_col5, #T_01899_row19_col6 {
+  text-align: left;
+}
+#T_01899_row0_col1, #T_01899_row0_col2, #T_01899_row0_col3, #T_01899_row0_col4, #T_01899_row0_col5, #T_01899_row0_col6 {
+  text-align: left;
+  background-color: yellow;
+}
+#T_01899_row0_col7, #T_01899_row1_col7, #T_01899_row2_col7, #T_01899_row3_col7, #T_01899_row4_col7, #T_01899_row5_col7, #T_01899_row6_col7, #T_01899_row7_col7, #T_01899_row8_col7, #T_01899_row9_col7, #T_01899_row10_col7, #T_01899_row11_col7, #T_01899_row12_col7, #T_01899_row14_col7, #T_01899_row15_col7, #T_01899_row16_col7, #T_01899_row17_col7, #T_01899_row18_col7, #T_01899_row19_col7 {
+  text-align: left;
+  background-color: lightgrey;
+}
+#T_01899_row13_col7 {
+  text-align: left;
+  background-color: yellow;
+  background-color: lightgrey;
+}
+</style>
+<table id="T_01899_">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >Model</th>
+      <th class="col_heading level0 col1" >MAE</th>
+      <th class="col_heading level0 col2" >MSE</th>
+      <th class="col_heading level0 col3" >RMSE</th>
+      <th class="col_heading level0 col4" >R2</th>
+      <th class="col_heading level0 col5" >RMSLE</th>
+      <th class="col_heading level0 col6" >MAPE</th>
+      <th class="col_heading level0 col7" >TT (Sec)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_01899_level0_row0" class="row_heading level0 row0" >rf</th>
+      <td id="T_01899_row0_col0" class="data row0 col0" >Random Forest Regressor</td>
+      <td id="T_01899_row0_col1" class="data row0 col1" >3.8457</td>
+      <td id="T_01899_row0_col2" class="data row0 col2" >25.1137</td>
+      <td id="T_01899_row0_col3" class="data row0 col3" >4.9434</td>
+      <td id="T_01899_row0_col4" class="data row0 col4" >0.7215</td>
+      <td id="T_01899_row0_col5" class="data row0 col5" >0.0737</td>
+      <td id="T_01899_row0_col6" class="data row0 col6" >0.0594</td>
+      <td id="T_01899_row0_col7" class="data row0 col7" >1.1740</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row1" class="row_heading level0 row1" >ada</th>
+      <td id="T_01899_row1_col0" class="data row1 col0" >AdaBoost Regressor</td>
+      <td id="T_01899_row1_col1" class="data row1 col1" >4.0382</td>
+      <td id="T_01899_row1_col2" class="data row1 col2" >26.1101</td>
+      <td id="T_01899_row1_col3" class="data row1 col3" >5.0348</td>
+      <td id="T_01899_row1_col4" class="data row1 col4" >0.7143</td>
+      <td id="T_01899_row1_col5" class="data row1 col5" >0.0758</td>
+      <td id="T_01899_row1_col6" class="data row1 col6" >0.0631</td>
+      <td id="T_01899_row1_col7" class="data row1 col7" >0.3890</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row2" class="row_heading level0 row2" >catboost</th>
+      <td id="T_01899_row2_col0" class="data row2 col0" >CatBoost Regressor</td>
+      <td id="T_01899_row2_col1" class="data row2 col1" >3.9114</td>
+      <td id="T_01899_row2_col2" class="data row2 col2" >26.6284</td>
+      <td id="T_01899_row2_col3" class="data row2 col3" >5.0711</td>
+      <td id="T_01899_row2_col4" class="data row2 col4" >0.7102</td>
+      <td id="T_01899_row2_col5" class="data row2 col5" >0.0754</td>
+      <td id="T_01899_row2_col6" class="data row2 col6" >0.0605</td>
+      <td id="T_01899_row2_col7" class="data row2 col7" >20.8610</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row3" class="row_heading level0 row3" >knn</th>
+      <td id="T_01899_row3_col0" class="data row3 col0" >K Neighbors Regressor</td>
+      <td id="T_01899_row3_col1" class="data row3 col1" >3.9976</td>
+      <td id="T_01899_row3_col2" class="data row3 col2" >28.0253</td>
+      <td id="T_01899_row3_col3" class="data row3 col3" >5.1892</td>
+      <td id="T_01899_row3_col4" class="data row3 col4" >0.6966</td>
+      <td id="T_01899_row3_col5" class="data row3 col5" >0.0779</td>
+      <td id="T_01899_row3_col6" class="data row3 col6" >0.0622</td>
+      <td id="T_01899_row3_col7" class="data row3 col7" >0.0950</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row4" class="row_heading level0 row4" >et</th>
+      <td id="T_01899_row4_col0" class="data row4 col0" >Extra Trees Regressor</td>
+      <td id="T_01899_row4_col1" class="data row4 col1" >4.0529</td>
+      <td id="T_01899_row4_col2" class="data row4 col2" >28.0897</td>
+      <td id="T_01899_row4_col3" class="data row4 col3" >5.2136</td>
+      <td id="T_01899_row4_col4" class="data row4 col4" >0.6958</td>
+      <td id="T_01899_row4_col5" class="data row4 col5" >0.0780</td>
+      <td id="T_01899_row4_col6" class="data row4 col6" >0.0629</td>
+      <td id="T_01899_row4_col7" class="data row4 col7" >0.9000</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row5" class="row_heading level0 row5" >gbr</th>
+      <td id="T_01899_row5_col0" class="data row5 col0" >Gradient Boosting Regressor</td>
+      <td id="T_01899_row5_col1" class="data row5 col1" >4.1370</td>
+      <td id="T_01899_row5_col2" class="data row5 col2" >28.8184</td>
+      <td id="T_01899_row5_col3" class="data row5 col3" >5.2778</td>
+      <td id="T_01899_row5_col4" class="data row5 col4" >0.6847</td>
+      <td id="T_01899_row5_col5" class="data row5 col5" >0.0783</td>
+      <td id="T_01899_row5_col6" class="data row5 col6" >0.0638</td>
+      <td id="T_01899_row5_col7" class="data row5 col7" >0.2600</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row6" class="row_heading level0 row6" >lightgbm</th>
+      <td id="T_01899_row6_col0" class="data row6 col0" >Light Gradient Boosting Machine</td>
+      <td id="T_01899_row6_col1" class="data row6 col1" >4.1193</td>
+      <td id="T_01899_row6_col2" class="data row6 col2" >29.0992</td>
+      <td id="T_01899_row6_col3" class="data row6 col3" >5.3019</td>
+      <td id="T_01899_row6_col4" class="data row6 col4" >0.6814</td>
+      <td id="T_01899_row6_col5" class="data row6 col5" >0.0795</td>
+      <td id="T_01899_row6_col6" class="data row6 col6" >0.0641</td>
+      <td id="T_01899_row6_col7" class="data row6 col7" >0.2780</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row7" class="row_heading level0 row7" >omp</th>
+      <td id="T_01899_row7_col0" class="data row7 col0" >Orthogonal Matching Pursuit</td>
+      <td id="T_01899_row7_col1" class="data row7 col1" >3.8490</td>
+      <td id="T_01899_row7_col2" class="data row7 col2" >29.1546</td>
+      <td id="T_01899_row7_col3" class="data row7 col3" >5.2310</td>
+      <td id="T_01899_row7_col4" class="data row7 col4" >0.6805</td>
+      <td id="T_01899_row7_col5" class="data row7 col5" >0.0768</td>
+      <td id="T_01899_row7_col6" class="data row7 col6" >0.0595</td>
+      <td id="T_01899_row7_col7" class="data row7 col7" >0.0450</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row8" class="row_heading level0 row8" >xgboost</th>
+      <td id="T_01899_row8_col0" class="data row8 col0" >Extreme Gradient Boosting</td>
+      <td id="T_01899_row8_col1" class="data row8 col1" >4.2626</td>
+      <td id="T_01899_row8_col2" class="data row8 col2" >29.5655</td>
+      <td id="T_01899_row8_col3" class="data row8 col3" >5.3475</td>
+      <td id="T_01899_row8_col4" class="data row8 col4" >0.6765</td>
+      <td id="T_01899_row8_col5" class="data row8 col5" >0.0804</td>
+      <td id="T_01899_row8_col6" class="data row8 col6" >0.0661</td>
+      <td id="T_01899_row8_col7" class="data row8 col7" >45.2830</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row9" class="row_heading level0 row9" >br</th>
+      <td id="T_01899_row9_col0" class="data row9 col0" >Bayesian Ridge</td>
+      <td id="T_01899_row9_col1" class="data row9 col1" >3.8866</td>
+      <td id="T_01899_row9_col2" class="data row9 col2" >30.0446</td>
+      <td id="T_01899_row9_col3" class="data row9 col3" >5.2836</td>
+      <td id="T_01899_row9_col4" class="data row9 col4" >0.6708</td>
+      <td id="T_01899_row9_col5" class="data row9 col5" >0.0777</td>
+      <td id="T_01899_row9_col6" class="data row9 col6" >0.0604</td>
+      <td id="T_01899_row9_col7" class="data row9 col7" >0.0540</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row10" class="row_heading level0 row10" >lasso</th>
+      <td id="T_01899_row10_col0" class="data row10 col0" >Lasso Regression</td>
+      <td id="T_01899_row10_col1" class="data row10 col1" >3.8707</td>
+      <td id="T_01899_row10_col2" class="data row10 col2" >30.0419</td>
+      <td id="T_01899_row10_col3" class="data row10 col3" >5.2845</td>
+      <td id="T_01899_row10_col4" class="data row10 col4" >0.6704</td>
+      <td id="T_01899_row10_col5" class="data row10 col5" >0.0776</td>
+      <td id="T_01899_row10_col6" class="data row10 col6" >0.0601</td>
+      <td id="T_01899_row10_col7" class="data row10 col7" >0.0740</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row11" class="row_heading level0 row11" >en</th>
+      <td id="T_01899_row11_col0" class="data row11 col0" >Elastic Net</td>
+      <td id="T_01899_row11_col1" class="data row11 col1" >3.8738</td>
+      <td id="T_01899_row11_col2" class="data row11 col2" >30.0650</td>
+      <td id="T_01899_row11_col3" class="data row11 col3" >5.2823</td>
+      <td id="T_01899_row11_col4" class="data row11 col4" >0.6701</td>
+      <td id="T_01899_row11_col5" class="data row11 col5" >0.0776</td>
+      <td id="T_01899_row11_col6" class="data row11 col6" >0.0601</td>
+      <td id="T_01899_row11_col7" class="data row11 col7" >0.0560</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row12" class="row_heading level0 row12" >huber</th>
+      <td id="T_01899_row12_col0" class="data row12 col0" >Huber Regressor</td>
+      <td id="T_01899_row12_col1" class="data row12 col1" >3.9447</td>
+      <td id="T_01899_row12_col2" class="data row12 col2" >30.6005</td>
+      <td id="T_01899_row12_col3" class="data row12 col3" >5.3249</td>
+      <td id="T_01899_row12_col4" class="data row12 col4" >0.6624</td>
+      <td id="T_01899_row12_col5" class="data row12 col5" >0.0785</td>
+      <td id="T_01899_row12_col6" class="data row12 col6" >0.0612</td>
+      <td id="T_01899_row12_col7" class="data row12 col7" >0.2370</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row13" class="row_heading level0 row13" >ridge</th>
+      <td id="T_01899_row13_col0" class="data row13 col0" >Ridge Regression</td>
+      <td id="T_01899_row13_col1" class="data row13 col1" >4.1457</td>
+      <td id="T_01899_row13_col2" class="data row13 col2" >32.3733</td>
+      <td id="T_01899_row13_col3" class="data row13 col3" >5.4880</td>
+      <td id="T_01899_row13_col4" class="data row13 col4" >0.6448</td>
+      <td id="T_01899_row13_col5" class="data row13 col5" >0.0808</td>
+      <td id="T_01899_row13_col6" class="data row13 col6" >0.0646</td>
+      <td id="T_01899_row13_col7" class="data row13 col7" >0.0370</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row14" class="row_heading level0 row14" >lr</th>
+      <td id="T_01899_row14_col0" class="data row14 col0" >Linear Regression</td>
+      <td id="T_01899_row14_col1" class="data row14 col1" >4.1797</td>
+      <td id="T_01899_row14_col2" class="data row14 col2" >32.8439</td>
+      <td id="T_01899_row14_col3" class="data row14 col3" >5.5325</td>
+      <td id="T_01899_row14_col4" class="data row14 col4" >0.6394</td>
+      <td id="T_01899_row14_col5" class="data row14 col5" >0.0815</td>
+      <td id="T_01899_row14_col6" class="data row14 col6" >0.0651</td>
+      <td id="T_01899_row14_col7" class="data row14 col7" >5.7190</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row15" class="row_heading level0 row15" >lar</th>
+      <td id="T_01899_row15_col0" class="data row15 col0" >Least Angle Regression</td>
+      <td id="T_01899_row15_col1" class="data row15 col1" >4.6216</td>
+      <td id="T_01899_row15_col2" class="data row15 col2" >39.2256</td>
+      <td id="T_01899_row15_col3" class="data row15 col3" >6.0347</td>
+      <td id="T_01899_row15_col4" class="data row15 col4" >0.5664</td>
+      <td id="T_01899_row15_col5" class="data row15 col5" >0.0891</td>
+      <td id="T_01899_row15_col6" class="data row15 col6" >0.0721</td>
+      <td id="T_01899_row15_col7" class="data row15 col7" >0.0800</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row16" class="row_heading level0 row16" >par</th>
+      <td id="T_01899_row16_col0" class="data row16 col0" >Passive Aggressive Regressor</td>
+      <td id="T_01899_row16_col1" class="data row16 col1" >4.8978</td>
+      <td id="T_01899_row16_col2" class="data row16 col2" >40.4841</td>
+      <td id="T_01899_row16_col3" class="data row16 col3" >6.1852</td>
+      <td id="T_01899_row16_col4" class="data row16 col4" >0.5333</td>
+      <td id="T_01899_row16_col5" class="data row16 col5" >0.0914</td>
+      <td id="T_01899_row16_col6" class="data row16 col6" >0.0763</td>
+      <td id="T_01899_row16_col7" class="data row16 col7" >0.0510</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row17" class="row_heading level0 row17" >dt</th>
+      <td id="T_01899_row17_col0" class="data row17 col0" >Decision Tree Regressor</td>
+      <td id="T_01899_row17_col1" class="data row17 col1" >4.9362</td>
+      <td id="T_01899_row17_col2" class="data row17 col2" >44.6933</td>
+      <td id="T_01899_row17_col3" class="data row17 col3" >6.5599</td>
+      <td id="T_01899_row17_col4" class="data row17 col4" >0.5034</td>
+      <td id="T_01899_row17_col5" class="data row17 col5" >0.0977</td>
+      <td id="T_01899_row17_col6" class="data row17 col6" >0.0761</td>
+      <td id="T_01899_row17_col7" class="data row17 col7" >0.0580</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row18" class="row_heading level0 row18" >llar</th>
+      <td id="T_01899_row18_col0" class="data row18 col0" >Lasso Least Angle Regression</td>
+      <td id="T_01899_row18_col1" class="data row18 col1" >8.5613</td>
+      <td id="T_01899_row18_col2" class="data row18 col2" >106.6902</td>
+      <td id="T_01899_row18_col3" class="data row18 col3" >10.2482</td>
+      <td id="T_01899_row18_col4" class="data row18 col4" >-0.1299</td>
+      <td id="T_01899_row18_col5" class="data row18 col5" >0.1591</td>
+      <td id="T_01899_row18_col6" class="data row18 col6" >0.1382</td>
+      <td id="T_01899_row18_col7" class="data row18 col7" >0.0430</td>
+    </tr>
+    <tr>
+      <th id="T_01899_level0_row19" class="row_heading level0 row19" >dummy</th>
+      <td id="T_01899_row19_col0" class="data row19 col0" >Dummy Regressor</td>
+      <td id="T_01899_row19_col1" class="data row19 col1" >8.5613</td>
+      <td id="T_01899_row19_col2" class="data row19 col2" >106.6902</td>
+      <td id="T_01899_row19_col3" class="data row19 col3" >10.2482</td>
+      <td id="T_01899_row19_col4" class="data row19 col4" >-0.1299</td>
+      <td id="T_01899_row19_col5" class="data row19 col5" >0.1591</td>
+      <td id="T_01899_row19_col6" class="data row19 col6" >0.1382</td>
+      <td id="T_01899_row19_col7" class="data row19 col7" >0.0400</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="get-best-model">
+<h1>Get Best Model<a class="headerlink" href="#get-best-model" title="Permalink to this headline">#</a></h1>
+<p>It looks great! PyCaret automatically did all the work under the hood and give us the best model! You need to look at the RMSE and R2 columns in the comparison table, and the best RMSE and R2 are both achieved by Random Forest, which is much clear and can save you a lot of time to compare them. These results are professionally calculated at the point where PyCaret think it is neither overfitting nor underfitting. So the comparison results are very solid and reliable.</p>
+<p>Next step is to extract the best model’s hyperparameter configuration, and you can consider the hyperparameter tuning step is done, and go ahead and train your model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RandomForestRegressor(bootstrap=True, ccp_alpha=0.0, criterion=&#39;mse&#39;,
+                      max_depth=None, max_features=&#39;auto&#39;, max_leaf_nodes=None,
+                      max_samples=None, min_impurity_decrease=0.0,
+                      min_impurity_split=None, min_samples_leaf=1,
+                      min_samples_split=2, min_weight_fraction_leaf=0.0,
+                      n_estimators=100, n_jobs=-1, oob_score=False,
+                      random_state=123, verbose=0, warm_start=False)
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you don’t think the best model is the most cost wise model and need to check more models, you can print out more models by <code class="docutils literal notranslate"><span class="pre">top3</span> <span class="pre">=</span> <span class="pre">compare_models(exclude</span> <span class="pre">=</span> <span class="pre">['ransac'],</span> <span class="pre">n_select</span> <span class="pre">=</span> <span class="pre">3)</span></code> and <code class="docutils literal notranslate"><span class="pre">top3</span></code> will be a list and return the first 3 models.</p>
+<section id="model-interpretation">
+<h2>Model Interpretation<a class="headerlink" href="#model-interpretation" title="Permalink to this headline">#</a></h2>
+<p>You can get more details about why the best model is the best. PyCaret provides a function called <code class="docutils literal notranslate"><span class="pre">interpret_model</span></code>. It will produce a figure showing the influence of each input variable on the results. It is actually the same result of SHAP library and PyCaret integrates it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interpret_model</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3.9_autoML_21_0.png" src="../_images/3.9_autoML_21_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="evaluate-more-metrics">
+<h1>Evaluate More Metrics<a class="headerlink" href="#evaluate-more-metrics" title="Permalink to this headline">#</a></h1>
+<p>PyCaret provides some awesome widget and plots to give you an easy way for visualizing and checking many other useful metrics during its training.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="troubleshooting">
+<h1>TroubleShooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h1>
+<ol class="simple">
+<li><p>First time runners might meet this issue on M1: <a class="reference external" href="https://github.com/microsoft/LightGBM/issues/1369">https://github.com/microsoft/LightGBM/issues/1369</a> Please reinstall pycaret and lightgbm and see if the problem is gone. If not, please create a new issue on the Github repository issue page.</p></li>
+</ol>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Chapter3-MachineLearning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="3.8_ensemble_learning.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">3.10 Ensemble learning</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../Chapter4-DeepLearning/mlgeo_4.1_neural_networks.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4.1 Neural Networks</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By eScience Institute, University of Washington<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
