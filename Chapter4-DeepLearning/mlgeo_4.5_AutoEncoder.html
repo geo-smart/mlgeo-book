@@ -1,0 +1,1189 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>4.5 Auto-encoders &#8212; ML Geo Curriculum</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.6 NAS: Network Architecture Search" href="mlgeo_4.6_NAS.html" />
+    <link rel="prev" title="4.4 Recurrent Neural Networks: Processing sequences" href="mlgeo_4.4_RNN.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/GeoSMART_logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ML Geo Curriculum</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../about_this_book/about_this_book.html">
+                    Machine Learning in the Geosciences
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://geo-smart.github.io/index.html">
+   Geosmart website
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/acknowledgements.html">
+   Acknowlegments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/0_mlgeo_project.html">
+   Primer
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 1 - Open Source Ecosystem with Python
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/readme.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.1_python_environment.html">
+   1.1 Python Ecosystem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.2_jupyter_environment.html">
+   1.2 Jupyter Environment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.3_version_control_git.html">
+   1.3 Version Control &amp; GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.4_computational_environments.html">
+   1.4 Computing Environments
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 2 - Data Manipulation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.1_Data_Definitions.html">
+   2.1 Data Definitions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.2_Numpy_arrays.html">
+   2.2 Numpy Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.3_pandas_rendered.html">
+   2.3 Pandas, Basic Mapping
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.4_xarrays.html">
+   2.4 Xarrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.5_data_formats_rendered.html">
+   2.5 Data Formats
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.6_resampling.html">
+   2.6 Resampling Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.7_data_spectral_transforms.html">
+   2.7 Spectral Transforms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.8_feature_engineering.html">
+   2.8 Feature engineering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.9_pca.html">
+   2.9 Dimensionality Reduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.10_MLready_data.html">
+   2.10 ML-ready data
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 3 - Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.1_clustering.html">
+   3.1 Clustering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
+   3.1 Classification and Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.3_binary_classification.html">
+   3.3 Binary classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.4_multiclass_classification.html">
+   3.4 Multiclass Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.5_logistic_regression.html">
+   3.5 Logistic regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.6_randomForest_regression.html">
+   3.6 Random Forests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.7_hyperparameter_tuning.html">
+   3.7 Hyperparameter Tuning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.8_ensemble_learning.html">
+   3.8 Ensemble learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.9_autoML.html">
+   3.9 AutoML
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 4 - Deep Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.1_neural_networks.html">
+   4.1 Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.2_MultiLayerPerceptron.html">
+   4.2 Multi Layer Perceptrons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.3_CNN.html">
+   4.3 Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.4_RNN.html">
+   4.4  Recurrent Neural Networks: Processing sequences
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   4.5 Auto-encoders
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.6_NAS.html">
+   4.6 NAS: Network Architecture Search
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 6 - Workflow Management and Reproducibility
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter6-ModelWorkflows/readme.html">
+   This chapter focuces on model workflow and ML reproducibility
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 7- Introduction to Cloud Computing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/cloudmaven">
+   Browser Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/Denolle-Lab/azure">
+   Terraform Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://tljh.jupyter.org/en/latest/">
+   Cloud Provider ML Jupyterhubs
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/glossary.html">
+   Glossaries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/geo-smart/curriculum-book/main?urlpath=lab/tree/book/Chapter4-DeepLearning/mlgeo_4.5_AutoEncoder.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book/issues/new?title=Issue%20on%20page%20%2FChapter4-DeepLearning/mlgeo_4.5_AutoEncoder.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/curriculum-book/edit/main/book/Chapter4-DeepLearning/mlgeo_4.5_AutoEncoder.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Chapter4-DeepLearning/mlgeo_4.5_AutoEncoder.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   4.5 Auto-encoders
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convolutional-autoencoder">
+   Convolutional autoencoder
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#denoising-auto-encoder">
+   Denoising auto-encoder
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#u-net">
+   U-Net
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples-in-seismology">
+   Examples in seismology
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#encoder-decoders-multi-task-models">
+   Encoder-Decoders: Multi-task models
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#latent-space-the-low-dimensionality-of-the-data">
+     Latent Space: the low dimensionality of the data
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>4.5 Auto-encoders</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   4.5 Auto-encoders
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convolutional-autoencoder">
+   Convolutional autoencoder
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#denoising-auto-encoder">
+   Denoising auto-encoder
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#u-net">
+   U-Net
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples-in-seismology">
+   Examples in seismology
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#encoder-decoders-multi-task-models">
+   Encoder-Decoders: Multi-task models
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#latent-space-the-low-dimensionality-of-the-data">
+     Latent Space: the low dimensionality of the data
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="auto-encoders">
+<h1>4.5 Auto-encoders<a class="headerlink" href="#auto-encoders" title="Permalink to this headline">#</a></h1>
+<p>Autoencoders are neural networks that learn to efficiently compress and encode data then learn to reconstruct the data back from the reduced encoded representation to a representation that is as close to the original input as possible. Therefore, autoencoders reduce the dimentsionality of the input data i.e. reducing the number of features that describe input data.</p>
+<p>They are popular for data denoising, data compression, feature extraction, image reconstruction and segmentation.</p>
+<p><img alt="Auto-encoder" src="../_images/autoen_architecture.png" /></p>
+<!-- <center><img src="figures/autoen_architecture.png" alt="cnn" style="width: 800px;"/></center> -->
+<p>The architecture of auto-encoders are typically symmetrical:</p>
+<ul class="simple">
+<li><p>the encoder: branch of the network that encodes the data (feature extraction). The branch may contain blocks of neural networks such as linear layers, convolutional layers,</p></li>
+<li><p>the bottleneck: smallest layer of the network that contains the smallest number of features, the lowest dimension of the data representation.</p></li>
+<li><p>The decoder: branch of the network that takes the features and reconstruct the original data.</p></li>
+</ul>
+<p>Find interesting overview of several canonical architectures of auto-encoders:
+<a class="reference external" href="https://lilianweng.github.io/lil-log/2018/08/12/from-autoencoder-to-beta-vae.html">https://lilianweng.github.io/lil-log/2018/08/12/from-autoencoder-to-beta-vae.html</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">layers</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-12-02 08:29:55.719359: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2 AVX AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">X_train_full</span><span class="p">,</span> <span class="n">y_train_full</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">fashion_mnist</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="c1"># print(&quot;x_train shape:&quot;, x_train.shape, &quot;y_train shape:&quot;, y_train.shape)</span>
+<span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;tshirt&quot;</span><span class="p">,</span><span class="s2">&quot;trousers&quot;</span><span class="p">,</span><span class="s2">&quot;pullover&quot;</span><span class="p">,</span><span class="s2">&quot;dress&quot;</span><span class="p">,</span><span class="s2">&quot;coat&quot;</span><span class="p">,</span><span class="s2">&quot;sandal&quot;</span><span class="p">,</span><span class="s2">&quot;shirt&quot;</span><span class="p">,</span><span class="s2">&quot;sneaker&quot;</span><span class="p">,</span><span class="s2">&quot;bag&quot;</span><span class="p">,</span><span class="s2">&quot;boot&quot;</span><span class="p">]</span>
+<span class="n">X_val</span><span class="p">,</span><span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train_full</span><span class="p">[:</span><span class="mi">5000</span><span class="p">]</span><span class="o">/</span><span class="mf">255.0</span><span class="p">,</span><span class="n">X_train_full</span><span class="p">[</span><span class="mi">5000</span><span class="p">:]</span><span class="o">/</span><span class="mf">255.0</span>
+<span class="n">y_val</span><span class="p">,</span><span class="n">y_train</span> <span class="o">=</span> <span class="n">y_train_full</span><span class="p">[:</span><span class="mi">5000</span><span class="p">],</span><span class="n">y_train_full</span><span class="p">[</span><span class="mi">5000</span><span class="p">:]</span>
+<span class="c1"># Here we have to add one dimension to the images in order to match the conv2D requirements in Keras.</span>
+<span class="c1"># And we do it for all variables.</span>
+<span class="c1"># X_train=X_train[...,None]</span>
+<span class="c1"># X_val=X_val[...,None]</span>
+<span class="c1"># X_test=X_test[...,None]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_train</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_train</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(55000, 28, 28)
+(55000,)
+[0 1 2 3 4 5 6 7 8 9]
+10
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is the example of an auto-encoder that only has fully connected layers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stacked_encoder</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">]),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">)</span>
+<span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;encoder&#39;</span><span class="p">)</span>
+<span class="n">stacked_decoder</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">,</span><span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="mi">30</span><span class="p">]),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;sigmoid&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">([</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">])</span>
+<span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;decoder&#39;</span><span class="p">)</span>
+
+<span class="n">stacked_ae</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span><span class="n">stacked_encoder</span><span class="p">,</span><span class="n">stacked_decoder</span><span class="p">])</span>
+<span class="n">stacked_ae</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential&quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ encoder (Sequential)        (None, 30)                81530     
+                                                                 
+ decoder (Sequential)        (None, 28, 28)            82284     
+                                                                 
+=================================================================
+Total params: 163,814
+Trainable params: 163,814
+Non-trainable params: 0
+_________________________________________________________________
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-12-01 09:08:00.117697: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2 AVX AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+</div>
+</div>
+<p>The loss function in this case is not a MSE but instead a multilabel binary classifier on the propability of the pixel.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stacked_ae</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s2">&quot;binary_crossentropy&quot;</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">1.5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/keras/optimizers/optimizer_v2/gradient_descent.py:111: UserWarning: The `lr` argument is deprecated, use `learning_rate` instead.
+  super().__init__(name, **kwargs)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">stacked_ae</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">X_train</span><span class="p">,</span><span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span><span class="n">X_val</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/10
+1719/1719 [==============================] - 4s 2ms/step - loss: 0.3383 - val_loss: 0.3073
+Epoch 2/10
+1719/1719 [==============================] - 4s 2ms/step - loss: 0.3056 - val_loss: 0.2986
+Epoch 3/10
+1719/1719 [==============================] - 4s 2ms/step - loss: 0.2992 - val_loss: 0.2935
+Epoch 4/10
+1719/1719 [==============================] - 4s 2ms/step - loss: 0.2952 - val_loss: 0.2899
+Epoch 5/10
+1719/1719 [==============================] - 4s 2ms/step - loss: 0.2925 - val_loss: 0.2879
+Epoch 6/10
+1719/1719 [==============================] - 4s 2ms/step - loss: 0.2906 - val_loss: 0.2862
+Epoch 7/10
+1719/1719 [==============================] - 4s 2ms/step - loss: 0.2890 - val_loss: 0.2865
+Epoch 8/10
+1719/1719 [==============================] - 4s 2ms/step - loss: 0.2879 - val_loss: 0.2856
+Epoch 9/10
+1719/1719 [==============================] - 4s 2ms/step - loss: 0.2870 - val_loss: 0.2836
+Epoch 10/10
+1719/1719 [==============================] - 4s 2ms/step - loss: 0.2861 - val_loss: 0.2827
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can visualize the reconstruction images.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;binary&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">show_reconstruction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">n_images</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">reconstruction</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_val</span><span class="p">[:</span><span class="n">n_images</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">image_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_images</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">n_images</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">image_index</span><span class="p">)</span>
+        <span class="n">plot_image</span><span class="p">(</span><span class="n">X_val</span><span class="p">[</span><span class="n">image_index</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">n_images</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">n_images</span><span class="o">+</span><span class="n">image_index</span><span class="p">)</span>
+        <span class="n">plot_image</span><span class="p">(</span><span class="n">reconstruction</span><span class="p">[</span><span class="n">image_index</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_reconstruction</span><span class="p">(</span><span class="n">stacked_ae</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1/1 [==============================] - 0s 81ms/step
+</pre></div>
+</div>
+<img alt="../_images/mlgeo_4.5_AutoEncoder_10_1.png" src="../_images/mlgeo_4.5_AutoEncoder_10_1.png" />
+</div>
+</div>
+<p>This is not bad, but not great either. One could imagine training for longer or changing the architecture to include more layers or convolutional layers.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="convolutional-autoencoder">
+<h1>Convolutional autoencoder<a class="headerlink" href="#convolutional-autoencoder" title="Permalink to this headline">#</a></h1>
+<p>Auto-encoders that have convolutional layers</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conv_encoder</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">([</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">]),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPool2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPool2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPool2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;encoder_cnn&#39;</span><span class="p">)</span>
+<span class="n">conv_decoder</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2DTranspose</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;valid&quot;</span><span class="p">,</span><span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">,</span><span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">64</span><span class="p">]),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2DTranspose</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2DTranspose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;sigmoid&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">([</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">])</span>
+<span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;decoder_cnn&#39;</span><span class="p">)</span>
+
+<span class="n">stacked_ae_cnn</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span><span class="n">conv_encoder</span><span class="p">,</span><span class="n">conv_decoder</span><span class="p">])</span>
+<span class="n">stacked_ae_cnn</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential_1&quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ encoder_cnn (Sequential)    (None, 3, 3, 64)          23296     
+                                                                 
+ decoder_cnn (Sequential)    (None, 28, 28)            23233     
+                                                                 
+=================================================================
+Total params: 46,529
+Trainable params: 46,529
+Non-trainable params: 0
+_________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stacked_ae_cnn</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s2">&quot;binary_crossentropy&quot;</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">1.5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/keras/optimizers/optimizer_v2/gradient_descent.py:111: UserWarning: The `lr` argument is deprecated, use `learning_rate` instead.
+  super().__init__(name, **kwargs)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">stacked_ae_cnn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">X_train</span><span class="p">,</span><span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span><span class="n">X_val</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/20
+1719/1719 [==============================] - 36s 21ms/step - loss: 0.3023 - val_loss: 0.2733
+Epoch 2/20
+1719/1719 [==============================] - 47s 27ms/step - loss: 0.2742 - val_loss: 0.2730
+Epoch 3/20
+1719/1719 [==============================] - 54s 31ms/step - loss: 0.2698 - val_loss: 0.2639
+Epoch 4/20
+1719/1719 [==============================] - 71s 42ms/step - loss: 0.2673 - val_loss: 0.2632
+Epoch 5/20
+1719/1719 [==============================] - 86s 50ms/step - loss: 0.2657 - val_loss: 0.2651
+Epoch 6/20
+ 167/1719 [=&gt;............................] - ETA: 1:09 - loss: 0.2680
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_reconstruction</span><span class="p">(</span><span class="n">stacked_ae_cnn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.5_AutoEncoder_16_0.png" src="../_images/mlgeo_4.5_AutoEncoder_16_0.png" />
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="denoising-auto-encoder">
+<h1>Denoising auto-encoder<a class="headerlink" href="#denoising-auto-encoder" title="Permalink to this headline">#</a></h1>
+<p>Instead of training on the same input and ouput data, we can train a noisy data to represent a clean data.</p>
+<p><img alt="Denoiser" src="../_images/denoising-autoencoder-architecture.png" /></p>
+<!-- <center><img src="figures/denoising-autoencoder-architecture.png" alt="cnn" style="width: 800px;"/></center> -->
+<p>When starting with noise-free data, there are two ways to implement a denoising algorithm. First, one add noise to the data. Keras has a built in layer called GaussianNoise, but it would be easily implemented by adding a more structured noise to the data (use domain-knowledge). Second, one can use DropOut layer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">denoise_encoder</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">([</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">]),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPool2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPool2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPool2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;encoder_cnn&#39;</span><span class="p">)</span>
+<span class="n">denoise_decoder</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2DTranspose</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;valid&quot;</span><span class="p">,</span><span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">,</span><span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">64</span><span class="p">]),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2DTranspose</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2DTranspose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;sigmoid&quot;</span><span class="p">),</span>
+    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">([</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">])</span>
+<span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;decoder_cnn&#39;</span><span class="p">)</span>
+
+<span class="n">denoise_ae_cnn</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span><span class="n">conv_encoder</span><span class="p">,</span><span class="n">conv_decoder</span><span class="p">])</span>
+<span class="n">denoise_ae_cnn</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential_15&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+encoder_cnn (Sequential)     (None, 3, 3, 64)          23296     
+_________________________________________________________________
+decoder_cnn (Sequential)     (None, 28, 28)            23233     
+=================================================================
+Total params: 46,529
+Trainable params: 46,529
+Non-trainable params: 0
+_________________________________________________________________
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">denoise_ae_cnn</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s2">&quot;binary_crossentropy&quot;</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">1.5</span><span class="p">))</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">denoise_ae_cnn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">X_train</span><span class="p">,</span><span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span><span class="n">X_val</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/20
+1719/1719 [==============================] - 25s 14ms/step - loss: 0.2551 - val_loss: 0.2533
+Epoch 2/20
+1719/1719 [==============================] - 26s 15ms/step - loss: 0.2565 - val_loss: 0.2543
+Epoch 3/20
+1719/1719 [==============================] - 26s 15ms/step - loss: 0.2554 - val_loss: 0.2525
+Epoch 4/20
+1719/1719 [==============================] - 25s 14ms/step - loss: 0.2551 - val_loss: 0.2531
+Epoch 5/20
+1719/1719 [==============================] - 26s 15ms/step - loss: 0.2557 - val_loss: 0.2524
+Epoch 6/20
+1719/1719 [==============================] - 27s 16ms/step - loss: 0.2550 - val_loss: 0.2526
+Epoch 7/20
+1719/1719 [==============================] - 26s 15ms/step - loss: 0.2552 - val_loss: 0.2539
+Epoch 8/20
+1719/1719 [==============================] - 26s 15ms/step - loss: 0.2549 - val_loss: 0.2521
+Epoch 9/20
+1719/1719 [==============================] - 26s 15ms/step - loss: 0.2558 - val_loss: 0.2527
+Epoch 10/20
+1719/1719 [==============================] - 25s 15ms/step - loss: 0.2552 - val_loss: 0.2524
+Epoch 11/20
+1719/1719 [==============================] - 25s 15ms/step - loss: 0.2548 - val_loss: 0.2525
+Epoch 12/20
+1719/1719 [==============================] - 25s 15ms/step - loss: 0.2564 - val_loss: 0.2523
+Epoch 13/20
+1719/1719 [==============================] - 23s 13ms/step - loss: 0.2556 - val_loss: 0.2522
+Epoch 14/20
+1719/1719 [==============================] - 23s 13ms/step - loss: 0.2550 - val_loss: 0.2520
+Epoch 15/20
+1719/1719 [==============================] - 23s 13ms/step - loss: 0.2550 - val_loss: 0.2524
+Epoch 16/20
+1719/1719 [==============================] - 23s 13ms/step - loss: 0.2553 - val_loss: 0.2526
+Epoch 17/20
+1719/1719 [==============================] - 23s 13ms/step - loss: 0.2541 - val_loss: 0.2533
+Epoch 18/20
+1719/1719 [==============================] - 23s 14ms/step - loss: 0.2550 - val_loss: 0.2520
+Epoch 19/20
+1719/1719 [==============================] - 22s 13ms/step - loss: 0.2555 - val_loss: 0.2519
+Epoch 20/20
+1719/1719 [==============================] - 23s 13ms/step - loss: 0.2550 - val_loss: 0.2540
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_reconstruction</span><span class="p">(</span><span class="n">denoise_ae_cnn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.5_AutoEncoder_20_0.png" src="../_images/mlgeo_4.5_AutoEncoder_20_0.png" />
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="u-net">
+<h1>U-Net<a class="headerlink" href="#u-net" title="Permalink to this headline">#</a></h1>
+<p>These example illustrates one of the limitations of auto-encoders. They cannot reconstruct high-fidelity data. The reconstructed image is <strong>low resolution</strong> because indeed, we reconstruct from a low-dimension feature space.</p>
+<p>A strategy to recover high-resolution feature is to introduce <em><strong>skip connections</strong></em>: feed the output of the initial layers from the encoder branch as inputs to the layers of the decoder branch. This concept was also introduced in the <em>ResNet</em>, which is a deep sequential neural networks with added skip (residual) connections. A <strong>residual block</strong> is one that takes the output of a layer, and sum with the output of a earlier layer.</p>
+<p><strong>U-nets</strong> are encoder-decoders with skip connections introduced in the biomedical field.</p>
+<p><img alt="Unet" src="../_images/Unet.png" /></p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="examples-in-seismology">
+<h1>Examples in seismology<a class="headerlink" href="#examples-in-seismology" title="Permalink to this headline">#</a></h1>
+<p>The DeepDenoiser is a <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/8802278">Zhu et al., 2019</a> is an interesting architecture to remove noise from seismograms
+<img alt="DeepDenoiser" src="../_images/DeepDenoiser_architecture.png" /></p>
+<!-- <center><img src="figures/DeepDenoiser_architecture.png" alt="cnn" style="width: 800px;"/></center> -->
+<center>Architecture of the DeepDenoiser Zhu et al, 2019: </center>
+The input is 2 images of the real and imaginary part of the short time Fourier transform of a seismogram. The ouputs are 2 masks to apply on the data to extract the noise and the clean signal tiime series.
+<p>You will note that the auto-encoder has skip connections. These have shown to improve training convergence and performance. They break the sequence of the neural networks, therefore we to need to introduce wide neural networks! Stay tuned as I update this tutorial.</p>
+<p>Example of denoising seismogram is shown below.</p>
+<p><img alt="DeepDenoiser" src="../_images/DeepDenoiser_example.png" /></p>
+<!-- <center><img src="figures/DeepDenoiser_example.png" alt="cnn" style="width: 800px;"/></center> -->
+<p>Example of the DeepDenoiser Zhu et al, 2019</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="encoder-decoders-multi-task-models">
+<h1>Encoder-Decoders: Multi-task models<a class="headerlink" href="#encoder-decoders-multi-task-models" title="Permalink to this headline">#</a></h1>
+<p>From the bottleneck, it is possible to decode several data types. In seismology, there are several models that propose a multi-task algorithm.</p>
+<p>One of such examples is that of the “Earthquake Transformer” from <a class="reference external" href="https://www.nature.com/articles/s41467-020-17591-w">Mousavi et al., 2020</a> that takes on 3-component seismograms and predicts 3 probabilities: that of the presence of waveforms (detection branch), the probability of a P wave, the probability of an S wave.</p>
+<p><img alt="Earthquake Transformer" src="../_images/EqT.png" /></p>
+<p>From <a class="reference external" href="https://www.nature.com/articles/s41467-020-17591-w">Mousavi et al., 2020</a></p>
+<p>Another example is that of <a class="reference external" href="https://academic.oup.com/gji/article/231/3/1806/6651381">Yin et al., 2022</a>, the “WaveDecompNet” that separate Earthquake signals from Noise signals. The noise signals may contain interesting, rather stationary or diffuse wavefield properties that can be used for seismological research. The idea of the model is to <strong>decompose</strong> the signals to output <strong>2</strong> useful time series from a noisy waveform.</p>
+<p><img alt="WaveDecompNet" src="../_images/wavedecompnet.jpeg" /></p>
+<p>From <a class="reference external" href="https://academic.oup.com/gji/article/231/3/1806/6651381">Yin et al., 2022</a>, the WaveDecompNet has two bottlenecks to extract the low dimensionality of earthquake (transient) signals and of noise (diffuse, stationary) signals.</p>
+<section id="latent-space-the-low-dimensionality-of-the-data">
+<h2>Latent Space: the low dimensionality of the data<a class="headerlink" href="#latent-space-the-low-dimensionality-of-the-data" title="Permalink to this headline">#</a></h2>
+<p>The number of features in the bottleneck are a lower dimension representation of the input data. It is common practice to attempt to visualize the features at this stage. Visualization may require further dimensionality reduction such as PCA.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.manifold</span> <span class="kn">import</span> <span class="n">TSNE</span>
+<span class="n">X_val_compressed</span> <span class="o">=</span> <span class="n">stacked_encoder</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
+<span class="n">tsne</span><span class="o">=</span><span class="n">TSNE</span><span class="p">()</span>
+<span class="n">X_val_2d</span><span class="o">=</span><span class="n">tsne</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_val_compressed</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_val_2d</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X_val_2d</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="o">=</span><span class="n">y_val</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Chapter4-DeepLearning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="mlgeo_4.4_RNN.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">4.4  Recurrent Neural Networks: Processing sequences</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="mlgeo_4.6_NAS.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4.6 NAS: Network Architecture Search</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By eScience Institute, University of Washington<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
