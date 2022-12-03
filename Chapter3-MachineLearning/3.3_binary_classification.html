@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Classification &#8212; ML Geo Curriculum</title>
+    <title>3.3 Binary classification &#8212; ML Geo Curriculum</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -236,7 +236,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="3.1_clustering.html">
-   Clustering
+   3.1 Clustering
   </a>
  </li>
  <li class="toctree-l1">
@@ -246,9 +246,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   <strong>
-    Classification
-   </strong>
+   3.3 Binary classification
   </a>
  </li>
  <li class="toctree-l1">
@@ -258,7 +256,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="3.5_logistic_regression.html">
-   Logistic regression
+   3.5 Logistic regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -268,12 +266,12 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="3.7_hyperparameter_tuning.html">
-   3.5 Hyperparameter Tuning
+   3.7 Hyperparameter Tuning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="3.8_ensemble_learning.html">
-   3.10 Ensemble learning
+   3.8 Ensemble learning
   </a>
  </li>
  <li class="toctree-l1">
@@ -580,16 +578,9 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#classification-algorithms">
-   1. Classification Algorithms
+  <a class="reference internal nav-link" href="#synthetic-data">
+   1.1 Synthetic Data
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#synthetic-data">
-     1.1 Synthetic Data
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#classifier-performance-metrics">
@@ -610,7 +601,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Classification</h1>
+                <h1>3.3 Binary classification</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -621,16 +612,9 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#classification-algorithms">
-   1. Classification Algorithms
+  <a class="reference internal nav-link" href="#synthetic-data">
+   1.1 Synthetic Data
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#synthetic-data">
-     1.1 Synthetic Data
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#classifier-performance-metrics">
@@ -652,23 +636,8 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="classification">
-<h1><strong>Classification</strong><a class="headerlink" href="#classification" title="Permalink to this headline">#</a></h1>
-<p>Problems that need a <em>quantitative</em> response (numeric value) are <strong>regression</strong> ; problems that need a <em>qualitative</em> response (boolean or category) are <strong>classification</strong>. Many statistical methods can be applied to both types of problems.</p>
-<p><strong>Binary</strong> classification have two output classes. They usually end up being “A” and “not A”. Examples are “earthquake” or “no earthquake=noise”. <strong>Multiclass</strong> classification refers to one with more than two classes.</p>
-<p>Classification here requires that we know the labeled, it is a form of <em>supervised learning</em>.</p>
-<section id="classification-algorithms">
-<h2>1. Classification Algorithms<a class="headerlink" href="#classification-algorithms" title="Permalink to this headline">#</a></h2>
-<p>There are several classifier algorithms, which we will summarize below before practicing.</p>
-<ul class="simple">
-<li><p><strong>Linear Discriminant Analysis (LDA)</strong>: The LDA optimiziation methods produces an optimal dimensionality reductions to a decision line for classificaiton. It is based on variance reduction and has analogy to a PCA coordinate system.</p></li>
-<li><p><strong>Stochastic Gradient Descent (SGD)</strong>:</p></li>
-<li><p><strong>Naive Bayes (NB)</strong>: Simple algorithm that requires little hyper-parameters, provides interpretable results. The algorithm computes conditional probabilities and uses the product as a decision rule to maximize the probability in each class.</p></li>
-<li><p><strong>K-nearest neighbors (KNN)</strong>: Choose <em>K</em> as the numbers of nearest data points to consider. Gather each data sample and the K nearest ones, assign the class that is most represented in that group (the mode of the K labels).</p></li>
-<li><p><strong>Support Vector Machine (SVM)</strong>: Finds the hyperplanes that separate the classes with sufficient margins. The hyperplanes can be linear and more complex (kernels SVM such as radial basis function and polynomial kernels). SVM was very popular for limited training data.</p></li>
-<li><p><strong>Random Forest (RF)</strong>: Decision trees are common for prediction pipelines. <em>Decision tree learning</em> is a method to create a predictive model of trees based on the data. More on that this monday.</p></li>
-</ul>
-<p>Some classifiers can handle multi class natively (Stochastic Gradient Descent - SGD; Random Forest classification;  Naive Bayes). Others are strictly binary classifiers (Logistic Regression, Support Vector Machine classifier - SVM).</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="binary-classification">
+<h1>3.3 Binary classification<a class="headerlink" href="#binary-classification" title="Permalink to this headline">#</a></h1>
 <p>We can compare them all in one <span class="xref myst">exercise</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -699,7 +668,7 @@ title="Print to PDF"
 </div>
 </div>
 <section id="synthetic-data">
-<h3>1.1 Synthetic Data<a class="headerlink" href="#synthetic-data" title="Permalink to this headline">#</a></h3>
+<h2>1.1 Synthetic Data<a class="headerlink" href="#synthetic-data" title="Permalink to this headline">#</a></h2>
 <p>First, we start making new data using the scikitlearn tools.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -893,7 +862,6 @@ title="Print to PDF"
 <img alt="../_images/3.3_binary_classification_15_2.png" src="../_images/3.3_binary_classification_15_2.png" />
 </div>
 </div>
-</section>
 </section>
 <section id="classifier-performance-metrics">
 <h2>2. Classifier Performance Metrics<a class="headerlink" href="#classifier-performance-metrics" title="Permalink to this headline">#</a></h2>
