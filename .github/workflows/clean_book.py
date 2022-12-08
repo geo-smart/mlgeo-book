@@ -24,10 +24,10 @@ def cleanBook(book_in, book_out):
   cells = data["cells"]
   prev_marked = False
   for i in range(len(cells)):
-    print(f"\nScanning cell #{i} of {len(cells)}")
+    print(f"Scanning cell #{i} of {len(cells)}")
 
     if cells[i]["cell_type"] == "code" and prev_marked:
-      print("Marked 'code' cell found, clearing content...")
+      print("Marked 'code' cell found, clearing content...\n")
       cells[i]["source"] = ["# implement answer here"]
       prev_marked = False
 
@@ -35,7 +35,7 @@ def cleanBook(book_in, book_out):
       # print("Cell is 'markdown' type, checking source...")
       content = cells[i]["source"]
       if (len(content) > 0 and content[0] == "```{admonition} Student response section\n"):
-        print("Student response marker found.")
+        print("Student response marker found.\n")
         prev_marked = True
       else:
         pass
