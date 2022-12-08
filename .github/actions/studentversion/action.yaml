@@ -2,7 +2,6 @@ name: 'Create Student Version'
 description: 'Run book cleaning script and push to student version repo'
 
 runs:
-  using: "composite"
   steps:
 
     - name: checkout repo content
@@ -19,8 +18,6 @@ runs:
     #     pip install -r requirements.txt
         
     - name: execute py script # run clean_book.py
-      env:
-        SOME_SECRET: ${{ secrets.SOME_SECRET }}
       run: python .github/workflows/clean_book.py
         
     - name: remove book cleaning action # remove this action for the student version repo
