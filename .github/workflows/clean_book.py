@@ -32,13 +32,14 @@ def cleanBook(book_in, book_out):
       prev_marked = False
 
     if cells[i]["cell_type"] == "markdown":
-      print("Cell is 'markdown' type, checking source...")
+      # print("Cell is 'markdown' type, checking source...")
       content = cells[i]["source"]
       if (len(content) > 0 and content[0] == "```{admonition} Student response section\n"):
         print("Student response marker found.")
         prev_marked = True
       else:
-        print("No marker found.")
+        pass
+        # print("No marker found.")
 
   # Writing the modified data
   with open(book_out, 'w', encoding='utf-8') as out_file:

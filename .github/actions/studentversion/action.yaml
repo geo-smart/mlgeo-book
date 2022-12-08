@@ -1,6 +1,11 @@
 name: 'Create Student Version'
 description: 'Run book cleaning script and push to student version repo'
 
+inputs:
+  token:
+    description: 'A GitHub Personal Access Token (for publishing)'
+    required: true
+
 runs:
   using: "composite"
   steps:
@@ -35,13 +40,11 @@ runs:
         git config --local user.name "GitHub Action"
         git add -A
         git diff-index --quiet HEAD || (git commit -a -m "cleaned books for student version" --allow-empty)
-        
-        git branch -M main
-        git remote add student_version https://github.com/geo-smart/curriculum-book-student.git
-        git push -u -f student_version main
 
-    # - name: push changes
-    #   uses: ad-m/github-push-action@v0.6.0
-    #   with:
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    #     branch: main 
+    - name: push changes
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ inputs.token }}
+        repository: https://github.com/geo-smart/curriculum-book-student.git
+        branch: main 
+        force: true
