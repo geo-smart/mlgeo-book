@@ -1,4 +1,5 @@
-name: creating student version
+name: 'Create Student Version'
+description: 'Run book cleaning script and push to student version repo'
 
 on:
   push
@@ -9,7 +10,7 @@ jobs:
     steps:
 
       - name: checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content to github runner
+        uses: actions/checkout@v3 # checkout the repository content to github runner
 
       - name: setup python
         uses: actions/setup-python@v4
@@ -29,7 +30,7 @@ jobs:
       - name: remove book cleaning action # remove this action for the student version repo
         uses: JesseTG/rm@v1.0.3
         with:
-          path: .github/actions/studentversion/action.yaml
+          path: .github/actions/action.yaml
 
       - name: commit files
         run: |
