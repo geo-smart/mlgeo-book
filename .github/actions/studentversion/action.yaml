@@ -1,0 +1,49 @@
+name: creating student version
+
+on:
+  push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content to github runner
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9' # install the python version needed
+          
+      # - name: install python packages
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install -r requirements.txt
+          
+      - name: execute py script # run clean_book.py
+        env:
+          SOME_SECRET: ${{ secrets.SOME_SECRET }}
+        run: python .github/workflows/clean_book.py
+          
+      - name: remove book cleaning action # remove this action for the student version repo
+        uses: JesseTG/rm@v1.0.3
+        with:
+          path: .github/actions/studentversion/action.yaml
+
+      - name: commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff-index --quiet HEAD || (git commit -a -m "cleaned books for student version" --allow-empty)
+          
+          git branch -M main
+          git remote add origin https://github.com/geo-smart/curriculum-book-student.git
+          git push -u -f origin main
+
+      - name: push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main 
