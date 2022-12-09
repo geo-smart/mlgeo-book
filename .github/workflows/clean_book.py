@@ -3,6 +3,14 @@ import sys
 import os
 import yaml
 
+'''
+Not to be confused with ensure_clean_notebooks.py, this program scans
+all jupyter notebooks in the repository and clears cells marked as student
+response sections, removing the code so that the students might implement
+it themselves. If you accidentally run this on the teacher version of the
+curriculum book, just run `git restore book` to revert local changes.
+'''
+
 def cleanBook(book_in, book_out):
   divider = "-" * max(len(book_in), len(book_out))
   

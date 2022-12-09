@@ -1,10 +1,10 @@
-name: Deploy
+name: Clean
 
 on:
   push:
     paths:
       - 'book/**'
-      - '.github/workflows/deploy.yaml'
+      - '.github/workflows/clean.yaml'
       - '.github/actions/**'
 
     branches:
@@ -17,10 +17,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-
-    - uses: ./.github/actions/buildresources
       with:
-        jb-cache: false
-        publish-to-gh: true
-        jb-save: true
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.STUDENT_BOOK_TOKEN }}
+
+    - uses: ./.github/actions/studentversion
+      with:
+        token: ${{ secrets.STUDENT_BOOK_TOKEN }}
