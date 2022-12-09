@@ -20,6 +20,8 @@ def cleanBook(book_in, book_out):
     else:
       print("Data retrieved successfully.")
 
+  book_changed = False
+
   # Reading through the file data and modifying appropriately
   cells = data["cells"]
   prev_marked = False
@@ -31,6 +33,7 @@ def cleanBook(book_in, book_out):
       print("Marked 'code' cell found, clearing content...")
       cells[i]["source"] = ["# implement answer here"]
       prev_marked = False
+      book_changed = True
 
     if cells[i]["cell_type"] == "markdown":
       # print("Cell is 'markdown' type, checking source...")
@@ -42,10 +45,13 @@ def cleanBook(book_in, book_out):
       else:
         pass # print("No marker found.")
 
-  # Writing the modified data
-  with open(book_out, 'w', encoding='utf-8') as out_file:
-    print("\nAttempting to write to output file...\n")
-    json.dump(data, out_file, ensure_ascii=False, indent=2)
+  # Writing the modified data, if there were modifications to be done
+  if book_changed:
+    with open(book_out, 'w', encoding='utf-8') as out_file:
+      print("\nAttempting to write to output file...\n")
+      json.dump(data, out_file, ensure_ascii=False, indent=2)
+  else:
+    print("\nNo changes to be made.\n")
 
   print("Completed book cleaning, output file: ")
   print(book_out)
