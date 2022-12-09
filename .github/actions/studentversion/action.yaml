@@ -28,7 +28,7 @@ runs:
       shell: bash
       run: python .github/workflows/clean_book.py
         
-    - name: remove book cleaning workflow # no need to run it on the student version, since we handled book cleaning here
+    - name: remove book cleaning workflow # no need to run it on the student version, since we handled it already
       uses: JesseTG/rm@v1.0.3
       with:
         path: .github/workflows/clean.yaml
@@ -36,10 +36,10 @@ runs:
     - name: commit files
       shell: bash
       run: |
-        git config --local user.email "stefan.alex4@gmail.com"
-        git config --local user.name "StefanTodoran"
-        git add -A
-        git diff-index --quiet HEAD || (git commit -a -m "cleaned books for student version" --allow-empty)
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -a
+        git commit -a -m "cleaned books for student version" --allow-empty
 
     - name: push changes
       uses: ad-m/github-push-action@v0.6.0
