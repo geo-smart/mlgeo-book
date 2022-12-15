@@ -2,11 +2,8 @@ name: 'Create Student Version'
 description: 'Run book cleaning script and push to student version repo'
 
 inputs:
-  pull-token:
-    description: 'The GitHub Personal Access Token for pulling from the curriculum-book repo'
-    required: true
-  push-token:
-    description: 'The GitHub PAT for pushing to the curriculum-book-student repo'
+  key:
+    description: 'The GitHub Deploy Key for pushing to the curriculum-book-student repo'
     required: true
 
 runs:
@@ -32,11 +29,6 @@ runs:
     - name: execute py script # run clean_book.py
       shell: bash
       run: python .github/workflows/clean_book.py
-        
-    - name: remove book cleaning workflow # no need to run it on the student version, since we handled it already
-      uses: JesseTG/rm@v1.0.3
-      with:
-        path: .github/workflows/clean.yaml
 
     - name: commit files
       shell: bash
@@ -46,10 +38,14 @@ runs:
         git add -A
         git commit -a -m "cleaned books for student version" --allow-empty
 
-    - name: push changes
-      uses: ad-m/github-push-action@v0.6.0
+    - name: push changes to student repo
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        SSH_DEPLOY_KEY: ${{ inputs.key }}
       with:
-        github_token: ${{ inputs.push-token }}
-        repository: geo-smart/curriculum-book-student
-        branch: main 
-        force: true
+        source-directory: .
+        destination-github-username: 'geo-smart'
+        destination-repository-name: 'curriculum-book-student'
+        user-email: action@github.com
+        commit-message: cleaned books for student version
+        target-branch: main

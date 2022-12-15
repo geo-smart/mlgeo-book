@@ -11,16 +11,14 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  clean-and-push:
+    if: github.repository == 'geo-smart/curriculum-book'
     runs-on: ubuntu-22.04
 
     steps:
     - name: checkout repository for action
       uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.CURRICULUM_BOOK_TOKEN }}
 
     - uses: ./.github/actions/studentversion
       with:
-        pull-token: ${{ secrets.CURRICULUM_BOOK_TOKEN }}
-        push-token: ${{ secrets.STUDENT_BOOK_TOKEN }}
+        key: ${{ secrets.STUDENT_BOOK_KEY }}
