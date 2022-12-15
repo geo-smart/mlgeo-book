@@ -2,8 +2,11 @@ name: 'Create Student Version'
 description: 'Run book cleaning script and push to student version repo'
 
 inputs:
-  token:
-    description: 'A GitHub Personal Access Token (for publishing)'
+  pull-token:
+    description: 'The GitHub Personal Access Token for pulling from the curriculum-book repo'
+    required: true
+  push-token:
+    description: 'The GitHub PAT for pushing to the curriculum-book-student repo'
     required: true
 
 runs:
@@ -12,6 +15,8 @@ runs:
 
     - name: checkout repo content
       uses: actions/checkout@v3 # checkout the repository content to github runner
+      with:
+        token: ${{ inputs.pull-token }}
 
     - name: setup python
       uses: actions/setup-python@v4
@@ -38,13 +43,13 @@ runs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add -a
+        git add -A
         git commit -a -m "cleaned books for student version" --allow-empty
 
     - name: push changes
       uses: ad-m/github-push-action@v0.6.0
       with:
-        github_token: ${{ inputs.token }}
+        github_token: ${{ inputs.push-token }}
         repository: geo-smart/curriculum-book-student
         branch: main 
         force: true
