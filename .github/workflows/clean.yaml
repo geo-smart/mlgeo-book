@@ -15,6 +15,11 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+    - name: checkout repository for action
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.CURRICULUM_BOOK_TOKEN }}
+
     - uses: ./.github/actions/studentversion
       with:
         pull-token: ${{ secrets.CURRICULUM_BOOK_TOKEN }}
