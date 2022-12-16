@@ -20,7 +20,9 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Move files to be pushed to /output directory
-      run: apk add rsync && rsync -arv --exclude=".git" . output/
+      shell: bash
+      run: |
+        rsync -arv --exclude=".git" . output/
 
     - name: Push to student repo
       uses:  StefanTodoran/github-action-force-push-to-other-repository@main
