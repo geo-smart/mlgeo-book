@@ -47,3 +47,20 @@ jobs:
     - uses: ./.github/actions/studentversion
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+
+  build-and-deploy:
+    # we have two separate deploy workflows (here and deploy.yaml) since otherwise
+    # it won't trigger properly
+    if: github.repository == 'geo-smart/curriculum-book-student'
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - uses: ./.github/actions/buildresources
+      with:
+        jb-cache: false
+        publish-to-gh: true
+        jb-save: true
+        token: ${{ secrets.GITHUB_TOKEN }}
