@@ -11,15 +11,33 @@ on:
       - main
 
 jobs:
-  clean-and-push:
+  push-to-student-repo:
     if: github.repository == 'geo-smart/curriculum-book'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Push to student repo
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        SSH_DEPLOY_KEY: ${{ secrets.STUDENT_BOOK_KEY }}
       with:
-        token: ${{ secrets.CURRICULUM_BOOK_TOKEN }}
+        source-directory: .
+        destination-github-username: 'geo-smart'
+        destination-repository-name: 'curriculum-book-student'
+        user-email: action@github.com
+        commit-message: update student version with curriculum book changes
+        target-branch: main
+
+  clean-student-book:
+    if: github.repository == 'geo-smart/curriculum-book-student'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
     - uses: ./.github/actions/studentversion
       with:
