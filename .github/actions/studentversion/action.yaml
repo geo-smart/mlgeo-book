@@ -1,5 +1,10 @@
-name: 'Push to Student Version'
-description: 'Run book cleaning script and push to student version repo'
+name: 'Clean Student Version'
+description: 'Run book cleaning script and push changes'
+
+inputs:
+  token:
+    description: 'token with push permissions for the repo'
+    required: true
 
 runs:
   using: "composite"
@@ -34,5 +39,6 @@ runs:
     - name: push changes
       uses: ad-m/github-push-action@v0.6.0
       with:
+        github_token: ${{ inputs.token }}
         branch: main 
         force: true

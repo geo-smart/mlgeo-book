@@ -19,12 +19,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Move files to be pushed to /output directory
+      shell: bash
+      run: |
+        rsync -av --progress . /ouput --exclude .git
+
     - name: Push to student repo
       uses: cpina/github-action-push-to-another-repository@main
       env:
         SSH_DEPLOY_KEY: ${{ secrets.STUDENT_BOOK_KEY }}
       with:
-        source-directory: .
+        source-directory: output/
         destination-github-username: 'geo-smart'
         destination-repository-name: 'curriculum-book-student'
         user-email: action@github.com
@@ -41,4 +46,4 @@ jobs:
 
     - uses: ./.github/actions/studentversion
       with:
-        key: ${{ secrets.STUDENT_BOOK_KEY }}
+        token: ${{ secrets.GITHUB_TOKEN }}
