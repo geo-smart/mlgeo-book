@@ -90,14 +90,5 @@ print("Starting cleaning process...")
 for book in books:
   cleanBook(book, book)
 
-  '''
-  # six for length of .ipynb extension
-  output = book[:-6] + "_cleaned.ipynb"
-  cleanBook(book, output)
-
-  # TODO: REMOVE LATER!! FOR TESTING PURPOSES ONLY!!
-  os.remove(output)
-  '''
-
 print("\n=================================================")
 print(f"Finished book cleaning for all {len(books)} books\n")
