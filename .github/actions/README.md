@@ -12,6 +12,9 @@ Steps to configure conda environment required to build the website.
 #### [buildresources](./actions/buildresources/action.yaml)
 Steps to build the hackweek landing webpage and JupyterBook.
 
+#### [studentversion](./actions/studentversion/action.yaml)
+Steps to push cleaned versions of the books to the student repo.
+
 
 ## Workflows
 
@@ -21,7 +24,10 @@ The `workflows/` subfolder contains continuous integration workflows
 Create [binder](https://mybinder.readthedocs.io/en/latest/howto/gh-actions-badges.html) badges with links to test tutorial notebooks
 
 #### [deploy.yaml](./actions/workflows/deploy.yaml)
-Render and publish the websites (JupyterBook and landing page) to GitHub Pages
+Render and publish the websites (JupyterBook and landing page) to GitHub Pages (runs only on teacher version of the repo)
+
+#### [clean.yaml](./actions/workflows/clean.yaml)
+If running on teacher repo, pushes cleaned books to student version. If running on student version, renders and publishes the website to GitHub Pages.
 
 #### [manual.yaml](./actions/workflows/manual.yaml)
 Bypass usage of the cache to manually trigger a full rebuild of the JupyterBook and landing page

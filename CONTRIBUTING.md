@@ -19,7 +19,7 @@ To build our website, we need specific Python packages which are managed with th
 1. Clone your fork locally:
 
     ```sh
-    git clone https://github.com/geo-smart/book.git
+    git clone https://github.com/geo-smart/curriculum_book.git
     cd book
     ```
 
@@ -54,4 +54,4 @@ To build our website, we need specific Python packages which are managed with th
     git push origin name-of-your-bugfix-or-feature
     ```
 
-1. Open a pull request through the GitHub website: https://github.com/geo-smart/book
+1. Open a pull request through the GitHub website: https://github.com/geo-smart/curriculum_book
