@@ -8,7 +8,14 @@ Instructor: Marine Denolle (mdenolle@uw.edu)
 Supported by: the GeoSMART team (Stefan Todoran, Nicoleta Cristea, Anthony Arendt, Scott Henderson, Ziheng Sun)
 
 # Overview
+
 The course is intended to introduce Machine Learning in Geosciences, the basics of computing, and methodologies in applied machine learning. The course focuses on canonical and topical data sets in seismology, oceanography, cryosphere, planetary sciences, geology, and geodesy. The methods taught include unsupervised clustering, logistic regression, random forest, support vector machine, and deep learning.
+
+# Student Version
+
+Some chapters will include code sections which students should attempt to write on their own first before viewing the solution. The student version of this book automatically clears sections marked by the instructor as student response, and can be accessed via the link below. 
+
+[![Student Version](../../student_version_badge.svg)](https://geo-smart.github.io/curriculum-book-student/)
 
 # Learning objectives 
 
@@ -24,7 +31,6 @@ By the end of the quarter, the students should be able to:
 **Prerequisites**: MATH 207 and MATH 208, or MATH 307 or 308, or AMATH 351 or 352, CS160 or CS163, or permission from the instructor.
 
 **Recommended**: Knowledge in Matlab or python, AMATH301, 100- or 200-level courses in the Earth Sciences. Refreshers in computing skills will be provided.
-
 
 # Syllabus
 
