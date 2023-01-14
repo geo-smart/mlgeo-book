@@ -11,6 +11,11 @@ it themselves. If you accidentally run this on the teacher version of the
 curriculum book, just run `git restore book` to revert local changes.
 '''
 
+# Returns a student version badge link given a path to that chapter relative
+# to the book folder. It must be in a subfolder!
+# def studentVersionBadge(path):
+#   return f"[![Student Version](../../student_version_badge.svg)](https://geo-smart.github.io/curriculum-book-student/{path})"
+
 def cleanBook(book_in, book_out):
   divider = "-" * max(len(book_in), len(book_out))
   
@@ -52,6 +57,20 @@ def cleanBook(book_in, book_out):
         prev_marked = True
       else:
         pass # print("No marker found.")
+
+  # if book_changed:
+  #   print("\nAdding student version link badge...")
+
+  #   # Since each book_in path is given as ./book/_____.ipynb
+  #   # with this we can trim and get only the middle part.
+  #   path = book_in[7:-6]
+  #   badge = {
+  #     'cell_type': 'markdown', 
+  #     'id': 'student_version_badge', 
+  #     'metadata': {}, 
+  #     'source': [studentVersionBadge(path)]
+  #   }
+  #   cells.insert(0, badge)
 
   # Writing the modified data, if there were modifications to be done
   if book_changed:
