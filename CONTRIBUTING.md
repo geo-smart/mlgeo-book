@@ -31,12 +31,6 @@ To build our website, we need specific Python packages which are managed with th
 
 1. Create and activate the "geosmart" conda environment.
 
-   __NOTE__: If you're running linux or Windows use `conda/conda-linux-64.lock.yml`
-    ```sh
-    mamba env create --name geosmart --file conda/conda-osx-64.lock.yml
-    mamba activate geosmart
-    ```
-   __NOTE__: If you want to add packages or change the environment,
     you must follow the procedure outlined in [./conda/README.md](./conda/README.md).
 
 1. Make your desired changes and build the book locally

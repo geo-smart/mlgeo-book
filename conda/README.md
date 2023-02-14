@@ -1,15 +1,35 @@
-# Conda environment management
+# Instructions for environment management
 
-**The only file you should need to edit in this folder is `conda/environment.yml`. This file defines the set of conda-packages needed to render the full website.**
+## Install locked environment:
 
-Although we refer to "conda" environments, we recommend using [mamba](https://github.com/mamba-org/mamba) as a drop in replacement for the `conda` package manager. Mamba performs operations in parallel, which we've found to be important for creating complex hackweek environments involving many packages!
-
-Lockfiles ensure that everyone working on this project has an identical development environment, whether working on a personal computer or running on our hosted JupyterHub cloud infrastructure.
-
-If you edit `conda/environment.yml` to change package versions or add new ones, be sure to _re-lock_ the environment by running `./lock-environment.sh`:
+`conda-lock` can be used to create a multi-platform lockfile, so a reproducible set of package versions is installed across different operating systems. https://conda-incubator.github.io/conda-lock/
 
 ```
-mamba remove --name hackweek --all
-mamba env create --name hackweek --file conda-linux-64.lock.yml
-mamba activate hackweek
+conda-lock install -n curriculum_book
+```
+
+\*Or on Linux: `mamba env create -f .binder/environment.yml`
+
+## Create/update multiplatform lockfile:
+
+```
+conda-lock lock --mamba -f environment-unpinned.yml -p osx-64 -p linux-64 -p win-64 -p osx-arm64
+```
+
+## Render a mybinder.org compatible environment.yml (linux-64)
+
+```
+conda-lock render -k env
+mv conda-linux-64.lock.yml environment.yml
+```
+
+## Install unpinned environment:
+
+If you want to run tutorials with the latest versions of compatible packages
+
+If you need to install mamba see https://github.com/conda-forge/miniforge#mambaforge
+
+```
+mamba env create -f environment-unpinned.yml
+mamba activate curriculum_book
 ```
