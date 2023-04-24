@@ -6,4 +6,4 @@
 [![GeoSMART Library Badge](./curricula_badge.svg)](https://geo-smart.github.io/curriculum)
 [![Student Version](./student_version_badge.svg)](https://geo-smart.github.io/curriculum-book-student/)
 
-This repository stores configuration for GeoSMART curriculum content.
+This repository stores configuration for GeoSMART curriculum content, and some testing changes for making plotly work.
