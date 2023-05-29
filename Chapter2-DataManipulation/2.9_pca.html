@@ -241,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -596,8 +596,8 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#substract-the-mean-of-the-data">
-     1. Substract the mean of the data
+    <a class="reference internal nav-link" href="#subtract-the-mean-of-the-data">
+     1. Subtract the mean of the data
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -647,8 +647,8 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#substract-the-mean-of-the-data">
-     1. Substract the mean of the data
+    <a class="reference internal nav-link" href="#subtract-the-mean-of-the-data">
+     1. Subtract the mean of the data
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -685,29 +685,29 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="dimensionality-reduction">
 <h1>2.9 Dimensionality Reduction<a class="headerlink" href="#dimensionality-reduction" title="Permalink to this headline">#</a></h1>
-<p>Ideally, one would not need to extract or select feature in the input data. However, reducing the dimensionality as a separate pre-processing steps may be advantageous:</p>
+<p>Ideally, one would not need to extract or select features in the input data. However, reducing the dimensionality as a separate pre-processing step may be advantageous:</p>
 <ol class="simple">
 <li><p>The complexity of the algorithm depends on the number of input dimensions and size of the data.</p></li>
-<li><p>If some features are unecessary, not extracting them saves compute time</p></li>
+<li><p>If some features are unecessary, not extracting them saves computing time</p></li>
 <li><p>Simpler models are more robust on small datasets</p></li>
 <li><p>Fewer features lead to a better understanding of the data.</p></li>
 <li><p>Visualization is easier in fewer dimensions.</p></li>
 </ol>
-<p>Feature <em>selection</em> finds the dimensions that explain the data without loss of information and ends with a smaller dimensionality of the input data. A <em>forward selection</em> approach starts with one variable that decreases the error the most and add one by one. A <em>backward selection</em> starts with all variables and removes them one by one.</p>
-<p>Feature <em>extraction</em> finds a new set of dimension as a combination of the original dimensions. They can be supervised or unsupervised depending on the output information. Examples are <strong>Principal Component Analysis</strong>, <strong>Independent Component Analysis</strong> <strong>Linear Discriminant Analysis</strong></p>
+<p>Feature <em>selection</em> finds the dimensions that explain the data without loss of information and ends with a smaller dimensionality of the input data. A <em>forward selection</em> approach starts with one variable that decreases the error the most and adds one by one. A <em>backward selection</em> starts with all variables and removes them one by one.</p>
+<p>Feature <em>extraction</em> finds a new set of dimensions as a combination of the original dimensions. They can be supervised or unsupervised depending on the output information. Examples are <strong>Principal Component Analysis</strong>, <strong>Independent Component Analysis</strong> <strong>Linear Discriminant Analysis</strong></p>
 <section id="principal-component-analysis">
 <h2>Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this headline">#</a></h2>
-<p>PCA is an unsupervised learning method that finds the mapping from the input to a lower dimemsional space with minimum loss of information. First, we will download again our GPS time series from Oregon.</p>
-<p>PCA idenditfies the axis that accounts for the largest amount of variance in the data. Let’s  <span class="math notranslate nohighlight">\(\mathbf{Y} = \mathbf{y}_1,\cdots,\mathbf{y}_n \)</span> be the data ,measured <span class="math notranslate nohighlight">\(n\)</span> times over multiple fields of measurements (the length of <span class="math notranslate nohighlight">\(\mathbf{y})\)</span>. Each <strong>column</strong> of <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> is different measurements for single experiments (e.g., single time stamps). Each column of <span class="math notranslate nohighlight">\( \mathbf{Y} \)</span> is the same measurement repeated over several experiments (or time).  The steps to PCA are:</p>
+<p>PCA is an unsupervised learning method that finds the mapping from the input to a lower dimensional space with minimum loss of information. First, we will download again our GPS time series from Oregon.</p>
+<p>PCA identifies the axis that accounts for the largest amount of variance in the data. Let’s  <span class="math notranslate nohighlight">\(\mathbf{Y} = \mathbf{y}_1,\cdots,\mathbf{y}_n \)</span> be the data, measured <span class="math notranslate nohighlight">\(n\)</span> times over multiple fields of measurements (the length of <span class="math notranslate nohighlight">\(\mathbf{y})\)</span>. Each <strong>column</strong> of <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> is different measurements for single experiments (e.g., single time stamps). Each <strong>row</strong> of <span class="math notranslate nohighlight">\( \mathbf{Y} \)</span> is the same measurement repeated over several experiments (or time).  The steps to PCA are:</p>
 <ol class="simple">
-<li><p>center and standardize the data by substracting mean of each row of <span class="math notranslate nohighlight">\(\mathbf{Y} \)</span>  (all measurements at a single experiment or time stamp)</p></li>
+<li><p>Center and standardize the data by subtracting the mean of each row of <span class="math notranslate nohighlight">\(\mathbf{Y} \)</span>  (all measurements at a single experiment or time stamp)</p></li>
 <li><p>Calculate the covariance matrix of the de-meaned data <span class="math notranslate nohighlight">\(\mathbf{C}  =  \frac{1}{n-1} \mathbf{Y}^{\ast}\mathbf{Y}\)</span>. By definition, the covariance matrix is positive symmetric, and thus can be diagonalized.</p></li>
 <li><p>Calculate the Singular Value Decomposition (SVD) of the covariance matrix <span class="math notranslate nohighlight">\(\mathbf{C} \)</span>.</p></li>
 </ol>
 <p>PCA uses the <em>(Singular Value Decomposition (SVD)</em> to decompose the data covariance matrix <span class="math notranslate nohighlight">\(\mathbf{C} \)</span>:</p>
 <p><span class="math notranslate nohighlight">\(\mathbf{X} = \mathbf{U} \Sigma \mathbf{V}^T ,\)</span></p>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{V}^T\)</span> contains the eigenvectors, or principal components. The <em>PCs</em> are normalized, centered around zero.</p>
-<p>The <em>1st principal component</em> eigenvector that has the highest eigenvalue in the direction that has the highest variance.</p>
+<p>The <em>1st principal component</em> eigenvector has the highest eigenvalue in the direction that has the highest variance.</p>
 <p>We will start simple with 10000 data points measured for 2 variables.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -737,7 +737,7 @@ title="Print to PDF"
 
 <span class="c1"># create the cloud of points by multiplying (np.matmul is also called by @)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">R</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nPoints</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">xC</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="n">nPoints</span><span class="p">))</span>
-<span class="c1"># print the shape of teh array</span>
+<span class="c1"># print the shape of the array</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="c1"># plot the data</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -759,8 +759,8 @@ title="Print to PDF"
 <img alt="../_images/2.9_pca_4_2.png" src="../_images/2.9_pca_4_2.png" />
 </div>
 </div>
-<section id="substract-the-mean-of-the-data">
-<h3>1. Substract the mean of the data<a class="headerlink" href="#substract-the-mean-of-the-data" title="Permalink to this headline">#</a></h3>
+<section id="subtract-the-mean-of-the-data">
+<h3>1. Subtract the mean of the data<a class="headerlink" href="#subtract-the-mean-of-the-data" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Remove the mean of the data</span>

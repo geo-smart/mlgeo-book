@@ -241,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -694,13 +694,13 @@ title="Print to PDF"
 <p>Remember linear regression:</p>
 <p><span class="math notranslate nohighlight">\(y = b + x w + \epsilon\)</span></p>
 <p><span class="math notranslate nohighlight">\(y\)</span> is a vector of length <span class="math notranslate nohighlight">\(n\)</span>, <span class="math notranslate nohighlight">\(x\)</span> is a matrix with <span class="math notranslate nohighlight">\(n\)</span> rows and <span class="math notranslate nohighlight">\(p\)</span> columns, corresponding to <span class="math notranslate nohighlight">\(n\)</span> observations and <span class="math notranslate nohighlight">\(p\)</span> features that are used to explain <span class="math notranslate nohighlight">\(y\)</span>.</p>
-<p><span class="math notranslate nohighlight">\(b\)</span> is a scalar. <span class="math notranslate nohighlight">\(w\)</span> is a vector of length <span class="math notranslate nohighlight">\(p\)</span>. <span class="math notranslate nohighlight">\(\epsilon\)</span> is a random error vector, of length <span class="math notranslate nohighlight">\(n\)</span>. It is independent of <span class="math notranslate nohighlight">\(x\)</span>, and has mean zero.</p>
+<p><span class="math notranslate nohighlight">\(b\)</span> is a scalar. <span class="math notranslate nohighlight">\(w\)</span> is a vector of length <span class="math notranslate nohighlight">\(p\)</span>. <span class="math notranslate nohighlight">\(\epsilon\)</span> is a random error vector, of length <span class="math notranslate nohighlight">\(n\)</span>. It is independent of <span class="math notranslate nohighlight">\(x\)</span>, and has mean of zero.</p>
 <p>Our objective is to find the best values of <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(w\)</span> so that the values of <span class="math notranslate nohighlight">\(\hat{y} = b + x w\)</span> are as close as possible to the actual values <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>For linear regression, <span class="math notranslate nohighlight">\(y\)</span> is a quantitative variable. What if <span class="math notranslate nohighlight">\(y\)</span> is a qualitative variable, for example <span class="math notranslate nohighlight">\(y = 0\)</span> for “no”, and <span class="math notranslate nohighlight">\(y = 1\)</span> for “yes”?</p>
 <p>One way to use regression to solve a classification problem is to model the probability of the variable <span class="math notranslate nohighlight">\(y\)</span> taking the value 1:</p>
 <p><span class="math notranslate nohighlight">\(P (y = 1) = b + x w\)</span></p>
 <p>Once we have found the best values <span class="math notranslate nohighlight">\(\hat{b}\)</span> and <span class="math notranslate nohighlight">\(\hat{w}\)</span>, we compute <span class="math notranslate nohighlight">\(\hat{y} = \hat{b} + x \hat{w}\)</span>. If <span class="math notranslate nohighlight">\(\hat{y} \geq 0.5\)</span>, we decide to classify this observation as <span class="math notranslate nohighlight">\(y = 1\)</span>, that is “yes”. If <span class="math notranslate nohighlight">\(\hat{y} &lt; 0.5\)</span>, we decide to classify this observation as <span class="math notranslate nohighlight">\(y = 0\)</span>, that is “no”.</p>
-<p>There is a problem with this method. We would like to have <span class="math notranslate nohighlight">\(0 \leq P (y = 1) \leq 1\)</span> because it is a probability. However, there is nothing in this formulation that forces <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(w\)</span> to take values such that <span class="math notranslate nohighlight">\(\hat{y} = \hat{b} + x \hat{w}\)</span> will always takes values in <span class="math notranslate nohighlight">\([0, 1]\)</span>.</p>
+<p>There is a problem with this method. We would like to have <span class="math notranslate nohighlight">\(0 \leq P (y = 1) \leq 1\)</span> because it is a probability. However, there is nothing in this formulation that forces <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(w\)</span> to take values such that <span class="math notranslate nohighlight">\(\hat{y} = \hat{b} + x \hat{w}\)</span> will always take values in <span class="math notranslate nohighlight">\([0, 1]\)</span>.</p>
 <p>To solve this problem, we can instead write:</p>
 <p><span class="math notranslate nohighlight">\(z = b + x w\)</span> and <span class="math notranslate nohighlight">\(P (y = 1) = \frac{1}{1 + e^{-z}}\)</span></p>
 <p>That way, we always have <span class="math notranslate nohighlight">\(0 \leq P (y = 1) \leq 1\)</span>. When <span class="math notranslate nohighlight">\(b + x w\)</span> gets large, <span class="math notranslate nohighlight">\(P (y = 1)\)</span> gets close to 1, and the value “yes” is more and more likely. When <span class="math notranslate nohighlight">\(b + x w\)</span> gets small, <span class="math notranslate nohighlight">\(P (y = 1)\)</span> gets close to 0, and the value “no” is more and more likely.</p>
@@ -741,7 +741,7 @@ title="Print to PDF"
 </section>
 <section id="introduction-to-pytorch">
 <h2>Introduction to PyTorch<a class="headerlink" href="#introduction-to-pytorch" title="Permalink to this headline">#</a></h2>
-<p>PyTorch (<a class="reference external" href="https://pytorch.org/">https://pytorch.org/</a>) is a Python package which allows you to build and train neural networks. It is based on automatic differentation.</p>
+<p>PyTorch (<a class="reference external" href="https://pytorch.org/">https://pytorch.org/</a>) is a Python package which allows you to build and train neural networks. It is based on automatic differentiation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
@@ -802,7 +802,7 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<p>This function will be used to sepcify that we will want to compute the gradient with respect to the variable var.</p>
+<p>This function will be used to specify that we will want to compute the gradient with respect to the variable var.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_grad</span><span class="p">(</span><span class="n">var</span><span class="p">):</span>

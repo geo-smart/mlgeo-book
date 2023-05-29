@@ -239,7 +239,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -800,10 +800,14 @@ git clone “<a class="reference external" href="https://github.com/superseismo/
  git push
 </pre></div>
 </div>
-<p>(*) Everytime you start working on your repository, make sure you have the up-to-date version on your local environment. In CLI, this means:
-git pull</p>
-<p>To modify <code class="docutils literal notranslate"><span class="pre">mycode.py</span></code>, use the command:
-git checkout <a class="reference external" href="http://mycode.py">mycode.py</a></p>
+<p>(*) Everytime you start working on your repository, make sure you have the up-to-date version on your local environment. In CLI, this means:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> git pull
+</pre></div>
+</div>
+<p>To modify <code class="docutils literal notranslate"><span class="pre">mycode.py</span></code>, use the command:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> git checkout mycode.py
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>for the MLGeo2022 course, you will have 2 repositories:
@@ -812,7 +816,7 @@ git checkout <a class="reference external" href="http://mycode.py">mycode.py</a>
 git clone “<a class="reference external" href="https://github.com/UW-ESS-DS/MLGeo-Autumn22">https://github.com/UW-ESS-DS/MLGeo-Autumn22</a>”
 Then copy the <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file from the MLGeo2022 course into your own repository.</p>
 </div>
-<ol class="simple">
+<ol>
 <li><p><strong>From the browser</strong>:</p>
 <ul class="simple">
 <li><p>Connect to your GitHub account</p></li>
@@ -827,30 +831,45 @@ Then copy the <code class="docutils literal notranslate"><span class="pre">envir
 <ul class="simple">
 <li><p>Click <code class="docutils literal notranslate"><span class="pre">Add</span></code> on the top of the left sidebar</p></li>
 <li><p>Click <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">new</span> <span class="pre">repository</span></code> and choose: Name, short description, local path (avoid a home directory on other cloud (Dropbox or Github) to reduce headaches), initialize with a README, choose license, choose Git Ignore (most likely programming language)</p></li>
-<li><p>Open in Visual Studio Code or other prefered editor.</p></li>
+<li><p>Open in Visual Studio Code or other preferred editor.</p></li>
 <li><p>Check that the GitHub page is up to date</p></li>
 <li><p>Fetch, Push, Pull, etc</p></li>
 </ul>
 </li>
-<li><p><strong>From the CLI</strong>:</p></li>
+<li><p><strong>From the CLI</strong>:</p>
+<ul>
+<li><p>Initialize a local directory as a git repository:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  git init
+  git add *
+  git commit -m &quot;my first commit&quot;
+  git push
+</pre></div>
+</div>
+</li>
+<li><p>Be aware of the need to use passwords or tokens. Your configuration may also be incomplete, so re run configuration listed above.</p></li>
+<li><p>You can now start writing codes and documentation. GitHub uses <em>staging</em> as terminology to keep track of the new changes that could be <em>committed</em> to the remove server. To add the new script:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  git add newfile.py
+  git commit -m &quot;add new script&quot;
+  git push
+</pre></div>
+</div>
+</li>
+<li><p>If you made some code modification but prefer using the version that is on the GitHub, you can unstage and reset the file from the last version:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  git reset HEAD newfile.py
+  git checkout newfile.py
+</pre></div>
+</div>
+</li>
+<li><p>To do the same for the entire repos:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  git reset HEAD~
+  git checkout
+  git status
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
 </ol>
-<p>Initialize a local directory as a git repository:
-git init
-git add *
-git commit -m “my first commit”
-git push</p>
-<p>Be aware of the need to use passwords or tokens. Your configuration may also be incomplete, so re run configuration listed above.</p>
-<p>You can now start writing codes and documentation. GitHub uses <em>staging</em> as terminology to keep track of the new changes that could be <em>committed</em> to the remove server. To add the new script:
-git add <a class="reference external" href="http://newfile.py">newfile.py</a>
-git commit -m “add new script”
-git push</p>
-<p>If you made some code modification but prefer using the version that is on the GitHub, you can unstage and reset the file from the last version:
-git reset HEAD <a class="reference external" href="http://newfile.py">newfile.py</a>
-git checkout <a class="reference external" href="http://newfile.py">newfile.py</a>
-To do the same for the entire repos:
-git reset HEAD~
-git checkout
-git status</p>
 </section>
 </section>
 <section id="work-as-a-team-with-github">
@@ -873,7 +892,7 @@ git status</p>
 </figcaption>
 </figure>
 <ul class="simple">
-<li><p>Use <strong>GitHub Issues</strong> to post bugs or performance issues, so that the contributors can keep track and address them. There are templates to posting issues, and online <a class="reference external" href="https://medium.com/nyc-planning-digital/writing-a-proper-github-issue-97427d62a20f">discussions</a> about it. The main takeway are:
+<li><p>Use <strong>GitHub Issues</strong> to post bugs or performance issues, so that the contributors can keep track and address them. There are templates to posting issues, and online <a class="reference external" href="https://medium.com/nyc-planning-digital/writing-a-proper-github-issue-97427d62a20f">discussions</a> about it. The main takeways are:
 - Avoid duplication, check if somebody else has had the same issue
 - Use template</p></li>
 </ul>
@@ -887,7 +906,7 @@ git status</p>
 </section>
 <section id="publish-your-software">
 <h2>Publish your software<a class="headerlink" href="#publish-your-software" title="Permalink to this headline">#</a></h2>
-<p>If the software will be used for furture research and would be cited by the community, publish your software on Zenodo. GitHub provides guidelines <a class="reference external" href="https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content">here</a>.</p>
+<p>If the software will be used for future research and would be cited by the community, publish your software on Zenodo. GitHub provides guidelines <a class="reference external" href="https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content">here</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><strong>Note for MLGeo 2022 cohort</strong></p>

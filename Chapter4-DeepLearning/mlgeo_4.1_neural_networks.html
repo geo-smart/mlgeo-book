@@ -241,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -767,7 +767,7 @@ torch.Size([50, 1, 28, 28])
         <span class="c1"># How to access one pair of (image, label) from the dataset?</span>
         <span class="c1"># We access the ith row (which contains the 16*16 = 256 pixels of an image)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
-        <span class="c1"># We tranform it into a numpy array and reshape it to an image format</span>
+        <span class="c1"># We transform it into a numpy array and reshape it to an image format</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="c1"># We apply the required transformation to the image</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span><span class="p">:</span>
@@ -908,7 +908,7 @@ torch.Size([50, 1, 28, 28])
 <h2>c. Define optimization<a class="headerlink" href="#c-define-optimization" title="Permalink to this headline">#</a></h2>
 <p><em>Gradient descent</em> uses the entire data set to compute the gradient and find the optimal (minimum loss) solution. Effectively, the batch size is the entire data set.</p>
 <p><em>Mini batch gradient descent</em> uses batches of data to compute the gradient, find a solution, and moves to the next set of training data. The batch size is determined. The prediction on the training set is calculated for each sample in the batch, then averaged. Then the gradient is calculated.</p>
-<p><em>Stochastic gradient descrent</em> uses one data sample to calculate the gradient, finds a solution, then take another training sample to go down the gradient. Effectively, the batch size is 1.</p>
+<p><em>Stochastic gradient descent</em> uses one data sample to calculate the gradient, finds a solution, then take another training sample to go down the gradient. Effectively, the batch size is 1.</p>
 <p>In this example, we will use stochastic gradient descent SGD.</p>
 <p>Parameters to choose are:</p>
 <ul class="simple">
@@ -929,7 +929,7 @@ torch.Size([50, 1, 28, 28])
 <h2>c. Define a training strategy<a class="headerlink" href="#c-define-a-training-strategy" title="Permalink to this headline">#</a></h2>
 <p>Parameters to choose are:</p>
 <ul class="simple">
-<li><p><strong>batch size</strong>: this is the size of an individial training set used to estimate an average model prediction loss, after which a gradient will be calculated, and the model weights updated.</p></li>
+<li><p><strong>batch size</strong>: this is the size of an individual training set used to estimate an average model prediction loss, after which a gradient will be calculated, and the model weights updated.</p></li>
 <li><p><strong>number of epochs</strong>: this is the number of times the training goes over the <em>entire</em> data sets. If the training set is split into batches of size <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>, then at each <strong>epoch</strong>, the training will be performed over all batches. Models tend to be trained over multiple-to-many epochs (10,100,1000).</p></li>
 </ul>
 <p>Let us now define how to train the model. We will create a function for that.</p>

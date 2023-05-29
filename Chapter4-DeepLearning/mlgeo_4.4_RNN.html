@@ -239,7 +239,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -681,7 +681,7 @@ The RNN takes the multiplication of the weights and the data plus other weights 
     <span class="n">y</span> <span class="o">+=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">off2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">f2</span><span class="o">*</span><span class="mi">20</span><span class="o">+</span><span class="mi">20</span><span class="p">)</span> <span class="p">)</span> <span class="c1"># second wave</span>
     <span class="n">y</span> <span class="o">+=</span> <span class="mf">0.3</span><span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span><span class="n">n_steps</span><span class="p">)</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># noise</span>
     <span class="k">return</span> <span class="n">y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> 
-<span class="c1"># here we added a dimension to the ouput time series because most ML algorithms can be multidimensional, but here we are just doing a single time series.</span>
+<span class="c1"># here we added a dimension to the output time series because most ML algorithms can be multidimensional, but here we are just doing a single time series.</span>
 
 <span class="c1"># we generate 10k time series of 51 points.</span>
 <span class="n">n_steps</span><span class="o">=</span><span class="mi">50</span>
@@ -727,7 +727,7 @@ The RNN takes the multiplication of the weights and the data plus other weights 
                               <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
 </pre></div>
 </div>
-<p>They don’t do too bad in this problem. The simple block is a <code class="docutils literal notranslate"><span class="pre">simpleRNN</span></code>. The simplest recurrent neuron is a <code class="docutils literal notranslate"><span class="pre">SimpleRNN(1,input_shape=[None,1])</span></code> that takes any inout scalar since it can process any number of time steps. The default activation function is <code class="docutils literal notranslate"><span class="pre">tanh</span></code>. To return a time series, and not its final output, you need to set <code class="docutils literal notranslate"><span class="pre">return_sequences=True</span></code>. It turns out that the simplest and single recurrent neuron won’t work. So we stack several simpleRNNs.</p>
+<p>They don’t do too bad in this problem. The simple block is a <code class="docutils literal notranslate"><span class="pre">simpleRNN</span></code>. The simplest recurrent neuron is a <code class="docutils literal notranslate"><span class="pre">SimpleRNN(1,input_shape=[None,1])</span></code> that takes any input scalar since it can process any number of time steps. The default activation function is <code class="docutils literal notranslate"><span class="pre">tanh</span></code>. To return a time series, and not its final output, you need to set <code class="docutils literal notranslate"><span class="pre">return_sequences=True</span></code>. It turns out that the simplest and single recurrent neuron won’t work. So we stack several simpleRNNs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
@@ -855,7 +855,7 @@ The RNN takes the multiplication of the weights and the data plus other weights 
 <section id="problems-with-rnns-and-solutions">
 <h2>Problems with RNNs and solutions<a class="headerlink" href="#problems-with-rnns-and-solutions" title="Permalink to this headline">#</a></h2>
 <p>Simple RNNs have issues during the training with backpropagation that gradients may become too small and that the model no longer updates during training. This is called the <strong>vanishing gradient</strong> problem.</p>
-<p>To remedy this, the algorithm “LSTM” indroduces a memory-cell and gating to allow and reset the values and avoid vanishing gradients.</p>
+<p>To remedy this, the algorithm “LSTM” introduces a memory-cell and gating to allow and reset the values and avoid vanishing gradients.</p>
 <section id="lstm">
 <h3>2. LSTM<a class="headerlink" href="#lstm" title="Permalink to this headline">#</a></h3>
 <p>Long-Short Term Memory are (somewhat complicated) cells that aims to solve the memory loss issue.</p>

@@ -241,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -602,22 +602,22 @@ title="Print to PDF"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#bootstrapping">
-   2. Bootstrapping
+   3. Bootstrapping
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#cross-validation">
-   3. Cross validation
+   4. Cross validation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#leave-one-out-cross-validation">
-   4. Leave One Out Cross Validation
+   5. Leave One Out Cross Validation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#k-fold-cross-validation">
-   5. K-fold cross validation
+   6. K-fold cross validation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -658,22 +658,22 @@ title="Print to PDF"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#bootstrapping">
-   2. Bootstrapping
+   3. Bootstrapping
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#cross-validation">
-   3. Cross validation
+   4. Cross validation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#leave-one-out-cross-validation">
-   4. Leave One Out Cross Validation
+   5. Leave One Out Cross Validation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#k-fold-cross-validation">
-   5. K-fold cross validation
+   6. K-fold cross validation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -696,8 +696,8 @@ title="Print to PDF"
   <section class="tex2jax_ignore mathjax_ignore" id="resampling-methods">
 <h1>2.6 Resampling Methods<a class="headerlink" href="#resampling-methods" title="Permalink to this headline">#</a></h1>
 <p>Data has natural variability that often needs to be accounted for in statistical analysis. There are several strategies to map the data variability into the data-inferred model using resampling methods.
-Resampling methods involve repeatedly drawing samples from a training set and re-fitting a model. The collection of best-fit models provide a confidence in model fitting.</p>
-<p>First off all, import some useful modules:</p>
+Resampling methods involve repeatedly drawing samples from a training set and re-fitting a model. The collection of best-fit models provides confidence in model fitting.</p>
+<p>First of all, import some useful modules:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">zipfile</span><span class="o">,</span> <span class="nn">io</span><span class="o">,</span> <span class="nn">gzip</span><span class="o">,</span> <span class="nn">glob</span><span class="o">,</span> <span class="nn">os</span>
@@ -854,7 +854,7 @@ Resampling methods involve repeatedly drawing samples from a training set and re
 </section>
 <section id="linear-regression">
 <h2>2. Linear Regression<a class="headerlink" href="#linear-regression" title="Permalink to this headline">#</a></h2>
-<p>There is a clearn <strong>linear trend</strong> in the horizontal position data over the course of the past 16 years. Obviously we could fit the data as such:</p>
+<p>There is a clean <strong>linear trend</strong> in the horizontal position data over the course of the past 16 years. Obviously we could fit the data as such:</p>
 <p><span class="math notranslate nohighlight">\(E(t) = V_e t + u_e,\)</span><br />
 <span class="math notranslate nohighlight">\(N(t) = V_n t + u_n,\)</span></p>
 <p>where <span class="math notranslate nohighlight">\(t\)</span> is time, and we want to regress the data to find the coefficients <span class="math notranslate nohighlight">\(V_e\)</span>, <span class="math notranslate nohighlight">\(u_e\)</span>, <span class="math notranslate nohighlight">\(V_n\)</span>, <span class="math notranslate nohighlight">\(u_n\)</span>. The displacements are mostly westward, so we will just focus on the East <span class="math notranslate nohighlight">\(E(t)\)</span> component for this exercise. The coefficients <span class="math notranslate nohighlight">\(u_e\)</span> and <span class="math notranslate nohighlight">\(u_n\)</span> are the intercept at <span class="math notranslate nohighlight">\(t=0\)</span>. They are not zero in this case because <span class="math notranslate nohighlight">\(t\)</span> starts in 2006. The coefficients <span class="math notranslate nohighlight">\(V_e\)</span> and <span class="math notranslate nohighlight">\(V_n\)</span> have the dimension of velocities:</p>
@@ -864,13 +864,13 @@ Resampling methods involve repeatedly drawing samples from a training set and re
 <p><span class="math notranslate nohighlight">\(\text{Var}(x) = 1/n \sum_{i=1}^n (x_i-\hat{x})^2\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(\hat{x}\)</span> is the mean of <span class="math notranslate nohighlight">\(x\)</span>.  When fitting the regression, we predict the values <span class="math notranslate nohighlight">\(x_{pred}\)</span>. The residuals are the differences between the data and the predicted values: <span class="math notranslate nohighlight">\(e = x - x_{pred} \)</span>. <span class="math notranslate nohighlight">\(R^2\)</span> or <i> coefficient of determination</i> is:</p>
 <p><span class="math notranslate nohighlight">\(R^2 = 1 - \text{Var}(x-x_{pred}) /\text{Var}(x)  = 1 - \text{Var}(e) /\text{Var}(x) \)</span>
-The smaller the error, the “better” the fit (we will discuss later that a fit can be too good!), the closter <span class="math notranslate nohighlight">\(R^2\)</span> is to one.</p>
+The smaller the error, the “better” the fit (we will discuss later that a fit can be too good!), the closer <span class="math notranslate nohighlight">\(R^2\)</span> is to one.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># now let&#39;s find the trends and detrend the data.</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 <span class="c1"># linear regression such that: displacement = Velocity * time</span>
-<span class="c1"># velocity in the East componentone.</span>
+<span class="c1"># velocity in the East component.</span>
 <span class="n">Ve</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r_value</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">std_err</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">linregress</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;east&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">])</span>
 <span class="c1"># horizontal plate motion:</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sta</span><span class="p">,</span><span class="s2">&quot;overall plate motion there&quot;</span><span class="p">,</span><span class="n">Ve</span><span class="p">,</span><span class="s1">&#39;mm/year&#39;</span><span class="p">)</span>
@@ -928,7 +928,7 @@ parameters: Coefficient of determination -0.9960854.2, P-value 0.0000004.2, stan
 <span class="c1"># The mean squared error</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean squared error (mm): </span><span class="si">%.2f</span><span class="s1">&#39;</span>
       <span class="o">%</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">Epred</span><span class="p">))</span>
-<span class="c1"># The coefficient of determination: 1 is perfect prediction</span>
+<span class="c1"># The coefficient of determination: 1 is the perfect prediction</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of determination: </span><span class="si">%.2f</span><span class="s1">&#39;</span>
       <span class="o">%</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">Epred</span><span class="p">))</span>
 </pre></div>
@@ -943,7 +943,7 @@ Coefficient of determination: 0.99
 </div>
 </section>
 <section id="bootstrapping">
-<h2>2. Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">#</a></h2>
+<h2>3. Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">#</a></h2>
 <p>Commonly used to provide a measure of accuracy of a parameter estimate or of a given statistical learning method. Random sampling <strong>with replacement</strong> cross-validation iterator. Contrary to cross-validation, bootstrapping allows some samples to occur several times in each splits. However a sample that occurs in the train split will never occur in the test split and vice-versa.
 For linear regression fit, standard errors are automatically calculated in regression toolbox. But if the model is more complicated, bootstrapping provides one way to calculate these errors.</p>
 <p>Scikit-learn seems to have deprecated the bootstrap function, but we can find <code class="docutils literal notranslate"><span class="pre">resample</span></code> in the <code class="docutils literal notranslate"><span class="pre">utils</span></code> module. Make sure you use <code class="docutils literal notranslate"><span class="pre">replace=True</span></code>.
@@ -969,7 +969,7 @@ For reproducible results, you can select a fixed <code class="docutils literal n
     <span class="n">vel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
 
-<span class="c1"># the data shows cleary a trend, so the predictions of the trends are close to each other:</span>
+<span class="c1"># the data shows clearly a trend, so the predictions of the trends are close to each other:</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean of the velocity estimates </span><span class="si">%f</span><span class="s2">4.2 and the standard deviation </span><span class="si">%f</span><span class="s2">4.2&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribution of eastward velocities (mm/year)&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -986,14 +986,14 @@ For reproducible results, you can select a fixed <code class="docutils literal n
 </div>
 </section>
 <section id="cross-validation">
-<h2>3. Cross validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">#</a></h2>
+<h2>4. Cross validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">#</a></h2>
 <p>A model validation technique to assess how generalizable a statistical analysis is to independent data set is <strong>cross-validation</strong>. There are several tutorials on <span class="xref myst">cross-validation</span>.</p>
 <p>Cross-validation divides the data set between a <em>training</em> set and a <em>validation</em> set:</p>
 <div>
 <img src="ValsetApproach.png" width="500"/>
 </div>
 From scikit-learn: concept for training and validation set.
-<p>Often the validation set ends up understimationg the prediction errors (model uncertainties) because the validation set is often smaller than the training set. To alleviate that, we can perform cross-validation over many folds of selecting a validation and training set.</p>
+<p>Often the validation set ends up underestimating the prediction errors (model uncertainties) because the validation set is often smaller than the training set. To alleviate that, we can perform cross-validation over many folds of selecting a validation and training set.</p>
 <div>
 <img src="grid_search_cross_validation.png" width="500"/>
 </div>
@@ -1004,7 +1004,7 @@ From scikit-learn: concept for training and validation set.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we randomly select values and split the data between training and validation set.</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">ShuffleSplit</span>
 <span class="c1"># we split once the data between a training and a validating set </span>
-<span class="n">n</span><span class="o">=</span><span class="mi">1</span> <span class="c1"># we do this selectio once</span>
+<span class="n">n</span><span class="o">=</span><span class="mi">1</span> <span class="c1"># we do this selection once</span>
 <span class="n">v_size</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="c1"># 30% of the data will be randomly selected to be the validation set.</span>
 
 <span class="n">rs</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -1042,7 +1042,7 @@ From scikit-learn: concept for training and validation set.
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MSE (mean square error) on training set (mm): </span><span class="si">%.2f</span><span class="s1">&#39;</span>
       <span class="o">%</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">E_train</span><span class="p">))</span>
-<span class="c1"># The coefficient of determination: 1 is perfect prediction</span>
+<span class="c1"># The coefficient of determination: 1 is the perfect prediction</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of determination on training set: </span><span class="si">%.2f</span><span class="s1">&#39;</span>
       <span class="o">%</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">E_train</span><span class="p">))</span>
 
@@ -1117,7 +1117,7 @@ Validation set MSE (mm) and Coef of Determination: 20.52,0.81
 <p>Now you see that the choice of <em>training</em> vs <em>validating</em> data is important to fit a model that will generalize.</p>
 </section>
 <section id="leave-one-out-cross-validation">
-<h2>4. Leave One Out Cross Validation<a class="headerlink" href="#leave-one-out-cross-validation" title="Permalink to this headline">#</a></h2>
+<h2>5. Leave One Out Cross Validation<a class="headerlink" href="#leave-one-out-cross-validation" title="Permalink to this headline">#</a></h2>
 <p>LOOCV splits the data in 2 sets (training and validation) <i>n</i> times (<i>n</i> is the number of data points). At each repeat, the training set is <strong>all but one</strong> data, the validation set is one element.</p>
 <div>
 <img src="LOOCV.png" width="500"/>
@@ -1152,7 +1152,7 @@ Advantages: it has far less bias with respect to the training data. It does not 
     <span class="n">r2s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">r2_score</span><span class="p">(</span><span class="n">E_val</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)</span>
     <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
 
-<span class="c1"># the data shows cleary a trend, so the predictions of the trends are close to each other:</span>
+<span class="c1"># the data shows clearly a trend, so the predictions of the trends are close to each other:</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean of the velocity estimates </span><span class="si">%f</span><span class="s2">4.2 and the standard deviation </span><span class="si">%f</span><span class="s2">4.2&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
 <span class="c1"># the test error is the average of the mean-square-errors</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CV = </span><span class="si">%4.2f</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mse_val</span><span class="p">)))</span>
@@ -1169,7 +1169,7 @@ CV = 7.87
 <p>LOOCV is rarely used in practice. This example is just to show the extreme end member of cross-fold validation.</p>
 </section>
 <section id="k-fold-cross-validation">
-<h2>5. K-fold cross validation<a class="headerlink" href="#k-fold-cross-validation" title="Permalink to this headline">#</a></h2>
+<h2>6. K-fold cross validation<a class="headerlink" href="#k-fold-cross-validation" title="Permalink to this headline">#</a></h2>
 <p>Designed to reduce the computational cost of LOOCV. Randomly devide over <i>k</i> groups/folds of approximately equal size. It is typical to use <i>5</i> or <i>10</i>.</p>
 <div>
 <img src="Kfold.png" width="500"/>
@@ -1204,7 +1204,7 @@ CV = 7.87
     <span class="n">r2s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">r2_score</span><span class="p">(</span><span class="n">E_train</span><span class="p">,</span> <span class="n">Epred_train</span><span class="p">)</span>
     <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
 
-<span class="c1"># the data shows cleary a trend, so the predictions of the trends are close to each other:</span>
+<span class="c1"># the data shows clearly a trend, so the predictions of the trends are close to each other:</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean of the velocity estimates </span><span class="si">%4.2f</span><span class="s2"> and the standard deviation </span><span class="si">%4.2f</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
 <span class="c1"># the test error is the average of the mean-square-errors</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean MSE for training set : </span><span class="si">%4.2f</span><span class="s2"> and the validation set: </span><span class="si">%4.2f</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mse_train</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mse_val</span><span class="p">)))</span>

@@ -241,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -783,7 +783,7 @@ title="Print to PDF"
                 
   <section id="feature-engineering">
 <h1>2.8 Feature engineering<a class="headerlink" href="#feature-engineering" title="Permalink to this headline">#</a></h1>
-<p>The process of feature engineering is of manipulating, transforming, selecting raw data into features that can be used in statistical analysis of prediction.</p>
+<p>The process of feature engineering is of manipulating, transforming, and selecting raw data into features that can be used in statistical analysis of prediction.</p>
 <ul class="simple">
 <li><p>statistical features</p></li>
 <li><p>temporal features</p></li>
@@ -886,7 +886,7 @@ UW.RATT..HHZ | 2021-07-29T06:15:00.000001Z - 2021-07-29T08:15:00.000001Z | 100.0
 </div>
 <p>Image taken from this <span class="xref myst">blog</span>.</p>
 <p>The mean is the sum of the values divided by the number of data points. It is the first raw moment of a distribution.
-<span class="math notranslate nohighlight">\(\mu = \int_{-\infty}^\infty zP(z)dz\)</span>, where z the ground motion value (bin) and <span class="math notranslate nohighlight">\(P(z)\)</span> is the distribution of the data.</p>
+<span class="math notranslate nohighlight">\(\mu = \int_{-\infty}^\infty zP(z)dz\)</span>, where z is the ground motion value (bin) and <span class="math notranslate nohighlight">\(P(z)\)</span> is the distribution of the data.</p>
 </section>
 <section id="the-variance">
 <h2>The Variance<a class="headerlink" href="#the-variance" title="Permalink to this headline">#</a></h2>
@@ -910,7 +910,7 @@ UW.RATT..HHZ | 2021-07-29T06:15:00.000001Z - 2021-07-29T08:15:00.000001Z | 100.0
 </section>
 <section id="kurtosis">
 <h2>Kurtosis<a class="headerlink" href="#kurtosis" title="Permalink to this headline">#</a></h2>
-<p>Kurtosis measures the combine size of the two tails relative to the whole distribution. It is the fourth centralized and standardized moment.</p>
+<p>Kurtosis measures the combined size of the two tails relative to the whole distribution. It is the fourth centralized and standardized moment.</p>
 <p><span class="math notranslate nohighlight">\(m_4= \int_{-\infty}^\infty (\frac{z-\mu}{\sigma})^4P(z)dz\)</span></p>
  <div>
 <img src="kurtosis.png" alt="kurtosis" height=200  />
@@ -969,7 +969,7 @@ The laplace, normal, and uniform distributions have a mean of 0 and a variance o
 </div>
 </div>
 </div>
-<p>These values may mean nothing without some additional context. We can download seismic noise data to see if the earthquake waveforms is statistically different from the noise. For that, we will download the same length of data prior to the earthquake:</p>
+<p>These values may mean nothing without some additional context. We can download seismic noise data to see if the earthquake waveforms are statistically different from the noise. For that, we will download the same length of data prior to the earthquake:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download seismic data 2 hours prior to the earthquake.</span>
@@ -1037,13 +1037,13 @@ The laplace, normal, and uniform distributions have a mean of 0 and a variance o
 <section id="fourier-transform">
 <h2>Fourier Transform<a class="headerlink" href="#fourier-transform" title="Permalink to this headline">#</a></h2>
 <p>We use the Scipy Fourier <a class="reference external" href="%21https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.rfft.html#scipy.fftpack.rfft">package</a> to transform the two time series (earthquake and noise).</p>
-<p>The Fourier transform is a decomposition of the time series onto a orthonormal basis of cosine and sine functions. The Fourier transform of a time series <span class="math notranslate nohighlight">\(f(t)\)</span> (but similarly if the variable is space <span class="math notranslate nohighlight">\(x\)</span>).</p>
+<p>The Fourier transform is a decomposition of the time series onto an orthonormal basis of cosine and sine functions. The Fourier transform of a time series <span class="math notranslate nohighlight">\(f(t)\)</span> (but similarly if the variable is space <span class="math notranslate nohighlight">\(x\)</span>).</p>
 <p><span class="math notranslate nohighlight">\(\hat{F}(f) = \int_{-\infty}^\infty f(t) \exp^{-i2\pi ft} dt\)</span></p>
-<p><span class="math notranslate nohighlight">\(\hat{F}(f)\)</span> is the complex Fourier value at frequency <span class="math notranslate nohighlight">\(f\)</span>. The FOurier transform determines what frequency(ies) dominate the time series.</p>
+<p><span class="math notranslate nohighlight">\(\hat{F}(f)\)</span> is the complex Fourier value at frequency <span class="math notranslate nohighlight">\(f\)</span>. The Fourier transform determines what frequency(ies) dominate the time series.</p>
 </section>
 <section id="nyquist">
 <h2>Nyquist<a class="headerlink" href="#nyquist" title="Permalink to this headline">#</a></h2>
-<p>The Fourier transform we will use in this class takes a discrete time series of real numbers. The time series is sampled with <span class="math notranslate nohighlight">\(N\)</span> samples per seconds. If the time series span <span class="math notranslate nohighlight">\(T\)</span> seconds regularly, then the sampling rate of the data <span class="math notranslate nohighlight">\(dt=T/N\)</span>. The highest frequency that can be resolved in a discrete time series, called the Nyquist frequency, is limited by <span class="math notranslate nohighlight">\(dt\)</span>:</p>
+<p>The Fourier transform we will use in this class takes a discrete time series of real numbers. The time series is sampled with <span class="math notranslate nohighlight">\(N\)</span> samples per second. If the time series span <span class="math notranslate nohighlight">\(T\)</span> seconds regularly, then the sampling rate of the data <span class="math notranslate nohighlight">\(dt=T/N\)</span>. The highest frequency that can be resolved in a discrete time series, called the Nyquist frequency, is limited by <span class="math notranslate nohighlight">\(dt\)</span>:</p>
 <p><span class="math notranslate nohighlight">\(F_{Nyq} = \frac{1}{2dt N}\)</span></p>
 <p>Effectively, one cannot constrain signals within two time samples from the data.</p>
 </section>
@@ -1211,13 +1211,13 @@ Plot the amplitude and phase spectra</p>
 </section>
 <section id="wavelet-transform">
 <h3>Wavelet transform<a class="headerlink" href="#wavelet-transform" title="Permalink to this headline">#</a></h3>
-<p>The wavelet transform projects the time series onto a 2D space of <em>time</em> and <em>scale</em> axis. The <em>scale</em> is a representation of the frequency scale of the data. The waveletn transforms uses a series of functions called <em>wavelets</em> to linearly decompose the signals. Unlike the <em>sine</em> functions of the Fourier transform, the <em>wavelets</em> have finite durations and are localized in time:</p>
+<p>The wavelet transform projects the time series onto a 2D space of <em>time</em> and <em>scale</em> axis. The <em>scale</em> is a representation of the frequency scale of the data. The wavelet transforms uses a series of functions called <em>wavelets</em> to linearly decompose the signals. Unlike the <em>sine</em> functions of the Fourier transform, the <em>wavelets</em> have finite durations and are localized in time:</p>
  <div>
 <img src="Wavelet-Out1.jpeg" alt="wavelet" height=100  />
 </div>
 <p>Image from this <span class="xref myst">article</span>.</p>
-<p>There exist many canonical wavelet families. The difference between families are typically their shape, compactness, and smoothness. Typically, one chooses one family for the specific time series. Wavelets have finite energy and zero mean.</p>
-<p>The time-scale representation of of a time series is a <em>scaleogram</em>. <em>scales</em> can be converted to pseudo frequencies: If <span class="math notranslate nohighlight">\(f_c\)</span> is the central frequency of the wavelet and the scale is <span class="math notranslate nohighlight">\(a\)</span>, then the pseuo-frequency is <span class="math notranslate nohighlight">\(f_a = f_c/a\)</span>.</p>
+<p>There exist many canonical wavelet families. The difference between families is typically their shape, compactness, and smoothness. Typically, one chooses one family for the specific time series. Wavelets have finite energy and zero mean.</p>
+<p>The time-scale representation of a time series is a <em>scaleogram</em>. <em>scales</em> can be converted to pseudo frequencies: If <span class="math notranslate nohighlight">\(f_c\)</span> is the central frequency of the wavelet and the scale is <span class="math notranslate nohighlight">\(a\)</span>, then the pseuo-frequency is <span class="math notranslate nohighlight">\(f_a = f_c/a\)</span>.</p>
  <div>
 <img src="wavelet_families.png" alt="wavelet" height=300  />
 </div>
@@ -1283,7 +1283,7 @@ Plot the amplitude and phase spectra</p>
 </section>
 <section id="automated-feature-extraction">
 <h1>Automated Feature Extraction<a class="headerlink" href="#automated-feature-extraction" title="Permalink to this headline">#</a></h1>
-<p>There are toolboxes to extract features from the data, including feautres done the tranfsform. We will use <code class="docutils literal notranslate"><span class="pre">Tsfresh</span></code>, some of the best maintained and comprehensive python toolbox.</p>
+<p>There are toolboxes to extract features from the data, including features from the tranfsform. We will use <code class="docutils literal notranslate"><span class="pre">Tsfresh</span></code>, some of the best maintained and comprehensive python toolbox.</p>
 <p>Most toolboxes require the input to be <code class="docutils literal notranslate"><span class="pre">pandas</span></code>. First, we convert the data into pndas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

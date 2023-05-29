@@ -56,7 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3.1 Classification and Regression" href="3.2_classification_regression.html" />
+    <link rel="next" title="3.2 Classification and Regression" href="3.2_classification_regression.html" />
     <link rel="prev" title="2.10 ML-ready data" href="../Chapter2-DataManipulation/2.10_MLready_data.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -241,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -710,10 +710,10 @@ title="Print to PDF"
   <section class="tex2jax_ignore mathjax_ignore" id="clustering">
 <h1>3.1 Clustering<a class="headerlink" href="#clustering" title="Permalink to this headline">#</a></h1>
 <p>Clustering is an unsupervised problem because the goal is to discover structure on the basis of data sets. Clustering looks to find homogeneous subgroups among the observations.</p>
-<p>The concept of homogeneity within group is parameterized with the <em>distance</em> between data.  There exist many other distance metrics, which can be called from the <code class="docutils literal notranslate"><span class="pre">DistanceMetric</span></code> sci-kit learn module. More details in this scikit-learn <a class="reference external" href="%21https://scikit-learn.org/stable/modules/generated/sklearn.metrics.DistanceMetric.html#sklearn.metrics.DistanceMetric">documentation</a>.</p>
+<p>The concept of homogeneity within a group is parameterized with the <em>distance</em> between data.  There exist many other distance metrics, which can be called from the <code class="docutils literal notranslate"><span class="pre">DistanceMetric</span></code> sci-kit learn module. More details in this scikit-learn <a class="reference external" href="%21https://scikit-learn.org/stable/modules/generated/sklearn.metrics.DistanceMetric.html#sklearn.metrics.DistanceMetric">documentation</a>.</p>
 <p>Clustering and PCA both simplify the data via a small number of summaries. But the differences are:</p>
 <ul class="simple">
-<li><p>PCA seeks to reduce the dimensionality of the data, to find a low-dimensiona representation of the data that explains a good fraction of the data variance,</p></li>
+<li><p>PCA seeks to reduce the dimensionality of the data, to find a low-dimensional representation of the data that explains a good fraction of the data variance,</p></li>
 <li><p>Clustering seeks to find homogeneous groups within the observations.</p></li>
 </ul>
 <p>In fact, it is common to combine both for complex and high dimensional data: 1) PCA, 2) clustering on the PCs.</p>
@@ -740,7 +740,7 @@ title="Print to PDF"
 <section id="data">
 <h2>Data<a class="headerlink" href="#data" title="Permalink to this headline">#</a></h2>
 <p>We will use <strong>flow cytometer data</strong>.
-The file has attributes about each particle, such as normalized scatter, red, orange, and green. These are measurements from the instrument iteself from light scattering.
+The file has attributes about each particle, such as normalized scatter, red, orange, and green. These are measurements from the instrument itself from light scattering.
 Other parameters, like diam (diameter) and Qc (carbon quota) are estimated from the light scatter measurements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -969,7 +969,7 @@ Other parameters, like diam (diameter) and Qc (carbon quota) are estimated from 
 <div class="cell_output docutils container">
 </div>
 </div>
-<p>Typically, populations are gated based on their log-transformed normalized scatter (x) and red (y). Orange flouresence can be used in addition to gate the synecho population. We can see there are 3 populations here, and these were previously gated from the parameters above.</p>
+<p>Typically, populations are gated based on their log-transformed normalized scatter (x) and red (y). Orange flourescence can be used in addition to gate the synecho population. We can see there are 3 populations here, and these were previously gated from the parameters above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
@@ -1070,7 +1070,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <li><p>Find the <em>center of mass</em> (mean) of each group of labeled points. These are new means to step 1.</p></li>
 </ol>
 <p>In the following, we denote <span class="math notranslate nohighlight">\(n\)</span> the number of data points, and <span class="math notranslate nohighlight">\(p\)</span> the number of features for each data point.</p>
-<p>K-means only works with the <strong>Euclidian distance</strong> metrics. In fact, its core concept is to use the the euclidian distance to measure and minimize <em>inertia</em> or <em>within cluster variation</em>.</p>
+<p>K-means only works with the <strong>Euclidian distance</strong> metrics. In fact, its core concept is to use the euclidian distance to measure and minimize <em>inertia</em> or <em>within cluster variation</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -1207,7 +1207,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Initialize centroids</span>
     <span class="n">centers</span> <span class="o">=</span> <span class="n">init_centers</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-    <span class="c1"># Initialize objective function to maximum square of distance between to data points time number od data points</span>
+    <span class="c1"># Initialize objective function to square of the maximum distance between two data points times number of data points</span>
     <span class="n">objective_old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">data</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span>
     <span class="c1"># Initialize clusters</span>
     <span class="n">clusters_old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">data</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
@@ -1315,7 +1315,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <li><p>If the data has ground-truth labels (e.g., population of the cyto data), we can use several metrics:</p>
 <ul>
 <li><p><strong>homogeneity</strong> (each cluster contains only members of a given class, <code class="docutils literal notranslate"><span class="pre">metrics.homgeneity_score(clusterID,true_label)</span></code>), <strong>completeness</strong> (all members of a given class are assigned the same cluster, <code class="docutils literal notranslate"><span class="pre">metrics.completeness_score</span></code>), V-measure (2 x homogeneity x completeness / (homogeneity+completeness), <code class="docutils literal notranslate"><span class="pre">metrics.v_measure_score</span></code>) and all three <code class="docutils literal notranslate"><span class="pre">metrics.homogeneity_completeness_v_measure(clusterID,true_label)</span></code>.</p></li>
-<li><p><strong>Fowlkes-Mallows index</strong>, FMI, that uses TP (True Positive), FP (False Positive), FN (False Negative). Is 0.0 for random cluster assignement and 1.0 for perfect label assignements.</p></li>
+<li><p><strong>Fowlkes-Mallows index</strong>, FMI, that uses TP (True Positive), FP (False Positive), FN (False Negative). Is 0.0 for random cluster assignment and 1.0 for perfect label assignments.</p></li>
 </ul>
 </li>
 <li><p>If the data does not have ground truth label, you can use:</p>
@@ -1681,9 +1681,9 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <section id="hierarchical-clustering">
 <h2>2. Hierarchical Clustering<a class="headerlink" href="#hierarchical-clustering" title="Permalink to this headline">#</a></h2>
 <p>In K-means, we use the euclidian distance and prescribe the number of clusters K.</p>
-<p>In hierarchical clustering, we choose difference distance metrics, visualize the data structure, and then decide on the number of clusters. There are two approaches to building the hierarchy of clusers:</p>
+<p>In hierarchical clustering, we choose difference distance metrics, visualize the data structure, and then decide on the number of clusters. There are two approaches to building the hierarchy of clusters:</p>
 <ul class="simple">
-<li><p><strong>Agglomerative</strong>: each point starts in each unique cluster. data is merged in pairs as on creates a hierarchy of clusers.</p></li>
+<li><p><strong>Agglomerative</strong>: each point starts in each unique cluster. data is merged in pairs as on creates a hierarchy of clusters.</p></li>
 <li><p><strong>Divisive</strong>: initially, all data is into 1 cluster. The data is recursively split into smaller and smaller clusters.</p></li>
 </ul>
 <p>There are several types of <em>linkages</em>. sklearn has detailed <a class="reference external" href="%21https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering">documentation</a>, mostly for agglomerative: The different linkages methods are:</p>
@@ -1898,7 +1898,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
     <a class='right-next' id="next-link" href="3.2_classification_regression.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">3.1 Classification and Regression</p>
+        <p class="prev-next-title">3.2 Classification and Regression</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

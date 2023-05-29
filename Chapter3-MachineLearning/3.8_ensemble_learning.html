@@ -241,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -785,13 +785,13 @@ VotingClassifier 0.9632119514472456
 </div>
 </div>
 </div>
-<p>Note that taking the average of the predicted probabiliy, instead of its max, is also a possibility. One can only evaluate the classifiers that output probabilities, which SVM does not do by default. Set the <code class="docutils literal notranslate"><span class="pre">voting</span></code> to <code class="docutils literal notranslate"><span class="pre">soft</span></code> to compare with the mean proba.</p>
+<p>Note that taking the average of the predicted probability, instead of its max, is also a possibility. One can only evaluate the classifiers that output probabilities, which SVM does not do by default. Set the <code class="docutils literal notranslate"><span class="pre">voting</span></code> to <code class="docutils literal notranslate"><span class="pre">soft</span></code> to compare with the mean proba.</p>
 </section>
 <section id="bagging-and-pasting">
 <h2>2. Bagging and Pasting<a class="headerlink" href="#bagging-and-pasting" title="Permalink to this headline">#</a></h2>
 <p>This approaches uses the same model algorithm but resampling on the training set. For resampling <strong>with replacement</strong> (bootstrap), it is called <em>bagging</em>; for resampling <strong>without replacement</strong>, it is called <em>pasting</em>.</p>
 <p>Several models are trained on different data, then the predictions are aggregated (<em>statistical mode</em> for classification and <em>average</em> for regression). The aggregated model tends to have a lower variance and bias, similar to what it would get if it were trained on the entire data.</p>
-<p>In the example below, you can implement BaggingClassifier in sklearn and explore by changing the number of model or bootsrapping v</p>
+<p>In the example below, you can implement BaggingClassifier in sklearn and explore by changing the number of model or bootstrapping value</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">BaggingClassifier</span>
@@ -830,10 +830,10 @@ VotingClassifier 0.9632119514472456
 </section>
 <section id="boosting">
 <h2>3. Boosting<a class="headerlink" href="#boosting" title="Permalink to this headline">#</a></h2>
-<p>The idea behind boostin methods is to train predictors sequentially, each trying to correct its predecessor.</p>
+<p>The idea behind boosting methods is to train predictors sequentially, each trying to correct its predecessor.</p>
 <section id="adaboost">
 <h3>3.1 AdaBoost<a class="headerlink" href="#adaboost" title="Permalink to this headline">#</a></h3>
-<p>The AdaBoost algorithm train a new predictor by paying more attention (up-weighting) the bad predictions from the previous predictor. For instance, in a classification, a first predictor will be underfitting the data and misclassifying labels. The second predictor weights more strongly the data that was misclassified. The <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> parameters set the magnitude of that weighting.</p>
+<p>The AdaBoost algorithm trains a new predictor by paying more attention (up-weighting) the bad predictions from the previous predictor. For instance, in a classification, a first predictor will be underfitting the data and misclassifying labels. The second predictor weights more strongly the data that was misclassified. The <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> parameters set the magnitude of that weighting.</p>
 <p>AdaBoost work on any classifier that outputs probabilities (e.g., DecisionTrees, KNN; look for the classifiers that can take the function <code class="docutils literal notranslate"><span class="pre">predict_proba()</span></code>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

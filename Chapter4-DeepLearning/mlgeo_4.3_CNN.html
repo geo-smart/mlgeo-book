@@ -239,7 +239,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -797,21 +797,21 @@ Figure: A ConvNet arranges its neurons in three dimensions (width, height, depth
 <section id="anatomy-of-the-conv-layer">
 <h2>1.1 Anatomy of the Conv layer<a class="headerlink" href="#anatomy-of-the-conv-layer" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p>The <strong>input</strong> “feature map” is the input data for a given layer. It is 3D for a 2D convolution. The three dimensions are: <em>height</em>, <em>width</em>, <em>depth/channels</em>. For instance, width and heights are the 2D images (e.g. 32x32 pixels), the depth can be the different RGB (1 image per color R, G, B). For <em>1D convolution</em>, the input data should be ordered as the following <strong>(batch size, number of channels, length of signal)</strong>. For <em>2D convolutions</em>, the input size is <strong>(batch size, number of channels, pixel height, pixe width)</strong>.</p></li>
-<li><p>The <strong>filters</strong> are the <strong>convolution kernels</strong> are the dimensionality of the output space. In general, the number of filters is greater than the input number of channels: the network heights and widths usually decreases throughout the networks, thus increasing the depth or number of filters does not increase the complexity too much.</p></li>
-<li><p>The <strong>kernel_size</strong> is a list of 2 integer that specifies the height and width of the 2D convolution kernel. If both integers are equal, just use a single integer value. The kernel is a filter that has weights to apply on the input values, each kernel map as 1 bias. Let’s take an example of a 3x3 input feature map, a 2x2 kernel size, a 2x2 output feature map. The highlighted part of the map in blue are those we focus on:</p></li>
+<li><p>The <strong>input</strong> “feature map” is the input data for a given layer. It is 3D for a 2D convolution. The three dimensions are: <em>height</em>, <em>width</em>, <em>depth/channels</em>. For instance, width and heights are the 2D images (e.g. 32x32 pixels), the depth can be the different RGB (1 image per color R, G, B). For <em>1D convolution</em>, the input data should be ordered as the following <strong>(batch size, number of channels, length of signal)</strong>. For <em>2D convolutions</em>, the input size is <strong>(batch size, number of channels, pixel height, pixel width)</strong>.</p></li>
+<li><p>The <strong>filters</strong> are the <strong>convolution kernels</strong> are the dimensionality of the output space. In general, the number of filters is greater than the input number of channels: the network heights and widths usually decrease throughout the networks, thus increasing the depth or number of filters does not increase the complexity too much.</p></li>
+<li><p>The <strong>kernel_size</strong> is a list of 2 integers that specifies the height and width of the 2D convolution kernel. If both integers are equal, just use a single integer value. The kernel is a filter that has weights to apply on the input values, each kernel map as 1 bias. Let’s take an example of a 3x3 input feature map, a 2x2 kernel size, a 2x2 output feature map. The highlighted part of the map in blue are those we focus on:</p></li>
 </ul>
 <p><img alt="Convolution Kernel" src="img/convolution.png" /></p>
  <!-- width="600"></center> -->
 <p>Convolution with kernel window (Fig. 6.2.1 from Dive into Deep Learning).</p>
-<p>In the example above, we perform the following operation: the top-left output value is = 0×0+1×1+3×2+4×3=19. Then we repeat the process until all elements of the output map are field. We also repeat this for each filter. Usually prefer using small but many kernels/filters.</p>
+<p>In the example above, we perform the following operation: the top-left output value is = 0×0+1×1+3×2+4×3=19. Then we repeat the process until all elements of the output map are filled. We also repeat this for each filter. Usually prefer using small but many kernels/filters.</p>
 <p><img alt="Convolutional Kernel" src="../_images/CNN_StanfordCS230.gif" /></p>
 <ul class="simple">
 <li><p>The <strong>stride</strong> is the step that the convolution skips when being applying the filters/kernels. Small strides work better in practice. It is one way to reduce the feature map, but the most popular choice for this is to use <em><strong>maxpooling</strong></em>.</p></li>
-<li><p>The <strong>padding_mode</strong> is set to either <code class="docutils literal notranslate"><span class="pre">same</span></code> or <code class="docutils literal notranslate"><span class="pre">valid</span></code> depending on whether the edges of the feature map are extended and filled with zeros (same) to fit the total length of the kernel size and stride, or wether they are ignored (valid). Prefer to use <code class="docutils literal notranslate"><span class="pre">same</span></code> especially for the hidden conv layers to avoid loosing data and feature knowledge.</p></li>
+<li><p>The <strong>padding_mode</strong> is set to either <code class="docutils literal notranslate"><span class="pre">same</span></code> or <code class="docutils literal notranslate"><span class="pre">valid</span></code> depending on whether the edges of the feature map are extended and filled with zeros (same) to fit the total length of the kernel size and stride, or whether they are ignored (valid). Prefer to use <code class="docutils literal notranslate"><span class="pre">same</span></code> especially for the hidden conv layers to avoid losing data and feature knowledge.</p></li>
 </ul>
 <p>The convolution can be 1D or 2D depending on the array input:</p>
-<p>When the input a single dimension array (vector, time series), use a <a class="reference external" href="%21https://pytorch.org/docs/stable/generated/torch.nn.Conv1d.html#torch.nn.Conv1d">Conv1D layer</a>.</p>
+<p>When the input is a single dimension array (vector, time series), use a <a class="reference external" href="%21https://pytorch.org/docs/stable/generated/torch.nn.Conv1d.html#torch.nn.Conv1d">Conv1D layer</a>.</p>
 <p>When the input is a 2D image (2D array) or a time series with multiple channels (example of a seismogram with 3 components), use <a class="reference external" href="%21https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html#torch.nn.Conv2d">Conv2D layers</a>.</p>
 <p>Here are examples of a 32x32 image with three channels (RGB) sent to a 64 output channels/filters with a size of kernels of 6 pixels. The padding is “same” such that the edges of the feature maps are filled with zeros. We write the function in Pytorch.</p>
 <p>A great lecture about CNN is one done at Stanford, <a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks">CS230</a>.</p>
@@ -826,12 +826,12 @@ Figure: A ConvNet arranges its neurons in three dimensions (width, height, depth
 </section>
 <section id="pooling-layers">
 <h2>1.2 Pooling layers<a class="headerlink" href="#pooling-layers" title="Permalink to this headline">#</a></h2>
-<p><strong>MaxPooling</strong> layers are downsampling layers. It ouputs the max value of each channel of windwos in a feature map. Downsampling reduces the size of the feature-map, as well as to induce spatial-filter hierarchies by making successive convolution layers look at increasingly large windows (in terms of the fraction of the original input they cover). The pooling size is the factor of reduction in the layer size.</p>
+<p><strong>MaxPooling</strong> layers are downsampling layers. It ouputs the max value of each channel of windows in a feature map. Downsampling reduces the size of the feature-map, as well as to induce spatial-filter hierarchies by making successive convolution layers look at increasingly large windows (in terms of the fraction of the original input they cover). The pooling size is the factor of reduction in the layer size.</p>
 <p><img alt="Max Pooling" src="../_images/max_pooling.png" /></p>
 <p>Maximum pooling (Fig. 6.5.1 from Dive into Deep Learning).</p>
 <!-- 114 / 2 = 57 and 80 / 2 = 40 -->
 <p><strong>General pooling</strong> are other functions, such as average pooling or even L2-norm pooling. Average pooling was often used historically but has recently fallen out of favor compared to the max pooling operation, which has been shown to work better in practice.</p>
-<p>Pooling is designed to reduce the complexity and model size in order to deal with overfitting and computational expense. Some argue that striding is sufficient. Some also founds that auto-encoders and generative adversarial networks perform better without pooling.</p>
+<p>Pooling is designed to reduce the complexity and model size in order to deal with overfitting and computational expense. Some argue that striding is sufficient. Some also found that auto-encoders and generative adversarial networks perform better without pooling.</p>
 </section>
 <section id="other-notes">
 <h2>1.3 Other notes<a class="headerlink" href="#other-notes" title="Permalink to this headline">#</a></h2>
@@ -963,7 +963,7 @@ LeNet-5 architecture</p>
 </section>
 <section id="train-the-model">
 <h2>2.3 Train the model<a class="headerlink" href="#train-the-model" title="Permalink to this headline">#</a></h2>
-<p>Plot the acuracy scores as a function of epochs to see how well we train.</p>
+<p>Plot the accuracy scores as a function of epochs to see how well we train.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">trainloader</span><span class="p">,</span> <span class="n">testloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span> <span class="p">):</span>

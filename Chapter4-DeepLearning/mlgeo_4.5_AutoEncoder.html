@@ -239,7 +239,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -693,7 +693,7 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="auto-encoders">
 <h1>4.5 Auto-encoders<a class="headerlink" href="#auto-encoders" title="Permalink to this headline">#</a></h1>
-<p>Autoencoders are neural networks that learn to efficiently compress and encode data then learn to reconstruct the data back from the reduced encoded representation to a representation that is as close to the original input as possible. Therefore, autoencoders reduce the dimentsionality of the input data i.e. reducing the number of features that describe input data.</p>
+<p>Autoencoders are neural networks that learn to efficiently compress and encode data then learn to reconstruct the data back from the reduced encoded representation to a representation that is as close to the original input as possible. Therefore, autoencoders reduce the dimensionality of the input data i.e. reducing the number of features that describe input data.</p>
 <p>They are popular for data denoising, data compression, feature extraction, image reconstruction and segmentation.</p>
 <p><img alt="Auto-encoder" src="../_images/autoen_architecture.png" /></p>
 <!-- <center><img src="figures/autoen_architecture.png" alt="cnn" style="width: 800px;"/></center> -->
@@ -795,7 +795,7 @@ To enable them in other operations, rebuild TensorFlow with the appropriate comp
 </div>
 </div>
 </div>
-<p>The loss function in this case is not a MSE but instead a multilabel binary classifier on the propability of the pixel.</p>
+<p>The loss function in this case is not a MSE but instead a multilabel binary classifier on the probability of the pixel.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stacked_ae</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s2">&quot;binary_crossentropy&quot;</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">1.5</span><span class="p">))</span>
@@ -966,7 +966,7 @@ Epoch 6/20
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="denoising-auto-encoder">
 <h1>Denoising auto-encoder<a class="headerlink" href="#denoising-auto-encoder" title="Permalink to this headline">#</a></h1>
-<p>Instead of training on the same input and ouput data, we can train a noisy data to represent a clean data.</p>
+<p>Instead of training on the same input and output data, we can train a noisy data to represent a clean data.</p>
 <p><img alt="Denoiser" src="../_images/denoising-autoencoder-architecture.png" /></p>
 <!-- <center><img src="figures/denoising-autoencoder-architecture.png" alt="cnn" style="width: 800px;"/></center> -->
 <p>When starting with noise-free data, there are two ways to implement a denoising algorithm. First, one add noise to the data. Keras has a built in layer called GaussianNoise, but it would be easily implemented by adding a more structured noise to the data (use domain-knowledge). Second, one can use DropOut layer.</p>
@@ -1076,8 +1076,8 @@ Epoch 20/20
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="u-net">
 <h1>U-Net<a class="headerlink" href="#u-net" title="Permalink to this headline">#</a></h1>
-<p>These example illustrates one of the limitations of auto-encoders. They cannot reconstruct high-fidelity data. The reconstructed image is <strong>low resolution</strong> because indeed, we reconstruct from a low-dimension feature space.</p>
-<p>A strategy to recover high-resolution feature is to introduce <em><strong>skip connections</strong></em>: feed the output of the initial layers from the encoder branch as inputs to the layers of the decoder branch. This concept was also introduced in the <em>ResNet</em>, which is a deep sequential neural networks with added skip (residual) connections. A <strong>residual block</strong> is one that takes the output of a layer, and sum with the output of a earlier layer.</p>
+<p>These examples illustrates one of the limitations of auto-encoders. They cannot reconstruct high-fidelity data. The reconstructed image is <strong>low resolution</strong> because indeed, we reconstruct from a low-dimension feature space.</p>
+<p>A strategy to recover high-resolution feature is to introduce <em><strong>skip connections</strong></em>: feed the output of the initial layers from the encoder branch as inputs to the layers of the decoder branch. This concept was also introduced in the <em>ResNet</em>, which is a deep sequential neural network with added skip (residual) connections. A <strong>residual block</strong> is one that takes the output of a layer, and sum with the output of an earlier layer.</p>
 <p><strong>U-nets</strong> are encoder-decoders with skip connections introduced in the biomedical field.</p>
 <p><img alt="Unet" src="../_images/Unet.png" /></p>
 </section>
@@ -1087,8 +1087,8 @@ Epoch 20/20
 <img alt="DeepDenoiser" src="../_images/DeepDenoiser_architecture.png" /></p>
 <!-- <center><img src="figures/DeepDenoiser_architecture.png" alt="cnn" style="width: 800px;"/></center> -->
 <center>Architecture of the DeepDenoiser Zhu et al, 2019: </center>
-The input is 2 images of the real and imaginary part of the short time Fourier transform of a seismogram. The ouputs are 2 masks to apply on the data to extract the noise and the clean signal tiime series.
-<p>You will note that the auto-encoder has skip connections. These have shown to improve training convergence and performance. They break the sequence of the neural networks, therefore we to need to introduce wide neural networks! Stay tuned as I update this tutorial.</p>
+The input is 2 images of the real and imaginary part of the short time Fourier transform of a seismogram. The outputs are 2 masks to apply on the data to extract the noise and the clean signal time series.
+<p>You will note that the auto-encoder has skip connections. These have shown to improve training convergence and performance. They break the sequence of the neural networks, therefore we need to introduce wide neural networks! Stay tuned as I update this tutorial.</p>
 <p>Example of denoising seismogram is shown below.</p>
 <p><img alt="DeepDenoiser" src="../_images/DeepDenoiser_example.png" /></p>
 <!-- <center><img src="figures/DeepDenoiser_example.png" alt="cnn" style="width: 800px;"/></center> -->
@@ -1105,7 +1105,7 @@ The input is 2 images of the real and imaginary part of the short time Fourier t
 <p>From <a class="reference external" href="https://academic.oup.com/gji/article/231/3/1806/6651381">Yin et al., 2022</a>, the WaveDecompNet has two bottlenecks to extract the low dimensionality of earthquake (transient) signals and of noise (diffuse, stationary) signals.</p>
 <section id="latent-space-the-low-dimensionality-of-the-data">
 <h2>Latent Space: the low dimensionality of the data<a class="headerlink" href="#latent-space-the-low-dimensionality-of-the-data" title="Permalink to this headline">#</a></h2>
-<p>The number of features in the bottleneck are a lower dimension representation of the input data. It is common practice to attempt to visualize the features at this stage. Visualization may require further dimensionality reduction such as PCA.</p>
+<p>The number of features in the bottleneck is a lower dimension representation of the input data. It is common practice to attempt to visualize the features at this stage. Visualization may require further dimensionality reduction such as PCA.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.manifold</span> <span class="kn">import</span> <span class="n">TSNE</span>

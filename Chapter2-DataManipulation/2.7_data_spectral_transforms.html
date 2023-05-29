@@ -241,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -729,7 +729,7 @@ title="Print to PDF"
 <span class="c1"># seismic python toolbox</span>
 <span class="kn">import</span> <span class="nn">obspy</span>
 <span class="kn">import</span> <span class="nn">obspy.clients.fdsn.client</span> <span class="k">as</span> <span class="nn">fdsn</span>
-<span class="kn">from</span> <span class="nn">obspy</span> <span class="kn">import</span> <span class="n">UTCDateTime</span>
+<span class="kn">from</span> <span class="nn">obspy</span> <span class="kn">import</span> <span class="n">UTCDateTime</span> 
 </pre></div>
 </div>
 </div>
@@ -785,9 +785,9 @@ title="Print to PDF"
 <section id="fourier-transform">
 <h2>Fourier Transform<a class="headerlink" href="#fourier-transform" title="Permalink to this headline">#</a></h2>
 <p>We use the Scipy Fourier <a class="reference external" href="%21https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.rfft.html#scipy.fftpack.rfft">package</a> to transform the two time series (earthquake and noise).</p>
-<p>The Fourier transform is a decomposition of the time series onto a orthonormal basis of cosine and sine functions. The Fourier transform of a time series <span class="math notranslate nohighlight">\(f(t)\)</span> (but similarly if the variable is space <span class="math notranslate nohighlight">\(x\)</span>).</p>
+<p>The Fourier transform is a decomposition of the time series onto an orthonormal basis of cosine and sine functions. The Fourier transform of a time series <span class="math notranslate nohighlight">\(f(t)\)</span> (but similarly if the variable is space <span class="math notranslate nohighlight">\(x\)</span>).</p>
 <p><span class="math notranslate nohighlight">\(\hat{F}(f) = \int_{-\infty}^\infty f(t) \exp^{-i2\pi ft} dt\)</span></p>
-<p><span class="math notranslate nohighlight">\(\hat{F}(f)\)</span> is the complex Fourier value at frequency <span class="math notranslate nohighlight">\(f\)</span>. The FOurier transform determines what frequency(ies) dominate the time series.</p>
+<p><span class="math notranslate nohighlight">\(\hat{F}(f)\)</span> is the complex Fourier value at frequency <span class="math notranslate nohighlight">\(f\)</span>. The Fourier transform determines what frequency(ies) dominate the time series.</p>
 <section id="nyquist">
 <h3>Nyquist<a class="headerlink" href="#nyquist" title="Permalink to this headline">#</a></h3>
 <p>The Fourier transform we will use in this class takes a discrete time series of real numbers. The time series is sampled with <span class="math notranslate nohighlight">\(N\)</span> samples per seconds. If the time series span <span class="math notranslate nohighlight">\(T\)</span> seconds regularly, then the sampling rate of the data <span class="math notranslate nohighlight">\(dt=T/N\)</span>. The highest frequency that can be resolved in a discrete time series, called the Nyquist frequency, is limited by <span class="math notranslate nohighlight">\(dt\)</span>:</p>
@@ -925,7 +925,7 @@ Plot the amplitude and phase spectra</p>
 <img alt="../_images/2.7_data_spectral_transforms_16_0.png" src="../_images/2.7_data_spectral_transforms_16_0.png" />
 </div>
 </div>
-<p>You notice that their statistical differences are in the tails of the distributions. Therefore, statistical metrics such as <code class="docutils literal notranslate"><span class="pre">mean</span></code> or <code class="docutils literal notranslate"><span class="pre">variance</span></code> may not be a discriminatory, but <code class="docutils literal notranslate"><span class="pre">kurtosis</span></code> might.</p>
+<p>You notice that their statistical differences are in the tails of the distributions. Therefore, statistical metrics such as <code class="docutils literal notranslate"><span class="pre">mean</span></code> or <code class="docutils literal notranslate"><span class="pre">variance</span></code> may not be discriminatory, but <code class="docutils literal notranslate"><span class="pre">kurtosis</span></code> might.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">skew</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zhat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]))),</span>
@@ -955,7 +955,7 @@ Plot the amplitude and phase spectra</p>
 </section>
 <section id="filtering-in-the-fourier-space">
 <h3>Filtering in the Fourier space<a class="headerlink" href="#filtering-in-the-fourier-space" title="Permalink to this headline">#</a></h3>
-<p>The data may super-impose multiple signals of various frequencies. To remove or extract specific signals that do not overlap in frequencies, we can <em>filter</em> the data.</p>
+<p>The data may superimpose multiple signals of various frequencies. To remove or extract specific signals that do not overlap in frequencies, we can <em>filter</em> the data.</p>
 <p>The filter can be:</p>
 <ul class="simple">
 <li><p><strong>high pass</strong>: reduce signals at frequencies <em>lower</em> than a corner frequency <span class="math notranslate nohighlight">\(f_c\)</span>, only let the signals <em>above</em> <span class="math notranslate nohighlight">\(f_c\)</span>. Often parameterized in functions as <code class="docutils literal notranslate"><span class="pre">hp</span></code> or <code class="docutils literal notranslate"><span class="pre">highpass</span></code>.</p></li>
@@ -979,7 +979,7 @@ Plot the amplitude and phase spectra</p>
 </div>
 </div>
 </div>
-<p>We use here a <span class="xref myst"><em>butterworth</em></span> filter of second order between 1s and 150s. The <code class="docutils literal notranslate"><span class="pre">sos</span></code> filter is a <em>second-order sections</em>, which are the produc of second-order polynomials to represent the original filters. They are more complex but more stable.</p>
+<p>We use here a <span class="xref myst"><em>butterworth</em></span> filter of second order between 1s and 150s. The <code class="docutils literal notranslate"><span class="pre">sos</span></code> filter is a <em>second-order sections</em>, which are the product of second-order polynomials to represent the original filters. They are more complex but more stable.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">butter</span><span class="p">(</span><span class="mi">2</span><span class="p">,[</span><span class="mf">1.</span><span class="o">/</span><span class="mf">150.</span><span class="p">,</span><span class="mf">1.</span><span class="p">],</span> <span class="s1">&#39;bp&#39;</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;sos&#39;</span><span class="p">)</span>
@@ -1086,7 +1086,7 @@ Plot the amplitude and phase spectra</p>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Create a time series of the synethetic noise</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Create a time series of the synthetic noise</span>
 <span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">random</span>
 
 <span class="n">new_noise</span><span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
@@ -1178,7 +1178,7 @@ Plot the amplitude and phase spectra</p>
 <section id="d-fourier-transforms">
 <h2>2D Fourier Transforms<a class="headerlink" href="#d-fourier-transforms" title="Permalink to this headline">#</a></h2>
 <p>The 2D Fourier transform is applied on a 2D matrix. It first applies a 1D Fourier transform to every row of the matrix, then applies a 1D Fourier transform to every column of the intermediate matrix.</p>
-<p>2D Fourier transforms can be used to find the Fourier coefficients that dominate the image. This can be used for filtering the data. Another application is to compress the data by selecting several coefficients instead of present most of the image.</p>
+<p>2D Fourier transforms can be used to find the Fourier coefficients that dominate the image. This can be used for filtering the data. Another application is to compress the data by selecting several coefficients instead of presenting most of the image.</p>
 <p>We will practice on a DEM.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

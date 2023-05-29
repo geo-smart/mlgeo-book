@@ -241,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
-   3.1 Classification and Regression
+   3.2 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
@@ -729,9 +729,9 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="multi-layer-perceptrons">
 <h1>4.2 Multi Layer Perceptrons<a class="headerlink" href="#multi-layer-perceptrons" title="Permalink to this headline">#</a></h1>
-<p>The linear model cannot fit all of the data. We can introduce non linearity by including hidden layers that connect each neuron with each other.</p>
+<p>The linear model cannot fit all of the data. We can introduce nonlinearity by including hidden layers that connect each neuron with each other.</p>
 <p><img alt="Multi Layer Perceptron" src="../_images/mlps.svg" />
-A MLP with a fully connected hidden layer. It has 4 inputs, 3 ouputs, 5 hidden units.</p>
+A MLP with a fully connected hidden layer. It has 4 inputs, 3 outputs, 5 hidden units.</p>
 <p>MLPs can capture complex interactions among our inputs via their hidden neurons, which depend on the values of each of the inputs. We can model any function, so they are great universal approximators.</p>
 <p>A <strong>fully connected</strong> or <strong>dense</strong> layer is one where all neurons are connected to all neurons from the previous layer. The output of a fully connected layer is:
 <span class="math notranslate nohighlight">\(h(\mathbf{x}) = \phi (\mathbf{W} \mathbf{x} + \mathbf{b})\)</span>,</p>
@@ -749,7 +749,7 @@ The sigmoid function transforms its inputs, for which values lie in the real dom
 <span class="math notranslate nohighlight">\(\sigma(x) = \frac{1}{1+\exp(-x)}\)</span>
 The sigmoid function is a smooth, “S-shaped”, differentiable approximation to a thresholding unit. Sigmoids are still widely used as activation functions on the output units, when we want to interpret the outputs as probabilities for binary classification problems.</p></li>
 <li><p><strong>Tanh Function</strong>
-The yperbolic tangent function is happy middle between the sigmoid and the ReLU as it is slightly more linear near zero.
+The hyperbolic tangent function is happy middle between the sigmoid and the ReLU as it is slightly more linear near zero.
 <span class="math notranslate nohighlight">\(\tanh(x) = 2 \sigma(2x) -1\)</span>
 Tanh is also “S-shaped”</p></li>
 </ul>
@@ -791,17 +791,17 @@ Tanh is also “S-shaped”</p></li>
 </section>
 <section id="typical-mlp-structures">
 <h2>2. Typical MLP structures<a class="headerlink" href="#typical-mlp-structures" title="Permalink to this headline">#</a></h2>
-<p>A <strong>Regression MLP</strong> outputs scalar values, the number of output neurons is the number of values and the number of the ouput dimensions. For instance, to ouput a 2D geospatial coordinates on a map, you may need to ouput 2 values in 2 output neurons: latitudes and longitudes. For any real scalar as output values, the output layer is a normal layer of neurons. To constrain the value of the outputs, you can add an activation function in the output layer: use a <em>ReLU</em> or a <em>softplus</em> function for <strong>strictly positive</strong> values and a <em>sigmoid</em> or <em>tanh</em> activation function for <strong>bounded values</strong> between 0 (or -1) to 1 by scaling the output. A simple representation of a regression MLP is show in the first figure.</p>
+<p>A <strong>Regression MLP</strong> outputs scalar values, the number of output neurons is the number of values and the number of the output dimensions. For instance, to output a 2D geospatial coordinates on a map, you may need to output 2 values in 2 output neurons: latitudes and longitudes. For any real scalar as output values, the output layer is a normal layer of neurons. To constrain the value of the outputs, you can add an activation function in the output layer: use a <em>ReLU</em> or a <em>softplus</em> function for <strong>strictly positive</strong> values and a <em>sigmoid</em> or <em>tanh</em> activation function for <strong>bounded values</strong> between 0 (or -1) to 1 by scaling the output. A simple representation of a regression MLP is show in the first figure.</p>
 <p><img alt="Regression MLP" src="../_images/MLPReg.png" /></p>
-<p>A <strong>Classification MLP</strong> outputs the propability of the positive class, a scalar value between 0 and 1. Use a <em>ReLU</em> or a <em>softplus</em> as an activation function in the output layer.</p>
+<p>A <strong>Classification MLP</strong> outputs the probability of the positive class, a scalar value between 0 and 1. Use a <em>ReLU</em> or a <em>softplus</em> as an activation function in the output layer.</p>
 <p><img alt="Classification MLP" src="../_images/MLPClass.png" /></p>
 </section>
 <section id="training-neural-networks">
 <h2>3. Training Neural Networks<a class="headerlink" href="#training-neural-networks" title="Permalink to this headline">#</a></h2>
 <p>Training starts by handling a smaller batch of data inputs.</p>
 <p>The <em>forward pass</em> sends the mini-batch from the input layer to the hidden layers. <em>Forward propagation</em> sequentially calculates and stores intermediate variables within the computational graph defined by the neural network. It proceeds from the input to the output layer and makes prediction.</p>
-<p>Next, the algorithm measures the error using a loss function and calculate how much each of the ouput connection contributed to the error.</p>
-<p><em>Backpropagation</em> sequentially calculates and stores the gradients of intermediate variables and parameters within the neural network in the reversed order. backpropagation is merely an application of chain rule to find the derivatives of cost with respect to any variable in the nested equation. The derivative of cost with respect to any weight in the network, we simply is the multiplication of the corresponding layer’s error times its input. Therefore in training, one has to save each layer input in addition to the weights, and therefore requires additional memory compared to a simple forward pass (prediction).</p>
+<p>Next, the algorithm measures the error using a loss function and calculate how much each of the output connection contributed to the error.</p>
+<p><em>Backpropagation</em> sequentially calculates and stores the gradients of intermediate variables and parameters within the neural network in the reversed order. Backpropagation is merely an application of chain rule to find the derivatives of cost with respect to any variable in the nested equation. The derivative of cost with respect to any weight in the network simply is the multiplication of the corresponding layer’s error times its input. Therefore in training, one has to save each layer input in addition to the weights, and therefore requires additional memory compared to a simple forward pass (prediction).</p>
 <p>The algorithm then performs Gradient Descent to update the weights.</p>
 <p><strong>Drop out</strong>
 One additional mitigation against overfitting is to use dropout layers during training. During training, the Dropout layer will randomly drop out outputs of the previous layer (or equivalently, the inputs to the subsequent layer) according to the specified dropout probability. Dropout is only used during training.</p>
@@ -931,14 +931,14 @@ Transform: Compose(
 </div>
 </div>
 </div>
-<p>Let’s create a Classification MLP for a multi-class problem. We use a flatten input layer to turn the 2D matrix into a 1D vector. The</p>
+<p>Let’s create a Classification MLP for a multi-class problem. We use a flattened input layer to turn the 2D matrix into a 1D vector. The</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fully connected MLP</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="k">class</span> <span class="nc">my_mlp</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span> <span class="c1"># a class defines an object</span>
 
-    <span class="c1"># this defines the arcitecture of the NN</span>
+    <span class="c1"># this defines the architecture of the NN</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size_img</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
         <span class="c1"># Here we define all the functions that we will use during the forward part (data -&gt; prediction)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">my_mlp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -1008,8 +1008,8 @@ Transform: Compose(
 </section>
 <section id="train-the-model">
 <h3>Train the model<a class="headerlink" href="#train-the-model" title="Permalink to this headline">#</a></h3>
-<p>Compile the model by setting the loss function, the optimizer to user, and the metrics to use during training and evaluation</p>
-<p>During the fitting, it may be important to save intermediate steps and maybe revert back to earlier version of the training. For this, we will use <strong>checkpoints</strong> to save the model at regular intervals during the training.</p>
+<p>Compile the model by setting the loss function, the optimizer to use, and the metrics to use during training and evaluation</p>
+<p>During the fitting, it may be important to save intermediate steps and maybe revert back to an earlier version of the training. For this, we will use <strong>checkpoints</strong> to save the model at regular intervals during the training.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">trainloader</span><span class="p">,</span> <span class="n">testloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span> <span class="p">):</span>
@@ -1175,11 +1175,11 @@ Transform: Compose(
 <h2>5. Fine-tuning of Neural Networks Hyperparameters<a class="headerlink" href="#fine-tuning-of-neural-networks-hyperparameters" title="Permalink to this headline">#</a></h2>
 <p>Trial and error is a great first step to build some basic intuition around NN and their training. However, a more systematic approach is to search the hyper-parameter space using grid search or randomized searches.
 Scikit-learn has modules dedicated to this: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html">https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html</a></p>
-<p>We will need to bundle our keras-built model into a function callabe by scikit-learn. This is done using the <code class="docutils literal notranslate"><span class="pre">KerasRegressor</span></code> and <code class="docutils literal notranslate"><span class="pre">KerasClassifer</span></code> objects.
+<p>We will need to bundle our keras-built model into a function callable by scikit-learn. This is done using the <code class="docutils literal notranslate"><span class="pre">KerasRegressor</span></code> and <code class="docutils literal notranslate"><span class="pre">KerasClassifer</span></code> objects.
 More on this later!</p>
 <section id="mlp-with-scikit-learn">
 <h3>MLP with scikit learn<a class="headerlink" href="#mlp-with-scikit-learn" title="Permalink to this headline">#</a></h3>
-<p>There are some basic NN built in scikit learn, you can see below a tutorial. However, it is limited and one would use pytorch or keras or tensorflow to for any moderate to large model training. Here we will use a “sparse” categorical cross entropy. Cross entropy is used in multiclass classification. Categorical is because the classes are exclusive and that we have sparse labels (either 0 or 1).</p>
+<p>There are some basic NN built in scikit learn, you can see below a tutorial. However, it is limited and one would use pytorch, keras, or tensorflow for any moderate to large model training. Here we will use a “sparse” categorical cross entropy. Cross entropy is used in multiclass classification. Categorical is because the classes are exclusive and that we have sparse labels (either 0 or 1).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Below is an exampled of a classification MLP using Scikit learn.</span>
