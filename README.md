@@ -1,4 +1,4 @@
-# GeoSMART Curriculum Jupyter Book Site (ESS 490/590)
+# GeoSMART Curriculum Jupyter Book Site (ESS 469/569)
 
 [![Deploy](https://github.com/geo-smart/curriculum-book/actions/workflows/deploy.yaml/badge.svg)](https://github.com/geo-smart/curriculum-book/actions/workflows/deploy.yaml)
 [![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://geo-smart.github.io/curriculum-book)
