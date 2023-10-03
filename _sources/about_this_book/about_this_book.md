@@ -34,7 +34,7 @@ By the end of the quarter, the students should be able to:
 
 # Syllabus
 
-- Module 1 (weeks 1 and 2): Intro on ML in the Geo and basic tool building for Open Sciences 
+- Module 1 (weeks 1 ): Intro on ML in the Geo and basic tool building for Open Sciences 
 - Module 2: (weeks 3 and 4) Creating Machine-Learning Ready Data Sets
 - Module 3: (weeks 5 and 6) Feature extraction and clustering
 - Module 5: (weeks 7 and 8) Machine Learning
