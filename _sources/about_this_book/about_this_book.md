@@ -17,7 +17,7 @@ The course is intended to introduce Machine Learning in Geosciences, the basics 
 
 Some chapters will include code sections which students should attempt to write on their own first before viewing the solution. The student version of this book automatically clears sections marked by the instructor as student response, and can be accessed via the link below. 
 
-[![Student Version](../img/student_version_badge.svg)](https://geo-smart.github.io/mlgeo/)
+[![Student Version](../img/student_version_badge.svg)](https://geo-smart.github.io/mlgeo-book/)
 
 # Learning objectives 
 
