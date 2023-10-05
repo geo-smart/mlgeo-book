@@ -4,7 +4,7 @@
 [![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://geo-smart.github.io/mlgeo-instructor)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/geo-smart/mlgeo-instructor/HEAD?urlpath=lab)
 [![GeoSMART Library Badge](book/img/curricula_badge.svg)](https://geo-smart.github.io/curriculum)
-[![Student Version](book/img/student_version_badge.svg)](https://geo-smart.github.io/mlgeo/)
+[![Student Version](book/img/student_version_badge.svg)](https://geo-smart.github.io/mlgeo-book/)
 
 ## Repository Overview
 

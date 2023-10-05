@@ -14,7 +14,7 @@ curriculum book, just run `git restore book` to revert local changes.
 # Returns a student version badge link given a path to that chapter relative
 # to the book folder. It must be in a subfolder!
 # def studentVersionBadge(path):
-#   return f"[![Student Version](../../student_version_badge.svg)](https://geo-smart.github.io/mlgeo/{path})"
+#   return f"[![Student Version](../../student_version_badge.svg)](https://geo-smart.github.io/mlgeo-book/{path})"
 
 def cleanBook(book_in, book_out):
   divider = "-" * max(len(book_in), len(book_out))
