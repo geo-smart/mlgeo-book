@@ -14,3 +14,4 @@ The book tremendously benefited from other resources such as
 - [Software Carpentries](http://software-carpentry.org/lessons/) 
 - [EarthDataScience](https://www.earthdatascience.org) course at CU Boulder: Lessons adapted from materials developed by Earth Lab
 - The [geohackweek](https://geohackweek.github.io/)
+- Some of the tutorials were aided by ChatGPT
