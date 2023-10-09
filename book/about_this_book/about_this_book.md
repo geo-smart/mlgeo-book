@@ -72,4 +72,4 @@ To force-reset the repository from the main branch
         git reset --hard origin/main
         git pull
 
-Make your own repository (MLGEO2022_UWNETID). Copy the environment.yml file and the tutorials into your own reposistory to run and modify them.
+Make your own repository (MLGEO2023_UWNETID). Copy the environment.yml file and the tutorials into your own reposistory to run and modify them.
