@@ -31,7 +31,7 @@ By the end of the quarter, the students should be able to:
 
 
 # Tiered Level Learning
-Because students do not need to be experts on all materials covered in this course, we propose a three-level material: **Beginning (Level 1)**, **Intermediate (Level 2)**, **Advanced (Level 3)**, and tag these levels throughout the book.
+Because students do not need to be experts on all materials covered in this course, we propose a three-level material: **Beginning (Level 1)**, **Intermediate (Level 2)**, **Advanced (Level 3)**, and tag these levels throughout the book. Data visualization is introduced at various levels and incorporated throughout.
 
 
 **Prerequisites**: MATH 207 and MATH 208, or MATH 307 or 308, or AMATH 351 or 352, CS160 or CS163, or permission from the instructor.
