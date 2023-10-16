@@ -697,6 +697,16 @@ title="Print to PDF"
 <h1>2.6 Resampling Methods<a class="headerlink" href="#resampling-methods" title="Permalink to this headline">#</a></h1>
 <p>Data has natural variability that often needs to be accounted for in statistical analysis. There are several strategies to map the data variability into the data-inferred model using resampling methods.
 Resampling methods involve repeatedly drawing samples from a training set and re-fitting a model. The collection of best-fit models provides confidence in model fitting.</p>
+<p>Bootstrapping:</p>
+<p>Data Reuse: Bootstrapping involves resampling from the original dataset itself. It repeatedly draws random samples with replacement from the observed data. This means that each resampled dataset can contain duplicate observations from the original data.</p>
+<p>Estimation: Bootstrapping is primarily used for estimating statistical properties of the sample, such as the mean, variance, or confidence intervals, without making strong assumptions about the underlying distribution.</p>
+<p>Correlated Data: Bootstrapping can be less suitable when dealing with highly correlated data because it assumes that each observation is independent. Correlations may not be adequately preserved in the resampled datasets, potentially leading to biased results.</p>
+<p>Applications: Bootstrapping is often employed when you want to estimate sampling variability, assess confidence intervals, and make inferences about the population from a single dataset, especially when parametric assumptions are questionable.</p>
+<p>Monte Carlo Resampling:</p>
+<p>Data Simulation: Monte Carlo resampling involves simulating new data based on a known or assumed statistical model. It generates synthetic data points according to the specified distribution and correlation structure. It does not draw from the original dataset.</p>
+<p>Estimation: Monte Carlo resampling is used for simulating a wide range of possible scenarios and assessing complex systems or models. It’s particularly useful when dealing with intricate, non-linear relationships, and it can estimate a variety of statistical properties, including those involving complex simulations and models.</p>
+<p>Correlated Data: Monte Carlo resampling is well-suited to handling correlated data as it explicitly incorporates the correlation structure specified in the simulation model. This makes it more adaptable to scenarios with intricate dependencies.</p>
+<p>Applications: Monte Carlo resampling is often employed for probabilistic risk assessment, uncertainty propagation in models, and evaluating complex systems’ performance. It is especially valuable when dealing with complex geospatial, environmental, or engineering models, where the relationships among variables are not easily captured by simple parametric methods.</p>
 <p>First of all, import some useful modules:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -998,6 +1008,12 @@ From scikit-learn: concept for training and validation set.
 <img src="grid_search_cross_validation.png" width="500"/>
 </div>
 *From scikit-learn*
+<ul class="simple">
+<li><p><strong>Data Splitting</strong>: Cross-validation involves partitioning a dataset into multiple subsets, typically a training set and a testing set. This splitting allows for model assessment and validation.</p></li>
+<li><p><strong>Estimation</strong>: Cross-validation is primarily used to assess the predictive performance of machine learning models or statistical models. It helps in estimating how well a model will generalize to new, unseen data by testing its performance on data that was not used in training.</p></li>
+<li><p><strong>Correlated Data</strong>: Cross-validation does not explicitly address correlated data, and its effectiveness can be influenced by the data splitting strategy. When data exhibits strong correlations, it’s essential to carefully design the cross-validation procedure to ensure that all subsets represent the overall data distribution.</p></li>
+<li><p><strong>Applications</strong>: Cross-validation is widely employed in model selection, hyperparameter tuning, and assessing the generalization ability of models. In geosciences, for example, it can be used to evaluate the predictive performance of climate models, geological models, or any other models that involve complex data relationships.</p></li>
+</ul>
 <p>We will now randomly select a training and validation set using the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> module:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
