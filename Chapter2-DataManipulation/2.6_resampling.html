@@ -945,6 +945,73 @@ The difference of means is, -0.0882740403841904.
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.753056949521871.
+</pre></div>
+</div>
+</div>
+</div>
+<p>We are now going to resample the data and calculate again the Pearson coefficient.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Next, let&#39;s take some subset of the correlated data</span>
+
+<span class="n">subset</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Report the correlation coefficient of the subsets</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The correlation coefficient is: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">subset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">subset</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot up the original data vs. the samples we ended up taking</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">subset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">subset</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.7196904266013272.
+</pre></div>
+</div>
+<img alt="../_images/2.6_resampling_20_1.png" src="../_images/2.6_resampling_20_1.png" />
+</div>
+</div>
+<p>We will resample <code class="docutils literal notranslate"><span class="pre">number_runs</span></code> times the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">number_runs</span> <span class="o">=</span><span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array that will keep track of the outputs of our resampling loop. In this case, we just want to record the correlation coefficient of each new sample. </span>
+<span class="n">corr_coef_collector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">number_runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Let&#39;s also get the length of the subset</span>
+<span class="n">length_sub</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+
+<span class="c1"># Now, for each run</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_runs</span><span class="p">):</span>
+    <span class="c1"># We want to draw length_sub samples WITH REPLACEMENT</span>
+    <span class="n">new_pairs</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">length_sub</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Calculate and store the correlation coefficient</span>
+    <span class="n">corr_coef_collector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">new_pairs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">new_pairs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Plot up the corr_coef_collector values</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">corr_coef_collector</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Show the true correlation coefficient</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">correlation_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">corr_coef_collector</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;True correlation coefficient&#39;</span><span class="p">,</span> <span class="s1">&#39;Median correlation coefficient&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.6_resampling_23_0.png" src="../_images/2.6_resampling_23_0.png" />
+</div>
 </div>
 </section>
 <section id="monte-carlo-resampling">
@@ -1098,7 +1165,7 @@ The difference of means is, -0.0882740403841904.
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (years)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_23_1.png" src="../_images/2.6_resampling_23_1.png" />
+<img alt="../_images/2.6_resampling_28_1.png" src="../_images/2.6_resampling_28_1.png" />
 </div>
 </div>
 </section>
@@ -1169,7 +1236,7 @@ parameters: Coefficient of determination -0.9964524.2, P-value 0.0000004.2, stan
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient / Velocity eastward (mm/year):  -6.438107857588658
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_27_1.png" src="../_images/2.6_resampling_27_1.png" />
+<img alt="../_images/2.6_resampling_32_1.png" src="../_images/2.6_resampling_32_1.png" />
 </div>
 </div>
 <p>To evaluate the errors of the model fit using the module <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>, we will use the following function</p>
@@ -1232,7 +1299,7 @@ For reproducible results, you can select a fixed <code class="docutils literal n
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.4381444.2 and the standard deviation 0.0061004.2
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_31_1.png" src="../_images/2.6_resampling_31_1.png" />
+<img alt="../_images/2.6_resampling_36_1.png" src="../_images/2.6_resampling_36_1.png" />
 </div>
 </div>
 </section>
@@ -1280,7 +1347,7 @@ From scikit-learn: concept for training and validation set.
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1c9e1fe80&gt;
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_33_1.png" src="../_images/2.6_resampling_33_1.png" />
+<img alt="../_images/2.6_resampling_38_1.png" src="../_images/2.6_resampling_38_1.png" />
 </div>
 </div>
 <p>Now fit the data and evaluate the error</p>
@@ -1324,7 +1391,7 @@ MSE on validation set (mm): 7.88 and coefficient of determiniation on 0.99
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Random selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_35_2.png" src="../_images/2.6_resampling_35_2.png" />
+<img alt="../_images/2.6_resampling_40_2.png" src="../_images/2.6_resampling_40_2.png" />
 </div>
 </div>
 <p>We can also select the training and validation to be chronological. If the “state” of the data changes through time, this may induce a bias in the training. But let’s see.</p>
@@ -1368,7 +1435,7 @@ Validation set MSE (mm) and Coef of Determination: 17.72,0.85
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Chronological selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_37_2.png" src="../_images/2.6_resampling_37_2.png" />
+<img alt="../_images/2.6_resampling_42_2.png" src="../_images/2.6_resampling_42_2.png" />
 </div>
 </div>
 <p>Now you see that the choice of <em>training</em> vs <em>validating</em> data is important to fit a model that will generalize.</p>
