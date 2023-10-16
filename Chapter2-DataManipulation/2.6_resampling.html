@@ -805,6 +805,101 @@ Resampling methods involve repeatedly drawing samples from a training set and re
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The means of A and B are, 5.320848054363878 and 5.409122094748068, respectively.
+The difference of means is, -0.0882740403841904.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot the data to see what it looks like</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;B&#39;)
+</pre></div>
+</div>
+<img alt="../_images/2.6_resampling_6_1.png" src="../_images/2.6_resampling_6_1.png" />
+</div>
+</div>
+<p>The data does not look correlated.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, how many times do we want to resample?</span>
+<span class="n">number_runs</span> <span class="o">=</span> <span class="mi">10000</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Next, we create an array that will store the difference of means</span>
+<span class="n">array_of_diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">number_runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># To ease computational burden, let&#39;s declare some variables</span>
+<span class="c1"># A combined list of A and B</span>
+<span class="n">combined</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span>
+<span class="c1"># Length of A and B</span>
+<span class="n">length_A</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(200,)
+</pre></div>
+</div>
+</div>
+</div>
+<p>For each time we resample, we recalculate the mean and recalculate the difference</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Okay, now, for each run:</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_runs</span><span class="p">):</span>
+    <span class="c1"># Let us shuffle the combined list</span>
+    <span class="c1"># Note that shuffle works in place!</span>
+    <span class="n">rng</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">combined</span><span class="p">)</span>
+    <span class="c1"># Now, split the list into A and B, maintaining their original sizes</span>
+    <span class="c1"># Notice the slice syntax!</span>
+    <span class="n">new_A</span> <span class="o">=</span> <span class="n">combined</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">length_A</span><span class="p">]</span>
+    <span class="n">new_B</span> <span class="o">=</span> <span class="n">combined</span><span class="p">[</span><span class="n">length_A</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">combined</span><span class="p">)]</span>
+    <span class="c1"># Calculate and store a difference of means</span>
+    <span class="n">array_of_diffs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">new_A</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">new_B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now, plot up the array of diffs</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">array_of_diffs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Now, given an alpha of 0.05, can we accept or reject the null hypothesis of no difference in means?</span>
+
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">lower_critical_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">array_of_diffs</span><span class="p">,</span> <span class="n">alpha</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">upper_critical_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">array_of_diffs</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">alpha</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># Plot the critical values and the observed value</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">diff_means</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">lower_critical_value</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">upper_critical_value</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Observed difference of means&#39;</span><span class="p">,</span> <span class="s1">&#39;Lower critical value&#39;</span><span class="p">,</span> <span class="s1">&#39;Upper critical value&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="c1"># Show your plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.6_resampling_12_0.png" src="../_images/2.6_resampling_12_0.png" />
+</div>
 </div>
 </section>
 <section id="bootstrapping">
@@ -815,6 +910,42 @@ Resampling methods involve repeatedly drawing samples from a training set and re
 <li><p><strong>Correlated Data</strong>: Bootstrapping can be less suitable when dealing with highly correlated data because it assumes that each observation is independent. Correlations may not be adequately preserved in the resampled datasets, potentially leading to biased results.</p></li>
 <li><p><strong>Applications</strong>: Bootstrapping is often employed when you want to estimate sampling variability, assess confidence intervals, and make inferences about the population from a single dataset, especially when parametric assumptions are questionable.</p></li>
 </ul>
+<p>We will first create correlated data using the numpy function <code class="docutils literal notranslate"><span class="pre">random.multivariate_normal</span></code> with <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.multivariate_normal.html">docs here</a>. The mean of both data will be zero and their covariance is -0.75.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We begin with a dataset where two variables are strongly correlated</span>
+<span class="n">correlated_data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">.75</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">.75</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First, we check that the data is indeed anticorrelated by plotting one against the other</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.6_resampling_16_0.png" src="../_images/2.6_resampling_16_0.png" />
+</div>
+</div>
+<p>We can also verify that the Pearson correlation coefficient, which is equal to the ratio of the data covariance with each data variance, using the numpy function <code class="docutils literal notranslate"><span class="pre">corrcoeff</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The correlation matrix of the first and second columns of correlated_data</span>
+<span class="n">correlation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Check the correlation coefficient</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The correlation coefficient is: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">correlation_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="monte-carlo-resampling">
 <h3>1.3 Monte Carlo Resampling:<a class="headerlink" href="#monte-carlo-resampling" title="Permalink to this headline">#</a></h3>
@@ -894,56 +1025,56 @@ Resampling methods involve repeatedly drawing samples from a training set and re
   <tbody>
     <tr>
       <th>count</th>
-      <td>6079.000000</td>
-      <td>6079.000000</td>
-      <td>6079.000000</td>
-      <td>6079.000000</td>
+      <td>6341.000000</td>
+      <td>6341.000000</td>
+      <td>6341.000000</td>
+      <td>6341.000000</td>
     </tr>
     <tr>
       <th>mean</th>
-      <td>2014.410590</td>
-      <td>-50.149176</td>
-      <td>-28.829511</td>
-      <td>1.650986</td>
+      <td>2014.772434</td>
+      <td>-52.534263</td>
+      <td>-30.076831</td>
+      <td>1.899511</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>4.822168</td>
-      <td>31.067659</td>
-      <td>16.795420</td>
-      <td>5.486454</td>
+      <td>5.033255</td>
+      <td>32.520022</td>
+      <td>17.516241</td>
+      <td>5.618141</td>
     </tr>
     <tr>
       <th>min</th>
       <td>2006.067100</td>
-      <td>-106.984000</td>
-      <td>-60.662000</td>
+      <td>-114.314000</td>
+      <td>-65.245000</td>
       <td>-39.508000</td>
     </tr>
     <tr>
       <th>25%</th>
-      <td>2010.229950</td>
-      <td>-78.122500</td>
-      <td>-44.218500</td>
-      <td>-2.003500</td>
+      <td>2010.409300</td>
+      <td>-80.010000</td>
+      <td>-45.813000</td>
+      <td>-1.841000</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>2014.406600</td>
-      <td>-47.014000</td>
-      <td>-28.607000</td>
-      <td>1.494000</td>
+      <td>2014.765200</td>
+      <td>-49.487000</td>
+      <td>-29.918000</td>
+      <td>1.720000</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>2018.588650</td>
-      <td>-24.165000</td>
-      <td>-14.372000</td>
-      <td>5.169000</td>
+      <td>2019.126600</td>
+      <td>-24.855000</td>
+      <td>-14.940000</td>
+      <td>5.482000</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>2022.768000</td>
+      <td>2023.726200</td>
       <td>3.927000</td>
       <td>3.157000</td>
       <td>28.663000</td>
@@ -967,7 +1098,7 @@ Resampling methods involve repeatedly drawing samples from a training set and re
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (years)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_10_1.png" src="../_images/2.6_resampling_10_1.png" />
+<img alt="../_images/2.6_resampling_23_1.png" src="../_images/2.6_resampling_23_1.png" />
 </div>
 </div>
 </section>
@@ -1000,8 +1131,8 @@ The smaller the error, the “better” the fit (we will discuss later that a fi
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P395 overall plate motion there -6.4174482656828 mm/year
-parameters: Coefficient of determination -0.9960854.2, P-value 0.0000004.2, standard deviation of errors 0.0073064.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P395 overall plate motion there -6.438107857588663 mm/year
+parameters: Coefficient of determination -0.9964524.2, P-value 0.0000004.2, standard deviation of errors 0.0068304.2
 </pre></div>
 </div>
 </div>
@@ -1035,10 +1166,10 @@ parameters: Coefficient of determination -0.9960854.2, P-value 0.0000004.2, stan
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient / Velocity eastward (mm/year):  -6.417448265682802
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient / Velocity eastward (mm/year):  -6.438107857588658
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_14_1.png" src="../_images/2.6_resampling_14_1.png" />
+<img alt="../_images/2.6_resampling_27_1.png" src="../_images/2.6_resampling_27_1.png" />
 </div>
 </div>
 <p>To evaluate the errors of the model fit using the module <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>, we will use the following function</p>
@@ -1055,7 +1186,7 @@ parameters: Coefficient of determination -0.9960854.2, P-value 0.0000004.2, stan
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean squared error (mm): 7.54
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean squared error (mm): 7.49
 Coefficient of determination: 0.99
 </pre></div>
 </div>
@@ -1098,10 +1229,10 @@ For reproducible results, you can select a fixed <code class="docutils literal n
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.4178854.2 and the standard deviation 0.0064614.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.4381444.2 and the standard deviation 0.0061004.2
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_18_1.png" src="../_images/2.6_resampling_18_1.png" />
+<img alt="../_images/2.6_resampling_31_1.png" src="../_images/2.6_resampling_31_1.png" />
 </div>
 </div>
 </section>
@@ -1146,10 +1277,10 @@ From scikit-learn: concept for training and validation set.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x18ea618b0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1c9e1fe80&gt;
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_20_1.png" src="../_images/2.6_resampling_20_1.png" />
+<img alt="../_images/2.6_resampling_33_1.png" src="../_images/2.6_resampling_33_1.png" />
 </div>
 </div>
 <p>Now fit the data and evaluate the error</p>
@@ -1184,16 +1315,16 @@ From scikit-learn: concept for training and validation set.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training set: Coefficient / Velocity eastward (mm/year):  -6.427540808172563
-MSE (mean square error) on training set (mm): 7.40
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training set: Coefficient / Velocity eastward (mm/year):  -6.442660214306567
+MSE (mean square error) on training set (mm): 7.32
 Coefficient of determination on training set: 0.99
-MSE on validation set (mm): 7.89 and coefficient of determiniation on 0.99
+MSE on validation set (mm): 7.88 and coefficient of determiniation on 0.99
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Random selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_22_2.png" src="../_images/2.6_resampling_22_2.png" />
+<img alt="../_images/2.6_resampling_35_2.png" src="../_images/2.6_resampling_35_2.png" />
 </div>
 </div>
 <p>We can also select the training and validation to be chronological. If the “state” of the data changes through time, this may induce a bias in the training. But let’s see.</p>
@@ -1230,14 +1361,14 @@ MSE on validation set (mm): 7.89 and coefficient of determiniation on 0.99
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Training set: Coefficient / Velocity eastward (mm/year):  -6.083038734899423
-Validation set MSE (mm) and Coef of Determination: 20.52,0.81
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Training set: Coefficient / Velocity eastward (mm/year):  -6.147744826538707
+Validation set MSE (mm) and Coef of Determination: 17.72,0.85
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Chronological selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_24_2.png" src="../_images/2.6_resampling_24_2.png" />
+<img alt="../_images/2.6_resampling_37_2.png" src="../_images/2.6_resampling_37_2.png" />
 </div>
 </div>
 <p>Now you see that the choice of <em>training</em> vs <em>validating</em> data is important to fit a model that will generalize.</p>
@@ -1286,7 +1417,7 @@ Advantages: it has far less bias with respect to the training data. It does not 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.4174484.2 and the standard deviation 0.0000854.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.4381084.2 and the standard deviation 0.0000794.2
 CV = 7.87
 </pre></div>
 </div>
@@ -1338,8 +1469,8 @@ CV = 7.87
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.42 and the standard deviation 0.04
-mean MSE for training set : 7.48 and the validation set: 8.89
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.44 and the standard deviation 0.04
+mean MSE for training set : 7.43 and the validation set: 8.78
 </pre></div>
 </div>
 </div>
