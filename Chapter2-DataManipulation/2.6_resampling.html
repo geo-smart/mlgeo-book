@@ -951,12 +951,19 @@ The difference of means is, -0.0882740403841904.
 </div>
 </div>
 </div>
-<p>We are now going to resample the data and calculate again the Pearson coefficient.</p>
+<p>We are now going to resample the data and calculate again the Pearson coefficient. We will take a subset of the data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nsubset</span><span class="o">=</span><span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Next, let&#39;s take some subset of the correlated data</span>
 
-<span class="n">subset</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">subset</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">nsubset</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Report the correlation coefficient of the subsets</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The correlation coefficient is: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">subset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">subset</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
@@ -969,16 +976,16 @@ The difference of means is, -0.0882740403841904.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.7196904266013272.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.5069452099352522.
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_20_1.png" src="../_images/2.6_resampling_20_1.png" />
+<img alt="../_images/2.6_resampling_21_1.png" src="../_images/2.6_resampling_21_1.png" />
 </div>
 </div>
 <p>We will resample <code class="docutils literal notranslate"><span class="pre">number_runs</span></code> times the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">number_runs</span> <span class="o">=</span><span class="mi">100</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">number_runs</span> <span class="o">=</span><span class="mi">1000</span>
 </pre></div>
 </div>
 </div>
@@ -1010,18 +1017,21 @@ The difference of means is, -0.0882740403841904.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.6_resampling_23_0.png" src="../_images/2.6_resampling_23_0.png" />
+<img alt="../_images/2.6_resampling_24_0.png" src="../_images/2.6_resampling_24_0.png" />
 </div>
 </div>
+<p>We see that the median Pearson coefficient is not exactly the true Pearson coefficient. Why is that? How much data was selected in the subset? What happens if you increase the sibset to its max?</p>
 </section>
 <section id="monte-carlo-resampling">
 <h3>1.3 Monte Carlo Resampling:<a class="headerlink" href="#monte-carlo-resampling" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p><strong>Data Simulation</strong>: Monte Carlo resampling involves simulating new data based on a known or assumed statistical model. It generates synthetic data points according to the specified distribution and correlation structure. It does not draw from the original dataset.</p></li>
-<li><p><strong>Estimation</strong>: Monte Carlo resampling is used for simulating a wide range of possible scenarios and assessing complex systems or models. It’s particularly useful when dealing with intricate, non-linear relationships, and it can estimate a variety of statistical properties, including those involving complex simulations and models.</p></li>
-<li><p><strong>Correlated Data</strong>: Monte Carlo resampling is well-suited to handling correlated data as it explicitly incorporates the correlation structure specified in the simulation model. This makes it more adaptable to scenarios with intricate dependencies.</p></li>
+<li><p><strong>Data Simulation</strong>: Monte Carlo resampling involves <em>simulating new data</em> based on a known or assumed statistical model. It generates <em>synthetic data points</em> according to the specified distribution and correlation structure. It does not draw from the original dataset.</p></li>
+<li><p><strong>Estimation</strong>: Monte Carlo resampling is used for <em>simulating a wide range of possible scenarios</em> and assessing complex systems or models. It’s particularly useful when dealing with intricate, non-linear relationships, and it can estimate a variety of statistical properties, including those involving complex simulations and models.</p></li>
+<li><p><strong>Correlated Data</strong>: Monte Carlo resampling is <em>well-suited to handling correlated data</em> as it explicitly incorporates the correlation structure specified in the simulation model. This makes it more adaptable to scenarios with intricate dependencies.</p></li>
 <li><p><strong>Applications</strong>: Monte Carlo resampling is often employed for probabilistic risk assessment, uncertainty propagation in models, and evaluating complex systems’ performance. It is especially valuable when dealing with complex geospatial, environmental, or engineering models, where the relationships among variables are not easily captured by simple parametric methods.</p></li>
 </ul>
+<p>We will test Monte Carlo sampling by trying ti estimate <span class="math notranslate nohighlight">\(\pi\)</span>.</p>
+<p>The ratio of the area of a circle to the area of the square is pi/4. How can we use this knowledge to estimate a value for pi?</p>
 </section>
 </section>
 <section id="level-2-resampling-for-robust-model-inference">
@@ -1165,7 +1175,7 @@ The difference of means is, -0.0882740403841904.
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (years)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_28_1.png" src="../_images/2.6_resampling_28_1.png" />
+<img alt="../_images/2.6_resampling_31_1.png" src="../_images/2.6_resampling_31_1.png" />
 </div>
 </div>
 </section>
@@ -1236,7 +1246,7 @@ parameters: Coefficient of determination -0.9964524.2, P-value 0.0000004.2, stan
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient / Velocity eastward (mm/year):  -6.438107857588658
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_32_1.png" src="../_images/2.6_resampling_32_1.png" />
+<img alt="../_images/2.6_resampling_35_1.png" src="../_images/2.6_resampling_35_1.png" />
 </div>
 </div>
 <p>To evaluate the errors of the model fit using the module <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>, we will use the following function</p>
@@ -1299,7 +1309,7 @@ For reproducible results, you can select a fixed <code class="docutils literal n
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.4381444.2 and the standard deviation 0.0061004.2
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_36_1.png" src="../_images/2.6_resampling_36_1.png" />
+<img alt="../_images/2.6_resampling_39_1.png" src="../_images/2.6_resampling_39_1.png" />
 </div>
 </div>
 </section>
@@ -1347,7 +1357,7 @@ From scikit-learn: concept for training and validation set.
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1c9e1fe80&gt;
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_38_1.png" src="../_images/2.6_resampling_38_1.png" />
+<img alt="../_images/2.6_resampling_41_1.png" src="../_images/2.6_resampling_41_1.png" />
 </div>
 </div>
 <p>Now fit the data and evaluate the error</p>
@@ -1391,7 +1401,7 @@ MSE on validation set (mm): 7.88 and coefficient of determiniation on 0.99
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Random selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_40_2.png" src="../_images/2.6_resampling_40_2.png" />
+<img alt="../_images/2.6_resampling_43_2.png" src="../_images/2.6_resampling_43_2.png" />
 </div>
 </div>
 <p>We can also select the training and validation to be chronological. If the “state” of the data changes through time, this may induce a bias in the training. But let’s see.</p>
@@ -1435,7 +1445,7 @@ Validation set MSE (mm) and Coef of Determination: 17.72,0.85
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Chronological selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_42_2.png" src="../_images/2.6_resampling_42_2.png" />
+<img alt="../_images/2.6_resampling_45_2.png" src="../_images/2.6_resampling_45_2.png" />
 </div>
 </div>
 <p>Now you see that the choice of <em>training</em> vs <em>validating</em> data is important to fit a model that will generalize.</p>
