@@ -623,45 +623,6 @@ title="Print to PDF"
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#temporal-features">
-   2.6.3 temporal features
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#spectral-features">
-   2.6.4 Spectral features
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#fourier-transform">
-     Fourier Transform
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#nyquist">
-     Nyquist
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#uncertainties">
-     Uncertainties
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#short-time-fourier-transform-sftf">
-       Short-Time Fourier Transform (SFTF)
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#wavelet-transform">
-       Wavelet transform
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#automated-feature-extraction">
    Automated Feature Extraction
   </a>
@@ -719,45 +680,6 @@ title="Print to PDF"
     <a class="reference internal nav-link" href="#kurtosis">
      Kurtosis
     </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#temporal-features">
-   2.6.3 temporal features
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#spectral-features">
-   2.6.4 Spectral features
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#fourier-transform">
-     Fourier Transform
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#nyquist">
-     Nyquist
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#uncertainties">
-     Uncertainties
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#short-time-fourier-transform-sftf">
-       Short-Time Fourier Transform (SFTF)
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#wavelet-transform">
-       Wavelet transform
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -1027,268 +949,62 @@ The laplace, normal, and uniform distributions have a mean of 0 and a variance o
 <p>Compare the values. You notice that for both quake and noise, the mean is small compared to absolute values; skewness is small (it’s mostly symmetric). But the variance and the kurtosis are high for earthquakes. In fact, these two are used to detect earthquakes.</p>
 </section>
 </section>
-<section id="temporal-features">
-<h1>2.6.3 temporal features<a class="headerlink" href="#temporal-features" title="Permalink to this headline">#</a></h1>
-<p>These are calculated based on the time series, such as: absolute energy, autocorrelation, centroid, entropy, zero crossing rate etc.</p>
-</section>
-<section id="spectral-features">
-<h1>2.6.4 Spectral features<a class="headerlink" href="#spectral-features" title="Permalink to this headline">#</a></h1>
-<p>The data can be projected onto series of orthogonal basis to represent the multiple scale of the data. The <strong>Fourier transform</strong> is the most utilized data transform to explore the frequencies that compose the signal.</p>
-<section id="fourier-transform">
-<h2>Fourier Transform<a class="headerlink" href="#fourier-transform" title="Permalink to this headline">#</a></h2>
-<p>We use the Scipy Fourier <a class="reference external" href="%21https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.rfft.html#scipy.fftpack.rfft">package</a> to transform the two time series (earthquake and noise).</p>
-<p>The Fourier transform is a decomposition of the time series onto an orthonormal basis of cosine and sine functions. The Fourier transform of a time series <span class="math notranslate nohighlight">\(f(t)\)</span> (but similarly if the variable is space <span class="math notranslate nohighlight">\(x\)</span>).</p>
-<p><span class="math notranslate nohighlight">\(\hat{F}(f) = \int_{-\infty}^\infty f(t) \exp^{-i2\pi ft} dt\)</span></p>
-<p><span class="math notranslate nohighlight">\(\hat{F}(f)\)</span> is the complex Fourier value at frequency <span class="math notranslate nohighlight">\(f\)</span>. The Fourier transform determines what frequency(ies) dominate the time series.</p>
-</section>
-<section id="nyquist">
-<h2>Nyquist<a class="headerlink" href="#nyquist" title="Permalink to this headline">#</a></h2>
-<p>The Fourier transform we will use in this class takes a discrete time series of real numbers. The time series is sampled with <span class="math notranslate nohighlight">\(N\)</span> samples per second. If the time series span <span class="math notranslate nohighlight">\(T\)</span> seconds regularly, then the sampling rate of the data <span class="math notranslate nohighlight">\(dt=T/N\)</span>. The highest frequency that can be resolved in a discrete time series, called the Nyquist frequency, is limited by <span class="math notranslate nohighlight">\(dt\)</span>:</p>
-<p><span class="math notranslate nohighlight">\(F_{Nyq} = \frac{1}{2dt N}\)</span></p>
-<p>Effectively, one cannot constrain signals within two time samples from the data.</p>
-</section>
-<section id="uncertainties">
-<h2>Uncertainties<a class="headerlink" href="#uncertainties" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>The discrete Fourier Transform yields an approximation of the FT. The shorter the time series, the least accurate is the FT. This means that the FT on short time windows is less accurate</p></li>
-<li><p>The FT assumes (and requires) the periodicity of the series, meaning that the finite/trimmed time series would repeat in time. To enforce this, we  <strong>taper</strong> the time series so that the first and last points are equal (to zero).</p></li>
-</ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.fftpack</span> <span class="kn">import</span> <span class="n">fft</span><span class="p">,</span> <span class="n">ifft</span><span class="p">,</span> <span class="n">fftfreq</span><span class="p">,</span> <span class="n">next_fast_len</span>
-
-<span class="n">npts</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span>
-<span class="c1">## FFT the signals</span>
-<span class="c1"># fill up until 2^N value to speed up the FFT</span>
-<span class="n">Nfft</span> <span class="o">=</span> <span class="n">next_fast_len</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="c1"># this will be an even number</span>
-<span class="n">freqVec</span> <span class="o">=</span> <span class="n">fftfreq</span><span class="p">(</span><span class="n">Nfft</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">Z</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
-<span class="n">Zhat</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">Nfft</span><span class="p">)</span><span class="c1">#/np.sqrt(Z[0].stats.npts)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Please see the Obspy documentation to find out about the <a class="reference external" href="%21https://docs.obspy.org/master/packages/autogen/obspy.core.trace.Trace.taper.html#supported-methods">taper</a> function.
-Plot the amplitude and phase spectra</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zhat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">Nfft</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (m/s)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">Zhat</span><span class="p">))</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/2.8_feature_engineering_26_0.png" src="../_images/2.8_feature_engineering_26_0.png" />
-</div>
-</div>
-<p>You will note above that the phase values are randomly distributed between -pi and pi. We can check it by showing the distribution of the phase and amplitude spectra.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># your turn. Plot the histograms of the phase and amplitude spectrum</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zhat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">Nfft</span><span class="p">),</span><span class="mi">100</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/2.8_feature_engineering_28_0.png" src="../_images/2.8_feature_engineering_28_0.png" />
-</div>
-</div>
-<p>We can also analyze the spectral characteristics of the noise time series. Below,</p>
-<ol class="simple">
-<li><p>compute the Fourier transform</p></li>
-<li><p>plot the phase and amplitude spectra</p></li>
-<li><p>plot the distribution of the phase and amplitude values</p></li>
-</ol>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute Fourier transform of the noise time series</span>
-
-<span class="n">npts1</span> <span class="o">=</span> <span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span>
-<span class="c1">## FFT the signals</span>
-<span class="c1"># fill up until 2^N value to speed up the FFT</span>
-<span class="n">Nfft1</span> <span class="o">=</span> <span class="n">next_fast_len</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="c1"># this will be an even number</span>
-<span class="n">freqVec1</span> <span class="o">=</span> <span class="n">fftfreq</span><span class="p">(</span><span class="n">Nfft1</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)[:</span><span class="n">Nfft1</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
-
-<span class="c1"># taper the data to enable periodicity</span>
-<span class="n">N</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
-
-<span class="c1"># Fourier transform</span>
-<span class="n">Nhat</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">Nfft1</span><span class="p">)</span><span class="c1">#/np.sqrt(Z[0].stats.npts)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the phase and amplitude spectra</span>
-<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Nhat</span><span class="p">[:</span><span class="n">Nfft1</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">Nfft1</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (m/s)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">Nhat</span><span class="p">))</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/2.8_feature_engineering_31_0.png" src="../_images/2.8_feature_engineering_31_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Overlay the spectrum of the data and the spectrum of the noise</span>
-
-<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zhat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">Nfft</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Nhat</span><span class="p">[:</span><span class="n">Nfft1</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="n">Nfft1</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">);</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (m/s)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Earthquake&#39;</span><span class="p">,</span><span class="s1">&#39;Noise&#39;</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mf">1e-5</span><span class="p">,</span><span class="mf">1e4</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1e-05, 10000.0)
-</pre></div>
-</div>
-<img alt="../_images/2.8_feature_engineering_32_1.png" src="../_images/2.8_feature_engineering_32_1.png" />
-</div>
-</div>
-<section id="short-time-fourier-transform-sftf">
-<h3>Short-Time Fourier Transform (SFTF)<a class="headerlink" href="#short-time-fourier-transform-sftf" title="Permalink to this headline">#</a></h3>
-<p>In time-dependent and multi-scale problems, it may be interesting to extract data features from the short time Fourier transform.</p>
-<p>The STFT is a Fourier Transform applied to short (overlapping) windows to resolve the frequencies over different times in the series.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">stft</span>
-
-<span class="n">nperseg</span><span class="o">=</span><span class="mi">1000</span>
-<span class="n">z</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">Zxx</span> <span class="o">=</span> <span class="n">stft</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="n">nperseg</span><span class="p">,</span><span class="n">noverlap</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">))))</span>
-<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span><span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="mi">3600</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">)),</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s1">&#39;gouraud&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;STFT Magnitude&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency [Hz]&#39;</span><span class="p">)</span>
-<span class="c1"># ax[0].set_xlabel(&#39;Time [Hours]&#39;)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">40</span><span class="p">)</span>
-
-
-<span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">Zxx</span> <span class="o">=</span> <span class="n">stft</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="n">nperseg</span><span class="p">,</span><span class="n">noverlap</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">))))</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="mi">3600</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">)),</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s1">&#39;gouraud&#39;</span><span class="p">)</span>
-<span class="c1"># ax[1].set_title(&#39;Noise Magnitude&#39;)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency [Hz]&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time [Hours]&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">40</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1767563.2884356107
-47.863490298699
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_50850/1691094658.py:8: RuntimeWarning: divide by zero encountered in log10
-  ax[0].pcolormesh(t/3600, f, np.log10(np.abs(Zxx)), vmin=-1, vmax=3.5, shading=&#39;gouraud&#39;)
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.1, 40)
-</pre></div>
-</div>
-<img alt="../_images/2.8_feature_engineering_34_3.png" src="../_images/2.8_feature_engineering_34_3.png" />
-</div>
-</div>
-</section>
-<section id="wavelet-transform">
-<h3>Wavelet transform<a class="headerlink" href="#wavelet-transform" title="Permalink to this headline">#</a></h3>
-<p>The wavelet transform projects the time series onto a 2D space of <em>time</em> and <em>scale</em> axis. The <em>scale</em> is a representation of the frequency scale of the data. The wavelet transforms uses a series of functions called <em>wavelets</em> to linearly decompose the signals. Unlike the <em>sine</em> functions of the Fourier transform, the <em>wavelets</em> have finite durations and are localized in time:</p>
- <div>
-<img src="Wavelet-Out1.jpeg" alt="wavelet" height=100  />
-</div>
-<p>Image from this <span class="xref myst">article</span>.</p>
-<p>There exist many canonical wavelet families. The difference between families is typically their shape, compactness, and smoothness. Typically, one chooses one family for the specific time series. Wavelets have finite energy and zero mean.</p>
-<p>The time-scale representation of a time series is a <em>scaleogram</em>. <em>scales</em> can be converted to pseudo frequencies: If <span class="math notranslate nohighlight">\(f_c\)</span> is the central frequency of the wavelet and the scale is <span class="math notranslate nohighlight">\(a\)</span>, then the pseuo-frequency is <span class="math notranslate nohighlight">\(f_a = f_c/a\)</span>.</p>
- <div>
-<img src="wavelet_families.png" alt="wavelet" height=300  />
-</div>
-<p>Image from this <span class="xref myst">article</span>.</p>
-<p>The wavelet transform becomes:</p>
-<p><span class="math notranslate nohighlight">\(\hat{F}(a,b) = \frac{1}{\sqrt{a}} \int_{-\infty}^\infty f(t) \bar{\Psi} (\frac{t-b}{a}) dt\)</span></p>
-<p>where <span class="math notranslate nohighlight">\(\bar{\Psi}\)</span> is the mother wavelet scaled by a factor of <span class="math notranslate nohighlight">\(a\)</span> and translated/shifted by <span class="math notranslate nohighlight">\(b\)</span>. The wavelet transform is scaled by the continuous and “infinite number of values” of <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> are continuous. The <em>Discrete Wavelet Transform</em> is the wavelet transform performed on a finite number of scales and shifts.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.signal</span> <span class="k">as</span> <span class="nn">signal</span>
-
-
-<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,(</span><span class="n">Tend</span><span class="o">-</span><span class="n">Tstart</span><span class="p">)</span><span class="o">+</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)</span>
-<span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
-
-<span class="c1"># use the number of scales</span>
-<span class="n">w</span> <span class="o">=</span> <span class="mf">6.</span>
-
-<span class="c1"># relate scales with frequencies</span>
-<span class="c1"># freq = np.linspace(0, fs/2, 100)</span>
-<span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">fs</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">widths</span> <span class="o">=</span> <span class="n">w</span><span class="o">*</span><span class="n">fs</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">freq</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-
-
-<span class="n">cwtm</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">cwt</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">morlet2</span><span class="p">,</span> <span class="n">widths</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Calculating the time-frequency representation of large time series</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cwtmatr = signal.cwt(z, signal.morlet, widths)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cwtm</span><span class="p">)),</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">t</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="n">freq</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span><span class="n">freq</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
-           <span class="n">vmax</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/2.8_feature_engineering_38_0.png" src="../_images/2.8_feature_engineering_38_0.png" />
-</div>
-</div>
-<p>TF transforms take computational time in the workflow, let’s compare:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> cwtm = signal.cwt(z, signal.morlet2, widths, w=w)
-<span class="o">%</span><span class="k">timeit</span> f, t, Zxx = stft(n, fs=100, nperseg=nperseg,noverlap=200)
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6.43 s ± 38 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-14.3 ms ± 757 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
-</pre></div>
-</div>
-</div>
-</div>
-<p>From these transform, we can extract similar statistical features</p>
-</section>
-</section>
-</section>
 <section id="automated-feature-extraction">
 <h1>Automated Feature Extraction<a class="headerlink" href="#automated-feature-extraction" title="Permalink to this headline">#</a></h1>
 <p>There are toolboxes to extract features from the data, including features from the tranfsform. We will use <code class="docutils literal notranslate"><span class="pre">Tsfresh</span></code>, some of the best maintained and comprehensive python toolbox.</p>
 <p>Most toolboxes require the input to be <code class="docutils literal notranslate"><span class="pre">pandas</span></code>. First, we convert the data into pndas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tsfresh</span>
-<span class="kn">from</span> <span class="nn">tsfresh</span> <span class="kn">import</span> <span class="n">extract_features</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install tsfel
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting tsfel
+  Downloading tsfel-0.1.6-py3-none-any.whl (42 kB)
+     |████████████████████████████████| 42 kB 1.3 MB/s eta 0:00:011
+?25hCollecting pandas&gt;=1.5.3
+  Downloading pandas-2.1.1-cp39-cp39-macosx_10_9_x86_64.whl (11.8 MB)
+     |████████████████████████████████| 11.8 MB 3.0 MB/s eta 0:00:01
+?25hRequirement already satisfied: ipython&gt;=7.4.0 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from tsfel) (8.6.0)
+Requirement already satisfied: scipy&gt;=1.7.3 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from tsfel) (1.9.3)
+Requirement already satisfied: numpy&gt;=1.18.5 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from tsfel) (1.23.5)
+Requirement already satisfied: setuptools&gt;=47.1.1 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from tsfel) (65.5.1)
+Requirement already satisfied: traitlets&gt;=5 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (5.5.0)
+Requirement already satisfied: pexpect&gt;4.3 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (4.8.0)
+Requirement already satisfied: backcall in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.2.0)
+Requirement already satisfied: appnope in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.1.3)
+Requirement already satisfied: matplotlib-inline in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.1.6)
+Requirement already satisfied: pygments&gt;=2.4.0 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (2.13.0)
+Requirement already satisfied: jedi&gt;=0.16 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.18.2)
+Requirement already satisfied: prompt-toolkit&lt;3.1.0,&gt;3.0.1 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (3.0.33)
+Requirement already satisfied: stack-data in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.6.2)
+Requirement already satisfied: decorator in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (5.1.1)
+Requirement already satisfied: pickleshare in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from ipython&gt;=7.4.0-&gt;tsfel) (0.7.5)
+Requirement already satisfied: parso&lt;0.9.0,&gt;=0.8.0 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from jedi&gt;=0.16-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.8.3)
+Requirement already satisfied: pytz&gt;=2020.1 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2022.6)
+Collecting tzdata&gt;=2022.1
+  Using cached tzdata-2023.3-py2.py3-none-any.whl (341 kB)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from pandas&gt;=1.5.3-&gt;tsfel) (2.8.2)
+Requirement already satisfied: ptyprocess&gt;=0.5 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from pexpect&gt;4.3-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.7.0)
+Requirement already satisfied: wcwidth in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from prompt-toolkit&lt;3.1.0,&gt;3.0.1-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.2.5)
+Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&gt;=1.5.3-&gt;tsfel) (1.16.0)
+Requirement already satisfied: asttokens&gt;=2.1.0 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from stack-data-&gt;ipython&gt;=7.4.0-&gt;tsfel) (2.1.0)
+Requirement already satisfied: executing&gt;=1.2.0 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from stack-data-&gt;ipython&gt;=7.4.0-&gt;tsfel) (1.2.0)
+Requirement already satisfied: pure-eval in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from stack-data-&gt;ipython&gt;=7.4.0-&gt;tsfel) (0.2.2)
+Installing collected packages: tzdata, pandas, tsfel
+  Attempting uninstall: pandas
+    Found existing installation: pandas 1.5.2
+    Uninstalling pandas-1.5.2:
+      Successfully uninstalled pandas-1.5.2
+Successfully installed pandas-2.1.1 tsfel-0.1.6 tzdata-2023.3
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tsfel</span>
 
 <span class="c1"># we need to format the data for inputs in tsfresh.</span>
 </pre></div>
@@ -1298,7 +1014,7 @@ Plot the amplitude and phase spectra</p>
 <p>We need to <span class="xref myst">format the data</span> for input into tsfresh. It needs 1 column with the <code class="docutils literal notranslate"><span class="pre">id</span></code> (or label), one column for the time stamps (<code class="docutils literal notranslate"><span class="pre">sort</span></code>)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="n">quake</span><span class="s1">&#39;:z[:len(n)],&#39;</span><span class="n">noise</span><span class="s1">&#39;:n})</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;quake&#39;</span><span class="p">:</span><span class="n">z</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">n</span><span class="p">)],</span><span class="s1">&#39;noise&#39;</span><span class="p">:</span><span class="n">n</span><span class="p">})</span>
 </pre></div>
 </div>
 </div>
