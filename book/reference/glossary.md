@@ -1,20 +1,12 @@
 # Glossaries
 
 ## Definitions
-```{glossary}
 
-Node: refers to computing unit a single CPU with multiple cores, a dedicated memory, and a dedicated storage. Terminology used in HPC.
-
-Instance: refers to a computing unit, like a node. Terminology used in Cloud.
-
-Core: a processing unit of a CPU or GPU that performs the tasks.
-```
+See https://github.com/UW-ESS-DS/Glossary for definitions, which we will eventually incorporate into this document.
 
 ## Tools and Technology (general)
 
-
 ```{glossary}
-
 
 [Binder](https://mybinder.org)
   A free, public service for running reproducible interactive computing
