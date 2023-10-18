@@ -1,4 +1,4 @@
-# 0 MLGEO Project
+# The MLGeo Project
 
 This book will cover strategies to design a Machine-Learning project in the geosciences. 
 
