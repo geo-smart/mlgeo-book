@@ -591,8 +591,8 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#level-1-resampling-for-robust-data-correlation">
-   1. Level 1: Resampling for Robust Data Correlation
+  <a class="reference internal nav-link" href="#examples-of-resampling-techniques-level-1">
+   1. Examples of resampling techniques (Level 1)
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -606,15 +606,15 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#monte-carlo-resampling">
-     1.3 Monte Carlo Resampling
+    <a class="reference internal nav-link" href="#monte-carlo">
+     1.3 Monte Carlo
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#level-2-resampling-for-robust-model-inference">
-   Level 2: Resampling for Robust Model Inference
+  <a class="reference internal nav-link" href="#using-resampling-for-robust-model-inference-level-2">
+   Using resampling for robust model inference (Level 2)
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -626,7 +626,7 @@ title="Print to PDF"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression">
-   2.2 Linear Regression
+   2.2 Linear regression
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -671,8 +671,8 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#level-1-resampling-for-robust-data-correlation">
-   1. Level 1: Resampling for Robust Data Correlation
+  <a class="reference internal nav-link" href="#examples-of-resampling-techniques-level-1">
+   1. Examples of resampling techniques (Level 1)
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -686,15 +686,15 @@ title="Print to PDF"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#monte-carlo-resampling">
-     1.3 Monte Carlo Resampling
+    <a class="reference internal nav-link" href="#monte-carlo">
+     1.3 Monte Carlo
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#level-2-resampling-for-robust-model-inference">
-   Level 2: Resampling for Robust Model Inference
+  <a class="reference internal nav-link" href="#using-resampling-for-robust-model-inference-level-2">
+   Using resampling for robust model inference (Level 2)
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -706,7 +706,7 @@ title="Print to PDF"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-regression">
-   2.2 Linear Regression
+   2.2 Linear regression
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -743,13 +743,15 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="resampling-methods">
 <h1>2.6 Resampling Methods<a class="headerlink" href="#resampling-methods" title="Permalink to this headline">#</a></h1>
-<p>Data has natural variability that often needs to be accounted for in statistical analysis. There are several strategies to map the data variability into the data-inferred model using resampling methods.
-Resampling methods involve repeatedly drawing samples from a training set and re-fitting a model. The collection of best-fit models provides confidence in model fitting.</p>
-<p>The lecture introduces resampling techniques in several ways. We explore correlation in toy data sets (Level 1) and use resampling techniques for model inference of a linear regression (Level 2)</p>
-<ul class="simple">
-<li><p><strong>Level 1</strong>: Resampling for Robust Data Correlation</p></li>
-<li><p><strong>Level 2</strong>: Resampling for Robust Model Inference</p></li>
-</ul>
+<p>Data have natural variability, which we often have to account for.</p>
+<p>Among other applications (e.g., uncertainity propagation or assigning confidence intervals to some statistic), <strong>resampling methods</strong> can help us explore this varaibility.</p>
+<p>Broadly, resampling refers to any technique where we repeatedly draw observations from some sample.</p>
+<!---
+Note that the follow statement is specific to resampling for model evaluation:
+    Resampling methods involve repeatedly drawing samples from a training set  and re-fitting a model. The collection of best-fit models provides confidence in model fitting.
+More broadly, resampling methods refer to any technique where we repeatedly draw observations from some sample. We should use the more broad definition at the introduction of this section.
+--->
+<p>The lecture introduces resampling techniques in several ways. We explore various fundamental examples of resampling (Level 1) and demonstrate how resampling can be used for model inference of a linear regression (Level 2).</p>
 <p>First of all, import some useful modules:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -764,17 +766,18 @@ Resampling methods involve repeatedly drawing samples from a training set and re
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Random generator </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We define a random generator</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
-<section id="level-1-resampling-for-robust-data-correlation">
-<h2>1. Level 1: Resampling for Robust Data Correlation<a class="headerlink" href="#level-1-resampling-for-robust-data-correlation" title="Permalink to this headline">#</a></h2>
+<section id="examples-of-resampling-techniques-level-1">
+<h2>1. Examples of resampling techniques (Level 1)<a class="headerlink" href="#examples-of-resampling-techniques-level-1" title="Permalink to this headline">#</a></h2>
 <section id="randomization">
 <h3>1.1 Randomization<a class="headerlink" href="#randomization" title="Permalink to this headline">#</a></h3>
-<p>Let’s build 2 simple random data sets</p>
+<p>As we introduced in class:</p>
+<p>Given two datasets, <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, and a parameter, <span class="math notranslate nohighlight">\(x\)</span>, we can randomly assign observations to either <span class="math notranslate nohighlight">\(A\)</span> or <span class="math notranslate nohighlight">\(B\)</span>, calculate some statistic (e.g., <span class="math notranslate nohighlight">\(x_A - x_B\)</span>), and repeat to build a distribution of that statistic.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We begin with two datasets, A and B</span>
@@ -796,30 +799,13 @@ Resampling methods involve repeatedly drawing samples from a training set and re
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The means of A and B are, 5.320848054363878 and 5.409122094748068, respectively.
-The difference of means is, -0.0882740403841904.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The means of A and B are, 4.8190425043357745 and 5.7062434298834965, respectively.
+The difference of means is, -0.887200925547722.
 </pre></div>
 </div>
 </div>
 </div>
-<p>Let’s plot the data to see what it looks like</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;B&#39;)
-</pre></div>
-</div>
-<img alt="../_images/2.6_resampling_6_1.png" src="../_images/2.6_resampling_6_1.png" />
-</div>
-</div>
-<p>The data does not look correlated.</p>
+<p>Now, we will want to resample.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, how many times do we want to resample?</span>
@@ -832,7 +818,6 @@ The difference of means is, -0.0882740403841904.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Next, we create an array that will store the difference of means</span>
 <span class="n">array_of_diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">number_runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-
 <span class="c1"># To ease computational burden, let&#39;s declare some variables</span>
 <span class="c1"># A combined list of A and B</span>
 <span class="n">combined</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span>
@@ -841,16 +826,11 @@ The difference of means is, -0.0882740403841904.
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(200,)
-</pre></div>
-</div>
-</div>
 </div>
 <p>For each time we resample, we recalculate the mean and recalculate the difference</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Okay, now, for each run:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For each run:</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_runs</span><span class="p">):</span>
     <span class="c1"># Let us shuffle the combined list</span>
     <span class="c1"># Note that shuffle works in place!</span>
@@ -867,10 +847,10 @@ The difference of means is, -0.0882740403841904.
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now, plot up the array of diffs</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot up the array of diffs</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">array_of_diffs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 
-<span class="c1"># Now, given an alpha of 0.05, can we accept or reject the null hypothesis of no difference in means?</span>
+<span class="c1"># Given an alpha of 0.05, can we accept or reject the null hypothesis of no difference in means?</span>
 
 <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="n">lower_critical_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">array_of_diffs</span><span class="p">,</span> <span class="n">alpha</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
@@ -878,29 +858,26 @@ The difference of means is, -0.0882740403841904.
 
 <span class="c1"># Plot the critical values and the observed value</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">diff_means</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">lower_critical_value</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">upper_critical_value</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Observed difference of means&#39;</span><span class="p">,</span> <span class="s1">&#39;Lower critical value&#39;</span><span class="p">,</span> <span class="s1">&#39;Upper critical value&#39;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">lower_critical_value</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">upper_critical_value</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Difference of means&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Observed difference of means&#39;</span><span class="p">,</span> <span class="s1">&#39;Lower critical value&#39;</span><span class="p">,</span> <span class="s1">&#39;Upper critical value&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center left&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
 <span class="c1"># Show your plot</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.6_resampling_12_0.png" src="../_images/2.6_resampling_12_0.png" />
+<img alt="../_images/2.6_resampling_10_0.png" src="../_images/2.6_resampling_10_0.png" />
 </div>
 </div>
 </section>
 <section id="bootstrapping">
 <h3>1.2 Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p><strong>Data Reuse</strong>: Bootstrapping involves resampling from the original dataset itself. It repeatedly draws random samples with replacement from the observed data. This means that each resampled dataset can contain duplicate observations from the original data.</p></li>
-<li><p><strong>Estimation</strong>: Bootstrapping is primarily used for estimating statistical properties of the sample, such as the mean, variance, or confidence intervals, without making strong assumptions about the underlying distribution.</p></li>
-<li><p><strong>Correlated Data</strong>: Bootstrapping can be less suitable when dealing with highly correlated data because it assumes that each observation is independent. Correlations may not be adequately preserved in the resampled datasets, potentially leading to biased results.</p></li>
-<li><p><strong>Applications</strong>: Bootstrapping is often employed when you want to estimate sampling variability, assess confidence intervals, and make inferences about the population from a single dataset, especially when parametric assumptions are questionable.</p></li>
-</ul>
-<p>We will first create correlated data using the numpy function <code class="docutils literal notranslate"><span class="pre">random.multivariate_normal</span></code> with <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.multivariate_normal.html">docs here</a>. The mean of both data will be zero and their covariance is -0.75.</p>
+<p>When bootstrapping, you repeatedly draw observations, <strong>with replacement</strong>, from a dataset. Since you are drawing with replacement, your newly resampled dataset likely will contain duplicate observations from the original sample.</p>
+<p>Bootstrapping does not make strong assumptions about the underlying distribution of the dataset.</p>
+<p>We will first create correlated data using the numpy function <code class="docutils literal notranslate"><span class="pre">random.multivariate_normal</span></code> (<a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.multivariate_normal.html">docs here</a>). The mean of both data will be zero and their covariance is -0.75.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We begin with a dataset where two variables are strongly correlated</span>
@@ -913,18 +890,18 @@ The difference of means is, -0.0882740403841904.
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Observation&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.6_resampling_16_0.png" src="../_images/2.6_resampling_16_0.png" />
+<img alt="../_images/2.6_resampling_14_0.png" src="../_images/2.6_resampling_14_0.png" />
 </div>
 </div>
-<p>We can also verify that the Pearson correlation coefficient, which is equal to the ratio of the data covariance with each data variance, using the numpy function <code class="docutils literal notranslate"><span class="pre">corrcoeff</span></code>.</p>
+<p>We can verify that the Pearson <a class="reference external" href="https://en.wikipedia.org/wiki/Correlation_coefficient">correlation coefficient</a> is close to our target using the numpy function <code class="docutils literal notranslate"><span class="pre">corrcoef</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The correlation matrix of the first and second columns of correlated_data</span>
@@ -936,43 +913,44 @@ The difference of means is, -0.0882740403841904.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.753056949521871.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.7490650993380316.
 </pre></div>
 </div>
 </div>
 </div>
-<p>We are now going to resample the data and calculate again the Pearson coefficient. We will take a subset of the data</p>
+<p>We now take a subset of the data — think of the subset as a <em>sample of the true population</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nsubset</span><span class="o">=</span><span class="mi">10</span>
+<span class="n">subset</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">nsubset</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>We can calculate the correlation coefficent of this sample.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Next, let&#39;s take some subset of the correlated data</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Report the correlation coefficient of the subset</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The correlation coefficient of our sample is: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">subset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">subset</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
 
-<span class="n">subset</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">nsubset</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="c1"># Report the correlation coefficient of the subsets</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The correlation coefficient is: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">subset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">subset</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
-
-<span class="c1"># Plot up the original data vs. the samples we ended up taking</span>
+<span class="c1"># Plot up both the original data and our sample</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">subset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">subset</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;True population&#39;</span><span class="p">,</span> <span class="s1">&#39;Subset&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.5069452099352522.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient of our sample is: -0.8238774989356271.
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_21_1.png" src="../_images/2.6_resampling_21_1.png" />
+<img alt="../_images/2.6_resampling_20_1.png" src="../_images/2.6_resampling_20_1.png" />
 </div>
 </div>
-<p>We will resample <code class="docutils literal notranslate"><span class="pre">number_runs</span></code> times the data.</p>
+<p>Now, we will bootstrap. Once again, we define a number of runs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">number_runs</span> <span class="o">=</span><span class="mi">1000</span>
@@ -980,12 +958,14 @@ The difference of means is, -0.0882740403841904.
 </div>
 </div>
 </div>
+<p>Each time we resample, we will calculate and store the correlation coefficent of the resampled data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array that will keep track of the outputs of our resampling loop. In this case, we just want to record the correlation coefficient of each new sample. </span>
 <span class="n">corr_coef_collector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">number_runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 
 <span class="c1"># Let&#39;s also get the length of the subset</span>
+<span class="c1"># When bootstrapping, the size of your resampled dataset should match the size of your original sample!</span>
 <span class="n">length_sub</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
 
 <span class="c1"># Now, for each run</span>
@@ -997,10 +977,12 @@ The difference of means is, -0.0882740403841904.
 
 <span class="c1"># Plot up the corr_coef_collector values</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">corr_coef_collector</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Correlation coefficient&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
 
 <span class="c1"># Show the true correlation coefficient</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">correlation_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">corr_coef_collector</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">corr_coef_collector</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;True correlation coefficient&#39;</span><span class="p">,</span> <span class="s1">&#39;Median correlation coefficient&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -1010,23 +992,19 @@ The difference of means is, -0.0882740403841904.
 <img alt="../_images/2.6_resampling_24_0.png" src="../_images/2.6_resampling_24_0.png" />
 </div>
 </div>
-<p>We see that the median Pearson coefficient is not exactly the true Pearson coefficient. Why is that? How much data was selected in the subset? What happens if you increase the sibset to its max?</p>
+<p>We see that the median Pearson coefficient is not exactly the true Pearson coefficient. Why is that?</p>
+<p>What happens if you increase the size of the subset (e.g., your sample of the true population)?</p>
 </section>
-<section id="monte-carlo-resampling">
-<h3>1.3 Monte Carlo Resampling<a class="headerlink" href="#monte-carlo-resampling" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p><strong>Data Simulation</strong>: Monte Carlo resampling involves <em>simulating new data</em> based on a known or assumed statistical model. It generates <em>synthetic data points</em> according to the specified distribution and correlation structure. It does not draw from the original dataset.</p></li>
-<li><p><strong>Estimation</strong>: Monte Carlo resampling is used for <em>simulating a wide range of possible scenarios</em> and assessing complex systems or models. It’s particularly useful when dealing with intricate, non-linear relationships, and it can estimate a variety of statistical properties, including those involving complex simulations and models.</p></li>
-<li><p><strong>Correlated Data</strong>: Monte Carlo resampling is <em>well-suited to handling correlated data</em> as it explicitly incorporates the correlation structure specified in the simulation model. This makes it more adaptable to scenarios with intricate dependencies.</p></li>
-<li><p><strong>Applications</strong>: Monte Carlo resampling is often employed for probabilistic risk assessment, uncertainty propagation in models, and evaluating complex systems’ performance. It is especially valuable when dealing with complex geospatial, environmental, or engineering models, where the relationships among variables are not easily captured by simple parametric methods.</p></li>
-</ul>
-<p>We will test Monte Carlo sampling by trying to estimate <span class="math notranslate nohighlight">\(\pi\)</span>. The ratio of the area of a circle to the area of the square is <span class="math notranslate nohighlight">\(\pi/4\)</span>. How can we use this model to estimate a value for <span class="math notranslate nohighlight">\(\pi\)</span>?</p>
-<p>The ratio of the area of a circle to the area of the square is pi/4. How can we use this knowledge to estimate a value for pi?</p>
+<section id="monte-carlo">
+<h3>1.3 Monte Carlo<a class="headerlink" href="#monte-carlo" title="Permalink to this headline">#</a></h3>
+<p>Named after the casino in Monaco, Monte Carlo methods involve <em>simulating new data</em> based on a known (or assumed!) statistical model. Unlike the previous two examples, we do not take draws from an existing sample.</p>
+<p>Monte Carlo techniques have many applications. For example, you might see Monte Carlo methods used for probabilistic risk assessment, uncertainty propagation in models, and evaluating complex systems’ performance. It is especially valuable when dealing with complex geospatial, environmental, or engineering models, where the relationships among variables are not easily captured by simple parametric methods.</p>
+<p>Here, we demonstrate Monte Carlo sampling by trying to estimate <span class="math notranslate nohighlight">\(\pi\)</span>.</p>
+<p>We begin with a central conceit: that the ratio of the area of a circle to the area of the square is <span class="math notranslate nohighlight">\(\pi/4\)</span>.</p>
+<p>We then imagine a circle of radius 1 that is inscribed within a square with sides going from -1 to 1.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s imagine a circle of radius 1 that is inscribed within a square with sides going from -1 to 1. </span>
-
-<span class="c1"># We&#39;re going to draw a (x,y) point from a *uniform* distribution and then determine whether that point sits within the circle. If it does, we append it to two lists: points within the circle and points within the square. If not, we append it only to a list of points inside the square</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;re going to draw a (x,y) point from a *uniform* distribution and then determine whether that point sits within the circle. If it does, we append it to two lists: points within the circle and points within the square. If not, we append it only to a list of points inside the square</span>
 <span class="n">in_circle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 <span class="n">in_square</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 
@@ -1053,9 +1031,11 @@ The difference of means is, -0.0882740403841904.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can visualize what we just did</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">in_square</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">in_square</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">in_circle</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">in_circle</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;X coordinate&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Y coordinate&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Points in square&#39;</span><span class="p">,</span> <span class="s1">&#39;Points in circle&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center left&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Points in square&#39;</span><span class="p">,</span> <span class="s1">&#39;Points in circle&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1076,22 +1056,26 @@ The difference of means is, -0.0882740403841904.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We estimate the value of pi to be: 3.096.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We estimate the value of pi to be: 3.12.
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now with a few runs, we do not get a good answer. In fact, a Monte Carlo approach may need more runs to converge. Students should explore how to estimate <span class="math notranslate nohighlight">\(\pi\)</span> for an increasing number of runs and evaluate when and how the calulation converges.</p>
+<p>Now with a few runs, we do not get a good answer.</p>
+<p>In fact, a Monte Carlo approach needs more runs to <strong>converge</strong>.</p>
+<p>You should explore how changing the number of runs changes your estimate of <span class="math notranslate nohighlight">\(\pi\)</span> (and how your calculation converges).</p>
 </section>
 </section>
-<section id="level-2-resampling-for-robust-model-inference">
-<h2>Level 2: Resampling for Robust Model Inference<a class="headerlink" href="#level-2-resampling-for-robust-model-inference" title="Permalink to this headline">#</a></h2>
+<section id="using-resampling-for-robust-model-inference-level-2">
+<h2>Using resampling for robust model inference (Level 2)<a class="headerlink" href="#using-resampling-for-robust-model-inference-level-2" title="Permalink to this headline">#</a></h2>
 <section id="plate-motion-geodetic-data">
 <h3>2.1 Plate Motion - Geodetic Data<a class="headerlink" href="#plate-motion-geodetic-data" title="Permalink to this headline">#</a></h3>
-<p>For this tutorial, we use a GPS time series in the Pacific Northwest and explore the long term motions due to the Cascadia subduction zone. We will download GPS time series from the University of Nevada - Reno, <span class="xref myst">data center</span>.</p>
+<p>For this tutorial, we use a GPS time series in the Pacific Northwest and explore the long term motions that are due to the Cascadia subduction zone.</p>
+<p>We will download GPS time series from the University of Nevada - Reno <span class="xref myst">data center</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sta</span><span class="o">=</span><span class="s2">&quot;P395&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The station designation</span>
+<span class="n">sta</span><span class="o">=</span><span class="s2">&quot;P395&quot;</span>
 <span class="n">file_url</span><span class="o">=</span><span class="s2">&quot;http://geodesy.unr.edu/gps_timeseries/tenv/IGS14/&quot;</span><span class="o">+</span> <span class="n">sta</span> <span class="o">+</span> <span class="s2">&quot;.tenv&quot;</span>
 <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>  <span class="c1"># download, read text, split lines into a list</span>
 <span class="n">ue</span><span class="o">=</span><span class="p">[];</span><span class="n">un</span><span class="o">=</span><span class="p">[];</span><span class="n">uv</span><span class="o">=</span><span class="p">[];</span><span class="n">se</span><span class="o">=</span><span class="p">[];</span><span class="n">sn</span><span class="o">=</span><span class="p">[];</span><span class="n">sv</span><span class="o">=</span><span class="p">[];</span><span class="n">date</span><span class="o">=</span><span class="p">[];</span><span class="n">date_year</span><span class="o">=</span><span class="p">[];</span><span class="n">df</span><span class="o">=</span><span class="p">[]</span>
@@ -1114,7 +1098,7 @@ The difference of means is, -0.0882740403841904.
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>  <span class="c1"># make dataframe</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We now make a data frame</span>
 <span class="n">crap</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;station&#39;</span><span class="p">:</span><span class="n">sta</span><span class="p">,</span><span class="s1">&#39;date&#39;</span><span class="p">:</span><span class="n">date</span><span class="p">,</span><span class="s1">&#39;date_year&#39;</span><span class="p">:</span><span class="n">date_year</span><span class="p">,</span><span class="s1">&#39;east&#39;</span><span class="p">:</span><span class="n">ue</span><span class="p">,</span><span class="s1">&#39;north&#39;</span><span class="p">:</span><span class="n">un</span><span class="p">,</span><span class="s1">&#39;up&#39;</span><span class="p">:</span><span class="n">uv</span><span class="p">}</span>
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">crap</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;date_year&#39;</span><span class="p">,</span><span class="s1">&#39;east&#39;</span><span class="p">,</span><span class="s1">&#39;north&#39;</span><span class="p">,</span><span class="s1">&#39;up&#39;</span><span class="p">])</span>
@@ -1225,24 +1209,24 @@ The difference of means is, -0.0882740403841904.
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (years)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_37_1.png" src="../_images/2.6_resampling_37_1.png" />
+<img alt="../_images/2.6_resampling_36_1.png" src="../_images/2.6_resampling_36_1.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="linear-regression">
-<h2>2.2 Linear Regression<a class="headerlink" href="#linear-regression" title="Permalink to this headline">#</a></h2>
-<p>There is a clean <strong>linear trend</strong> in the horizontal position data over the course of the past 16 years. Obviously we could fit the data as such:</p>
+<h2>2.2 Linear regression<a class="headerlink" href="#linear-regression" title="Permalink to this headline">#</a></h2>
+<p>There is a clean <strong>linear trend</strong> in the horizontal position data over the course of the past 16 years. We can fit the data using:</p>
 <p><span class="math notranslate nohighlight">\(E(t) = V_e t + u_e,\)</span><br />
 <span class="math notranslate nohighlight">\(N(t) = V_n t + u_n,\)</span></p>
-<p>where <span class="math notranslate nohighlight">\(t\)</span> is time, and we want to regress the data to find the coefficients <span class="math notranslate nohighlight">\(V_e\)</span>, <span class="math notranslate nohighlight">\(u_e\)</span>, <span class="math notranslate nohighlight">\(V_n\)</span>, <span class="math notranslate nohighlight">\(u_n\)</span>. The displacements are mostly westward, so we will just focus on the East <span class="math notranslate nohighlight">\(E(t)\)</span> component for this exercise. The coefficients <span class="math notranslate nohighlight">\(u_e\)</span> and <span class="math notranslate nohighlight">\(u_n\)</span> are the intercept at <span class="math notranslate nohighlight">\(t=0\)</span>. They are not zero in this case because <span class="math notranslate nohighlight">\(t\)</span> starts in 2006. The coefficients <span class="math notranslate nohighlight">\(V_e\)</span> and <span class="math notranslate nohighlight">\(V_n\)</span> have the dimension of velocities:</p>
+<p>where <span class="math notranslate nohighlight">\(t\)</span> is time. We want to regress the data to find the coefficients <span class="math notranslate nohighlight">\(V_e\)</span>, <span class="math notranslate nohighlight">\(u_e\)</span>, <span class="math notranslate nohighlight">\(V_n\)</span>, <span class="math notranslate nohighlight">\(u_n\)</span>. The displacements are mostly westward, so we will just focus on the East <span class="math notranslate nohighlight">\(E(t)\)</span> component for this exercise. The coefficients <span class="math notranslate nohighlight">\(u_e\)</span> and <span class="math notranslate nohighlight">\(u_n\)</span> are the intercept at <span class="math notranslate nohighlight">\(t=0\)</span>. They are not zero in this case because <span class="math notranslate nohighlight">\(t\)</span> starts in 2006. The coefficients <span class="math notranslate nohighlight">\(V_e\)</span> and <span class="math notranslate nohighlight">\(V_n\)</span> have the dimension of velocities:</p>
 <p><span class="math notranslate nohighlight">\(V_e \sim E(t) / t\)</span> , <span class="math notranslate nohighlight">\(V_n \sim N(t) / t\)</span> ,</p>
 <p>therefore, we will use this example to discuss a simple <strong>linear regression</strong> and resampling method. We will use both a Scipy function and a Scikit-learn function.</p>
 <p>To measure a fit performance, we will measure how well the variance is reduced by fitting the data (scatter points) against the model. The variance is:</p>
 <p><span class="math notranslate nohighlight">\(\text{Var}(x) = 1/n \sum_{i=1}^n (x_i-\hat{x})^2\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(\hat{x}\)</span> is the mean of <span class="math notranslate nohighlight">\(x\)</span>.  When fitting the regression, we predict the values <span class="math notranslate nohighlight">\(x_{pred}\)</span>. The residuals are the differences between the data and the predicted values: <span class="math notranslate nohighlight">\(e = x - x_{pred} \)</span>. <span class="math notranslate nohighlight">\(R^2\)</span> or <i> coefficient of determination</i> is:</p>
-<p><span class="math notranslate nohighlight">\(R^2 = 1 - \text{Var}(x-x_{pred}) /\text{Var}(x)  = 1 - \text{Var}(e) /\text{Var}(x) \)</span>
-The smaller the error, the “better” the fit (we will discuss later that a fit can be too good!), the closer <span class="math notranslate nohighlight">\(R^2\)</span> is to one.</p>
+<p><span class="math notranslate nohighlight">\(R^2 = 1 - \text{Var}(x-x_{pred}) /\text{Var}(x)  = 1 - \text{Var}(e) /\text{Var}(x) \)</span></p>
+<p>The smaller the error, the “better” the fit (we will discuss later that a fit can be too good!), the closer <span class="math notranslate nohighlight">\(R^2\)</span> is to one.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># now let&#39;s find the trends and detrend the data.</span>
@@ -1296,7 +1280,7 @@ parameters: Coefficient of determination -0.9964524.2, P-value 0.0000004.2, stan
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient / Velocity eastward (mm/year):  -6.438107857588658
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_41_1.png" src="../_images/2.6_resampling_41_1.png" />
+<img alt="../_images/2.6_resampling_40_1.png" src="../_images/2.6_resampling_40_1.png" />
 </div>
 </div>
 <p>To evaluate the errors of the model fit using the module <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>, we will use the following function</p>
@@ -1357,7 +1341,7 @@ For reproducible results, you can select a fixed <code class="docutils literal n
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.4382164.2 and the standard deviation 0.0060364.2
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_45_1.png" src="../_images/2.6_resampling_45_1.png" />
+<img alt="../_images/2.6_resampling_44_1.png" src="../_images/2.6_resampling_44_1.png" />
 </div>
 </div>
 </section>
@@ -1405,7 +1389,7 @@ From scikit-learn: concept for training and validation set.
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1ca300220&gt;
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_47_1.png" src="../_images/2.6_resampling_47_1.png" />
+<img alt="../_images/2.6_resampling_46_1.png" src="../_images/2.6_resampling_46_1.png" />
 </div>
 </div>
 <p>Now fit the data and evaluate the error</p>
@@ -1449,7 +1433,7 @@ MSE on validation set (mm): 7.88 and coefficient of determiniation on 0.99
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Random selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_49_2.png" src="../_images/2.6_resampling_49_2.png" />
+<img alt="../_images/2.6_resampling_48_2.png" src="../_images/2.6_resampling_48_2.png" />
 </div>
 </div>
 <p>We can also select the training and validation to be chronological. If the “state” of the data changes through time, this may induce a bias in the training. But let’s see.</p>
@@ -1493,7 +1477,7 @@ Validation set MSE (mm) and Coef of Determination: 17.72,0.85
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Chronological selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_51_2.png" src="../_images/2.6_resampling_51_2.png" />
+<img alt="../_images/2.6_resampling_50_2.png" src="../_images/2.6_resampling_50_2.png" />
 </div>
 </div>
 <p>Now you see that the choice of <em>training</em> vs <em>validating</em> data is important to fit a model that will generalize.</p>
