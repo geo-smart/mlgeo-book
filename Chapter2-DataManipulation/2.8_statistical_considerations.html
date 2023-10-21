@@ -623,8 +623,13 @@ title="Print to PDF"
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#toy-problem-synthetic-data-and-noise">
-   2. Toy problem: synthetic data and noise
+  <a class="reference internal nav-link" href="#geological-data-sets-level-1">
+   2. Geological data sets [Level 1]
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#synthetic-data-and-noise-time-series-level-1">
+   3. Synthetic Data and Noise Time series [Level 1]
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -632,17 +637,19 @@ title="Print to PDF"
      Event Signal
     </a>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#geological-data-sets">
-     Geological data sets
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#realistic-problem-data-or-physics-informed-synthetic-data-and-noise">
-   3. Realistic problem: data- or physics-informed synthetic data and noise
+  <a class="reference internal nav-link" href="#realistic-or-physics-informed-synthetic-data-and-noise-level-2">
+   4. Realistic or physics-informed synthetic Data and Noise [Level 2]
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#random-noise">
+     2.1 Random noise
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -691,8 +698,13 @@ title="Print to PDF"
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#toy-problem-synthetic-data-and-noise">
-   2. Toy problem: synthetic data and noise
+  <a class="reference internal nav-link" href="#geological-data-sets-level-1">
+   2. Geological data sets [Level 1]
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#synthetic-data-and-noise-time-series-level-1">
+   3. Synthetic Data and Noise Time series [Level 1]
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -700,17 +712,19 @@ title="Print to PDF"
      Event Signal
     </a>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#geological-data-sets">
-     Geological data sets
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#realistic-problem-data-or-physics-informed-synthetic-data-and-noise">
-   3. Realistic problem: data- or physics-informed synthetic data and noise
+  <a class="reference internal nav-link" href="#realistic-or-physics-informed-synthetic-data-and-noise-level-2">
+   4. Realistic or physics-informed synthetic Data and Noise [Level 2]
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#random-noise">
+     2.1 Random noise
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -725,24 +739,6 @@ title="Print to PDF"
   <section class="tex2jax_ignore mathjax_ignore" id="statistical-considerations-for-geoscientific-data-and-noise">
 <h1>2.8 Statistical Considerations for geoscientific Data and Noise<a class="headerlink" href="#statistical-considerations-for-geoscientific-data-and-noise" title="Permalink to this headline">#</a></h1>
 <p>Statistical properties of geoscientific data</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import modules for seismic data and feature extraction</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">scipy</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
-<span class="kn">import</span> <span class="nn">scipy.signal</span> <span class="k">as</span> <span class="nn">sig</span>
-
-<span class="c1"># time series feature extraction python toolbox:</span>
-<span class="c1"># import tsfresh</span>
-</pre></div>
-</div>
-</div>
-</div>
 <section id="statistical-features">
 <h2>1. Statistical Features<a class="headerlink" href="#statistical-features" title="Permalink to this headline">#</a></h2>
 <p>::warning:: this might be replaced with slides.</p>
@@ -750,18 +746,14 @@ title="Print to PDF"
 Let be <span class="math notranslate nohighlight">\(P(z)\)</span> the distribution of the data <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <section id="the-mean">
 <h3>The mean<a class="headerlink" href="#the-mean" title="Permalink to this headline">#</a></h3>
-<div>
-<img src="mean.png" alt="mean" height=300  />
-</div>
+<p><img alt="mean" src="../_images/mean.png" /></p>
 <p>Image taken from this <span class="xref myst">blog</span>.</p>
 <p>The mean is the sum of the values divided by the number of data points. It is the first raw moment of a distribution.
 <span class="math notranslate nohighlight">\(\mu = \int_{-\infty}^\infty zP(z)dz\)</span>, where z is the ground motion value (bin) and <span class="math notranslate nohighlight">\(P(z)\)</span> is the distribution of the data.</p>
 </section>
 <section id="the-variance">
 <h3>The Variance<a class="headerlink" href="#the-variance" title="Permalink to this headline">#</a></h3>
- <div>
-<img src="variance.png" alt="variance" height=200  />
-</div>
+<p><img alt="variance" src="../_images/variance.png" /></p>
 <p>The variance is the second <em>centralized</em> moment. <em>Centralized</em> means that the distribution is shifted around the mean. It calculates how spread out is a distribution.</p>
 <p><span class="math notranslate nohighlight">\(\sigma^2 = \int_{-\infty}^\infty (z-\mu)^2P(z)dz\)</span></p>
 <p>The standard deviation is the square root of the variance, <span class="math notranslate nohighlight">\(\sigma\)</span>. A high variance indicates a wide distribution.</p>
@@ -771,9 +763,7 @@ Let be <span class="math notranslate nohighlight">\(P(z)\)</span> the distributi
 <p>Skewness is the third <em>standardized</em> moment. The <em>standardized</em> moment is scaled by the standard deviation. It measures the relative size of the two tails of the distribution.</p>
 <p><span class="math notranslate nohighlight">\(m_3= \int_{-\infty}^\infty \frac{(z - \mu)^3}{\sigma^3}P(z)dz\)</span></p>
 <p>With the cubic exponent, it is possible that the skewness is negative.</p>
- <div>
-<img src="skewness.png" alt="skewness" height=200  />
-</div>
+<p><img alt="skewness" src="../_images/skewness.png" /></p>
 <p>Image taken from this <span class="xref myst">blog</span>.</p>
 <p>A positively skewed distribution is one where most of the weight is at the end of the distribution. A negatively skewed distribution is one where most of the weight is at the beginning of the distribution.</p>
 </section>
@@ -781,11 +771,22 @@ Let be <span class="math notranslate nohighlight">\(P(z)\)</span> the distributi
 <h3>Kurtosis<a class="headerlink" href="#kurtosis" title="Permalink to this headline">#</a></h3>
 <p>Kurtosis measures the combined size of the two tails relative to the whole distribution. It is the fourth centralized and standardized moment.</p>
 <p><span class="math notranslate nohighlight">\(m_4= \int_{-\infty}^\infty (\frac{z-\mu}{\sigma})^4P(z)dz\)</span></p>
- <div>
-<img src="kurtosis.png" alt="kurtosis" height=200  />
-</div>
-The laplace, normal, and uniform distributions have a mean of 0 and a variance of 1. But their kurtosis is 3, 0, and -1.2.
+<p><img alt="kurtosis" src="../_images/kurtosis.png" />
+The laplace, normal, and uniform distributions have a mean of 0 and a variance of 1. But their kurtosis is 3, 0, and -1.2.</p>
 <p>Python functions to calculate the moments might be:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import modules for seismic data and feature extraction</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">import</span> <span class="nn">scipy.signal</span> <span class="k">as</span> <span class="nn">sig</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">raw_moment</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -799,8 +800,254 @@ The laplace, normal, and uniform distributions have a mean of 0 and a variance o
 </div>
 </section>
 </section>
-<section id="toy-problem-synthetic-data-and-noise">
-<h2>2. Toy problem: synthetic data and noise<a class="headerlink" href="#toy-problem-synthetic-data-and-noise" title="Permalink to this headline">#</a></h2>
+<section id="geological-data-sets-level-1">
+<h2>2. Geological data sets [Level 1]<a class="headerlink" href="#geological-data-sets-level-1" title="Permalink to this headline">#</a></h2>
+<p>We will explore the composition of Granite in terms of Silicate and Magnesium content. The data was collected from XXX.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load .csv data into a pandas dataframe</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;EarthRocGranites.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Data pre-processing is often necessary, and most importantly, it is critical to record any processing step to raw data. Do not change the original data file, instead record processing steps. Below, we drop the rows with NaNs (not a number).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>    <span class="c1"># remove rows with NaN values</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>   <span class="c1"># describe the data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>SIO2(WT%)</th>
+      <th>MGO(WT%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>72.57</td>
+      <td>0.49</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>70.39</td>
+      <td>0.84</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>71.60</td>
+      <td>0.59</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>68.93</td>
+      <td>0.81</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>71.07</td>
+      <td>0.76</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Pandas python software includes methods to report basics data statistics. Use the function <code class="docutils literal notranslate"><span class="pre">describe</span></code> to the Pandas data frame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>SIO2(WT%)</th>
+      <th>MGO(WT%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>15924.000000</td>
+      <td>15924.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>72.113026</td>
+      <td>0.613687</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>4.103932</td>
+      <td>0.942135</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>8.710000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>70.100000</td>
+      <td>0.170000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>72.750000</td>
+      <td>0.390000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>74.890000</td>
+      <td>0.780000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>93.010000</td>
+      <td>57.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now, let&#39;s visualize the histograms of silica and magnesium</span>
+
+<span class="c1"># Create a subplot with two histograms side by side</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 1 row, 2 columns</span>
+
+<span class="c1"># Plot the histograms for each column</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;SiO$_2$, wt%&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;MGO(WT%)&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;MgO, wt%&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+<span class="c1"># Note these xlims -&gt; the data largely [but not completely!] sit between 0 and 10 wt%</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+
+<span class="c1"># Add spacing between subplots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="c1"># Display the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_statistical_considerations_10_0.png" src="../_images/2.8_statistical_considerations_10_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># One more plot: let&#39;s look at a scatter of SiO2 vs. MgO</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;MGO(WT%)&#39;</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.125</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;SiO$_2$, wt%&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;MgO, wt%&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_statistical_considerations_11_0.png" src="../_images/2.8_statistical_considerations_11_0.png" />
+</div>
+</div>
+<p>Now, let’s generate <em>moments</em> for SiO<span class="math notranslate nohighlight">\(_2\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let us first define the moment functions</span>
+
+<span class="k">def</span> <span class="nf">raw_moment</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span><span class="o">**</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">central_moment</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">raw_moment</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+<span class="c1"># The mean:</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The mean is: </span><span class="si">{</span><span class="n">raw_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;SIO2(WT%)&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s1">4.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Variance:</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The variance is: </span><span class="si">{</span><span class="n">central_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;SIO2(WT%)&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span><span class="si">:</span><span class="s1">4.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Skewness:</span>
+<span class="n">skewness</span> <span class="o">=</span> <span class="n">central_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;SIO2(WT%)&quot;</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="n">central_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;SIO2(WT%)&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The skewness is: </span><span class="si">{</span><span class="n">skewness</span><span class="si">:</span><span class="s1">4.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Kurtosis</span>
+<span class="n">kurtosis_value</span> <span class="o">=</span> <span class="n">central_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="n">central_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The kurtosis is: </span><span class="si">{</span><span class="n">kurtosis_value</span><span class="si">:</span><span class="s1">4.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean is: 72.11
+The variance is: 16.84
+The skewness is: -1.75
+The kurtosis is: 13.67
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can also just use pandas (or numpy or scipy):</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The mean is: </span><span class="si">%4.2f</span><span class="s1">, the variance is: </span><span class="si">%4.2f</span><span class="s1">, the skewness is: </span><span class="si">%4.2f</span><span class="s1">, and the kurtosis is: </span><span class="si">%4.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">var</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">skew</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">kurtosis</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean is: 72.11, the variance is: 16.84, the skewness is: -1.75, and the kurtosis is: 10.67
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="synthetic-data-and-noise-time-series-level-1">
+<h2>3. Synthetic Data and Noise Time series [Level 1]<a class="headerlink" href="#synthetic-data-and-noise-time-series-level-1" title="Permalink to this headline">#</a></h2>
 <p>Here we will construct a time series with 1 ricker wavelet as a source and synthetic noise</p>
 <p>We will analyze their statistical properties and compare the distributions. Present this as a binary classification problem.</p>
 <div class="cell docutils container">
@@ -827,6 +1074,12 @@ The laplace, normal, and uniform distributions have a mean of 0 and a variance o
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time in s&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time in s&#39;)
+</pre></div>
+</div>
+<img alt="../_images/2.8_statistical_considerations_18_1.png" src="../_images/2.8_statistical_considerations_18_1.png" />
 </div>
 </div>
 <p>The Ricker wavelet is a smooth function with a signal in a specific frequency band. Let’s plot it’s absolute Fourier amplitude spectrum.</p>
@@ -859,6 +1112,9 @@ The laplace, normal, and uniform distributions have a mean of 0 and a variance o
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_statistical_considerations_21_0.png" src="../_images/2.8_statistical_considerations_21_0.png" />
+</div>
 </div>
 <p>What does the event data distribution looks like?</p>
 <div class="cell docutils container">
@@ -866,6 +1122,9 @@ The laplace, normal, and uniform distributions have a mean of 0 and a variance o
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sa</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_statistical_considerations_23_0.png" src="../_images/2.8_statistical_considerations_23_0.png" />
 </div>
 </div>
 <p>We created a pure signal not contaminated by noise. Let’s create a <em>noise</em> time series to add on the <em>signal</em> time series.</p>
@@ -876,6 +1135,12 @@ The laplace, normal, and uniform distributions have a mean of 0 and a variance o
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">noise</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x29996e5b0&gt;]
+</pre></div>
+</div>
+<img alt="../_images/2.8_statistical_considerations_25_1.png" src="../_images/2.8_statistical_considerations_25_1.png" />
 </div>
 </div>
 <p>Check the Fourier amplitude spectrum of the noise</p>
@@ -891,6 +1156,9 @@ The laplace, normal, and uniform distributions have a mean of 0 and a variance o
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_statistical_considerations_27_0.png" src="../_images/2.8_statistical_considerations_27_0.png" />
 </div>
 </div>
 <p>OK, they look very different in the spectral domain!
@@ -922,6 +1190,12 @@ Let’s add noise to the data and plot it.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time in s&#39;)
+</pre></div>
+</div>
+<img alt="../_images/2.8_statistical_considerations_32_1.png" src="../_images/2.8_statistical_considerations_32_1.png" />
+</div>
 </div>
 <p>Noise may have different frequency content, or <em>color</em>. We can construct a time series of noise based on its Fourier amplitude spectrum.</p>
 <div class="cell docutils container">
@@ -945,6 +1219,12 @@ Let’s add noise to the data and plot it.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.02938002,  0.0313548 ,  0.01182476, ...,  0.01588404,
+       -0.01880449,  0.00017777])
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -953,6 +1233,12 @@ Let’s add noise to the data and plot it.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Noise with random phase and white spectrum&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Noise with random phase and white spectrum&#39;)
+</pre></div>
+</div>
+<img alt="../_images/2.8_statistical_considerations_36_1.png" src="../_images/2.8_statistical_considerations_36_1.png" />
 </div>
 </div>
 <p>Add the new noise and the signal (Ricker wavelet) and plot them in time and frequency domain</p>
@@ -985,6 +1271,9 @@ Let’s add noise to the data and plot it.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_statistical_considerations_40_0.png" src="../_images/2.8_statistical_considerations_40_0.png" />
+</div>
 </div>
 <p>Let’s compare the data distribution between the pure signal, the noise signal, and the combined signals.</p>
 <div class="cell docutils container">
@@ -995,6 +1284,9 @@ Let’s add noise to the data and plot it.</p>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">news</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">();</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_statistical_considerations_42_0.png" src="../_images/2.8_statistical_considerations_42_0.png" />
 </div>
 </div>
 <p>Now in class, calculate the statistical moments between the clean data, the noise, and the noisy data. Explore what features might be discriminate between <strong>signal</strong> and <strong>noise</strong> and explore their sensitivity to noise levels.</p>
@@ -1016,6 +1308,14 @@ Let’s add noise to the data and plot it.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.7763568394002505e-18
+0.07508417348193797
+0.2970118992746436
+4.060298649528828
+</pre></div>
+</div>
+</div>
 </div>
 <p>We can also use the numpy and scipy modules to get these values</p>
 <div class="cell docutils container">
@@ -1025,110 +1325,180 @@ Let’s add noise to the data and plot it.</p>
 </pre></div>
 </div>
 </div>
-</div>
-<p>These values may mean nothing without some additional context. We can download seismic noise data to see if the earthquake waveforms are statistically different from the noise. For that, we will download the same length of data prior to the earthquake:</p>
-</section>
-<section id="geological-data-sets">
-<h3>Geological data sets<a class="headerlink" href="#geological-data-sets" title="Permalink to this headline">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load .csv data into a pandas dataframe</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;EarthRocGranites.csv&#39;</span><span class="p">)</span>
-
-<span class="c1"># Remove any rows that are empty</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-
-<span class="c1"># Let&#39;s print out this data frame</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now, let&#39;s visualize the histograms of silica and magnesium</span>
-
-<span class="c1"># Create a subplot with two histograms side by side</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 1 row, 2 columns</span>
-
-<span class="c1"># Plot the histograms for each column</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;SiO$_2$, wt%&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
-
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;MGO(WT%)&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;MgO, wt%&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
-<span class="c1"># Note these xlims -&gt; the data largely [but not completely!] sit between 0 and 10 wt%</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
-
-<span class="c1"># Add spacing between subplots</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-
-<span class="c1"># Display the plot</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># One more plot: let&#39;s look at a scatter of SiO2 vs. MgO</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;MGO(WT%)&#39;</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.125</span><span class="p">)</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;SiO$_2$, wt%&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;MgO, wt%&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now, let’s generate <em>moments</em> for SiO<span class="math notranslate nohighlight">\(_2\)</span></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let us first define the moment functions</span>
-
-<span class="k">def</span> <span class="nf">raw_moment</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span><span class="o">**</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-<span class="k">def</span> <span class="nf">central_moment</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">raw_moment</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
-
-<span class="c1"># The mean:</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The mean is: </span><span class="si">{</span><span class="n">raw_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;SIO2(WT%)&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s1">4.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-<span class="c1"># Variance:</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The variance is: </span><span class="si">{</span><span class="n">central_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;SIO2(WT%)&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span><span class="si">:</span><span class="s1">4.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-<span class="c1"># Skewness:</span>
-<span class="n">skewness</span> <span class="o">=</span> <span class="n">central_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;SIO2(WT%)&quot;</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="n">central_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;SIO2(WT%)&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The skewness is: </span><span class="si">{</span><span class="n">skewness</span><span class="si">:</span><span class="s1">4.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-<span class="c1"># Kurtosis</span>
-<span class="n">kurtosis_value</span> <span class="o">=</span> <span class="n">central_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="n">central_moment</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The kurtosis is: </span><span class="si">{</span><span class="n">kurtosis_value</span><span class="si">:</span><span class="s1">4.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can also just use pandas (or numpy or scipy):</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The mean is: </span><span class="si">%4.2f</span><span class="s1">, the variance is: </span><span class="si">%4.2f</span><span class="s1">, the skewness is: </span><span class="si">%4.2f</span><span class="s1">, and the kurtosis is: </span><span class="si">%4.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">var</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">skew</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SIO2(WT%)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">kurtosis</span><span class="p">()))</span>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>the mean is 0.00, the variance is 0.08, the skewness is 0.30, the kurtosis is 4.06
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 </section>
-<section id="realistic-problem-data-or-physics-informed-synthetic-data-and-noise">
-<h2>3. Realistic problem: data- or physics-informed synthetic data and noise<a class="headerlink" href="#realistic-problem-data-or-physics-informed-synthetic-data-and-noise" title="Permalink to this headline">#</a></h2>
+<section id="realistic-or-physics-informed-synthetic-data-and-noise-level-2">
+<h2>4. Realistic or physics-informed synthetic Data and Noise [Level 2]<a class="headerlink" href="#realistic-or-physics-informed-synthetic-data-and-noise-level-2" title="Permalink to this headline">#</a></h2>
 <p>In this case, we can create a time series that has the similar noise structure than the realistic noise.</p>
+<p>These values may mean nothing without some additional context. We can download seismic noise data to see if the earthquake waveforms are statistically different from the noise. For that, we will download the same length of data prior to the earthquake:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install obspy
+<span class="kn">import</span> <span class="nn">obspy</span>
+<span class="kn">import</span> <span class="nn">obspy.clients.fdsn.client</span> <span class="k">as</span> <span class="nn">fdsn</span>
+<span class="kn">from</span> <span class="nn">obspy</span> <span class="kn">import</span> <span class="n">UTCDateTime</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: obspy in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (1.4.0)
+Requirement already satisfied: lxml in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from obspy) (4.9.3)
+Requirement already satisfied: scipy&gt;=1.7 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from obspy) (1.11.3)
+Requirement already satisfied: setuptools in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from obspy) (68.2.2)
+Requirement already satisfied: numpy&gt;=1.20 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from obspy) (1.26.0)
+Requirement already satisfied: matplotlib&gt;=3.3 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from obspy) (3.8.0)
+Requirement already satisfied: requests in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from obspy) (2.31.0)
+Requirement already satisfied: sqlalchemy in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from obspy) (1.4.49)
+Requirement already satisfied: decorator in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from obspy) (5.1.1)
+Requirement already satisfied: packaging&gt;=20.0 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from matplotlib&gt;=3.3-&gt;obspy) (23.2)
+Requirement already satisfied: cycler&gt;=0.10 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from matplotlib&gt;=3.3-&gt;obspy) (0.12.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from matplotlib&gt;=3.3-&gt;obspy) (4.43.1)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from matplotlib&gt;=3.3-&gt;obspy) (2.8.2)
+Requirement already satisfied: importlib-resources&gt;=3.2.0 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from matplotlib&gt;=3.3-&gt;obspy) (6.1.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from matplotlib&gt;=3.3-&gt;obspy) (1.1.1)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from matplotlib&gt;=3.3-&gt;obspy) (3.1.1)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from matplotlib&gt;=3.3-&gt;obspy) (1.4.5)
+Requirement already satisfied: pillow&gt;=6.2.0 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from matplotlib&gt;=3.3-&gt;obspy) (10.0.1)
+Requirement already satisfied: zipp&gt;=3.1.0 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from importlib-resources&gt;=3.2.0-&gt;matplotlib&gt;=3.3-&gt;obspy) (3.17.0)
+Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.3-&gt;obspy) (1.16.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from requests-&gt;obspy) (2023.7.22)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from requests-&gt;obspy) (2.0.6)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from requests-&gt;obspy) (3.4)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from requests-&gt;obspy) (3.3.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download seismic data</span>
+<span class="n">network</span> <span class="o">=</span> <span class="s1">&#39;UW&#39;</span>
+<span class="n">station</span> <span class="o">=</span> <span class="s1">&#39;RATT&#39;</span>
+<span class="n">channel</span> <span class="o">=</span> <span class="s1">&#39;HHZ&#39;</span><span class="c1"># this channel gives a low frequency, 1Hz signal.</span>
+<span class="n">Tstart</span> <span class="o">=</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">29</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">fdsn_client</span> <span class="o">=</span> <span class="n">fdsn</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;IRIS&#39;</span><span class="p">)</span> <span class="c1"># client to query the IRIS DMC server</span>
+<span class="c1"># call to download the specific data: noise waveforms</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">fdsn_client</span><span class="o">.</span><span class="n">get_waveforms</span><span class="p">(</span><span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="n">station</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span> <span class="n">starttime</span><span class="o">=</span><span class="n">Tstart</span><span class="o">-</span><span class="mi">7200</span><span class="p">,</span> \
+    <span class="n">endtime</span><span class="o">=</span><span class="n">Tstart</span><span class="p">,</span> <span class="n">attach_response</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">N</span><span class="o">.</span><span class="n">merge</span><span class="p">();</span> <span class="n">N</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">);</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UW.RATT..HHZ | 2021-07-29T04:15:00.000000Z - 2021-07-29T06:14:59.990000Z | 100.0 Hz, 720000 samples
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the Fourier domain, use <code class="docutils literal notranslate"><span class="pre">np.rand[n]</span></code> functions to create a random <em>phase spectrum</em> between -<span class="math notranslate nohighlight">\(\pi\)</span> and <span class="math notranslate nohighlight">\(\pi\)</span>. For the <em>amplitude spectrum</em>, you may choose a <em>white</em> color, which means that the amplitude spectrum is flat and equal at all frequencies; you may choose a <em>color</em> for the spectrum, for instance an amplitude that decays with <span class="math notranslate nohighlight">\(1/f\)</span>; you may choose the spectrum of the realistic noise, for instance extracted from raw data.</p>
+<section id="random-noise">
+<h3>2.1 Random noise<a class="headerlink" href="#random-noise" title="Permalink to this headline">#</a></h3>
+<p>Below, use the random function to create a synthetic noise.</p>
+<ol class="simple">
+<li><p>Create an array of random numbers between -1 and 1 of length the same length as the data Z.</p></li>
+<li><p>Calculate the signal-to-noise ratio, for instance:</p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\( SNR = 20 log_{10} (\frac{\max(|signal|)}{\max(|noise|)})\)</span></p>
+<p>or simply</p>
+<p><span class="math notranslate nohighlight">\(SNR = (\frac{\max(|signal|)}{\max(|noise|)})\)</span></p>
+<ol class="simple">
+<li><p>Add the synthetic noise with a varying SNR</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Create a time series of the synthetic noise</span>
+<span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">random</span>
+
+<span class="n">new_noise</span><span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">SNR</span><span class="o">=</span><span class="mf">100.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">s</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="o">+</span><span class="n">new_noise</span><span class="o">/</span><span class="n">SNR</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_statistical_considerations_56_0.png" src="../_images/2.8_statistical_considerations_56_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make noise based on the spectrum of the noise data</span>
+<span class="n">npts</span> <span class="o">=</span> <span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span><span class="o">-</span><span class="mi">1</span>
+<span class="c1">## FFT the signals</span>
+<span class="c1"># fill up until 2^N value to speed up the FFT</span>
+<span class="n">Nfft</span> <span class="o">=</span> <span class="n">next_fast_len</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># this will be an even number</span>
+<span class="n">freqVec</span> <span class="o">=</span> <span class="n">fftfreq</span><span class="p">(</span><span class="n">Nfft</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">Nat</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">new_noise</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">Nfft</span><span class="p">)</span><span class="c1">#/np.sqrt(Z[0].stats.npts)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Nat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]))</span>
+
+<span class="n">N</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">Nhat</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">Nfft</span><span class="p">)</span><span class="c1">#/np.sqrt(Z[0].stats.npts)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Nhat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.8_statistical_considerations_57_0.png" src="../_images/2.8_statistical_considerations_57_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.fftpack</span> <span class="kn">import</span> <span class="n">ifft</span>
+<span class="n">Nhat</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">Nfft</span><span class="p">)</span><span class="c1">#/np.sqrt(Z[0].stats.npts)</span>
+<span class="n">NN</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">newcrap</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Nfft</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">newcrap</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Nhat</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">NN</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">newcrap</span><span class="p">[</span><span class="o">-</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">NN</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">newnoiseF</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">crap</span> <span class="o">=</span> <span class="n">ifft</span><span class="p">(</span><span class="n">newcrap</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">crap</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x287e5fa30&gt;]
+</pre></div>
+</div>
+<img alt="../_images/2.8_statistical_considerations_58_1.png" src="../_images/2.8_statistical_considerations_58_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NN</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">NN</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([36065., 35986., 35800., 35856., 36177., 35963., 36050., 36063.,
+        35866., 36174.]),
+ array([-9.42476644, -8.16813116, -6.91149589, -5.65486061, -4.39822533,
+        -3.14159005, -1.88495477, -0.62831949,  0.62831579,  1.88495106,
+         3.14158634]),
+ &lt;BarContainer object of 10 artists&gt;)
+</pre></div>
+</div>
+<img alt="../_images/2.8_statistical_considerations_59_1.png" src="../_images/2.8_statistical_considerations_59_1.png" />
+</div>
+</div>
+</section>
 </section>
 </section>
 

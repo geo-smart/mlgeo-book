@@ -622,24 +622,8 @@ title="Print to PDF"
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#fourier-transforms-synthetic-noise-level-2">
-   2. Fourier Transforms: Synthetic Noise [
-   <strong>
-    Level 2
-   </strong>
-   ]
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#random-noise">
-     2.1 Random noise
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#d-fourier-transforms-level-3">
-   3. 2D Fourier Transforms [
+   2. 2D Fourier Transforms [
    <strong>
     Level 3
    </strong>
@@ -648,7 +632,7 @@ title="Print to PDF"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#short-time-fourier-transforms-level-2">
-   4. Short Time Fourier Transforms [
+   3. Short Time Fourier Transforms [
    <strong>
     Level 2
    </strong>
@@ -657,7 +641,7 @@ title="Print to PDF"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#wavelet-transforms-basics-level-2">
-   5. Wavelet Transforms: basics [
+   4. Wavelet Transforms: basics [
    <strong>
     Level 2
    </strong>
@@ -710,24 +694,8 @@ title="Print to PDF"
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#fourier-transforms-synthetic-noise-level-2">
-   2. Fourier Transforms: Synthetic Noise [
-   <strong>
-    Level 2
-   </strong>
-   ]
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#random-noise">
-     2.1 Random noise
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#d-fourier-transforms-level-3">
-   3. 2D Fourier Transforms [
+   2. 2D Fourier Transforms [
    <strong>
     Level 3
    </strong>
@@ -736,7 +704,7 @@ title="Print to PDF"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#short-time-fourier-transforms-level-2">
-   4. Short Time Fourier Transforms [
+   3. Short Time Fourier Transforms [
    <strong>
     Level 2
    </strong>
@@ -745,7 +713,7 @@ title="Print to PDF"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#wavelet-transforms-basics-level-2">
-   5. Wavelet Transforms: basics [
+   4. Wavelet Transforms: basics [
    <strong>
     Level 2
    </strong>
@@ -776,7 +744,6 @@ Filtering any data needs to be done carefully and potential artefact due to filt
 <p>The lecture covers several levels and methods for transforming data.</p>
 <ol class="simple">
 <li><p>Fourier Transforms: basics [<strong>Level 1</strong>]</p></li>
-<li><p>Fourier Transforms: synthetic noise [<strong>Level 2</strong>]</p></li>
 <li><p>Fourier Transforms: 2D Fourier transform and Data Compression [<strong>Level 3</strong>]</p></li>
 <li><p>Short Time Fourier Transforms: spectrograms [<strong>Level 2</strong>]</p></li>
 <li><p>Wavelet Transforms: basics [<strong>Level 3</strong>]</p></li>
@@ -1136,123 +1103,8 @@ standard deviation
 </div>
 </section>
 </section>
-<section id="fourier-transforms-synthetic-noise-level-2">
-<h2>2. Fourier Transforms: Synthetic Noise [<strong>Level 2</strong>]<a class="headerlink" href="#fourier-transforms-synthetic-noise-level-2" title="Permalink to this headline">#</a></h2>
-<p>Now we could add more noise to the earthquake time series. There are several strategies:</p>
-<ul class="simple">
-<li><p>From time domain, use the <code class="docutils literal notranslate"><span class="pre">np.rand[n]</span></code> functions to create a random times series</p></li>
-<li><p>From the Fourier domain, use <code class="docutils literal notranslate"><span class="pre">np.rand[n]</span></code> functions to create a random <em>phase spectrum</em> between -<span class="math notranslate nohighlight">\(\pi\)</span> and <span class="math notranslate nohighlight">\(\pi\)</span>. For the <em>amplitude spectrum</em>, you may choose a <em>white</em> color, which means that the amplitude spectrum is flat and equal at all frequencies; you may choose a <em>color</em> for the spectrum, for instance an amplitude that decays with <span class="math notranslate nohighlight">\(1/f\)</span>; you may choose the spectrum of the realistic noise, for instance extracted from raw data.</p></li>
-</ul>
-<section id="random-noise">
-<h3>2.1 Random noise<a class="headerlink" href="#random-noise" title="Permalink to this headline">#</a></h3>
-<p>Below, use the random function to create a synthetic noise.</p>
-<ol class="simple">
-<li><p>Create an array of random numbers between -1 and 1 of length the same length as the data Z.</p></li>
-<li><p>Calculate the signal-to-noise ratio, for instance:</p></li>
-</ol>
-<p><span class="math notranslate nohighlight">\( SNR = 20 log_{10} (\frac{\max(|signal|)}{\max(|noise|)})\)</span></p>
-<p>or simply</p>
-<p><span class="math notranslate nohighlight">\(SNR = (\frac{\max(|signal|)}{\max(|noise|)})\)</span></p>
-<ol class="simple">
-<li><p>Add the synthetic noise with a varying SNR</p></li>
-</ol>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Create a time series of the synthetic noise</span>
-<span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">random</span>
-
-<span class="n">new_noise</span><span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">SNR</span><span class="o">=</span><span class="mf">100.</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">z</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="o">+</span><span class="n">new_noise</span><span class="o">/</span><span class="n">SNR</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/2.7_data_spectral_transforms_30_0.png" src="../_images/2.7_data_spectral_transforms_30_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make noise based on the spectrum of the noise data</span>
-<span class="n">npts</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span><span class="o">-</span><span class="mi">1</span>
-<span class="c1">## FFT the signals</span>
-<span class="c1"># fill up until 2^N value to speed up the FFT</span>
-<span class="n">Nfft</span> <span class="o">=</span> <span class="n">next_fast_len</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># this will be an even number</span>
-<span class="n">freqVec</span> <span class="o">=</span> <span class="n">fftfreq</span><span class="p">(</span><span class="n">Nfft</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">Nat</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">new_noise</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">Nfft</span><span class="p">)</span><span class="c1">#/np.sqrt(Z[0].stats.npts)</span>
-
-
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Nat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]))</span>
-
-<span class="n">N</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
-<span class="n">Nhat</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">Nfft</span><span class="p">)</span><span class="c1">#/np.sqrt(Z[0].stats.npts)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freqVec</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Nhat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/2.7_data_spectral_transforms_31_0.png" src="../_images/2.7_data_spectral_transforms_31_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.fftpack</span> <span class="kn">import</span> <span class="n">ifft</span>
-<span class="n">Nhat</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">Nfft</span><span class="p">)</span><span class="c1">#/np.sqrt(Z[0].stats.npts)</span>
-<span class="n">NN</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
-<span class="n">newcrap</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Nfft</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">):</span>
-    <span class="n">newcrap</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Nhat</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">NN</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-
-<span class="n">crap</span> <span class="o">=</span> <span class="n">ifft</span><span class="p">(</span><span class="n">newcrap</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">crap</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/matplotlib/cbook.py:1699: ComplexWarning: Casting complex values to real discards the imaginary part
-  return math.isfinite(val)
-/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/matplotlib/cbook.py:1345: ComplexWarning: Casting complex values to real discards the imaginary part
-  return np.asarray(x, float)
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x29ffdb310&gt;]
-</pre></div>
-</div>
-<img alt="../_images/2.7_data_spectral_transforms_32_2.png" src="../_images/2.7_data_spectral_transforms_32_2.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NN</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">NN</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([36144., 36182., 35950., 36183., 35779., 35994., 36038., 36004.,
-        35926., 35800.]),
- array([-9.42475355, -8.16812356, -6.91149356, -5.65486357, -4.39823357,
-        -3.14160358, -1.88497358, -0.62834359,  0.62828641,  1.8849164 ,
-         3.1415464 ]),
- &lt;BarContainer object of 10 artists&gt;)
-</pre></div>
-</div>
-<img alt="../_images/2.7_data_spectral_transforms_33_1.png" src="../_images/2.7_data_spectral_transforms_33_1.png" />
-</div>
-</div>
-</section>
-</section>
 <section id="d-fourier-transforms-level-3">
-<h2>3. 2D Fourier Transforms [<strong>Level 3</strong>]<a class="headerlink" href="#d-fourier-transforms-level-3" title="Permalink to this headline">#</a></h2>
+<h2>2. 2D Fourier Transforms [<strong>Level 3</strong>]<a class="headerlink" href="#d-fourier-transforms-level-3" title="Permalink to this headline">#</a></h2>
 <p>The 2D Fourier transform is applied on a 2D matrix. It first applies a 1D Fourier transform to every row of the matrix, then applies a 1D Fourier transform to every column of the intermediate matrix.</p>
 <p>2D Fourier transforms can be used to find the Fourier coefficients that dominate the image. This can be used for filtering the data. Another application is to compress the data by selecting several coefficients instead of presenting most of the image.</p>
 <p>We will practice on a DEM.</p>
@@ -1310,7 +1162,7 @@ Successfully installed wget-3.2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.7_data_spectral_transforms_38_0.png" src="../_images/2.7_data_spectral_transforms_38_0.png" />
+<img alt="../_images/2.7_data_spectral_transforms_31_0.png" src="../_images/2.7_data_spectral_transforms_31_0.png" />
 </div>
 </div>
 <p>Consider <code class="docutils literal notranslate"><span class="pre">elevation</span></code> as a 2D data set. We can perform a 2D transform, which will give us a spectrum in the spatial dimension.</p>
@@ -1350,7 +1202,7 @@ Successfully installed wget-3.2
 this is about the spatial sampling of the model  1.0777344413103096  km
 </pre></div>
 </div>
-<img alt="../_images/2.7_data_spectral_transforms_40_1.png" src="../_images/2.7_data_spectral_transforms_40_1.png" />
+<img alt="../_images/2.7_data_spectral_transforms_33_1.png" src="../_images/2.7_data_spectral_transforms_33_1.png" />
 </div>
 </div>
 <p>Now we will filter or compress by taking the largest Fourier coefficients of the image.</p>
@@ -1397,7 +1249,7 @@ this is about the spatial sampling of the model  1.0777344413103096  km
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We are keeping up to 0.010000 the number of Fourier coefficients
 </pre></div>
 </div>
-<img alt="../_images/2.7_data_spectral_transforms_44_1.png" src="../_images/2.7_data_spectral_transforms_44_1.png" />
+<img alt="../_images/2.7_data_spectral_transforms_37_1.png" src="../_images/2.7_data_spectral_transforms_37_1.png" />
 </div>
 </div>
 <p>Now we will compare the original 2D data set with the Fourier compressed data</p>
@@ -1427,12 +1279,12 @@ this is about the spatial sampling of the model  1.0777344413103096  km
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-2600000.0, 2300000.0, 0.0, 3200000.0)
 </pre></div>
 </div>
-<img alt="../_images/2.7_data_spectral_transforms_46_2.png" src="../_images/2.7_data_spectral_transforms_46_2.png" />
+<img alt="../_images/2.7_data_spectral_transforms_39_2.png" src="../_images/2.7_data_spectral_transforms_39_2.png" />
 </div>
 </div>
 </section>
 <section id="short-time-fourier-transforms-level-2">
-<h2>4. Short Time Fourier Transforms [<strong>Level 2</strong>]<a class="headerlink" href="#short-time-fourier-transforms-level-2" title="Permalink to this headline">#</a></h2>
+<h2>3. Short Time Fourier Transforms [<strong>Level 2</strong>]<a class="headerlink" href="#short-time-fourier-transforms-level-2" title="Permalink to this headline">#</a></h2>
 <p>In time-dependent and multi-scale problems, it may be interesting to extract data features from the short time Fourier transform.</p>
 <p>The STFT is a Fourier Transform applied to short (overlapping) windows to resolve the frequencies over different times in the series.</p>
 <div class="cell docutils container">
@@ -1473,7 +1325,7 @@ this is about the spatial sampling of the model  1.0777344413103096  km
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.1, 40)
 </pre></div>
 </div>
-<img alt="../_images/2.7_data_spectral_transforms_48_3.png" src="../_images/2.7_data_spectral_transforms_48_3.png" />
+<img alt="../_images/2.7_data_spectral_transforms_41_3.png" src="../_images/2.7_data_spectral_transforms_41_3.png" />
 </div>
 </div>
 <p>The spectrogram <code class="docutils literal notranslate"><span class="pre">Zxx</span></code> is a transform of the original data. It is common to use spectrograms as input to neural networks as 2D arrays.</p>
@@ -1491,16 +1343,16 @@ this is about the spatial sampling of the model  1.0777344413103096  km
 </div>
 </section>
 <section id="wavelet-transforms-basics-level-2">
-<h2>5. Wavelet Transforms: basics [<strong>Level 2</strong>]<a class="headerlink" href="#wavelet-transforms-basics-level-2" title="Permalink to this headline">#</a></h2>
+<h2>4. Wavelet Transforms: basics [<strong>Level 2</strong>]<a class="headerlink" href="#wavelet-transforms-basics-level-2" title="Permalink to this headline">#</a></h2>
 <p>The wavelet transform projects the time series onto a 2D space of <em>time</em> and <em>scale</em> axis. The <em>scale</em> is a representation of the frequency scale of the data. The wavelet transforms uses a series of functions called <em>wavelets</em> to linearly decompose the signals. Unlike the <em>sine</em> functions of the Fourier transform, the <em>wavelets</em> have finite durations and are localized in time:</p>
  <div>
-<img src="Wavelet-Out1.jpeg" alt="wavelet" height=100  />
+<img src="../img/Wavelet-Out1.jpeg" alt="wavelet" height=100  />
 </div>
 <p>Image from this <span class="xref myst">article</span>.</p>
 <p>There exist many canonical wavelet families. The difference between families is typically their shape, compactness, and smoothness. Typically, one chooses one family for the specific time series. Wavelets have finite energy and zero mean.</p>
 <p>The time-scale representation of a time series is a <em>scaleogram</em>. <em>scales</em> can be converted to pseudo frequencies: If <span class="math notranslate nohighlight">\(f_c\)</span> is the central frequency of the wavelet and the scale is <span class="math notranslate nohighlight">\(a\)</span>, then the pseuo-frequency is <span class="math notranslate nohighlight">\(f_a = f_c/a\)</span>.</p>
  <div>
-<img src="wavelet_families.png" alt="wavelet" height=300  />
+<img src="../img/wavelet_families.png" alt="wavelet" height=300  />
 </div>
 <p>Image from this <span class="xref myst">article</span>.</p>
 <p>The wavelet transform becomes:</p>
@@ -1541,7 +1393,7 @@ this is about the spatial sampling of the model  1.0777344413103096  km
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.7_data_spectral_transforms_54_0.png" src="../_images/2.7_data_spectral_transforms_54_0.png" />
+<img alt="../_images/2.7_data_spectral_transforms_47_0.png" src="../_images/2.7_data_spectral_transforms_47_0.png" />
 </div>
 </div>
 <p>TF transforms take computational time in the workflow, let’s compare:</p>
