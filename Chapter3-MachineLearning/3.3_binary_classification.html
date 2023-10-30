@@ -747,16 +747,10 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># plot the decision boundary as a background</span>
-
-<span class="ne">ImportError</span>: cannot import name &#39;DecisionBoundaryDisplay&#39; from &#39;sklearn.inspection&#39; (/Users/marinedenolle/opt/miniconda3/envs/mlgeo_sk/lib/python3.9/site-packages/sklearn/inspection/__init__.py)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f7c5ef8fdf0&gt;
 </pre></div>
 </div>
+<img alt="../_images/3.3_binary_classification_8_1.png" src="../_images/3.3_binary_classification_8_1.png" />
 </div>
 </div>
 <p>The results shows a not-too bad classification, but a low confidence.</p>
@@ -779,11 +773,6 @@ title="Print to PDF"
 <span class="c1"># calculate the mean accuracy on the given test data and labels.</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The mean accuracy on the given test and labels is </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span><span class="k">sc</span>ore<span class="o">)</span>
-
-<span class="c1"># plot the decision boundary as a background</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
-<span class="c1"># DecisionBoundaryDisplay.from_estimator(clf, X, cmap=&#39;PiYG&#39;, alpha=0.8, ax=ax, eps=0.5)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;PiYG&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -791,13 +780,29 @@ title="Print to PDF"
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean accuracy on the given test and labels is 0.975000
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x151ada520&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f7c5ad06230&gt;
 </pre></div>
 </div>
 <img alt="../_images/3.3_binary_classification_10_2.png" src="../_images/3.3_binary_classification_10_2.png" />
 </div>
 </div>
-<p>Now we will test the effect of <strong>data normalization</strong> before the classification. We will stretch the first axis of the data to see the effects.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the decision boundary as a background</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
+<span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;PiYG&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;PiYG&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f7c5ab6c760&gt;
+</pre></div>
+</div>
+<img alt="../_images/3.3_binary_classification_11_1.png" src="../_images/3.3_binary_classification_11_1.png" />
+</div>
+</div>
+<p>Now we will test to see what happens when you do not <strong>normalize</strong> your data before the classification. We will stretch the first axis of the data to see the effects.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make a data set</span>
@@ -812,9 +817,6 @@ title="Print to PDF"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define ML</span>
 <span class="n">K</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">clf</span><span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
-
-<span class="c1"># normalize data.</span>
-<span class="c1"># X = StandardScaler().fit_transform(X)</span>
 
 <span class="c1"># split data between train and test set.</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
@@ -837,53 +839,17 @@ title="Print to PDF"
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean accuracy on the given test and labels is 0.775000
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x151ada670&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f7c5ace6590&gt;
 </pre></div>
 </div>
-<img alt="../_images/3.3_binary_classification_13_2.png" src="../_images/3.3_binary_classification_13_2.png" />
+<img alt="../_images/3.3_binary_classification_14_2.png" src="../_images/3.3_binary_classification_14_2.png" />
 </div>
 </div>
 <p>This drastically reduces the performance.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define ML</span>
-<span class="n">K</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">clf</span><span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
-
-<span class="c1"># normalize data.</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-
-<span class="c1"># split data between train and test set.</span>
-<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-
-<span class="c1"># Fit the model.</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-
-<span class="c1"># calculate the mean accuracy on the given test data and labels.</span>
-<span class="n">score</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The mean accuracy on the given test and labels is </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span><span class="k">sc</span>ore<span class="o">)</span>
-
-<span class="c1"># plot the decision boundary as a background</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
-<span class="c1"># DecisionBoundaryDisplay.from_estimator(clf, X, cmap=&#39;PiYG&#39;, alpha=0.8, ax=ax, eps=0.5)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;PiYG&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean accuracy on the given test and labels is 0.975000
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x151aa9100&gt;
-</pre></div>
-</div>
-<img alt="../_images/3.3_binary_classification_15_2.png" src="../_images/3.3_binary_classification_15_2.png" />
-</div>
-</div>
 </section>
 <section id="classifier-performance-metrics">
 <h2>2. Classifier Performance Metrics<a class="headerlink" href="#classifier-performance-metrics" title="Permalink to this headline">#</a></h2>
-<p>In a binary classifier, we label one of the two classes as <em>positive</em>, the other class is negative. Let’s consider <em>N</em> data samples.</p>
+<p>In a binary classifier, we label one of the two classes as <em>positive</em>, the other class as <em>negative</em>. Let’s consider <em>N</em> data samples.</p>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>True Class \ predicted Class</p></th>
@@ -922,10 +888,10 @@ Count the instances that an element of class <em>A</em> is classified in class <
 <p><strong>Other model performance metrics</strong>
 Model peformance can be assessed with the following:</p>
 <ul>
-<li><p><strong>error</strong> : the fraction of the data that was misclassified</p>
+<li><p><strong>Error</strong> : the fraction of the data that was misclassified</p>
 <p><span class="math notranslate nohighlight">\(err = \frac{FP+FN}{N}\)</span>  -&gt; 0</p>
 </li>
-<li><p><strong>accuracy</strong>: the fraction of the data that was correctly classified:</p>
+<li><p><strong>Accuracy</strong>: the fraction of the data that was correctly classified:</p>
 <p><span class="math notranslate nohighlight">\(acc = \frac{TP+TN}{N} = 1 - err \)</span> –&gt; 1</p>
 </li>
 <li><p><strong>TP-rate</strong>: the ratio of samples predicted in the <em>positive</em> class that are correctly classified:</p>
