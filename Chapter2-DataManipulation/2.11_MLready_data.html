@@ -52,6 +52,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.1 Clustering" href="../Chapter3-MachineLearning/3.1_clustering.html" />
@@ -598,34 +600,79 @@ title="Print to PDF"
   <section class="tex2jax_ignore mathjax_ignore" id="ml-ready-data">
 <h1>2.11 ML-ready data<a class="headerlink" href="#ml-ready-data" title="Permalink to this headline">#</a></h1>
 <p>Preparing and pre-processing data to integrate in machine learning workflow is fundamental towards a good machine learning project.</p>
+<p><span class="xref myst"><img alt="Lecture Slides" src="../_images/teaching.png" /></span></p>
+<ol>
+<li><p><strong>Consider the problem</strong></p>
+<p>Before jumping to a specific algorithm, define the problem in the <em>most general terms</em>. Formulate to oneself and others what the question is. Is it about transform <span class="math notranslate nohighlight">\(A\)</span> into <span class="math notranslate nohighlight">\(B\)</span>? Predicting <span class="math notranslate nohighlight">\(Y\)</span> from <span class="math notranslate nohighlight">\(X\)</span>? Determining how one variable is related to another?  If the problem is computable, then it likely can be addressed using some ML method.</p>
+</li>
+<li><p><strong>What is realistically possible?</strong></p>
 <ul class="simple">
-<li><p>Organize the data in machine-readable formats and data structures that can be manipulated automatically in the ML workflow:</p>
-<ul>
+<li><p>Review existing literature (<em>not</em> necessarily ML-specific literature!).</p></li>
+<li><p>If experts can only achieve <span class="math notranslate nohighlight">\(x\)</span> accuracy for some task, that should be your first benchmark. If <span class="math notranslate nohighlight">\(x\)</span> accuracy is “good enough”, then the ML solution may not need to do better!</p></li>
+</ul>
+</li>
+<li><p><strong>Look into general approaches</strong></p>
+<ul class="simple">
+<li><p>If the problem involves recognizing textures in images, read papers that describe both the history and state-of-the-art solutions to that general problem.</p></li>
+<li><p>Likewise, if the project involves dividing data into classes on the basis of several variables, read papers on classification methods.</p></li>
+<li><p>Like in the previous step, get a sense for what is possible for your general question.</p></li>
+<li><p>Determine whether the final approach will be <em>narrow</em> or <em>general</em> (and to what extent).</p></li>
+</ul>
+</li>
+<li><p><strong>Compile the data</strong></p>
+<ul class="simple">
+<li><p>Get your data into one location (e.g., your home folder).</p></li>
+<li><p>This process can take some time, so do it early.</p></li>
+<li><p>However you assemble your data, you should document every step!</p></li>
+</ul>
+</li>
+<li><p><strong>Organize the data</strong> in machine-readable formats and data structures that can be manipulated automatically in the ML workflow:</p>
+<ul class="simple">
 <li><p>arrange data in numpy arrays, Xarrays, or pandas.</p></li>
 <li><p>save data and its attributes in Zarr, H5, CSV.</p></li>
+<li><p>store in a single folder</p></li>
+<li><p>do not transform and overwrite the raw data</p></li>
 </ul>
 </li>
-<li><p>extract feature from the data as a first step toward dimensionality reduction:</p>
-<ul>
+<li><p><strong>Characterize the data</strong></p>
+<ul class="simple">
+<li><p>Explore data statistical properties (draw histograms, distributions, cross-plots, plot correlation matrices). Save the scripts of all data exploration.</p></li>
+<li><p>What will be the actual data input.</p></li>
+<li><p>What are the output/labels.</p></li>
+</ul>
+</li>
+<li><p><strong>Consider data manipulations</strong> extract feature from the data as a first step toward dimensionality reduction:</p>
+<ul class="simple">
 <li><p>extract statistical, temporal, or spectral features (use tsfresh, tsfel, …)</p></li>
 <li><p>transform the data into Fourier or Wavelet space (use scipy fft or cwt module)</p></li>
-<li><p>reduce dimension by taking the PCA or ICA of the data. Save these features into file or metadata (use scikit-learn PCA or FastICA module).</p></li>
-<li><p>explore the dimensionality of the remaining feature space. Find correlations among features (use plotly interactive plotting, seaborn scatterplot visualization, or the pandas.corr matrix)</p></li>
-<li><p>Further reduce the dimension using:</p>
+<li><p>reduce dimension by taking the PCA or ICA of the data. Save these features into file or metadata (use scikit-learn PCA or FastICA module). Additional feature reduction might be:</p>
 <ul>
 <li><p>Feature <em>selection</em> finds the dimensions that explain the data without loss of information and ends with a smaller dimensionality of the input data.  A <em>forward selection</em> approach starts with one variable that decreases the error the most and add one by one.  A <em>backward selection</em> starts with all variables and removes them one by one.</p></li>
-<li><p>Feature <em>extraction</em> finds a new set of dimension as a combination of the original dimensions. They can be supervised or unsupervised depending on the output information.</p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>Save the data processing workflow from raw data to feature data.</p>
-<ul>
+<li><p>*<strong>Consider data augmentation</strong></p>
+<ul class="simple">
+<li><p>Say you have a small<a class="footnote-reference brackets" href="#id2" id="id1">1</a> dataset. One thing you might do to address this issue is augment your data (e.g., create modified copies of your data).</p></li>
+<li><p>Bootstrap your data. Or use Monte Carlo methods to propagate uncertainties. If you have images, skew, stretch, rotate, and mirror them.</p></li>
+</ul>
+</li>
+</ol>
+<ol class="simple">
+<li><p><strong>Towards reproducible workflows</strong> Save the data processing workflow from raw data to feature data.</p>
+<ul class="simple">
 <li><p>Use the scitkit-learn <span class="xref myst">Pipeline</span> module.</p></li>
 <li><p>Write a python script to reproduce the pre-processing.</p></li>
 </ul>
 </li>
-</ul>
+</ol>
+<hr class="footnotes docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>The definition of “small” is problem dependent. 1000 observations may be more than enough for simple regression analyses. The same number of observations may not be adequate for image segmentation tasks. Consider the extent of your problem space.</p>
+</dd>
+</dl>
 </section>
 
     <script type="text/x-thebe-config">
