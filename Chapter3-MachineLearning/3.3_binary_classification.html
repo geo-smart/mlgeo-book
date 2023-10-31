@@ -872,6 +872,58 @@ Model peformance can be assessed with the following:</p>
 </li>
 </ul>
 <p>The harmonic mean of the F1 scores gives more weight to low values. F1 score is thus high if both recall and precision are high.</p>
+<p><em><strong>How do precision and recall co-vary?</strong></em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">returnPrecisionAndRecall</span><span class="p">(</span><span class="n">TP</span><span class="p">,</span> <span class="n">FP</span><span class="p">,</span> <span class="n">TN</span><span class="p">,</span> <span class="n">FN</span><span class="p">):</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">TP</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FP</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FP</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">TP</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FN</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FN</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;precision&#39;</span><span class="p">:</span> <span class="n">precision</span><span class="p">,</span> <span class="s1">&#39;recall&#39;</span><span class="p">:</span> <span class="n">recall</span><span class="p">}</span>
+
+<span class="c1"># Okay, set how many true and false values are in the original dataset</span>
+
+<span class="n">actualTrueValues</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">actualFalseValues</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="n">sumValues</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">precisionRecallCollector</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Now, run a set of simulations</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5000</span><span class="p">):</span>
+    <span class="n">TP</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">FP</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">TN</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">FN</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># Begin by randomly setting the total number of true values returned</span>
+    <span class="n">totalTrue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">sumValues</span><span class="p">)</span>
+    <span class="c1"># The total number of false values is sumValues - totalTrue</span>
+    <span class="n">totalFalse</span> <span class="o">=</span> <span class="n">sumValues</span> <span class="o">-</span> <span class="n">totalTrue</span>
+    <span class="c1"># Partition totalTrue and totalFalse into TP, FP and TN, FN, respectively</span>
+    <span class="k">if</span> <span class="n">totalTrue</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">TP</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">totalTrue</span><span class="p">)</span>
+        <span class="n">FP</span> <span class="o">=</span> <span class="n">totalTrue</span> <span class="o">-</span> <span class="n">TP</span>
+    <span class="k">if</span> <span class="n">totalFalse</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">TN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">totalFalse</span><span class="p">)</span>
+        <span class="n">FN</span> <span class="o">=</span> <span class="n">totalFalse</span> <span class="o">-</span> <span class="n">TN</span>
+    <span class="n">thisPandR</span> <span class="o">=</span> <span class="n">returnPrecisionAndRecall</span><span class="p">(</span><span class="n">TP</span><span class="p">,</span> <span class="n">FP</span><span class="p">,</span> <span class="n">TN</span><span class="p">,</span> <span class="n">FN</span><span class="p">)</span>
+    <span class="n">precisionRecallCollector</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">thisPandR</span><span class="p">[</span><span class="s1">&#39;precision&#39;</span><span class="p">],</span> <span class="n">thisPandR</span><span class="p">[</span><span class="s1">&#39;recall&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pAndRArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">precisionRecallCollector</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pAndRArray</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">pAndRArray</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Precision&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Recall&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>From above, we see that a wide range of behavior between precision and recall can be expected. It is not because a classifier might do well in predicting one class than it does predicting the other class. This demonstrates the important of reporting both metrics.</p>
 <p>Let’s print these measures from our classification using scikit-learn</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
