@@ -596,13 +596,25 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#data">
-   Data
+  <a class="reference internal nav-link" href="#distances">
+   1. Distances
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tutorial-set-up">
+   2. Tutorial set up
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data">
+     Data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#k-means">
-   1. K-means
+   3. K-means
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -614,24 +626,22 @@ title="Print to PDF"
     <a class="reference internal nav-link" href="#practical-tips-for-k-means">
      Practical tips for k-means
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#choice-of-number-of-clusters-the-elbow-method">
-       (2) Choice of number of clusters: The Elbow Method
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#repeat-k-means">
-       (2) Repeat K-means
-      </a>
-     </li>
-    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#choice-of-number-of-clusters-the-elbow-method">
+     3. Choice of number of clusters: The Elbow Method
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#repeat-k-means">
+     3. Repeat K-means
+    </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hierarchical-clustering">
-   2. Hierarchical Clustering
+   4. Hierarchical Clustering
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -659,13 +669,25 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#data">
-   Data
+  <a class="reference internal nav-link" href="#distances">
+   1. Distances
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tutorial-set-up">
+   2. Tutorial set up
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data">
+     Data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#k-means">
-   1. K-means
+   3. K-means
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -677,24 +699,22 @@ title="Print to PDF"
     <a class="reference internal nav-link" href="#practical-tips-for-k-means">
      Practical tips for k-means
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#choice-of-number-of-clusters-the-elbow-method">
-       (2) Choice of number of clusters: The Elbow Method
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#repeat-k-means">
-       (2) Repeat K-means
-      </a>
-     </li>
-    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#choice-of-number-of-clusters-the-elbow-method">
+     3. Choice of number of clusters: The Elbow Method
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#repeat-k-means">
+     3. Repeat K-means
+    </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hierarchical-clustering">
-   2. Hierarchical Clustering
+   4. Hierarchical Clustering
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -714,9 +734,25 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="clustering">
 <h1>3.1 Clustering<a class="headerlink" href="#clustering" title="Permalink to this headline">#</a></h1>
-<p>Clustering is an unsupervised problem because the goal is to discover structure on the basis of data sets. Clustering looks to find homogeneous subgroups among the observations.</p>
-<p>The concept of homogeneity within a group is parameterized with the <em>distance</em> between data.  There exist many other distance metrics, which can be called from the <code class="docutils literal notranslate"><span class="pre">DistanceMetric</span></code> sci-kit learn module. More details in this scikit-learn <a class="reference external" href="%21https://scikit-learn.org/stable/modules/generated/sklearn.metrics.DistanceMetric.html#sklearn.metrics.DistanceMetric">documentation</a>.</p>
-<p>Clustering and PCA both simplify the data via a small number of summaries. But the differences are:</p>
+<p>Clustering is a form of <em>unsupervised classification</em> because the goal is to discover structure on the basis of data features. Its primary objective is to unveil inherent structures within datasets based on their features. In essence, clustering endeavors to identify coherent subgroups among the observations.</p>
+<p>The notion of homogeneity within a group is quantified through the concept of ‘distance’ between data points. This metric plays a pivotal role in the clustering process, aiding in the discernment of how similar or dissimilar data points are from one another.</p>
+<section id="distances">
+<h2>1. Distances<a class="headerlink" href="#distances" title="Permalink to this headline">#</a></h2>
+<p>Understanding the concept of distance is crucial in machine learning, especially when it comes to clustering in the geosciences. Distance serves as a fundamental measure of dissimilarity or similarity between data points. Distance is also later used for calculating the loss and cost when training deep learning models.</p>
+<p>There are various ways to estimate and quantify distance between data points. Some of the most commonly used distance metrics include:</p>
+<ul class="simple">
+<li><p><strong>Euclidean Distance</strong>: This is the straight-line distance between two data points in a multidimensional space. It is often used when the data features have similar units or scales.
+<span class="math notranslate nohighlight">\(d(\mathbf{x},\mathbf{y}) = \sqrt{ \sum_{i=1}^N (x_i-y_i)^2  }/N\)</span></p></li>
+<li><p><strong>Manhattan Distance</strong>: Also known as the ‘L1’ distance, it measures the sum of the absolute differences between corresponding elements of two data points. It’s suitable when movement along axes is restricted, such as in grid-based data.
+<span class="math notranslate nohighlight">\(d(\mathbf{x},\mathbf{y}) =  \sum_{i=1}^N |x_i-y_i| /N\)</span></p></li>
+<li><p><strong>Geodesic Distance</strong>: Geodesic distance measures the shortest path between two points on the surface of a sphere, which is crucial for studying Earth’s geography, including GPS navigation and geodetic measurements.</p></li>
+<li><p><strong>Correlation-Based Distances</strong>: In geophysical and geospatial data analysis, correlation-based distance metrics like <em>Pearson correlation</em> or <em>Spearman rank correlation</em> are often used to assess relationships between variables.</p></li>
+<li><p><strong>Covariance-Based Distances</strong>: These distances, which take into account the spatial covariance or variogram models, are prevalent in geostatistics and spatial analysis.</p></li>
+<li><p><strong>Cosine Similarity</strong>: This metric calculates the cosine of the angle between two data vectors, providing a measure of their similarity, particularly in high-dimensional spaces. It’s frequently used for text or image data.</p></li>
+</ul>
+<p>Scikit-learn contains the most commonly used metrics in the context of Classic ML under the package <code class="docutils literal notranslate"><span class="pre">metrics.DistanceMetric</span></code>. More details in this scikit-learn <a class="reference external" href="%21https://scikit-learn.org/stable/modules/generated/sklearn.metrics.DistanceMetric.html#sklearn.metrics.DistanceMetric">documentation</a>.</p>
+<p><em><strong>Relation to PCA</strong></em>
+Clustering and PCA both simplify the data via a small number of summaries. But the differences are:</p>
 <ul class="simple">
 <li><p>PCA seeks to reduce the dimensionality of the data, to find a low-dimensional representation of the data that explains a good fraction of the data variance,</p></li>
 <li><p>Clustering seeks to find homogeneous groups within the observations.</p></li>
@@ -724,6 +760,9 @@ title="Print to PDF"
 <p>In fact, it is common to combine both for complex and high dimensional data: 1) PCA, 2) clustering on the PCs.</p>
 <p>There are two main methods using clustering, <strong>k-means</strong> clustering and <strong>hierarchical clustering</strong>.</p>
 <p>The toolbox scikit-learn has a collection of clustering algorithms and detailed <span class="xref myst">documentation</span> with tutorials.</p>
+</section>
+<section id="tutorial-set-up">
+<h2>2. Tutorial set up<a class="headerlink" href="#tutorial-set-up" title="Permalink to this headline">#</a></h2>
 <p>Import useful Python packages</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -743,9 +782,12 @@ title="Print to PDF"
 </div>
 </div>
 <section id="data">
-<h2>Data<a class="headerlink" href="#data" title="Permalink to this headline">#</a></h2>
-<p>We will use <strong>flow cytometer data</strong>.
-The file has attributes about each particle, such as normalized scatter, red, orange, and green. These are measurements from the instrument itself from light scattering.
+<h3>Data<a class="headerlink" href="#data" title="Permalink to this headline">#</a></h3>
+<p>We will use <strong>flow cytometer data</strong>. This data set was provided by Katherine Qi from the UW SeaFlow group. The data is part of the overall available data set:</p>
+<blockquote>
+<div><p>Ribalet, F., Berthiaume, C., Hynes, A. et al. SeaFlow data v1, high-resolution abundance, size and biomass of small phytoplankton in the North Pacific. Sci Data 6, 277 (2019). <a class="reference external" href="https://doi.org/10.1038/s41597-019-0292-2">https://doi.org/10.1038/s41597-019-0292-2</a></p>
+</div></blockquote>
+<p>The file has attributes about each particle, such as normalized scatter, red, orange, and green. These are measurements from the instrument itself from light scattering.
 Other parameters, like diam (diameter) and Qc (carbon quota) are estimated from the light scatter measurements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -759,8 +801,7 @@ Other parameters, like diam (diameter) and Qc (carbon quota) are estimated from 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this is some underway data collected from a cruise in 2019</span>
-<span class="n">os</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;ug3_FCM_distribution.feather&quot;</span><span class="p">,</span><span class="s1">&#39;../../../ug3_FCM_distribution.feather&#39;</span><span class="p">)</span>
-<span class="n">underway_g3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">(</span><span class="s2">&quot;../../../ug3_FCM_distribution.feather&quot;</span><span class="p">)</span>
+<span class="n">underway_g3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">(</span><span class="s2">&quot;./ug3_FCM_distribution.feather&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">underway_g3</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 <span class="n">underway_g3</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -977,18 +1018,15 @@ Other parameters, like diam (diameter) and Qc (carbon quota) are estimated from 
 <p>Typically, populations are gated based on their log-transformed normalized scatter (x) and red (y). Orange flourescence can be used in addition to gate the synecho population. We can see there are 3 populations here, and these were previously gated from the parameters above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">test1</span><span class="p">[[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">,</span><span class="s1">&#39;norm.red&#39;</span><span class="p">,</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">,</span><span class="s1">&#39;norm.green&#39;</span><span class="p">,</span><span class="s1">&#39;depth&#39;</span><span class="p">]]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">test1</span><span class="p">[[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">,</span><span class="s1">&#39;norm.red&#39;</span><span class="p">,</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">,</span><span class="s1">&#39;norm.green&#39;</span><span class="p">,</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">]]</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">])</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.red&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.red&#39;</span><span class="p">])</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">])</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;norm.green&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_7989/123783465.py:4: SettingWithCopyWarning:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_58767/3846522005.py:2: SettingWithCopyWarning:
 
 
 A value is trying to be set on a copy of a slice from a DataFrame.
@@ -996,7 +1034,7 @@ Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
 
-/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_7989/123783465.py:5: SettingWithCopyWarning:
+/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_58767/3846522005.py:3: SettingWithCopyWarning:
 
 
 A value is trying to be set on a copy of a slice from a DataFrame.
@@ -1004,7 +1042,7 @@ Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
 
-/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_7989/123783465.py:6: SettingWithCopyWarning:
+/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_58767/3846522005.py:4: SettingWithCopyWarning:
 
 
 A value is trying to be set on a copy of a slice from a DataFrame.
@@ -1013,69 +1051,43 @@ Try using .loc[row_indexer,col_indexer] = value instead
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x103f1b520&gt;
-</pre></div>
-</div>
-<img alt="../_images/3.1_clustering_13_2.png" src="../_images/3.1_clustering_13_2.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">test1</span><span class="p">[[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">,</span><span class="s1">&#39;norm.red&#39;</span><span class="p">,</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">]]</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">])</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.red&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.red&#39;</span><span class="p">])</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">])</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;pop&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">xcorr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">xcorr</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_7989/3931145617.py:3: SettingWithCopyWarning:
-
-
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-
-/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_7989/3931145617.py:4: SettingWithCopyWarning:
-
-
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-
-/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_7989/3931145617.py:5: SettingWithCopyWarning:
-
-
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: &gt;
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x1c899e9a0&gt;
-</pre></div>
-</div>
-<img alt="../_images/3.1_clustering_14_2.png" src="../_images/3.1_clustering_14_2.png" />
+<img alt="../_images/3.1_clustering_14_1.png" src="../_images/3.1_clustering_14_1.png" />
 </div>
 </div>
 </section>
+</section>
 <section id="k-means">
-<h2>1. K-means<a class="headerlink" href="#k-means" title="Permalink to this headline">#</a></h2>
-<p>K-means is an unsupervised clustering method. The main idea is to separate the data into K distinct clusters. We then have two problems to solve. First, we need to find the k centroids of the k clusters. Then, we need to affect each data point to the cluster which centroid is the closest to the data point.</p>
-<p>The goal is to partition <span class="math notranslate nohighlight">\(n\)</span> data points into <span class="math notranslate nohighlight">\(k\)</span> clusters. Each observation is labeled to a cluster with the nearest mean.</p>
+<h2>3. K-means<a class="headerlink" href="#k-means" title="Permalink to this headline">#</a></h2>
+<p>K-means is a clustering method that separates the <em>N</em> data into <em>k</em> distinct clusters. The algorithm solves two main tasks:</p>
+<ol class="simple">
+<li><p>First, find the <em>k</em> centroids of the <em>k</em> clusters.</p></li>
+<li><p>Then, affect each data point (e.g., label) to the cluster which centroid is the closest to the data point.</p></li>
+</ol>
 <p>K-means is iterative:</p>
 <ol class="simple">
-<li><p>assume initial values for the mean of each of the <span class="math notranslate nohighlight">\(k\)</span> clusters</p></li>
-<li><p>Compute the distance for each observation to each of the <span class="math notranslate nohighlight">\(k\)</span> means</p></li>
-<li><p>Label each observation as belonging to the nearest means</p></li>
+<li><p>Aassume initial values for the mean of each of the <span class="math notranslate nohighlight">\(k\)</span> clusters.</p></li>
+<li><p>Compute the distance for each observation to each of the <span class="math notranslate nohighlight">\(k\)</span> means.</p></li>
+<li><p>Label each observation as belonging to the nearest means.</p></li>
 <li><p>Find the <em>center of mass</em> (mean) of each group of labeled points. These are new means to step 1.</p></li>
 </ol>
-<p>In the following, we denote <span class="math notranslate nohighlight">\(n\)</span> the number of data points, and <span class="math notranslate nohighlight">\(p\)</span> the number of features for each data point.</p>
-<p>K-means only works with the <strong>Euclidian distance</strong> metrics. In fact, its core concept is to use the euclidian distance to measure and minimize <em>inertia</em> or <em>within cluster variation</em>.</p>
+<p>In the following, we denote <span class="math notranslate nohighlight">\(N\)</span> the number of data points, and <span class="math notranslate nohighlight">\(P\)</span> the number of features for each data point.</p>
+<p>K-means only works with the <strong>Euclidian distance</strong> metrics. In fact, its core concept is to use the Euclidian distance to measure and minimize <em>inertia</em> or <em>within cluster variation</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -1121,7 +1133,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <p>To be able to affect each data point to the closest centroid, we need to define the distance between two data points. The most common distance is the <strong>Euclidean distance</strong>:</p>
-<p><span class="math notranslate nohighlight">\(d(x,y) = \sqrt{\sum_{i = 1}^p (x_i - y_i)^2}\)</span></p>
+<p><span class="math notranslate nohighlight">\(d(x,y) = \sqrt{\sum_{i = 1}^p (x_i - y_i)^2} \)</span></p>
 <p>where <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> are two data observation points with <span class="math notranslate nohighlight">\(p\)</span> variables.</p>
 <p>We then define a function to compute the distance between each data point and each centroid.</p>
 <div class="cell docutils container">
@@ -1258,6 +1270,15 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_58767/1190913055.py:3: SettingWithCopyWarning:
+
+
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+</pre></div>
+</div>
 </div>
 </div>
 <section id="k-means-with-scikit-learn">
@@ -1306,6 +1327,15 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_58767/3068295825.py:16: SettingWithCopyWarning:
+
+
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+</pre></div>
+</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 400x300 with 0 Axes&gt;
 </pre></div>
 </div>
@@ -1325,7 +1355,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </li>
 <li><p>If the data does not have ground truth label, you can use:</p>
 <ul>
-<li><p><strong>silhouette coefficient</strong> using the module <code class="docutils literal notranslate"><span class="pre">metrics.silhouette_score)</span></code>, a high score or coefficient is better. It quantifies how tight the data within the clusters are and how well separated the clusters are. More details on implementation and visualization of the <strong>silhouette score</strong> <span class="xref myst">here</span>.</p></li>
+<li><p><strong>silhouette coefficient</strong> using the module <code class="docutils literal notranslate"><span class="pre">metrics.silhouette_score</span></code>, a high score or coefficient is better. It quantifies how tight the data within the clusters are and how well separated the clusters are. More details on implementation and visualization of the <strong>silhouette score</strong> <span class="xref myst">here</span>.</p></li>
 </ul>
 </li>
 </ul>
@@ -1342,7 +1372,8 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <p>In the following, we take the example of a simple data sets. The Old Faithful is a geyser in Yellowstone. The data shows the time of the geyser eruption against the waiting time for the next eruptions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">faithful</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;faithful.csv&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;https://www.dropbox.com/scl/fi/o1lytfh5b3yfv407s83ow/faithful.csv?rlkey=u33s8ug518f29htw84w4mhgsr&amp;dl=1&quot;</span><span class="p">)</span>
+<span class="n">faithful</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;faithful.csv&#39;</span><span class="p">)</span>
 <span class="n">data_faithful</span> <span class="o">=</span> <span class="n">faithful</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">faithful</span><span class="o">.</span><span class="n">current</span><span class="p">,</span> <span class="n">faithful</span><span class="o">.</span><span class="n">next</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Eruption time in minutes&#39;</span><span class="p">)</span>
@@ -1544,8 +1575,9 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <img alt="../_images/3.1_clustering_40_2.png" src="../_images/3.1_clustering_40_2.png" />
 </div>
 </div>
+</section>
 <section id="choice-of-number-of-clusters-the-elbow-method">
-<h4>(2) Choice of number of clusters: The Elbow Method<a class="headerlink" href="#choice-of-number-of-clusters-the-elbow-method" title="Permalink to this headline">#</a></h4>
+<h3>3. Choice of number of clusters: The Elbow Method<a class="headerlink" href="#choice-of-number-of-clusters-the-elbow-method" title="Permalink to this headline">#</a></h3>
 <p>The elbow method is designed to find the optimal number of clusters. It consists in performing the clustering algorithm with an increasing number of clusters <span class="math notranslate nohighlight">\(k\)</span> and select and measuring the average distance between data points and the cluster centroids. There are two typical metrics in the Elbow method</p>
 <ul class="simple">
 <li><p><strong>Distortion</strong>: It is calculated as the average of the squared distances from the cluster centers of the respective clusters. Typically, the Euclidean distance metric is used.</p></li>
@@ -1643,7 +1675,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </section>
 <section id="repeat-k-means">
-<h4>(2) Repeat K-means<a class="headerlink" href="#repeat-k-means" title="Permalink to this headline">#</a></h4>
+<h3>3. Repeat K-means<a class="headerlink" href="#repeat-k-means" title="Permalink to this headline">#</a></h3>
 <p>Result is very sensitive to the location of the initial centroid. Repeat the clustering N times and choose the clustering with the best objective function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1682,9 +1714,8 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </section>
 </section>
-</section>
 <section id="hierarchical-clustering">
-<h2>2. Hierarchical Clustering<a class="headerlink" href="#hierarchical-clustering" title="Permalink to this headline">#</a></h2>
+<h2>4. Hierarchical Clustering<a class="headerlink" href="#hierarchical-clustering" title="Permalink to this headline">#</a></h2>
 <p>In K-means, we use the euclidian distance and prescribe the number of clusters K.</p>
 <p>In hierarchical clustering, we choose difference distance metrics, visualize the data structure, and then decide on the number of clusters. There are two approaches to building the hierarchy of clusters:</p>
 <ul class="simple">
