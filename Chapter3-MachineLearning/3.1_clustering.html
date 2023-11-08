@@ -292,6 +292,14 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.html">
+   Let’s create a
+   <em>
+    perceptron
+   </em>
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.1_neural_networks.html">
    4.1 Neural Networks
   </a>
@@ -596,8 +604,8 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#distances">
-   1. Distances
+  <a class="reference internal nav-link" href="#distance">
+   1. Distance
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -642,6 +650,10 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hierarchical-clustering">
    4. Hierarchical Clustering
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -669,8 +681,8 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#distances">
-   1. Distances
+  <a class="reference internal nav-link" href="#distance">
+   1. Distance
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -718,6 +730,10 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pca-before-clustering">
    PCA before clustering
   </a>
@@ -736,8 +752,10 @@ title="Print to PDF"
 <h1>3.1 Clustering<a class="headerlink" href="#clustering" title="Permalink to this headline">#</a></h1>
 <p>Clustering is a form of <em>unsupervised classification</em> because the goal is to discover structure on the basis of data features. Its primary objective is to unveil inherent structures within datasets based on their features. In essence, clustering endeavors to identify coherent subgroups among the observations.</p>
 <p>The notion of homogeneity within a group is quantified through the concept of ‘distance’ between data points. This metric plays a pivotal role in the clustering process, aiding in the discernment of how similar or dissimilar data points are from one another.</p>
-<section id="distances">
-<h2>1. Distances<a class="headerlink" href="#distances" title="Permalink to this headline">#</a></h2>
+<p>This tutorial does not cover all possible clustering methods. No single clustering method works best for all scenario, it depends strongly on the inherent data struture. A simple summary, with toy examples of 2D data structure, is available in the <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html#overview-of-clustering-methods">sklearn package</a>.</p>
+<p>This lecture focuses on fundamental concepts that are relevant to the geosciences: 1) definition of <em><strong>distance</strong></em> and illustrate the most basics concepts using most popular clustering algorithm 2) K-means clustering and 3) agglomerative clustering.</p>
+<section id="distance">
+<h2>1. Distance<a class="headerlink" href="#distance" title="Permalink to this headline">#</a></h2>
 <p>Understanding the concept of distance is crucial in machine learning, especially when it comes to clustering in the geosciences. Distance serves as a fundamental measure of dissimilarity or similarity between data points. Distance is also later used for calculating the loss and cost when training deep learning models.</p>
 <p>There are various ways to estimate and quantify distance between data points. Some of the most commonly used distance metrics include:</p>
 <ul class="simple">
@@ -771,8 +789,8 @@ Clustering and PCA both simplify the data via a small number of summaries. But t
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">wget</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="c1"># from math import cos, sin, pi, sqrt</span>
+<span class="c1"># from mpl_toolkits.mplot3d import Axes3D</span>
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
 <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
@@ -783,11 +801,9 @@ Clustering and PCA both simplify the data via a small number of summaries. But t
 </div>
 <section id="data">
 <h3>Data<a class="headerlink" href="#data" title="Permalink to this headline">#</a></h3>
-<p>We will use <strong>flow cytometer data</strong>. This data set was provided by Katherine Qi from the UW SeaFlow group. The data is part of the overall available data set:</p>
-<blockquote>
-<div><p>Ribalet, F., Berthiaume, C., Hynes, A. et al. SeaFlow data v1, high-resolution abundance, size and biomass of small phytoplankton in the North Pacific. Sci Data 6, 277 (2019). <a class="reference external" href="https://doi.org/10.1038/s41597-019-0292-2">https://doi.org/10.1038/s41597-019-0292-2</a></p>
-</div></blockquote>
-<p>The file has attributes about each particle, such as normalized scatter, red, orange, and green. These are measurements from the instrument itself from light scattering.
+<p>We will use <strong>flow cytometer data</strong>.</p>
+<p>The data file was provided by Katherine Qi from the UW SeaFlow group. The data is abundance and optical properties of phytoplankton
+The file has attributes about each particle, such as normalized scatter, red, orange, and green. These are measurements from the instrument itself from light scattering.
 Other parameters, like diam (diameter) and Qc (carbon quota) are estimated from the light scatter measurements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -801,7 +817,8 @@ Other parameters, like diam (diameter) and Qc (carbon quota) are estimated from 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this is some underway data collected from a cruise in 2019</span>
-<span class="n">underway_g3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">(</span><span class="s2">&quot;./ug3_FCM_distribution.feather&quot;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;ug3_FCM_distribution.feather&quot;</span><span class="p">,</span><span class="s1">&#39;../../../ug3_FCM_distribution.feather&#39;</span><span class="p">)</span>
+<span class="n">underway_g3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">(</span><span class="s2">&quot;../../../ug3_FCM_distribution.feather&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">underway_g3</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 <span class="n">underway_g3</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -1018,15 +1035,18 @@ Other parameters, like diam (diameter) and Qc (carbon quota) are estimated from 
 <p>Typically, populations are gated based on their log-transformed normalized scatter (x) and red (y). Orange flourescence can be used in addition to gate the synecho population. We can see there are 3 populations here, and these were previously gated from the parameters above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">test1</span><span class="p">[[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">,</span><span class="s1">&#39;norm.red&#39;</span><span class="p">,</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">,</span><span class="s1">&#39;norm.green&#39;</span><span class="p">,</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">]]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">test1</span><span class="p">[[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">,</span><span class="s1">&#39;norm.red&#39;</span><span class="p">,</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">,</span><span class="s1">&#39;norm.green&#39;</span><span class="p">,</span><span class="s1">&#39;depth&#39;</span><span class="p">]]</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">])</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.red&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.red&#39;</span><span class="p">])</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;norm.green&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_58767/3846522005.py:2: SettingWithCopyWarning:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/js/lzmy975n0l5bjbmr9db291m00000gn/T/ipykernel_60185/123783465.py:4: SettingWithCopyWarning:
 
 
 A value is trying to be set on a copy of a slice from a DataFrame.
@@ -1034,7 +1054,7 @@ Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
 
-/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_58767/3846522005.py:3: SettingWithCopyWarning:
+/var/folders/js/lzmy975n0l5bjbmr9db291m00000gn/T/ipykernel_60185/123783465.py:5: SettingWithCopyWarning:
 
 
 A value is trying to be set on a copy of a slice from a DataFrame.
@@ -1042,7 +1062,7 @@ Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
 
-/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_58767/3846522005.py:4: SettingWithCopyWarning:
+/var/folders/js/lzmy975n0l5bjbmr9db291m00000gn/T/ipykernel_60185/123783465.py:6: SettingWithCopyWarning:
 
 
 A value is trying to be set on a copy of a slice from a DataFrame.
@@ -1051,43 +1071,70 @@ Try using .loc[row_indexer,col_indexer] = value instead
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
 </pre></div>
 </div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x2b17a0f10&gt;
+</pre></div>
+</div>
+<img alt="../_images/3.1_clustering_13_2.png" src="../_images/3.1_clustering_13_2.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-
-<span class="n">xcorr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
-
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">xcorr</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;ticks&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">test1</span><span class="p">[[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">,</span><span class="s1">&#39;norm.red&#39;</span><span class="p">,</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">]]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.scatter&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.red&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.red&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;norm.orange&#39;</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;pop&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: &gt;
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/js/lzmy975n0l5bjbmr9db291m00000gn/T/ipykernel_60185/3931145617.py:3: SettingWithCopyWarning:
+
+
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+/var/folders/js/lzmy975n0l5bjbmr9db291m00000gn/T/ipykernel_60185/3931145617.py:4: SettingWithCopyWarning:
+
+
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+/var/folders/js/lzmy975n0l5bjbmr9db291m00000gn/T/ipykernel_60185/3931145617.py:5: SettingWithCopyWarning:
+
+
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
 </pre></div>
 </div>
-<img alt="../_images/3.1_clustering_14_1.png" src="../_images/3.1_clustering_14_1.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x2b1edcd60&gt;
+</pre></div>
+</div>
+<img alt="../_images/3.1_clustering_14_2.png" src="../_images/3.1_clustering_14_2.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="k-means">
 <h2>3. K-means<a class="headerlink" href="#k-means" title="Permalink to this headline">#</a></h2>
-<p>K-means is a clustering method that separates the <em>N</em> data into <em>k</em> distinct clusters. The algorithm solves two main tasks:</p>
-<ol class="simple">
-<li><p>First, find the <em>k</em> centroids of the <em>k</em> clusters.</p></li>
-<li><p>Then, affect each data point (e.g., label) to the cluster which centroid is the closest to the data point.</p></li>
-</ol>
+<p>K-means is an unsupervised clustering method. The main idea is to separate the data into K distinct clusters. We then have two problems to solve. First, we need to find the k centroids of the k clusters. Then, we need to affect each data point to the cluster which centroid is the closest to the data point.</p>
+<p>The goal is to partition <span class="math notranslate nohighlight">\(n\)</span> data points into <span class="math notranslate nohighlight">\(k\)</span> clusters. Each observation is labeled to a cluster with the nearest mean.</p>
 <p>K-means is iterative:</p>
 <ol class="simple">
-<li><p>Aassume initial values for the mean of each of the <span class="math notranslate nohighlight">\(k\)</span> clusters.</p></li>
-<li><p>Compute the distance for each observation to each of the <span class="math notranslate nohighlight">\(k\)</span> means.</p></li>
-<li><p>Label each observation as belonging to the nearest means.</p></li>
+<li><p>assume initial values for the mean of each of the <span class="math notranslate nohighlight">\(k\)</span> clusters</p></li>
+<li><p>Compute the distance for each observation to each of the <span class="math notranslate nohighlight">\(k\)</span> means</p></li>
+<li><p>Label each observation as belonging to the nearest means</p></li>
 <li><p>Find the <em>center of mass</em> (mean) of each group of labeled points. These are new means to step 1.</p></li>
 </ol>
-<p>In the following, we denote <span class="math notranslate nohighlight">\(N\)</span> the number of data points, and <span class="math notranslate nohighlight">\(P\)</span> the number of features for each data point.</p>
-<p>K-means only works with the <strong>Euclidian distance</strong> metrics. In fact, its core concept is to use the Euclidian distance to measure and minimize <em>inertia</em> or <em>within cluster variation</em>.</p>
+<p>In the following, we denote <span class="math notranslate nohighlight">\(n\)</span> the number of data points, and <span class="math notranslate nohighlight">\(p\)</span> the number of features for each data point.</p>
+<p>K-means only works with the <strong>Euclidian distance</strong> metrics. In fact, its core concept is to use the euclidian distance to measure and minimize <em>inertia</em> or <em>within cluster variation</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -1133,7 +1180,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <p>To be able to affect each data point to the closest centroid, we need to define the distance between two data points. The most common distance is the <strong>Euclidean distance</strong>:</p>
-<p><span class="math notranslate nohighlight">\(d(x,y) = \sqrt{\sum_{i = 1}^p (x_i - y_i)^2} \)</span></p>
+<p><span class="math notranslate nohighlight">\(d(x,y) = \sqrt{\sum_{i = 1}^p (x_i - y_i)^2}\)</span></p>
 <p>where <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> are two data observation points with <span class="math notranslate nohighlight">\(p\)</span> variables.</p>
 <p>We then define a function to compute the distance between each data point and each centroid.</p>
 <div class="cell docutils container">
@@ -1270,7 +1317,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_58767/1190913055.py:3: SettingWithCopyWarning:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/js/lzmy975n0l5bjbmr9db291m00000gn/T/ipykernel_60185/1190913055.py:3: SettingWithCopyWarning:
 
 
 A value is trying to be set on a copy of a slice from a DataFrame.
@@ -1297,6 +1344,11 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/cluster/_kmeans.py:1416: FutureWarning:
+
+The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set the value of `n_init` explicitly to suppress the warning
+</pre></div>
+</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 0, ..., 0, 0, 0], dtype=int32)
 </pre></div>
 </div>
@@ -1327,7 +1379,11 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/j4/3rbzxjb16kv66g_p4wkzq16h0000gn/T/ipykernel_58767/3068295825.py:16: SettingWithCopyWarning:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/cluster/_kmeans.py:1416: FutureWarning:
+
+The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set the value of `n_init` explicitly to suppress the warning
+
+/var/folders/js/lzmy975n0l5bjbmr9db291m00000gn/T/ipykernel_60185/3068295825.py:16: SettingWithCopyWarning:
 
 
 A value is trying to be set on a copy of a slice from a DataFrame.
@@ -1355,7 +1411,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </li>
 <li><p>If the data does not have ground truth label, you can use:</p>
 <ul>
-<li><p><strong>silhouette coefficient</strong> using the module <code class="docutils literal notranslate"><span class="pre">metrics.silhouette_score</span></code>, a high score or coefficient is better. It quantifies how tight the data within the clusters are and how well separated the clusters are. More details on implementation and visualization of the <strong>silhouette score</strong> <span class="xref myst">here</span>.</p></li>
+<li><p><strong>silhouette coefficient</strong> using the module <code class="docutils literal notranslate"><span class="pre">metrics.silhouette_score)</span></code>, a high score or coefficient is better. It quantifies how tight the data within the clusters are and how well separated the clusters are. More details on implementation and visualization of the <strong>silhouette score</strong> <span class="xref myst">here</span>.</p></li>
 </ul>
 </li>
 </ul>
@@ -1372,8 +1428,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <p>In the following, we take the example of a simple data sets. The Old Faithful is a geyser in Yellowstone. The data shows the time of the geyser eruption against the waiting time for the next eruptions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;https://www.dropbox.com/scl/fi/o1lytfh5b3yfv407s83ow/faithful.csv?rlkey=u33s8ug518f29htw84w4mhgsr&amp;dl=1&quot;</span><span class="p">)</span>
-<span class="n">faithful</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;faithful.csv&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">faithful</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;faithful.csv&#39;</span><span class="p">)</span>
 <span class="n">data_faithful</span> <span class="o">=</span> <span class="n">faithful</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">faithful</span><span class="o">.</span><span class="n">current</span><span class="p">,</span> <span class="n">faithful</span><span class="o">.</span><span class="n">next</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Eruption time in minutes&#39;</span><span class="p">)</span>
@@ -1456,7 +1511,12 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
   0.80209433  0.64383652  0.68885895  0.74695266  0.79625474  0.75546079
   0.01380216  0.75700651  0.69717451  0.71446902  0.80152883  0.75559453
   0.81983109]
-0.6660137226595724
+0.6660137226595727
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/cluster/_kmeans.py:1416: FutureWarning:
+
+The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set the value of `n_init` explicitly to suppress the warning
 </pre></div>
 </div>
 </div>
@@ -1550,7 +1610,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">centers</span><span class="p">):</span>
-    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">%d</span><span class="s2">$&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">%d</span><span class="s2">$&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
 
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;The visualization of the clustered data.&quot;</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Feature space for the 1st feature&quot;</span><span class="p">)</span>
@@ -1566,13 +1626,18 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For n_clusters = 3 The average silhouette_score is : 0.6660137226595724
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For n_clusters = 3 The average silhouette_score is : 0.6660137226595727
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/cluster/_kmeans.py:1416: FutureWarning:
+
+The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set the value of `n_init` explicitly to suppress the warning
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0.98, &#39;Silhouette analysis for KMeans clustering on sample data with n_clusters = 3&#39;)
 </pre></div>
 </div>
-<img alt="../_images/3.1_clustering_40_2.png" src="../_images/3.1_clustering_40_2.png" />
+<img alt="../_images/3.1_clustering_40_3.png" src="../_images/3.1_clustering_40_3.png" />
 </div>
 </div>
 </section>
@@ -1618,7 +1683,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1cd5cc070&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2b8d65820&gt;]
 </pre></div>
 </div>
 <img alt="../_images/3.1_clustering_46_1.png" src="../_images/3.1_clustering_46_1.png" />
@@ -1643,7 +1708,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1cd6c1a60&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2b95b71f0&gt;]
 </pre></div>
 </div>
 <img alt="../_images/3.1_clustering_48_1.png" src="../_images/3.1_clustering_48_1.png" />
@@ -1667,7 +1732,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1cd824850&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2b96a50d0&gt;]
 </pre></div>
 </div>
 <img alt="../_images/3.1_clustering_50_1.png" src="../_images/3.1_clustering_50_1.png" />
@@ -1692,6 +1757,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
         <span class="n">clusters</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">objective</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">centers</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="n">N</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
     <span class="c1"># Choose the clustering with the best value of the objective function</span>
     <span class="n">best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">objective</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">clusters</span><span class="p">[</span><span class="n">best</span><span class="p">,</span> <span class="p">:],</span> <span class="n">objective</span><span class="p">[</span><span class="n">best</span><span class="p">],</span> <span class="n">centers</span><span class="p">[</span><span class="n">best</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
@@ -1702,7 +1768,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <p>Repeat k-means 50 times</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">50</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">30</span>
 <span class="p">(</span><span class="n">clusters</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">centers</span><span class="p">)</span> <span class="o">=</span> <span class="n">repeat_kmeans</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
@@ -1711,7 +1777,46 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
+3.3333333333333335
+6.666666666666667
+10.0
+13.333333333333334
+16.666666666666664
+20.0
+23.333333333333332
+26.666666666666668
+30.0
+33.33333333333333
+36.666666666666664
+40.0
+43.333333333333336
+46.666666666666664
+50.0
+53.333333333333336
+56.666666666666664
+60.0
+63.33333333333333
+66.66666666666666
+70.0
+73.33333333333333
+76.66666666666667
+80.0
+83.33333333333334
+86.66666666666667
+90.0
+93.33333333333333
+96.66666666666667
+</pre></div>
 </div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;mpl_toolkits.mplot3d.art3d.Path3DCollection at 0x2b976bd00&gt;
+</pre></div>
+</div>
+<img alt="../_images/3.1_clustering_54_2.png" src="../_images/3.1_clustering_54_2.png" />
+</div>
+</div>
+<p>K-means can be a slow process to calculate and there are avenues to speed this up. One solution is to do <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html#mini-batch-k-means"><strong>mini-batch</strong> K-means</a>, which takes a subset of data at each iteration to construct the centroids.</p>
 </section>
 </section>
 <section id="hierarchical-clustering">
@@ -1729,12 +1834,13 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <li><p><strong>Average</strong> linkage minimizes the average of the distances between all observations of pairs of clusters.</p></li>
 <li><p><strong>Single</strong> linkage minimizes the distance between the closest observations of pairs of clusters.</p></li>
 </ul>
+<p>We first import relevant packages</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
-<span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span>
+<span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span><span class="p">,</span>  <span class="c1">#</span>
 <span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">pdist</span>
 
 <span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
@@ -1742,20 +1848,28 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>  <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">41</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
+    <span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span><span class="p">,</span>  <span class="c1">#</span>
+                                          <span class="o">^</span>
+<span class="ne">SyntaxError</span>: trailing comma not allowed without surrounding parentheses
+</pre></div>
 </div>
+</div>
+</div>
+<p>Here, we create a fake data sets that has 2 clusters that intermingle in a few data points.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Training and testing set sizes</span>
-<span class="n">n1</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># Train</span>
-<span class="n">n2</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># Test</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># Train</span>
 
 <span class="c1"># Random ellipse 1 centered at (0,0)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n1</span><span class="o">+</span><span class="n">n2</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n1</span><span class="o">+</span><span class="n">n2</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
 <span class="c1"># Random ellipse 2 centered at (1,-2)</span>
-<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n1</span><span class="o">+</span><span class="n">n2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="n">y2</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n1</span><span class="o">+</span><span class="n">n2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">y2</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>
 
 <span class="c1"># Rotate ellipse 2 by theta</span>
 <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span>
@@ -1774,32 +1888,27 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">n1</span><span class="p">],</span><span class="n">y</span><span class="p">[:</span><span class="n">n1</span><span class="p">],</span><span class="s1">&#39;ro&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x3</span><span class="p">[:</span><span class="n">n1</span><span class="p">],</span><span class="n">y3</span><span class="p">[:</span><span class="n">n1</span><span class="p">],</span><span class="s1">&#39;bo&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[:],</span><span class="n">y</span><span class="p">[:],</span><span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x3</span><span class="p">[:],</span><span class="n">y3</span><span class="p">[:],</span><span class="s1">&#39;bo&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/3.1_clustering_58_0.png" src="../_images/3.1_clustering_58_0.png" />
+<img alt="../_images/3.1_clustering_60_0.png" src="../_images/3.1_clustering_60_0.png" />
 </div>
 </div>
+<p>Combine these two data sets as one.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Training set: first 200 of 240 points</span>
-<span class="n">X1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x3</span><span class="p">[:</span><span class="n">n1</span><span class="p">],</span><span class="n">y3</span><span class="p">[:</span><span class="n">n1</span><span class="p">]))</span>
-<span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x</span><span class="p">[:</span><span class="n">n1</span><span class="p">],</span><span class="n">y</span><span class="p">[:</span><span class="n">n1</span><span class="p">]))</span>
-
-<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X1</span><span class="p">,</span><span class="n">X2</span><span class="p">))</span>
-<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n1</span><span class="p">),</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n1</span><span class="p">)))</span>
-
-<span class="c1"># Test set: remaining 40 points</span>
-<span class="n">x1test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x3</span><span class="p">[</span><span class="n">n1</span><span class="p">:],</span><span class="n">y3</span><span class="p">[</span><span class="n">n1</span><span class="p">:]))</span>
-<span class="n">x2test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="n">n1</span><span class="p">:],</span><span class="n">y</span><span class="p">[</span><span class="n">n1</span><span class="p">:]))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x3</span><span class="p">[:],</span><span class="n">y3</span><span class="p">[:]))</span>
+<span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x</span><span class="p">[:],</span><span class="n">y</span><span class="p">[:]))</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X1</span><span class="p">,</span><span class="n">X2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>First we explore the dendograms</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Dendrograms</span>
@@ -1819,7 +1928,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/3.1_clustering_60_0.png" src="../_images/3.1_clustering_60_0.png" />
+<img alt="../_images/3.1_clustering_64_0.png" src="../_images/3.1_clustering_64_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1834,9 +1943,12 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/3.1_clustering_61_0.png" src="../_images/3.1_clustering_61_0.png" />
+<img alt="../_images/3.1_clustering_65_0.png" src="../_images/3.1_clustering_65_0.png" />
 </div>
 </div>
+</section>
+<section id="id1">
+<h2><a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
 </section>
 <section id="pca-before-clustering">
 <h2>PCA before clustering<a class="headerlink" href="#pca-before-clustering" title="Permalink to this headline">#</a></h2>

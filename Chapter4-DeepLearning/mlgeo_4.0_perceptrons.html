@@ -1,0 +1,1267 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Let’s create a perceptron &#8212; ML Geo Curriculum</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.1 Neural Networks" href="mlgeo_4.1_neural_networks.html" />
+    <link rel="prev" title="3.9 AutoML" href="../Chapter3-MachineLearning/3.9_autoML.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/GeoSMART_logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ML Geo Curriculum</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../about_this_book/about_this_book.html">
+                    Machine Learning in the Geosciences
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://geo-smart.github.io/index.html">
+   Geosmart website
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/acknowledgements.html">
+   Acknowlegments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/0_mlgeo_project.html">
+   Primer
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 1 - Open Source Ecosystem with Python
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/readme.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.1_open_reproducible_science.html">
+   1.1 Open Reproducible Science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.2_jupyter_environment.html">
+   1.3 Jupyter Environment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.3_python_environment.html">
+   1.3 Python Ecosystem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.4_computational_environments.html">
+   1.4 Computing Environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.5_version_control_git.html">
+   1.5 Version Control &amp; GitHub
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 2 - Data Manipulation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.1_Data_Definitions.html">
+   2.1 Data Definitions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.2_data_formats_rendered.html">
+   2.2 Data Formats
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.3_pandas_rendered.html">
+   2.4 Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.4_Arrays.html">
+   2.3 Data Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.6_resampling.html">
+   2.6 Resampling Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.7_data_spectral_transforms.html">
+   2.7 Spectral Transforms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.8_statistical_considerations.html">
+   2.8 Statistical Considerations for geoscientific Data and Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.9_feature_engineering.html">
+   2.9 Feature engineering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.10_dimensionality_reduction.html">
+   2.10 Dimensionality Reduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.11_MLready_data.html">
+   2.11 ML-ready data
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 3 - Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.1_clustering.html">
+   3.1 Clustering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
+   3.2 Classification and Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.3_binary_classification.html">
+   3.3 Binary classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.4_multiclass_classification.html">
+   3.4 Multiclass Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.5_logistic_regression.html">
+   3.5 Logistic regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.6_randomForest_regression.html">
+   3.6 Random Forests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.7_hyperparameter_tuning.html">
+   3.7 Hyperparameter Tuning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.8_ensemble_learning.html">
+   3.8 Ensemble learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.9_autoML.html">
+   3.9 AutoML
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 4 - Deep Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Let’s create a
+   <em>
+    perceptron
+   </em>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.1_neural_networks.html">
+   4.1 Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.2_MultiLayerPerceptron.html">
+   4.2 Multi Layer Perceptrons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.3_CNN.html">
+   4.3 Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.4_RNN.html">
+   4.4  Recurrent Neural Networks: Processing sequences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.5_AutoEncoder.html">
+   4.5 Auto-encoders
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.6_NAS.html">
+   4.6 NAS: Network Architecture Search
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 6 - Workflow Management and Reproducibility
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter6-ModelWorkflows/readme.html">
+   This chapter focuces on model workflow and ML reproducibility
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 7- Introduction to Cloud Computing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/cloudmaven">
+   Browser Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/Denolle-Lab/azure">
+   Terraform Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://tljh.jupyter.org/en/latest/">
+   Cloud Provider ML Jupyterhubs
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/glossary.html">
+   Glossaries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/geo-smart/mlgeo-book/main?urlpath=lab/tree/book/Chapter4-DeepLearning/mlgeo_4.0_perceptrons.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/issues/new?title=Issue%20on%20page%20%2FChapter4-DeepLearning/mlgeo_4.0_perceptrons.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/edit/main/book/Chapter4-DeepLearning/mlgeo_4.0_perceptrons.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Chapter4-DeepLearning/mlgeo_4.0_perceptrons.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#let-us-test-out-this-perceptron">
+   Let us test out this perceptron
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#remember-the-iris-dataset">
+   Remember the Iris dataset?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-perceptron-rule">
+   The perceptron rule
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-about-fitting-a-line-to-some-data-with-our-little-perceptron">
+   What about fitting a line to some data with our little perceptron?
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Let’s create a perceptron</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#let-us-test-out-this-perceptron">
+   Let us test out this perceptron
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#remember-the-iris-dataset">
+   Remember the Iris dataset?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-perceptron-rule">
+   The perceptron rule
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-about-fitting-a-line-to-some-data-with-our-little-perceptron">
+   What about fitting a line to some data with our little perceptron?
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="let-s-create-a-perceptron">
+<h1>Let’s create a <em>perceptron</em><a class="headerlink" href="#let-s-create-a-perceptron" title="Permalink to this headline">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">simplePerceptron</span><span class="p">:</span>
+    <span class="c1"># Activation functions</span>
+    <span class="k">def</span> <span class="nf">__none</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span>
+    <span class="k">def</span> <span class="nf">__sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">__step</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">out</span>
+    <span class="n">possibleActivations</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;none&#39;</span><span class="p">:</span> <span class="n">__none</span><span class="p">,</span>
+        <span class="s1">&#39;sigmoid&#39;</span><span class="p">:</span> <span class="n">__sigmoid</span><span class="p">,</span>
+        <span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="n">__step</span>
+    <span class="p">}</span>
+    <span class="c1"># Initialize</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b_w</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="k">if</span> <span class="n">b_w</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b_w</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b_w</span> <span class="o">=</span> <span class="n">b_w</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">activation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">activation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">possibleActivations</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+    <span class="k">def</span> <span class="nf">setWs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b_w</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_w</span> <span class="o">=</span> <span class="n">b_w</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># x *should* be a mxn np array, where each row corresponds to an observation</span>
+        <span class="c1"># Sum everything</span>
+        <span class="n">weightedSum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)):</span>
+            <span class="n">weightedSum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="n">summed</span> <span class="o">=</span> <span class="n">weightedSum</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_w</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">possibleActivations</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">](</span><span class="n">summed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="let-us-test-out-this-perceptron">
+<h2>Let us test out this perceptron<a class="headerlink" href="#let-us-test-out-this-perceptron" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ourPerceptron</span> <span class="o">=</span> <span class="n">simplePerceptron</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b_w</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">ourPerceptron</span><span class="o">.</span><span class="n">setWs</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">ourPerceptron</span><span class="o">.</span><span class="n">activation</span>
+<span class="n">testInput</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ourPerceptron</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">testInput</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([100. ,  -1. ,   0.1])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="remember-the-iris-dataset">
+<h2>Remember the Iris dataset?<a class="headerlink" href="#remember-the-iris-dataset" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.0_perceptrons_6_0.png" src="../_images/mlgeo_4.0_perceptrons_6_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s take a look at the dataset</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">scatter</span><span class="o">.</span><span class="n">legend_elements</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Classes&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.0_perceptrons_7_0.png" src="../_images/mlgeo_4.0_perceptrons_7_0.png" />
+</div>
+</div>
+<p>For the purposes of producing a linearly separable dataset, we’re going to drop the <em>virginica</em> class from the dataset <strong>and</strong> only loot epal width and length.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simpleInputs</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="o">!=</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">simpleOutputs</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="o">!=</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Shuffle these two arrays</span>
+
+<span class="c1"># Random generator</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">simpleInputs</span><span class="p">))</span>
+
+<span class="n">simpleInputs</span> <span class="o">=</span> <span class="n">simpleInputs</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">simpleOutputs</span> <span class="o">=</span> <span class="n">simpleOutputs</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">simpleInputs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">simpleInputs</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">simpleOutputs</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0.5, 0, &#39;sepal length (cm)&#39;), Text(0, 0.5, &#39;sepal width (cm)&#39;)]
+</pre></div>
+</div>
+<img alt="../_images/mlgeo_4.0_perceptrons_9_1.png" src="../_images/mlgeo_4.0_perceptrons_9_1.png" />
+</div>
+</div>
+</section>
+<section id="the-perceptron-rule">
+<h2>The perceptron rule<a class="headerlink" href="#the-perceptron-rule" title="Permalink to this headline">#</a></h2>
+<p>To train our perceptron, we will start with our weights set to 0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">percept</span> <span class="o">=</span> <span class="n">simplePerceptron</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b_w</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">)</span>
+
+
+<span class="n">testArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
+<span class="n">percept</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">simpleInputs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, for some number of iterations, we’re going to:</p>
+<ol>
+<li><p>Make a prediction for one item in our dataset with our perceptron</p></li>
+<li><p>Update our weights using the following rule:</p>
+<p><span class="math notranslate nohighlight">\(w_j = w_j + \Delta w_j\)</span></p>
+<p>where</p>
+<p><span class="math notranslate nohighlight">\(\Delta w_j=\eta(t^i−o^i)x^i_j\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(w_j\)</span> is the weight, <span class="math notranslate nohighlight">\(\eta\)</span> is our <strong>learning rate</strong>, <span class="math notranslate nohighlight">\(t^i\)</span> and <span class="math notranslate nohighlight">\(o^i\)</span> refer to the target and output, respectively, and <span class="math notranslate nohighlight">\(x^i_j\)</span> is the corresponding input.</p>
+<p>In the case of a 2D dataset, we are updating 3 weights: 2 for the inputs and 1 for the bias (for the latter, there is no input to consider).</p>
+</li>
+<li><p>Keep going until we’re happy with the solution. In our case, we will set a stopping point of 25 iterations.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">iterations</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">learningRate</span> <span class="o">=</span> <span class="mf">.0001</span>
+<span class="n">whichItem</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Now, for each iteration:</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+    <span class="c1"># Make a prediction for some item</span>
+    <span class="n">thisInput</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">simpleInputs</span><span class="p">[</span><span class="n">whichItem</span><span class="p">,</span> <span class="p">:],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">thisTarget</span> <span class="o">=</span> <span class="n">simpleOutputs</span><span class="p">[</span><span class="n">whichItem</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">percept</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">thisInput</span><span class="p">)</span>
+    <span class="c1"># Now, let&#39;s figure out the &quot;error&quot;</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">thisTarget</span> <span class="o">-</span> <span class="n">out</span>
+    <span class="n">newWeights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">percept</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="c1"># Let&#39;s update our weights</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">percept</span><span class="o">.</span><span class="n">w</span><span class="p">)):</span>
+        <span class="n">update</span> <span class="o">=</span> <span class="p">(</span><span class="n">learningRate</span> <span class="o">*</span> <span class="n">error</span> <span class="o">*</span> <span class="n">thisInput</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
+        <span class="n">newWeights</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">percept</span><span class="o">.</span><span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">update</span>
+    <span class="n">percept</span><span class="o">.</span><span class="n">setWs</span><span class="p">(</span><span class="n">newWeights</span><span class="p">,</span> <span class="n">percept</span><span class="o">.</span><span class="n">b_w</span> <span class="o">+</span> <span class="p">(</span><span class="n">learningRate</span> <span class="o">*</span> <span class="n">error</span><span class="p">))</span>
+    <span class="c1"># Next item</span>
+    <span class="n">whichItem</span> <span class="o">=</span> <span class="n">whichItem</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">percept</span><span class="o">.</span><span class="n">w</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.00083, 0.00029])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">percept</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">simpleInputs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mlxtend.plotting</span> <span class="kn">import</span> <span class="n">plot_decision_regions</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">simpleInputs</span><span class="p">,</span> <span class="n">simpleOutputs</span><span class="p">,</span> <span class="n">clf</span><span class="o">=</span><span class="n">percept</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Perceptron&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;sepal length [cm]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;petal length [cm]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.0_perceptrons_16_0.png" src="../_images/mlgeo_4.0_perceptrons_16_0.png" />
+</div>
+</div>
+<p>Awesome! We just implemented an <strong>online</strong> algorithm.</p>
+</section>
+<section id="what-about-fitting-a-line-to-some-data-with-our-little-perceptron">
+<h2>What about fitting a line to some data with our little perceptron?<a class="headerlink" href="#what-about-fitting-a-line-to-some-data-with-our-little-perceptron" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We create a linear dataset with some noise</span>
+
+<span class="c1"># How many data?</span>
+<span class="n">num</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">xRange</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">yRange</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xRange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xRange</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">yRange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">yRange</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
+
+<span class="n">noise_factor</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="k">def</span> <span class="nf">noise</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+    <span class="c1"># Add some noise</span>
+    <span class="k">return</span> <span class="n">k</span><span class="o">+</span><span class="p">((</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">noise_factor</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">noise</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">noise</span><span class="p">)(</span><span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Shuffle x and y</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> 
+<span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axisbelow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.0_perceptrons_20_0.png" src="../_images/mlgeo_4.0_perceptrons_20_0.png" />
+</div>
+</div>
+<p>We need to train our perceptron</p>
+<p>We should define a cost function (here, mean square error)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mseCost</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="n">mse</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">prediction</span> <span class="o">-</span> <span class="n">target</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">mse</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>What is the cost of a perfect return?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mseCost</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>The other thing we would like to do is a define a learning algorithm (here, gradient descent)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gradientDescent</span><span class="p">(</span><span class="n">perceptron</span><span class="p">,</span> <span class="n">costFunction</span><span class="p">,</span> <span class="n">trainInput</span><span class="p">,</span> <span class="n">trainTarget</span><span class="p">,</span> <span class="n">learningRate</span><span class="p">,</span> <span class="n">numIterations</span><span class="p">,</span> <span class="n">stoppingCriterion</span><span class="p">):</span>
+
+        <span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">biases</span> <span class="o">=</span> <span class="p">[]</span> 
+        <span class="n">costs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">numInputs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trainInput</span><span class="p">)</span>
+
+        <span class="n">previousCost</span> <span class="o">=</span> <span class="kc">None</span>
+    
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numIterations</span><span class="p">):</span>
+            <span class="c1"># Run your prediction</span>
+            <span class="n">prediction</span> <span class="o">=</span> <span class="n">perceptron</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">trainInput</span><span class="p">)</span>
+            <span class="c1"># Determine your cost</span>
+            <span class="n">thisCost</span> <span class="o">=</span> <span class="n">costFunction</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">trainTarget</span><span class="p">)</span>
+            <span class="c1"># Is the change in cost less than (or equal to) the stoppingCriterion?</span>
+            <span class="k">if</span> <span class="n">previousCost</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">previousCost</span> <span class="o">-</span> <span class="n">thisCost</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">stoppingCriterion</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="c1"># If not, update previousCost</span>
+            <span class="n">previousCost</span> <span class="o">=</span> <span class="n">thisCost</span>
+            <span class="c1"># Add this weight, this bias, and this cost to weights, biases, and costs, respectively</span>
+            <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">perceptron</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
+            <span class="n">biases</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">perceptron</span><span class="o">.</span><span class="n">b_w</span><span class="p">)</span>
+            <span class="n">costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thisCost</span><span class="p">)</span>
+            <span class="c1"># Great, let&#39;s now calculate the errors first</span>
+            <span class="n">er</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">trainTarget</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
+            <span class="c1"># What does the weight update look like?</span>
+            <span class="n">weightUpdate</span> <span class="o">=</span> <span class="n">learningRate</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">trainInput</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">er</span><span class="p">)</span>
+            <span class="c1"># Do the same for the bias weight update</span>
+            <span class="n">biasWeightUpdate</span> <span class="o">=</span> <span class="n">learningRate</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">er</span><span class="p">)</span>
+            <span class="c1"># Now, update the weights and bias weight</span>
+            <span class="n">perceptron</span><span class="o">.</span><span class="n">setWs</span><span class="p">(</span><span class="n">perceptron</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">weightUpdate</span><span class="p">,</span> <span class="n">perceptron</span><span class="o">.</span><span class="n">b_w</span> <span class="o">+</span> <span class="n">biasWeightUpdate</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;weights&#39;</span><span class="p">:</span> <span class="n">weights</span><span class="p">,</span> <span class="s1">&#39;biases&#39;</span><span class="p">:</span> <span class="n">biases</span><span class="p">,</span> <span class="s1">&#39;costs&#39;</span><span class="p">:</span> <span class="n">costs</span><span class="p">}</span>
+    
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">numIterations</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="c1"># Initialize a weight and bias</span>
+<span class="n">ourPerceptron</span><span class="o">.</span><span class="n">setWs</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Run our gradient descent</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">gradientDescent</span><span class="p">(</span><span class="n">ourPerceptron</span><span class="p">,</span> <span class="n">mseCost</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">],</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">numIterations</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A function to plot outputs from gradient descent</span>
+<span class="k">def</span> <span class="nf">plotOutputs</span><span class="p">(</span><span class="n">gdOutput</span><span class="p">):</span>
+    <span class="c1"># How many iterations were actually run?</span>
+    <span class="n">iterationsRan</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gdOutput</span><span class="p">[</span><span class="s1">&#39;costs&#39;</span><span class="p">])</span>
+    <span class="n">toPlot</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">,</span> <span class="s1">&#39;biases&#39;</span><span class="p">,</span> <span class="s1">&#39;costs&#39;</span><span class="p">]</span>
+    <span class="n">pltCount</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">pltCount</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pltCount</span><span class="p">):</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">iterationsRan</span><span class="p">),</span> <span class="n">gdOutput</span><span class="p">[</span><span class="n">toPlot</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration #&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Value&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">toPlot</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_axisbelow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotOutputs</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.0_perceptrons_30_0.png" src="../_images/mlgeo_4.0_perceptrons_30_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s try out our little perceptron on data it hasn&#39;t seen before</span>
+<span class="n">testPredictions</span> <span class="o">=</span> <span class="n">ourPerceptron</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">50</span><span class="p">:</span><span class="mi">100</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+<span class="n">testCost</span> <span class="o">=</span> <span class="n">mseCost</span><span class="p">(</span><span class="n">testPredictions</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">50</span><span class="p">:</span><span class="mi">100</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span>
+<span class="s1">&#39;The mean square error of our little perceptron is: </span><span class="si">%f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">testCost</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;The mean square error of our little perceptron is: 1.226235&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compareOutputs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">perceptron</span><span class="p">,</span> <span class="n">xRange</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">forLine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xRange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xRange</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">forLine</span><span class="p">,</span> <span class="n">perceptron</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">forLine</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># How well do we do relative to OLS?</span>
+    <span class="n">OLSoutput</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">forLine</span><span class="p">,</span> <span class="n">OLSoutput</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">forLine</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_axisbelow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Data&#39;</span><span class="p">,</span> <span class="s1">&#39;Perceptron fit&#39;</span><span class="p">,</span> <span class="s1">&#39;OLS fit&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">;</span>
+
+<span class="n">compareOutputs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ourPerceptron</span><span class="p">,</span> <span class="n">xRange</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.0_perceptrons_32_0.png" src="../_images/mlgeo_4.0_perceptrons_32_0.png" />
+</div>
+</div>
+<p>Now, let’s explore how our learning choices impact our model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">clear_output</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create inputs</span>
+<span class="n">learningRateSlider</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">FloatLogSlider</span><span class="p">(</span>
+    <span class="n">value</span><span class="o">=</span><span class="mf">.001</span><span class="p">,</span>
+    <span class="nb">min</span><span class="o">=-</span><span class="mi">6</span><span class="p">,</span>
+    <span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Learning Rate:&#39;</span>
+<span class="p">)</span>
+
+<span class="n">iterationsSlider</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span>
+    <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">],</span>
+    <span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Number of Iterations:&#39;</span>
+<span class="p">)</span>
+
+<span class="n">stoppingCriterionSlider</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">FloatLogSlider</span><span class="p">(</span>
+    <span class="n">value</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+    <span class="nb">min</span><span class="o">=-</span><span class="mi">8</span><span class="p">,</span>
+    <span class="nb">max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Stopping Criterion:&#39;</span>
+<span class="p">)</span>
+
+<span class="n">startingWeight</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">BoundedFloatText</span><span class="p">(</span>
+    <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="nb">min</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span>
+    <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Weight&#39;</span>
+<span class="p">)</span>
+
+<span class="n">startingBias</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">BoundedFloatText</span><span class="p">(</span>
+    <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="nb">min</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span>
+    <span class="nb">max</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Bias&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># Create the &quot;Update&quot; button</span>
+<span class="n">updateBtn</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Update&quot;</span><span class="p">)</span>
+
+<span class="n">outputWidget</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Output</span><span class="p">()</span>
+
+<span class="c1"># Define the function to run when the &quot;Update&quot; button is clicked</span>
+<span class="k">def</span> <span class="nf">updateClick</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+
+    <span class="k">with</span> <span class="n">outputWidget</span><span class="p">:</span>
+        <span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">learningRate</span> <span class="o">=</span> <span class="n">learningRateSlider</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">numIterations</span> <span class="o">=</span> <span class="n">iterationsSlider</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">stoppingCriterion</span> <span class="o">=</span> <span class="n">stoppingCriterionSlider</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">ourPerceptron</span><span class="o">.</span><span class="n">setWs</span><span class="p">([</span><span class="n">startingWeight</span><span class="o">.</span><span class="n">value</span><span class="p">],</span> <span class="n">startingBias</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">gradientDescent</span><span class="p">(</span><span class="n">ourPerceptron</span><span class="p">,</span> <span class="n">mseCost</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">],</span> <span class="n">learningRate</span><span class="p">,</span> <span class="n">numIterations</span><span class="p">,</span> <span class="n">stoppingCriterion</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">compareOutputs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ourPerceptron</span><span class="p">,</span> <span class="n">xRange</span><span class="p">))</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">plotOutputs</span><span class="p">(</span><span class="n">output</span><span class="p">))</span>
+        
+    
+<span class="c1"># Set the function to be called when the button is clicked</span>
+<span class="n">updateBtn</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">updateClick</span><span class="p">)</span>
+
+<span class="c1"># Display the widgets</span>
+<span class="n">display</span><span class="p">(</span><span class="n">learningRateSlider</span><span class="p">,</span> <span class="n">iterationsSlider</span><span class="p">,</span> <span class="n">stoppingCriterionSlider</span><span class="p">,</span> <span class="n">startingWeight</span><span class="p">,</span> <span class="n">startingBias</span><span class="p">,</span> <span class="n">updateBtn</span><span class="p">,</span> <span class="n">outputWidget</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5ad13e3c63df474b87768cf08b44cf42", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "12381aaf03b64c25b1254faba23a5767", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "f22ca4d3458242a583b81f95651d4cff", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "32a0a661d5ec46ac88454782b92189b9", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "c626d13d7a9e4d4cb0a1f1fb13a262c6", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "91618010a38344cfaca8a6a8d5d0c6e1", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "fd305827ace94318b426d7ff79d5abcc", "version_major": 2, "version_minor": 0}
+</script></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reconstructions"
+        },
+        kernelOptions: {
+            kernelName: "reconstructions",
+            path: "./Chapter4-DeepLearning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reconstructions'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../Chapter3-MachineLearning/3.9_autoML.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">3.9 AutoML</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="mlgeo_4.1_neural_networks.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4.1 Neural Networks</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By eScience Institute, University of Washington<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
