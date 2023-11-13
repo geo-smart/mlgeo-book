@@ -1360,22 +1360,24 @@ For reproducible results, you can select a fixed <code class="docutils literal n
 </section>
 <section id="cross-validation">
 <h3>2.4 Cross validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">#</a></h3>
-<p>A model validation technique to assess how generalizable a statistical analysis is to independent data set is <strong>cross-validation</strong>. There are several tutorials on <span class="xref myst">cross-validation</span>.</p>
+<p>x</p>
+<p>Cross-validation is a widely used technique in machine learning to assess the <strong>performance</strong> and <strong>generalization</strong> of a model. It involves partitioning the dataset into multiple subsets, training the model on a portion of the data, and then evaluating its performance on the remaining data. This process is repeated several times, and <em>the results are averaged</em> to obtain a more reliable estimate of the model’s performance. The primary goal is <em>to mitigate the risk of overfitting and obtain a more robust evaluation metric</em>.</p>
+<p>There are several tutorials on <span class="xref myst">cross-validation</span>.</p>
 <p>Cross-validation divides the data set between a <em>training</em> set and a <em>validation</em> set:</p>
 <div>
 <img src="ValsetApproach.png" width="500"/>
 </div>
-From scikit-learn: concept for training and validation set.
+From: scikit-learn: concept for training and validation set.
 <p>Often the validation set ends up underestimating the prediction errors (model uncertainties) because the validation set is often smaller than the training set. To alleviate that, we can perform cross-validation over many folds of selecting a validation and training set.</p>
 <div>
 <img src="grid_search_cross_validation.png" width="500"/>
 </div>
-*From scikit-learn*
+From: scikit-learn
 <ul class="simple">
 <li><p><strong>Data Splitting</strong>: Cross-validation involves <em>partitioning a dataset into multiple subsets</em>, typically a training set and a testing set. This splitting allows for model assessment and validation.</p></li>
 <li><p><strong>Estimation</strong>: Cross-validation is primarily used to <em>assess the predictive performance</em> of machine learning models or statistical models. It helps in estimating how well a model will generalize to new, unseen data by testing its performance on data that was not used in training.</p></li>
 <li><p><strong>Correlated Data</strong>: Cross-validation does not explicitly address correlated data, and its effectiveness can be influenced by the data splitting strategy. <em>When data exhibits strong correlations, it’s essential to carefully design the cross-validation procedure to ensure that all subsets represent the overall data distribution</em>.</p></li>
-<li><p><strong>Applications</strong>: Cross-validation is widely employed in <em>model selection</em>, <em>hyperparameter tuning</em>, and <em>assessing the generalization ability</em> of models. å</p></li>
+<li><p><strong>Applications</strong>: Cross-validation is widely employed in <em>model selection</em>, <em>hyperparameter tuning</em>, and <em>assessing the generalization ability</em> of models.</p></li>
 </ul>
 <p>We will now randomly select a training and validation set using the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> module:</p>
 <div class="cell docutils container">
@@ -1504,7 +1506,7 @@ Validation set MSE (mm) and Coef of Determination: 17.72,0.85
 Advantages: it has far less bias with respect to the training data. It does not overestimate the test error. Repeated LOOCV will give the exact same results.
 <p>Disadvantages: it is computationally intensive.</p>
 <ul class="simple">
-<li><p><strong>Data Splitting</strong>*: LOOCV is an extreme form of cross-validation where, for each iteration, only one data point is left out as the test set, and the remaining data is used as the training set. This process is repeated for each data point, effectively creating as many folds as there are data points.</p></li>
+<li><p><strong>Data Splitting</strong>: LOOCV is an extreme form of cross-validation where, for each iteration, only one data point is left out as the test set, and the remaining data is used as the training set. This process is repeated for each data point, effectively creating as many folds as there are data points.</p></li>
 <li><p><strong>Estimation</strong>: LOOCV is primarily used for assessing model performance and estimating predictive accuracy. By evaluating the model against all data points one at a time, LOOCV provides a robust assessment of a model’s ability to generalize to unseen data.</p></li>
 <li><p><strong>Correlated Data</strong>: LOOCV, like other cross-validation methods, may not explicitly address correlated data. However, its performance can be influenced by the correlation structure in the data. For datasets with strong correlations, LOOCV may lead to models that are overly optimistic since it often tests a model on data points that are closely related to the training set.</p></li>
 <li><p><strong>Applications</strong>: LOOCV is valuable for evaluating machine learning and statistical models, particularly when you have a limited amount of data.</p></li>

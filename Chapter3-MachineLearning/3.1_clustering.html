@@ -1445,7 +1445,42 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <img alt="../_images/3.1_clustering_37_1.png" src="../_images/3.1_clustering_37_1.png" />
 </div>
 </div>
-<p>Example of <strong>silhouette analysis</strong></p>
+<p><strong>Silhouette analysis</strong></p>
+<p>The silhouette coefficient and silhouette score are metrics used to assess the quality of clustering in unsupervised learning.</p>
+<ol>
+<li><p><strong>Silhouette Coefficient:</strong>
+The silhouette coefficient for a data sample measures how similar it is to its own cluster (cohesion) compared to other clusters (separation). It is calculated for each data sample and ranges from -1 to 1. A high silhouette coefficient indicates that the object is well matched to its own cluster and poorly matched to neighboring clusters. Conversely, a low silhouette coefficient suggests that the object may be in the wrong cluster.</p>
+<p>The formula for the silhouette coefficient (s) for a single data point is given by:</p>
+<p><span class="math notranslate nohighlight">\( s(i) = \frac{b(i) - a(i)}{\max\{a(i), b(i)\}} \)</span>
+where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a(i)\)</span> is the average distance from the <span class="math notranslate nohighlight">\(i\)</span>-th data point to the other data points in the same cluster.</p></li>
+<li><p><span class="math notranslate nohighlight">\(b(i)\)</span> is the smallest average distance from the <span class="math notranslate nohighlight">\(i\)</span>-th data point to data points in a different cluster, minimized over clusters.</p></li>
+</ul>
+</li>
+<li><p><strong>Silhouette Score:</strong>
+The silhouette score is the average silhouette coefficient across all data samples in the dataset. It provides a global measure of how well-separated clusters are. The silhouette score ranges from -1 to 1 as well, where a high score indicates good clustering and a low score suggests overlapping or misclassified clusters.</p>
+<p>The formula for the silhouette score is given by:</p>
+</li>
+</ol>
+<p><span class="math notranslate nohighlight">\( S = \frac{\sum_{i=1}^{N} s(i)}{N} \)</span>
+where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(N\)</span> is the number of data points in the dataset.</p></li>
+</ul>
+<p><strong>Interpretation:</strong></p>
+<ul class="simple">
+<li><p>A silhouette coefficient close to 1 indicates that the data point is well-matched to its own cluster and poorly matched to neighboring clusters, signifying a robust and distinct cluster.</p></li>
+<li><p>A silhouette coefficient close to -1 suggests that the data point is possibly misclassified, as it is better matched to a neighboring cluster.</p></li>
+<li><p>A silhouette coefficient around 0 indicates overlapping clusters.</p></li>
+</ul>
+<p>For the silhouette score:</p>
+<ul class="simple">
+<li><p>A score close to 1 implies well-defined clusters.</p></li>
+<li><p>A score around 0 suggests overlapping clusters.</p></li>
+<li><p>A negative score indicates that the majority of data points may be assigned to the wrong clusters.</p></li>
+</ul>
+<p>In summary, silhouette analysis helps in selecting the optimal number of clusters and assessing the overall quality of clustering in unsupervised learning, providing valuable insights into the structure of the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># example of the silhouette score for the Old Faithful data</span>
@@ -1458,62 +1493,10 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <span class="n">kmeans_model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">ncluster</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data_faithful</span><span class="p">)</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="n">kmeans_model</span><span class="o">.</span><span class="n">labels_</span>
 <span class="n">sc</span><span class="o">=</span><span class="n">silhouette_score</span><span class="p">(</span><span class="n">data_faithful</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">silhouette_samples</span><span class="p">(</span><span class="n">data_faithful</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0.63147309  0.53044455  0.46779875  0.76836771  0.20726748  0.38116775
-  0.53847563  0.62288846  0.81558153  0.7592036   0.70993839  0.68638609
-  0.74516531  0.80008821  0.6755599   0.21594585  0.78593105  0.67605116
-  0.76146594  0.75402734  0.09259738  0.56922127 -0.03424752  0.16601227
-  0.56931501  0.62095626  0.75515268  0.69057845  0.62107074  0.75922639
-  0.73011104  0.3950175   0.31435567  0.67676623  0.68054136  0.13245936
-  0.78912008  0.68573384  0.79739309  0.6968454   0.76123913  0.82561676
-  0.73527765  0.81105258  0.34069778  0.27101466  0.66647019  0.80877866
-  0.72452975  0.79219349  0.66184574  0.71493118  0.78769807  0.68184766
-  0.76717763  0.54988292  0.65663369  0.79515639  0.74152142  0.70585277
-  0.78479013  0.74271586  0.78593105  0.69452008  0.81576455  0.76309549
-  0.64642601  0.69922373  0.804426    0.69871087  0.72967489  0.82768761
-  0.73399564  0.72209849  0.72189751  0.5958515   0.82403372  0.69322019
-  0.53469999  0.51251051  0.73432084  0.76139725  0.45956413  0.50748428
-  0.54114405  0.61326113  0.64240716  0.7117385   0.70025565  0.68069155
-  0.77811399  0.76096889  0.79253012  0.69020771  0.80413431  0.67690662
-  0.62343935  0.66987819  0.77305065  0.48489432  0.66522149  0.740872
-  0.8151241   0.74273719  0.73523528  0.81211786  0.71595929  0.77998847
-  0.54392202  0.43814041  0.62082943  0.70830125  0.66571243  0.74152169
-  0.79815047  0.63771876  0.75337184  0.73629291  0.81719692  0.48120537
-  0.51873336  0.73126145  0.75665801  0.82484302  0.64495474  0.67241576
-  0.82784456  0.68133003  0.76686261  0.72900597  0.77844951  0.30761722
-  0.42922743  0.75926756  0.81562877  0.76035029  0.76451254  0.63723971
-  0.63453326  0.59186646  0.70263944  0.78485929  0.64524934  0.68881933
-  0.75760721  0.82113359  0.72237984  0.70868214  0.60613125  0.73497355
-  0.59194299  0.5991453   0.7175909   0.53814789  0.49118717  0.66389788
-  0.74698581  0.7371437   0.72351704  0.67370015  0.73721913  0.74471303
-  0.67367877  0.45919889  0.34415049  0.62438435  0.65885774  0.62923072
-  0.8238563   0.73406938  0.01750962  0.81571315  0.35118033  0.26268435
-  0.74047807  0.72486287  0.61062942  0.61318842  0.71868257  0.75202614
-  0.82486446  0.74070909  0.67139297  0.66048458  0.82043467  0.75439721
-  0.73942066  0.81884902  0.718311    0.76427688  0.69473128  0.79434712
-  0.68146157  0.72693285  0.70223754  0.51078471  0.39912885  0.69908115
-  0.77016488  0.70038786  0.80274267  0.76383818  0.74782772  0.82269232
-  0.73392859  0.80786877  0.70406565  0.69236319  0.82811465  0.62906711
-  0.71613791  0.71870468  0.68371465  0.39591267  0.34354394  0.62883364
-  0.69255292  0.68309587  0.77125499  0.74988807  0.80058568  0.74923268
-  0.81072996  0.73622929  0.72011236  0.75066744  0.73321253  0.72656201
-  0.62015573  0.73884634  0.60435859  0.66568594  0.70370182  0.78740418
-  0.75617037  0.09091835  0.80258282  0.73553435  0.6206749   0.69390867
-  0.64734418  0.68286217  0.15166937  0.36125048  0.6738216   0.66994118
-  0.80775088  0.73392689  0.79678104  0.71647227  0.7921602   0.5565551
-  0.42510872  0.75215033  0.68593435  0.63727695  0.64671513  0.75050886
-  0.80209433  0.64383652  0.68885895  0.74695266  0.79625474  0.75546079
-  0.01380216  0.75700651  0.69717451  0.71446902  0.80152883  0.75559453
-  0.81983109]
-0.6660137226595727
-</pre></div>
-</div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/cluster/_kmeans.py:1416: FutureWarning:
 
 The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set the value of `n_init` explicitly to suppress the warning
@@ -1593,7 +1576,7 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 <span class="c1"># 2nd Plot showing the actual clusters formed</span>
 <span class="n">colors</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">nipy_spectral</span><span class="p">(</span><span class="n">cluster_labels</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">/</span> <span class="n">ncluster</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-    <span class="n">data_faithful</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data_faithful</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span>
+    <span class="n">data_faithful</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data_faithful</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span>
 <span class="p">)</span>
 
 <span class="c1"># Labeling the clusters</span>
@@ -1610,7 +1593,7 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 <span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">centers</span><span class="p">):</span>
-    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">%d</span><span class="s2">$&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">%d</span><span class="s2">$&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;The visualization of the clustered data.&quot;</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Feature space for the 1st feature&quot;</span><span class="p">)</span>
@@ -1683,7 +1666,7 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2b8d65820&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2ba38ac10&gt;]
 </pre></div>
 </div>
 <img alt="../_images/3.1_clustering_46_1.png" src="../_images/3.1_clustering_46_1.png" />
@@ -1708,7 +1691,7 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2b95b71f0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2ba44ab50&gt;]
 </pre></div>
 </div>
 <img alt="../_images/3.1_clustering_48_1.png" src="../_images/3.1_clustering_48_1.png" />
@@ -1732,7 +1715,7 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2b96a50d0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x2ba534b80&gt;]
 </pre></div>
 </div>
 <img alt="../_images/3.1_clustering_50_1.png" src="../_images/3.1_clustering_50_1.png" />
@@ -1810,7 +1793,7 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 96.66666666666667
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;mpl_toolkits.mplot3d.art3d.Path3DCollection at 0x2b976bd00&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;mpl_toolkits.mplot3d.art3d.Path3DCollection at 0x2ba5f8bb0&gt;
 </pre></div>
 </div>
 <img alt="../_images/3.1_clustering_54_2.png" src="../_images/3.1_clustering_54_2.png" />
@@ -1840,19 +1823,11 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
-<span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span><span class="p">,</span>  <span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span>  <span class="c1">#</span>
 <span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">pdist</span>
 
 <span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>  <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">41</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
-    <span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span><span class="p">,</span>  <span class="c1">#</span>
-                                          <span class="o">^</span>
-<span class="ne">SyntaxError</span>: trailing comma not allowed without surrounding parentheses
 </pre></div>
 </div>
 </div>
@@ -1912,17 +1887,15 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Dendrograms</span>
-
-<span class="n">Y3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X1</span><span class="p">[:</span><span class="mi">50</span><span class="p">,:],</span><span class="n">X2</span><span class="p">[:</span><span class="mi">50</span><span class="p">,:]))</span>
-
-<span class="n">Y2</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="n">Y3</span><span class="p">,</span><span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
-<span class="n">Z</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">Y2</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">)</span>
 <span class="n">thresh</span> <span class="o">=</span> <span class="mf">0.85</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">dn</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">color_threshold</span><span class="o">=</span><span class="n">thresh</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Data Sample Index&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Distance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Dendrogram with average linkage&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1934,10 +1907,11 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">thresh</span> <span class="o">=</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])</span>
-
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">dn</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">color_threshold</span><span class="o">=</span><span class="n">thresh</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Data Sample Index&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Distance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Dendrogram with average linkage&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1946,9 +1920,258 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 <img alt="../_images/3.1_clustering_65_0.png" src="../_images/3.1_clustering_65_0.png" />
 </div>
 </div>
+<p>Now that we have explored the structure of the data and built some intuition on how many clusters and the distribution of the data samples in the cluster.</p>
+<p>Next, we choose a distance threshold and assign each data point to a cluster ID.</p>
+<p>In Sci-kit learn, the entire algorithm is incorporated in the function <code class="docutils literal notranslate"><span class="pre">AgglomerativeClustering</span></code> <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html">sklearn doc here</a>. The function still needs either a threshold distance or a number of cluster to perform the clustering and assign a cluster ID to each data sample.</p>
 </section>
 <section id="id1">
 <h2><a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">AgglomerativeClustering</span>
+<span class="c1"># Let&#39;s first find a reasonable distance threshod by precalculating the linkage matrix</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="s2">&quot;average&quot;</span><span class="p">)</span> 
+<span class="n">thresh</span> <span class="o">=</span> <span class="mf">0.85</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])</span>    <span class="c1"># choose a threshold distance</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">thresh</span><span class="p">)</span>
+<span class="c1"># design model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AgglomerativeClustering</span><span class="p">(</span><span class="n">distance_threshold</span><span class="o">=</span><span class="n">thresh</span><span class="p">,</span><span class="n">linkage</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="c1"># fit model and predict clusters on the data samples</span>
+<span class="n">clusterID</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.1553671407878263
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.43350268e+00, -1.66284056e+00],
+       [ 2.59380863e+00, -5.63943160e-01],
+       [ 2.42359606e+00, -5.65095025e-01],
+       [ 2.32138028e+00, -8.89751882e-01],
+       [ 3.08113310e+00,  5.31875618e-01],
+       [ 1.67295307e+00, -1.06168176e+00],
+       [ 1.76546160e+00, -1.46554711e+00],
+       [ 1.87876889e+00, -1.16816806e+00],
+       [ 1.72637647e+00, -9.02902726e-01],
+       [ 3.09689906e+00,  5.40367004e-01],
+       [ 3.64575262e+00,  8.45857469e-01],
+       [ 1.76975214e+00, -1.21307490e+00],
+       [ 2.76846118e+00, -2.54990193e-01],
+       [ 3.68808391e+00,  8.59655748e-01],
+       [ 1.87810165e+00, -6.73339668e-01],
+       [ 1.87812831e+00, -9.38358033e-01],
+       [ 1.41679880e+00, -1.46310032e+00],
+       [ 2.18452379e+00, -7.81692591e-01],
+       [ 2.33553382e+00, -1.47805102e-01],
+       [ 2.29233218e+00, -8.73416701e-01],
+       [ 2.39393795e+00, -4.28975461e-01],
+       [ 3.66982019e+00,  5.41413700e-01],
+       [ 2.18493938e+00, -7.55188227e-01],
+       [ 3.27894486e+00, -2.31675465e-01],
+       [ 1.68104510e+00, -8.63028776e-01],
+       [ 1.84020133e+00, -5.30472588e-01],
+       [ 2.73669760e+00, -2.70985658e-01],
+       [ 1.26564294e+00, -1.46166602e+00],
+       [ 2.65140128e+00,  5.80467402e-02],
+       [ 1.95214107e+00, -1.16500907e+00],
+       [ 3.05707018e+00, -1.34573837e-01],
+       [ 1.85955127e+00, -8.04350267e-01],
+       [ 1.63007403e+00, -1.09610147e+00],
+       [ 1.06848084e+00, -1.46725669e+00],
+       [ 1.70181608e+00, -1.28679745e+00],
+       [ 2.21153578e+00, -4.68576456e-01],
+       [ 1.80184096e+00, -1.28410467e+00],
+       [ 2.10227580e+00, -1.05836797e+00],
+       [ 2.49539290e+00, -5.42819812e-01],
+       [ 2.24931771e+00, -3.64705215e-01],
+       [ 3.33087274e+00,  3.64033033e-01],
+       [ 3.30468018e+00,  8.53659577e-01],
+       [ 1.84805874e+00, -1.13147540e+00],
+       [ 6.60365269e-01, -1.80414214e+00],
+       [ 1.84388478e+00, -5.38063281e-01],
+       [ 1.17049426e+00, -2.15910416e+00],
+       [ 1.28546337e+00, -1.38837774e+00],
+       [ 2.32622034e+00, -1.01790279e+00],
+       [ 2.30845379e+00, -3.10000543e-01],
+       [ 1.83286861e+00, -6.60519969e-01],
+       [ 2.08764086e+00, -8.31707406e-01],
+       [ 2.05876537e+00, -3.07107204e-01],
+       [ 2.56801387e+00, -4.57569875e-01],
+       [ 1.64054926e+00, -1.04690610e+00],
+       [ 1.91910361e+00, -5.53637802e-01],
+       [ 1.42788150e+00, -1.51463199e+00],
+       [ 1.72189621e+00, -3.66200710e-01],
+       [ 3.63469071e+00,  8.98945863e-01],
+       [ 2.90781154e+00,  2.14169642e-01],
+       [ 1.00105924e+00, -1.52197574e+00],
+       [ 3.16121009e+00,  1.19479893e-01],
+       [ 9.53254559e-01, -1.39001736e+00],
+       [ 2.15975960e+00, -3.82639626e-01],
+       [ 2.56653506e+00,  8.89181306e-02],
+       [ 2.08072608e+00, -3.55846061e-01],
+       [ 8.70684726e-01, -1.92810648e+00],
+       [ 3.11794405e+00,  4.84028749e-01],
+       [ 2.55538743e+00, -3.01150443e-01],
+       [ 1.73013118e+00, -1.49084638e+00],
+       [ 1.20082908e+00, -1.68189771e+00],
+       [ 2.48879817e+00,  1.15525786e-01],
+       [ 9.58804467e-01, -1.59939861e+00],
+       [ 2.61267658e+00, -6.75354527e-01],
+       [ 2.09816631e+00, -6.59364427e-01],
+       [ 2.49249982e+00, -1.60928335e-01],
+       [ 2.24279855e+00, -3.07493105e-01],
+       [ 5.40331959e-01, -2.52807567e+00],
+       [ 1.55222759e+00, -1.54062965e+00],
+       [ 2.23299271e+00, -4.72716534e-01],
+       [ 2.85836044e+00,  2.06380531e-01],
+       [ 2.79615554e+00, -2.03566152e-01],
+       [ 4.21210983e+00,  1.03815835e+00],
+       [ 2.38469443e+00, -4.74095585e-01],
+       [ 2.27882059e+00, -3.98780850e-01],
+       [ 1.71775288e+00, -1.26189863e+00],
+       [ 1.69664895e+00, -7.59120796e-01],
+       [ 2.06419769e+00, -1.20086303e+00],
+       [ 1.05152703e+00, -1.18314361e+00],
+       [ 2.57593123e+00, -3.36967973e-01],
+       [ 1.66848983e+00, -8.44882771e-01],
+       [ 2.75732367e+00,  4.07107968e-01],
+       [ 1.34929719e+00, -1.41774748e+00],
+       [ 1.54158392e+00, -1.36127618e+00],
+       [ 1.52575621e+00, -1.01484245e+00],
+       [ 2.11022491e+00, -7.73334082e-01],
+       [ 2.67081402e+00, -8.59995190e-02],
+       [ 2.33814553e+00, -2.70801967e-01],
+       [ 3.34277804e+00,  7.41781333e-01],
+       [ 2.73096308e+00, -3.99908489e-01],
+       [ 2.07230686e+00, -9.89595643e-01],
+       [ 1.77200563e+00,  2.99958587e-02],
+       [-1.13559614e+00,  1.55258449e-01],
+       [-1.11535082e+00,  3.08998769e-01],
+       [ 1.59103728e+00, -4.29352404e-02],
+       [-5.17002010e-01, -1.76323776e-01],
+       [-1.18181892e+00,  3.90535107e-01],
+       [-6.52976973e-01,  7.52854687e-01],
+       [ 7.21362874e-01, -2.99549186e-01],
+       [ 1.79905757e-01, -3.16827078e-01],
+       [-7.15547294e-01,  8.33613971e-02],
+       [-3.28597742e-01, -1.42373896e-01],
+       [ 4.53120750e-01,  3.15607835e-02],
+       [ 2.22140377e+00,  3.01317991e-01],
+       [-9.68179228e-01,  3.74368878e-01],
+       [ 6.55799770e-01, -7.20555138e-01],
+       [ 4.91468729e-02,  7.54375250e-01],
+       [ 1.03494963e-01,  2.59265875e-01],
+       [ 1.64575823e+00, -4.05394413e-01],
+       [-9.50274156e-01, -7.57472288e-02],
+       [-3.92742328e-01,  1.28344035e-01],
+       [ 3.24402698e-01, -1.18035155e+00],
+       [-1.22872158e-01, -3.69104212e-01],
+       [-8.58464736e-01,  1.29739056e-01],
+       [ 2.60605548e-01,  1.27723895e-01],
+       [ 1.50654833e+00, -5.47691796e-01],
+       [ 3.56598296e-01, -5.04798007e-01],
+       [ 5.28566571e-01, -3.48948642e-01],
+       [ 1.42892166e+00, -3.65958117e-01],
+       [ 1.27481244e+00, -4.35171223e-01],
+       [-6.51344574e-01,  9.60009622e-01],
+       [ 3.89813112e-01,  1.93205588e-01],
+       [ 3.65301846e-01, -8.99702835e-01],
+       [-1.45044537e-01, -4.07132985e-01],
+       [ 1.24893725e+00, -1.02294638e+00],
+       [-3.28855255e-01,  1.71049697e-01],
+       [-2.80752904e-02,  5.10116954e-01],
+       [ 1.75642317e+00,  4.88678261e-01],
+       [ 1.29385795e+00, -1.03337844e-01],
+       [ 2.37029163e-02,  1.09091501e-01],
+       [-1.17675743e+00,  4.72706875e-01],
+       [ 1.00157524e+00, -1.10487413e-02],
+       [-4.70089548e-01, -3.53575704e-02],
+       [ 7.34510049e-01,  3.55729680e-01],
+       [ 1.13571728e+00,  3.17468526e-01],
+       [ 6.90950553e-01, -8.94288096e-01],
+       [ 1.62941687e+00, -7.67580740e-02],
+       [-1.45789629e+00,  2.48032570e-01],
+       [ 7.05010276e-01,  4.69039912e-01],
+       [-1.20158980e+00,  3.53412077e-01],
+       [-7.35469237e-01,  1.16392710e+00],
+       [-1.12263265e+00, -4.10420561e-01],
+       [ 1.69033981e+00, -2.66887625e-01],
+       [-2.69490068e-01, -7.40928480e-01],
+       [ 2.35235665e-01,  1.26122375e-01],
+       [-6.83847536e-01,  4.72048413e-02],
+       [ 8.68738041e-01, -1.08537423e-01],
+       [ 9.01008876e-01,  4.70308463e-01],
+       [-1.40079389e+00, -2.84583932e-01],
+       [ 7.20269556e-01, -1.77578831e-01],
+       [ 5.19274190e-01,  3.33992835e-01],
+       [-1.13058067e-01, -5.65073966e-01],
+       [ 1.20159493e+00,  5.69565340e-01],
+       [-1.15089793e+00,  6.88499613e-01],
+       [ 1.23605235e+00,  2.47963855e-01],
+       [-1.00917668e+00,  1.46473182e-01],
+       [-6.39975399e-01,  2.35710083e-01],
+       [ 7.70832949e-01,  1.00380339e-01],
+       [-1.77784322e+00, -9.93289237e-01],
+       [-7.80046686e-01,  8.21236235e-01],
+       [-1.14262720e+00, -1.03501758e+00],
+       [-1.47855870e-01, -7.44265462e-01],
+       [-6.59461729e-01,  9.65681801e-02],
+       [ 1.31478216e+00,  1.31240204e-03],
+       [-7.34913307e-02,  7.24248697e-01],
+       [ 1.64228344e+00, -4.10013437e-01],
+       [-2.23062432e+00,  1.04984011e+00],
+       [ 2.78193582e-01, -5.18092002e-02],
+       [ 1.58428941e+00, -3.24568202e-01],
+       [-6.91949590e-01, -4.70130848e-01],
+       [-9.97071249e-01, -8.43585916e-02],
+       [ 2.63412378e+00,  3.55567437e-01],
+       [-9.61819897e-02,  4.99918722e-01],
+       [ 5.04767375e-01, -6.00113409e-02],
+       [ 2.14118360e+00, -3.32081209e-01],
+       [-5.19876832e-01, -4.18712198e-01],
+       [ 8.61971214e-01,  7.04966072e-01],
+       [ 5.09478493e-01, -5.14403563e-02],
+       [-1.46903645e-01,  2.37813526e-01],
+       [ 1.18381967e+00, -3.11049848e-01],
+       [-1.03058095e+00, -1.45270114e+00],
+       [ 3.57949544e-01,  3.03760092e-01],
+       [ 1.82903172e-02, -2.02642287e-01],
+       [ 8.20002856e-01, -2.08593236e-02],
+       [ 1.31551975e+00, -1.00896047e+00],
+       [ 3.89098648e-01,  3.59051900e-01],
+       [-2.85451879e-01, -5.73109557e-01],
+       [ 6.98750850e-02, -7.10184613e-01],
+       [-1.81970102e+00,  6.89038735e-01],
+       [ 8.95239386e-01,  3.06025041e-01],
+       [ 1.98100851e+00, -2.93914670e-01]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="o">=</span><span class="n">clusterID</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x2bc2b4eb0&gt;
+</pre></div>
+</div>
+<img alt="../_images/3.1_clustering_70_1.png" src="../_images/3.1_clustering_70_1.png" />
+</div>
+</div>
+<p><strong>Geosciences Applications</strong></p>
+<p>In the following exercise, we will try to find clusters from features of a set of seismic waveforms. THe waveforms come from Mt Hood, an ice-capped volcano in the Cascades that experience seismic events from the volcanic acticities (magmatic and hydrothermal), tectonic context, and glacier/snow related seismic events.</p>
 </section>
 <section id="pca-before-clustering">
 <h2>PCA before clustering<a class="headerlink" href="#pca-before-clustering" title="Permalink to this headline">#</a></h2>
@@ -1970,6 +2193,12 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-6.0, 3.0)
+</pre></div>
+</div>
+<img alt="../_images/3.1_clustering_74_1.png" src="../_images/3.1_clustering_74_1.png" />
+</div>
 </div>
 <p>Let us now do k-means clustering with 3 clusters.</p>
 <div class="cell docutils container">
@@ -1979,6 +2208,12 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">synthetics</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">synthetics</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">clusters</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x2bdd92640&gt;
+</pre></div>
+</div>
+<img alt="../_images/3.1_clustering_76_1.png" src="../_images/3.1_clustering_76_1.png" />
 </div>
 </div>
 <p>What happens if we apply PCA + normalization before the clustering?</p>
@@ -2000,10 +2235,16 @@ The default value of `n_init` will change from 10 to &#39;auto&#39; in 1.4. Set 
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">clusters</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">centers</span><span class="p">)</span> <span class="o">=</span> <span class="n">kmeans_pp</span><span class="p">(</span><span class="n">synthetics_scaled</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">clusters</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">centers</span><span class="p">)</span> <span class="o">=</span> <span class="n">my_kmeans</span><span class="p">(</span><span class="n">synthetics_scaled</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">synthetics</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">synthetics</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">clusters</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x2bde1d5e0&gt;
+</pre></div>
+</div>
+<img alt="../_images/3.1_clustering_80_1.png" src="../_images/3.1_clustering_80_1.png" />
 </div>
 </div>
 </section>
