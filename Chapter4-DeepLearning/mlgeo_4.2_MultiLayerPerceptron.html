@@ -624,13 +624,23 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#define-the-optimizer">
-     Define the optimizer
+    <a class="reference internal nav-link" href="#prepare-data">
+     4.1 Prepare Data
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#train-the-model">
-     Train the model
+    <a class="reference internal nav-link" href="#design-model">
+     4.2 Design Model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimization">
+     4.3 Optimization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training">
+     4.4 Training
     </a>
    </li>
   </ul>
@@ -697,13 +707,23 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#define-the-optimizer">
-     Define the optimizer
+    <a class="reference internal nav-link" href="#prepare-data">
+     4.1 Prepare Data
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#train-the-model">
-     Train the model
+    <a class="reference internal nav-link" href="#design-model">
+     4.2 Design Model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimization">
+     4.3 Optimization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training">
+     4.4 Training
     </a>
    </li>
   </ul>
@@ -835,102 +855,74 @@ One additional mitigation against overfitting is to use dropout layers during tr
 </div>
 </div>
 </div>
-<p>Download data set</p>
+<section id="prepare-data">
+<h3>4.1 Prepare Data<a class="headerlink" href="#prepare-data" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load data set in memory</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
+<span class="n">digits</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span> <span class="c1"># load data set</span>
+<span class="n">data</span><span class="p">,</span><span class="n">labels</span> <span class="o">=</span> <span class="n">digits</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span><span class="n">digits</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># copy data and target</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span> <span class="c1"># reshape data on 8x8 grid</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1797, 8, 8) (1797,)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Prepare the PyTorch-friendly data set:</p>
+<ol class="simple">
+<li><p>Make <code class="docutils literal notranslate"><span class="pre">Dataset</span></code></p></li>
+<li><p>Split train-test</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code></p></li>
+</ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span><span class="p">,</span><span class="n">fetch_openml</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data.sampler</span> <span class="kn">import</span> <span class="n">SubsetRandomSampler</span>
-<span class="kn">from</span> <span class="nn">torchvision.transforms</span> <span class="kn">import</span> <span class="n">transforms</span><span class="p">,</span> <span class="n">ToTensor</span><span class="p">,</span> <span class="n">Compose</span><span class="p">,</span><span class="n">Normalize</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">random_split</span>
 
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span><span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
- <span class="n">transform</span><span class="o">=</span><span class="n">Compose</span><span class="p">([</span><span class="n">ToTensor</span><span class="p">(),</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.5</span><span class="p">],[</span><span class="mf">0.5</span><span class="p">])]))</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>60000
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset MNIST
-    Number of datapoints: 60000
-    Root location: ./
-    Split: Train
-    StandardTransform
-Transform: Compose(
-               ToTensor()
-               Normalize(mean=[0.5], std=[0.5])
-           )
-</pre></div>
-</div>
-</div>
-</div>
-<p>Keep a number of data safe for testing</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>  <span class="c1"># select your indices here as a list  </span>
-<span class="n">subset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Subset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
-<span class="n">subset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">RandomSampler</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
-<span class="n">testloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span>  <span class="mi">1</span> <span class="p">,</span> <span class="n">shuffle</span> <span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#set shuffle to False </span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now we will split the rest for training and validation</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">-</span><span class="mi">1301</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">-</span><span class="mi">301</span><span class="p">)</span>  <span class="c1"># select your indices here as a list  </span>
-<span class="n">subset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Subset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
-<span class="c1">#alldataloader = DataLoader(subset, batch_size =  1 , shuffle =False) #set shuffle to False </span>
-<span class="n">loaded_train</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span>  <span class="mi">1</span> <span class="p">,</span> <span class="n">shuffle</span> <span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#set shuffle to False</span>
-<span class="n">indices</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">-</span><span class="mi">2301</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">-</span><span class="mi">2001</span><span class="p">)</span>  <span class="c1"># select your indices here as a list  </span>
-<span class="n">subset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Subset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
-<span class="n">loaded_val</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span>  <span class="mi">1</span> <span class="p">,</span> <span class="n">shuffle</span> <span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#set shuffle to False</span>
+<span class="k">class</span> <span class="nc">CustomDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span> <span class="c1"># create custom dataset</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span><span class="n">labels</span><span class="p">):</span> <span class="c1"># initialize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span> 
 
-<span class="n">L</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">loaded_val</span><span class="p">)</span>
-<span class="n">Lt</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span><span class="o">*</span><span class="n">L</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">Lt</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>300 240
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#train_set, val_set = torch.utils.data.random_split(alldataloader, [Lt,L-Lt])</span>
-<span class="c1">#loaded_train = DataLoader(train_set, batch_size=50)</span>
-<span class="c1">#loaded_val = DataLoader(val_set, batch_size=50)</span>
-<span class="c1">#print(loaded_train)</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
-<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">loaded_train</span><span class="p">))</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">sample_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">sample_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">sample_data</span><span class="p">),(</span><span class="n">sample_labels</span><span class="p">)</span> <span class="c1"># return data as a tensor</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">custom_dataset</span> <span class="o">=</span> <span class="n">CustomDataset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+
+<span class="c1"># Determine the size of the training set</span>
+<span class="n">train_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">custom_dataset</span><span class="p">))</span> <span class="c1"># 80% of the data set</span>
+<span class="n">test_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">custom_dataset</span><span class="p">)</span> <span class="o">-</span> <span class="n">train_size</span> <span class="c1"># 20% of the data set</span>
+
+<span class="c1"># Use random_split to create training and testing subsets</span>
+<span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">random_split</span><span class="p">(</span><span class="n">custom_dataset</span><span class="p">,</span> <span class="p">[</span><span class="n">train_size</span><span class="p">,</span> <span class="n">test_size</span><span class="p">])</span>
+
+
+
+<span class="c1"># Create a DataLoader</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>  <span class="c1"># Adjust according to your needs</span>
+<span class="n">shuffle</span> <span class="o">=</span> <span class="kc">True</span>   <span class="c1"># Set to True if you want to shuffle the data</span>
+<span class="n">data_loader_train</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span><span class="p">)</span>
+<span class="n">data_loader_test</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([1, 1, 28, 28])
-</pre></div>
 </div>
-</div>
-</div>
+</section>
+<section id="design-model">
+<h3>4.2 Design Model<a class="headerlink" href="#design-model" title="Permalink to this headline">#</a></h3>
+<p>Set a random seeed for reproducibility</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>  <span class="c1"># Set fixed random number seed</span>
@@ -939,7 +931,7 @@ Transform: Compose(
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch._C.Generator at 0x7f7118752b50&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch._C.Generator at 0x1e1e75e10&gt;
 </pre></div>
 </div>
 </div>
@@ -948,26 +940,28 @@ Transform: Compose(
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fully connected MLP</span>
-<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="k">class</span> <span class="nc">my_mlp</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span> <span class="c1"># a class defines an object</span>
 
     <span class="c1"># this defines the architecture of the NN</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size_img</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
         <span class="c1"># Here we define all the functions that we will use during the forward part (data -&gt; prediction)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">my_mlp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
-            <span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(),</span>
-            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">size_img</span> <span class="o">*</span> <span class="n">size_img</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span>
-            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
-            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
-            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
-            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
-            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">flatten</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">()</span> <span class="c1"># go from a 8*8 tensor to a 64*1 tensor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">size_img</span> <span class="o">*</span> <span class="n">size_img</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">16</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relu2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="n">num_classes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>
 
     <span class="c1"># this defines how the data passes through the layers</span>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="c1"># Here we explain in which order to use the functions defined above</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu1</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -986,28 +980,28 @@ Transform: Compose(
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">my_mlp</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">my_mlp</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>my_mlp(
-  (layers): Sequential(
-    (0): Flatten(start_dim=1, end_dim=-1)
-    (1): Linear(in_features=784, out_features=64, bias=True)
-    (2): ReLU()
-    (3): Linear(in_features=64, out_features=32, bias=True)
-    (4): ReLU()
-    (5): Linear(in_features=32, out_features=10, bias=True)
-  )
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (layer1): Linear(in_features=64, out_features=32, bias=True)
+  (relu1): ReLU()
+  (layer2): Linear(in_features=32, out_features=16, bias=True)
+  (relu2): ReLU()
+  (output_layer): Linear(in_features=16, out_features=10, bias=True)
+  (sigmoid): Sigmoid()
 )
 </pre></div>
 </div>
 </div>
 </div>
-<section id="define-the-optimizer">
-<h3>Define the optimizer<a class="headerlink" href="#define-the-optimizer" title="Permalink to this headline">#</a></h3>
+</section>
+<section id="optimization">
+<h3>4.3 Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h3>
 <p>Choose an optimizer to train the algorithm: <a class="reference external" href="https://pytorch.org/docs/stable/optim.html">https://pytorch.org/docs/stable/optim.html</a>. Choose hyperparameters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1019,46 +1013,45 @@ Transform: Compose(
 </div>
 </div>
 </section>
-<section id="train-the-model">
-<h3>Train the model<a class="headerlink" href="#train-the-model" title="Permalink to this headline">#</a></h3>
+<section id="training">
+<h3>4.4 Training<a class="headerlink" href="#training" title="Permalink to this headline">#</a></h3>
 <p>Compile the model by setting the loss function, the optimizer to use, and the metrics to use during training and evaluation</p>
 <p>During the fitting, it may be important to save intermediate steps and maybe revert back to an earlier version of the training. For this, we will use <strong>checkpoints</strong> to save the model at regular intervals during the training.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">trainloader</span><span class="p">,</span> <span class="n">testloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span> <span class="p">):</span>
 
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;lenet_checkpoint&#39;</span><span class="p">,</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="c1"># Define loss and optimization method</span>
-    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
-    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+    <span class="n">dir0</span> <span class="o">=</span> <span class="s1">&#39;./my_mlp_checkpoint&#39;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dir0</span><span class="p">,</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
     
-    <span class="c1"># # Save loss and error for plotting</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span> <span class="c1"># loss function</span>
+
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span> <span class="c1"># optimizer</span>
+    
+    <span class="c1"># Save loss and error for plotting</span>
     <span class="n">loss_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">)</span>
     <span class="n">accuracy_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">)</span>
 
-    <span class="c1"># # Loop on number of epochs</span>
+    <span class="c1"># TRAIN Loop on number of epochs</span>
     <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
-    <span class="c1">#     # Initialize the loss</span>
+        <span class="c1"># Initialize the loss</span>
         <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="c1">#     # Loop on samples in train set</span>
+        <span class="c1"># Loop on samples in train set</span>
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">trainloader</span><span class="p">:</span>
-    <span class="c1">#         # Get the sample and modify the format for PyTorch</span>
+            <span class="c1"># Get the sample and modify the format for PyTorch</span>
             <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
             <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
-    <span class="c1">#         # Set the parameter gradients to zero</span>
-            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-    <span class="c1">#         # Propagate the loss backward</span>
-            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-    <span class="c1">#         # Update the gradients</span>
-            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-    <span class="c1">#         # Add the value of the loss for this sample</span>
-            <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-    <span class="c1">#     # Save loss at the end of each epoch</span>
+            <span class="c1"># Set the parameter gradients to zero</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span> 
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="c1"># forward pass</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span> <span class="c1"># compute loss</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span> <span class="c1"># backward pass</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span> <span class="c1"># update weights</span>
+            <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="c1"># sumup loss</span>
+        <span class="c1"># Save loss at the end of each epoch</span>
         <span class="n">loss_time</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">=</span> <span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="p">)</span>
-
+        <span class="c1"># note that here the loss is the average loss per sample over the batch</span>
         
         <span class="n">checkpoint</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
@@ -1066,33 +1059,33 @@ Transform: Compose(
             <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
                         <span class="p">}</span>
         
-        <span class="n">f_path</span> <span class="o">=</span> <span class="s1">&#39;./lenet_checkpoint/checkpoint.pt&#39;</span>
+        <span class="n">f_path</span> <span class="o">=</span> <span class="n">dir0</span><span class="o">+</span><span class="s1">&#39;/checkpoint.pt&#39;</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">f_path</span><span class="p">)</span>
         
 
         
-    <span class="c1">#     # After each epoch, evaluate the performance on the test set</span>
+        <span class="c1"># TEST: After each epoch, evaluate the performance on the test set</span>
         <span class="k">if</span> <span class="n">testloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="c1">#         # We evaluate the model, so we do not need the gradient</span>
+            <span class="c1"># We evaluate the model, so we do not need the gradient</span>
             <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span> <span class="c1"># Context-manager that disabled gradient calculation.</span>
-    <span class="c1">#             # Loop on samples in test set</span>
+                <span class="c1"># Loop on samples in test set</span>
                 <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">testloader</span><span class="p">:</span>
-    <span class="c1">#                 # Get the sample and modify the format for PyTorch</span>
+                    <span class="c1"># Get the sample and modify the format for PyTorch</span>
                     <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                     <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> 
                     <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
-    <span class="c1">#                 # Use model for sample in the test set</span>
+                    <span class="c1"># Use model for sample in the test set</span>
                     <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-    <span class="c1">#                 # Compare predicted label and true label</span>
+                    <span class="c1"># Compare predicted label and true label</span>
                     <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
                     <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-    <span class="c1">#         # Save error at the end of each epochs</span>
+            <span class="c1"># Save error at the end of each epochs</span>
             <span class="n">accuracy_time</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
     
-    <span class="c1">#     # Print intermediate results on screen</span>
+        <span class="c1"># Print intermediate results on screen</span>
         <span class="k">if</span> <span class="n">testloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[Epoch </span><span class="si">%d</span><span class="s1">] loss: </span><span class="si">%.3f</span><span class="s1"> - accuracy: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span>
               <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="p">),</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span><span class="p">))</span>
@@ -1100,7 +1093,7 @@ Transform: Compose(
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[Epoch </span><span class="si">%d</span><span class="s1">] loss: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span>
               <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="p">)))</span>
 
-    <span class="c1"># # Save history of loss and test error</span>
+    <span class="c1"># Save history of loss and test error</span>
     <span class="k">if</span> <span class="n">testloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">loss_time</span><span class="p">,</span> <span class="n">accuracy_time</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -1112,20 +1105,211 @@ Transform: Compose(
 <p>Train the model</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span><span class="n">loaded_train</span><span class="p">,</span> <span class="n">loaded_val</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">data_loader_train</span><span class="p">,</span> <span class="n">data_loader_test</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 1] loss: 2.224 - accuracy: 29.000
-[Epoch 2] loss: 1.904 - accuracy: 47.667
-[Epoch 3] loss: 1.336 - accuracy: 64.667
-[Epoch 4] loss: 0.816 - accuracy: 71.333
-[Epoch 5] loss: 0.517 - accuracy: 74.000
-[Epoch 6] loss: 0.368 - accuracy: 74.000
-[Epoch 7] loss: 0.289 - accuracy: 75.000
-[Epoch 8] loss: 0.239 - accuracy: 75.667
-[Epoch 9] loss: 0.204 - accuracy: 75.667
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 1] loss: 1.914 - accuracy: 95.833
+[Epoch 2] loss: 1.914 - accuracy: 96.111
+[Epoch 3] loss: 1.914 - accuracy: 95.556
+[Epoch 4] loss: 1.914 - accuracy: 95.833
+[Epoch 5] loss: 1.913 - accuracy: 96.111
+[Epoch 6] loss: 1.913 - accuracy: 95.556
+[Epoch 7] loss: 1.913 - accuracy: 96.111
+[Epoch 8] loss: 1.913 - accuracy: 95.556
+[Epoch 9] loss: 1.913 - accuracy: 96.111
+[Epoch 10] loss: 1.913 - accuracy: 96.111
+[Epoch 11] loss: 1.913 - accuracy: 96.111
+[Epoch 12] loss: 1.913 - accuracy: 96.111
+[Epoch 13] loss: 1.912 - accuracy: 96.111
+[Epoch 14] loss: 1.912 - accuracy: 95.833
+[Epoch 15] loss: 1.912 - accuracy: 96.111
+[Epoch 16] loss: 1.912 - accuracy: 96.111
+[Epoch 17] loss: 1.912 - accuracy: 96.111
+[Epoch 18] loss: 1.912 - accuracy: 96.111
+[Epoch 19] loss: 1.912 - accuracy: 96.111
+[Epoch 20] loss: 1.912 - accuracy: 95.833
+[Epoch 21] loss: 1.912 - accuracy: 96.389
+[Epoch 22] loss: 1.911 - accuracy: 96.111
+[Epoch 23] loss: 1.911 - accuracy: 96.111
+[Epoch 24] loss: 1.911 - accuracy: 96.389
+[Epoch 25] loss: 1.911 - accuracy: 96.389
+[Epoch 26] loss: 1.911 - accuracy: 96.111
+[Epoch 27] loss: 1.911 - accuracy: 96.111
+[Epoch 28] loss: 1.911 - accuracy: 96.389
+[Epoch 29] loss: 1.911 - accuracy: 96.111
+[Epoch 30] loss: 1.911 - accuracy: 96.389
+[Epoch 31] loss: 1.910 - accuracy: 96.111
+[Epoch 32] loss: 1.910 - accuracy: 96.389
+[Epoch 33] loss: 1.910 - accuracy: 96.111
+[Epoch 34] loss: 1.910 - accuracy: 96.111
+[Epoch 35] loss: 1.910 - accuracy: 96.111
+[Epoch 36] loss: 1.910 - accuracy: 96.111
+[Epoch 37] loss: 1.910 - accuracy: 96.111
+[Epoch 38] loss: 1.910 - accuracy: 96.389
+[Epoch 39] loss: 1.910 - accuracy: 96.389
+[Epoch 40] loss: 1.910 - accuracy: 96.389
+[Epoch 41] loss: 1.909 - accuracy: 96.389
+[Epoch 42] loss: 1.909 - accuracy: 96.111
+[Epoch 43] loss: 1.909 - accuracy: 96.111
+[Epoch 44] loss: 1.909 - accuracy: 96.389
+[Epoch 45] loss: 1.909 - accuracy: 96.111
+[Epoch 46] loss: 1.909 - accuracy: 96.389
+[Epoch 47] loss: 1.909 - accuracy: 96.389
+[Epoch 48] loss: 1.909 - accuracy: 96.111
+[Epoch 49] loss: 1.909 - accuracy: 96.389
+[Epoch 50] loss: 1.909 - accuracy: 96.111
+[Epoch 51] loss: 1.908 - accuracy: 96.389
+[Epoch 52] loss: 1.908 - accuracy: 96.389
+[Epoch 53] loss: 1.908 - accuracy: 96.389
+[Epoch 54] loss: 1.908 - accuracy: 96.389
+[Epoch 55] loss: 1.908 - accuracy: 96.111
+[Epoch 56] loss: 1.908 - accuracy: 96.111
+[Epoch 57] loss: 1.908 - accuracy: 96.389
+[Epoch 58] loss: 1.908 - accuracy: 96.389
+[Epoch 59] loss: 1.908 - accuracy: 96.111
+[Epoch 60] loss: 1.908 - accuracy: 96.111
+[Epoch 61] loss: 1.908 - accuracy: 96.389
+[Epoch 62] loss: 1.908 - accuracy: 96.389
+[Epoch 63] loss: 1.908 - accuracy: 96.111
+[Epoch 64] loss: 1.907 - accuracy: 96.111
+[Epoch 65] loss: 1.907 - accuracy: 96.389
+[Epoch 66] loss: 1.907 - accuracy: 96.389
+[Epoch 67] loss: 1.907 - accuracy: 96.111
+[Epoch 68] loss: 1.907 - accuracy: 96.389
+[Epoch 69] loss: 1.907 - accuracy: 96.111
+[Epoch 70] loss: 1.907 - accuracy: 96.111
+[Epoch 71] loss: 1.907 - accuracy: 96.111
+[Epoch 72] loss: 1.907 - accuracy: 96.389
+[Epoch 73] loss: 1.907 - accuracy: 96.111
+[Epoch 74] loss: 1.907 - accuracy: 96.111
+[Epoch 75] loss: 1.906 - accuracy: 96.389
+[Epoch 76] loss: 1.906 - accuracy: 96.389
+[Epoch 77] loss: 1.906 - accuracy: 96.111
+[Epoch 78] loss: 1.906 - accuracy: 96.111
+[Epoch 79] loss: 1.906 - accuracy: 96.111
+[Epoch 80] loss: 1.906 - accuracy: 96.389
+[Epoch 81] loss: 1.906 - accuracy: 96.111
+[Epoch 82] loss: 1.906 - accuracy: 96.111
+[Epoch 83] loss: 1.906 - accuracy: 96.111
+[Epoch 84] loss: 1.906 - accuracy: 96.111
+[Epoch 85] loss: 1.906 - accuracy: 96.111
+[Epoch 86] loss: 1.906 - accuracy: 96.111
+[Epoch 87] loss: 1.905 - accuracy: 96.111
+[Epoch 88] loss: 1.905 - accuracy: 96.111
+[Epoch 89] loss: 1.905 - accuracy: 96.111
+[Epoch 90] loss: 1.905 - accuracy: 96.111
+[Epoch 91] loss: 1.905 - accuracy: 96.111
+[Epoch 92] loss: 1.905 - accuracy: 96.111
+[Epoch 93] loss: 1.905 - accuracy: 96.111
+[Epoch 94] loss: 1.905 - accuracy: 96.111
+[Epoch 95] loss: 1.905 - accuracy: 96.111
+[Epoch 96] loss: 1.905 - accuracy: 96.111
+[Epoch 97] loss: 1.905 - accuracy: 96.111
+[Epoch 98] loss: 1.905 - accuracy: 96.111
+[Epoch 99] loss: 1.905 - accuracy: 96.111
+[Epoch 100] loss: 1.905 - accuracy: 96.111
+[Epoch 101] loss: 1.904 - accuracy: 96.111
+[Epoch 102] loss: 1.904 - accuracy: 96.111
+[Epoch 103] loss: 1.904 - accuracy: 96.111
+[Epoch 104] loss: 1.904 - accuracy: 96.111
+[Epoch 105] loss: 1.904 - accuracy: 96.111
+[Epoch 106] loss: 1.904 - accuracy: 96.111
+[Epoch 107] loss: 1.904 - accuracy: 96.111
+[Epoch 108] loss: 1.904 - accuracy: 96.111
+[Epoch 109] loss: 1.904 - accuracy: 96.111
+[Epoch 110] loss: 1.904 - accuracy: 96.111
+[Epoch 111] loss: 1.904 - accuracy: 96.111
+[Epoch 112] loss: 1.904 - accuracy: 96.111
+[Epoch 113] loss: 1.904 - accuracy: 96.111
+[Epoch 114] loss: 1.904 - accuracy: 96.111
+[Epoch 115] loss: 1.904 - accuracy: 96.111
+[Epoch 116] loss: 1.903 - accuracy: 96.111
+[Epoch 117] loss: 1.903 - accuracy: 96.111
+[Epoch 118] loss: 1.903 - accuracy: 96.111
+[Epoch 119] loss: 1.903 - accuracy: 96.111
+[Epoch 120] loss: 1.903 - accuracy: 96.111
+[Epoch 121] loss: 1.903 - accuracy: 96.111
+[Epoch 122] loss: 1.903 - accuracy: 96.111
+[Epoch 123] loss: 1.903 - accuracy: 96.111
+[Epoch 124] loss: 1.903 - accuracy: 96.111
+[Epoch 125] loss: 1.903 - accuracy: 96.111
+[Epoch 126] loss: 1.903 - accuracy: 96.111
+[Epoch 127] loss: 1.903 - accuracy: 96.111
+[Epoch 128] loss: 1.903 - accuracy: 96.111
+[Epoch 129] loss: 1.903 - accuracy: 96.111
+[Epoch 130] loss: 1.903 - accuracy: 96.111
+[Epoch 131] loss: 1.902 - accuracy: 96.111
+[Epoch 132] loss: 1.902 - accuracy: 96.111
+[Epoch 133] loss: 1.902 - accuracy: 96.111
+[Epoch 134] loss: 1.902 - accuracy: 96.111
+[Epoch 135] loss: 1.902 - accuracy: 96.111
+[Epoch 136] loss: 1.902 - accuracy: 96.111
+[Epoch 137] loss: 1.902 - accuracy: 96.111
+[Epoch 138] loss: 1.902 - accuracy: 96.111
+[Epoch 139] loss: 1.902 - accuracy: 96.111
+[Epoch 140] loss: 1.902 - accuracy: 96.111
+[Epoch 141] loss: 1.902 - accuracy: 96.111
+[Epoch 142] loss: 1.902 - accuracy: 96.111
+[Epoch 143] loss: 1.902 - accuracy: 96.111
+[Epoch 144] loss: 1.902 - accuracy: 96.111
+[Epoch 145] loss: 1.902 - accuracy: 96.111
+[Epoch 146] loss: 1.902 - accuracy: 96.111
+[Epoch 147] loss: 1.901 - accuracy: 96.111
+[Epoch 148] loss: 1.901 - accuracy: 96.111
+[Epoch 149] loss: 1.901 - accuracy: 96.111
+[Epoch 150] loss: 1.901 - accuracy: 96.111
+[Epoch 151] loss: 1.901 - accuracy: 96.111
+[Epoch 152] loss: 1.901 - accuracy: 96.111
+[Epoch 153] loss: 1.901 - accuracy: 96.111
+[Epoch 154] loss: 1.901 - accuracy: 96.111
+[Epoch 155] loss: 1.901 - accuracy: 96.111
+[Epoch 156] loss: 1.901 - accuracy: 96.111
+[Epoch 157] loss: 1.901 - accuracy: 96.111
+[Epoch 158] loss: 1.901 - accuracy: 96.111
+[Epoch 159] loss: 1.901 - accuracy: 96.111
+[Epoch 160] loss: 1.901 - accuracy: 96.111
+[Epoch 161] loss: 1.901 - accuracy: 96.111
+[Epoch 162] loss: 1.901 - accuracy: 96.111
+[Epoch 163] loss: 1.901 - accuracy: 96.111
+[Epoch 164] loss: 1.901 - accuracy: 96.111
+[Epoch 165] loss: 1.901 - accuracy: 96.111
+[Epoch 166] loss: 1.900 - accuracy: 96.111
+[Epoch 167] loss: 1.900 - accuracy: 96.111
+[Epoch 168] loss: 1.900 - accuracy: 96.111
+[Epoch 169] loss: 1.900 - accuracy: 96.111
+[Epoch 170] loss: 1.900 - accuracy: 96.111
+[Epoch 171] loss: 1.900 - accuracy: 96.111
+[Epoch 172] loss: 1.900 - accuracy: 96.111
+[Epoch 173] loss: 1.900 - accuracy: 96.111
+[Epoch 174] loss: 1.900 - accuracy: 96.111
+[Epoch 175] loss: 1.900 - accuracy: 96.111
+[Epoch 176] loss: 1.900 - accuracy: 96.111
+[Epoch 177] loss: 1.900 - accuracy: 96.389
+[Epoch 178] loss: 1.900 - accuracy: 96.389
+[Epoch 179] loss: 1.900 - accuracy: 96.111
+[Epoch 180] loss: 1.900 - accuracy: 96.111
+[Epoch 181] loss: 1.900 - accuracy: 96.111
+[Epoch 182] loss: 1.900 - accuracy: 96.111
+[Epoch 183] loss: 1.900 - accuracy: 96.111
+[Epoch 184] loss: 1.900 - accuracy: 96.111
+[Epoch 185] loss: 1.900 - accuracy: 96.111
+[Epoch 186] loss: 1.899 - accuracy: 96.111
+[Epoch 187] loss: 1.899 - accuracy: 96.111
+[Epoch 188] loss: 1.899 - accuracy: 96.389
+[Epoch 189] loss: 1.899 - accuracy: 96.111
+[Epoch 190] loss: 1.899 - accuracy: 96.389
+[Epoch 191] loss: 1.899 - accuracy: 96.389
+[Epoch 192] loss: 1.899 - accuracy: 96.389
+[Epoch 193] loss: 1.899 - accuracy: 96.389
+[Epoch 194] loss: 1.899 - accuracy: 96.389
+[Epoch 195] loss: 1.899 - accuracy: 96.389
+[Epoch 196] loss: 1.899 - accuracy: 96.389
+[Epoch 197] loss: 1.899 - accuracy: 96.389
+[Epoch 198] loss: 1.899 - accuracy: 96.389
+[Epoch 199] loss: 1.899 - accuracy: 96.389
+[Epoch 200] loss: 1.899 - accuracy: 96.389
 </pre></div>
 </div>
 </div>
@@ -1154,7 +1338,7 @@ Transform: Compose(
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/mlgeo_4.2_MultiLayerPerceptron_27_0.png" src="../_images/mlgeo_4.2_MultiLayerPerceptron_27_0.png" />
+<img alt="../_images/mlgeo_4.2_MultiLayerPerceptron_25_0.png" src="../_images/mlgeo_4.2_MultiLayerPerceptron_25_0.png" />
 </div>
 </div>
 <p>Report value on test set.</p>
@@ -1169,10 +1353,10 @@ Transform: Compose(
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">37</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">X_new</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">y_proba</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_new</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="n">y_proba</span><span class="p">)</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">marinedenolle</span><span class="o">/</span><span class="n">Dropbox</span><span class="o">/</span><span class="n">CLASSES</span><span class="o">/</span><span class="n">ESS490</span><span class="o">/</span><span class="n">curriculum</span><span class="o">-</span><span class="n">book</span><span class="o">/</span><span class="n">book</span><span class="o">/</span><span class="n">Chapter4</span><span class="o">-</span><span class="n">DeepLearning</span><span class="o">/</span><span class="n">mlgeo_4</span><span class="mf">.2</span><span class="n">_MultiLayerPerceptron</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">Cell</span> <span class="mi">28</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="o">----&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.2_MultiLayerPerceptron.ipynb#X41sZmlsZQ%3D%3D?line=0&#39;</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">X_new</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+      <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.2_MultiLayerPerceptron.ipynb#X41sZmlsZQ%3D%3D?line=1&#39;</span><span class="o">&gt;</span><span class="mi">2</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">y_proba</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_new</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+      <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.2_MultiLayerPerceptron.ipynb#X41sZmlsZQ%3D%3D?line=2&#39;</span><span class="o">&gt;</span><span class="mi">3</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">y_proba</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;X_test&#39; is not defined
 </pre></div>
@@ -1295,7 +1479,7 @@ More on this later!</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/mlgeo_4.2_MultiLayerPerceptron_34_0.png" src="../_images/mlgeo_4.2_MultiLayerPerceptron_34_0.png" />
+<img alt="../_images/mlgeo_4.2_MultiLayerPerceptron_32_0.png" src="../_images/mlgeo_4.2_MultiLayerPerceptron_32_0.png" />
 </div>
 </div>
 </section>

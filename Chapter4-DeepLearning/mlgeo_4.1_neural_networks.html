@@ -604,24 +604,31 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#load-arrays">
-   1.1 Load arrays
+  <a class="reference internal nav-link" href="#dataset-in-pytorch">
+   1.  DataSet in Pytorch
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#create-a-custom-dataset-class">
-   1.2 Create a custom dataset class
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#random-split-training-and-testing">
-   1.3 Random split training and testing
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#create-a-dataloader">
-   1.4 Create a DataLoader
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-arrays">
+     1.1 Load arrays
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-custom-dataset-class">
+     1.2 Create a custom dataset class
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#random-split-training-and-testing">
+     1.3 Random split training and testing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-dataloader">
+     1.4 Create a DataLoader
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#design-model">
@@ -663,24 +670,31 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#load-arrays">
-   1.1 Load arrays
+  <a class="reference internal nav-link" href="#dataset-in-pytorch">
+   1.  DataSet in Pytorch
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#create-a-custom-dataset-class">
-   1.2 Create a custom dataset class
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#random-split-training-and-testing">
-   1.3 Random split training and testing
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#create-a-dataloader">
-   1.4 Create a DataLoader
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-arrays">
+     1.1 Load arrays
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-custom-dataset-class">
+     1.2 Create a custom dataset class
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#random-split-training-and-testing">
+     1.3 Random split training and testing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-dataloader">
+     1.4 Create a DataLoader
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#design-model">
@@ -727,26 +741,21 @@ Figure: Extracted from â€œHands on Maching Learning using Keras and Tensorflowâ€
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span> 
-<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span>
-<span class="kn">from</span> <span class="nn">torchvision.transforms</span> <span class="kn">import</span> <span class="n">ToTensor</span>
-<span class="kn">from</span> <span class="nn">torchvision.transforms</span> <span class="kn">import</span> <span class="n">transforms</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">sklearn</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>##1.  DataSet in Pytorch</p>
+<section id="dataset-in-pytorch">
+<h2>1.  DataSet in Pytorch<a class="headerlink" href="#dataset-in-pytorch" title="Permalink to this headline">#</a></h2>
 <p>We will read a dataset and convert into a format readable by PyTorch.</p>
 <p>We have a dataset of images of digits (0 to 9). Each image is made of 8 * 8 pixels in grey scale. We start from the familiar <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> digits data set, which provides images as arrays and labels as integers.</p>
 <p>The data is first cast as an array and we will prepare it as a PyTorch ready data.</p>
 <section id="load-arrays">
-<h2>1.1 Load arrays<a class="headerlink" href="#load-arrays" title="Permalink to this headline">#</a></h2>
+<h3>1.1 Load arrays<a class="headerlink" href="#load-arrays" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load data set in memory</span>
@@ -773,7 +782,7 @@ Figure: Extracted from â€œHands on Maching Learning using Keras and Tensorflowâ€
 </ul>
 </section>
 <section id="create-a-custom-dataset-class">
-<h2>1.2 Create a custom dataset class<a class="headerlink" href="#create-a-custom-dataset-class" title="Permalink to this headline">#</a></h2>
+<h3>1.2 Create a custom dataset class<a class="headerlink" href="#create-a-custom-dataset-class" title="Permalink to this headline">#</a></h3>
 <p>PyTorch provides the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> class that you can use to create a custom dataset. You need to implement the <strong>len</strong> and <strong>getitem</strong> methods.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -16987,7 +16996,7 @@ Train Batch Labels: 8
 </div>
 </section>
 <section id="random-split-training-and-testing">
-<h2>1.3 Random split training and testing<a class="headerlink" href="#random-split-training-and-testing" title="Permalink to this headline">#</a></h2>
+<h3>1.3 Random split training and testing<a class="headerlink" href="#random-split-training-and-testing" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">random_split</span>
@@ -17004,7 +17013,7 @@ Train Batch Labels: 8
 </div>
 </section>
 <section id="create-a-dataloader">
-<h2>1.4 Create a DataLoader<a class="headerlink" href="#create-a-dataloader" title="Permalink to this headline">#</a></h2>
+<h3>1.4 Create a DataLoader<a class="headerlink" href="#create-a-dataloader" title="Permalink to this headline">#</a></h3>
 <p>Once you have your custom dataset, you can use a DataLoader to handle batching, shuffling, and other data loading functionalities.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -17054,6 +17063,7 @@ Test Batch Labels: torch.Size([8])
 </div>
 </div>
 </div>
+</section>
 </section>
 <section id="design-model">
 <h2>2. Design Model<a class="headerlink" href="#design-model" title="Permalink to this headline">#</a></h2>
