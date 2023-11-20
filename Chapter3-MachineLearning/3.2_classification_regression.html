@@ -52,6 +52,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3.3 Binary classification" href="3.3_binary_classification.html" />
@@ -291,10 +293,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.html">
-   Let’s create a
-   <em>
-    perceptron
-   </em>
+   4.0 The Perceptron
   </a>
  </li>
  <li class="toctree-l1">
@@ -308,7 +307,12 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.2_PINN.html">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_ModelTraining.html">
+   4.3 Model Training
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_PINN.html">
    4.2 Physics-Informed Neural Networks
   </a>
  </li>
@@ -318,12 +322,12 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.4_RNN.html">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.5_RNN.html">
    4.4  Recurrent Neural Networks: Processing sequences
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.5_AutoEncoder.html">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.html">
    4.5 Auto-encoders
   </a>
  </li>
@@ -332,27 +336,10 @@ const thebe_selector_output = ".output, .cell_output"
    4.6 NAS: Network Architecture Search
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.html">
-   4.7 Model Training
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Chapter 6 - Workflow Management and Reproducibility
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter6-ModelWorkflows/readme.html">
-   This chapter focuces on model workflow and ML reproducibility
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Chapter 7- Introduction to Cloud Computing
+  Chapter 6- Introduction to Cloud Computing
  </span>
 </p>
 <ul class="nav bd-sidenav">
@@ -620,6 +607,13 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#regression-algorithms">
    2. Regression Algorithms
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-regression">
+     2.1 Linear Regression
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -649,6 +643,13 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#regression-algorithms">
    2. Regression Algorithms
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-regression">
+     2.1 Linear Regression
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -681,7 +682,22 @@ title="Print to PDF"
 </section>
 <section id="regression-algorithms">
 <h2>2. Regression Algorithms<a class="headerlink" href="#regression-algorithms" title="Permalink to this headline">#</a></h2>
-<p>TO ADD</p>
+<section id="linear-regression">
+<h3>2.1 Linear Regression<a class="headerlink" href="#linear-regression" title="Permalink to this headline">#</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(y\)</span> be the data, and <span class="math notranslate nohighlight">\(\hat{y}\)</span> be the predicted value of the data. A general linear regression can be formulated as</p>
+<p><span class="math notranslate nohighlight">\(\hat{y} = w_0 + w_1 x_1 + ... + w_n x_n = h_w (\mathbf{x})\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{\hat{y}} = \mathbf{G} \mathbf{w}\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(y\)</span> is a data vector of length <span class="math notranslate nohighlight">\(m\)</span>, <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is a feature vector of length <span class="math notranslate nohighlight">\(n\)</span>. <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is a vector of model parameter, <span class="math notranslate nohighlight">\(h_w\)</span> is referred to as the <em>hypothesis function</em> or the <em>model</em> using the model parameter <span class="math notranslate nohighlight">\(w\)</span>. In the most simple case of a linear regression with time, the formulation becomes:</p>
+<p><span class="math notranslate nohighlight">\(\hat{y} = w_0 + w_1 t\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(x_1 = t\)</span> the time feature.</p>
+<p>To evaluate how well the model performs, we will compute a <em>loss score</em>, or a <em>residual</em>. It is the result of applying a <em>loss</em> or <em>cost</em> or <em>objective</em> function to the prediction and the data. The most basic <em>cost function</em> is the <strong>Mean Square Error (MSE)</strong>:</p>
+<p><span class="math notranslate nohighlight">\(MSE(\mathbf{x},h_w) = \frac{1}{m} \sum_{i=1}^{m} \left( h_w(\mathbf{x})_i - y_i  \right)^2  = \frac{1}{m} \sum_{i=1}^{m} \left( \hat{y}_i - y_i  \right)^2 \)</span>, in the case of a linear regression.</p>
+<p>The <em>Normal Equation</em> is the solution to the linear regression that minimize the MSE.</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{w} = \left( \mathbf{x}^T\mathbf{x} \right)^{-1} \mathbf{x}^T \mathbf{y}\)</span></p>
+<p>This compares with the classic inverse problem framed by <span class="math notranslate nohighlight">\(\mathbf{d} = \mathbf{G} \mathbf{m}\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{m} = \left( \mathbf{G}^T\mathbf{G} \right)^{-1} \mathbf{G}^T \mathbf{d} \)</span></p>
+<p>It can be solved using Numpy linear algebra module. If <span class="math notranslate nohighlight">\(\left( \mathbf{x}^T\mathbf{x} \right) \)</span> is singular and cannot be inverted, a lower rank matrix called the <em>pseudoinverse</em> can be calculated using singular value decomposition. We also used in a previous class the Scikit-learn function for <code class="docutils literal notranslate"><span class="pre">sklearn.linear_model.LinearRegression</span></code>, which is the implementation of the <em>pseudoinverse</em>. We practice below how to use these standard inversions:</p>
+</section>
 </section>
 </section>
 

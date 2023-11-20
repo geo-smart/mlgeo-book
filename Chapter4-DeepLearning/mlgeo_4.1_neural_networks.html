@@ -57,7 +57,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="4.2 Multi Layer Perceptrons" href="mlgeo_4.2_MultiLayerPerceptron.html" />
-    <link rel="prev" title="Let’s create a perceptron" href="mlgeo_4.0_perceptrons.html" />
+    <link rel="prev" title="4.0 The Perceptron" href="mlgeo_4.0_perceptrons.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -293,10 +293,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="mlgeo_4.0_perceptrons.html">
-   Let’s create a
-   <em>
-    perceptron
-   </em>
+   4.0 The Perceptron
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -310,7 +307,12 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="mlgeo_4.2_PINN.html">
+  <a class="reference internal" href="mlgeo_4.3_ModelTraining.html">
+   4.3 Model Training
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.3_PINN.html">
    4.2 Physics-Informed Neural Networks
   </a>
  </li>
@@ -320,12 +322,12 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="mlgeo_4.4_RNN.html">
+  <a class="reference internal" href="mlgeo_4.5_RNN.html">
    4.4  Recurrent Neural Networks: Processing sequences
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="mlgeo_4.5_AutoEncoder.html">
+  <a class="reference internal" href="mlgeo_4.6_AutoEncoder.html">
    4.5 Auto-encoders
   </a>
  </li>
@@ -334,27 +336,10 @@ const thebe_selector_output = ".output, .cell_output"
    4.6 NAS: Network Architecture Search
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="mlgeo_4.7_ModelTraining.html">
-   4.7 Model Training
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Chapter 6 - Workflow Management and Reproducibility
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter6-ModelWorkflows/readme.html">
-   This chapter focuces on model workflow and ML reproducibility
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Chapter 7- Introduction to Cloud Computing
+  Chapter 6- Introduction to Cloud Computing
  </span>
 </p>
 <ul class="nav bd-sidenav">
@@ -615,7 +600,7 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataset-in-pytorch">
-   1.  DataSet in Pytorch
+   1.  Dataset in Pytorch
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -681,7 +666,7 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataset-in-pytorch">
-   1.  DataSet in Pytorch
+   1.  Dataset in Pytorch
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -744,7 +729,7 @@ Figure: Extracted from “Hands on Maching Learning using Keras and Tensorflow�
 <p>The simplest neural network is a logistic regression</p>
 <p><span class="math notranslate nohighlight">\(y = f( \sum_{i=1}^3  (w_i x_i + b_i))\)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(y\)</span> is the output, <span class="math notranslate nohighlight">\(w_i\)</span>, are the weights, <span class="math notranslate nohighlight">\(b_i\)</span> are the biases in the neuron, and <span class="math notranslate nohighlight">\(f\)</span> is an activation function (e.g., sigmoid, ReLu, etc)</p>
-<p>For classification problem, it is called a Threshold Logic Unit TLU because it outputs a linear combination of the inputs, and if the result exceeds a threshold, it outputs the positive class.</p>
+<p>For classification problem, it is called a <strong>Threshold Logic Unit</strong> TLU because it outputs a linear combination of the inputs, and if the result exceeds a threshold, it outputs the positive class.</p>
 <p>A perceptron is a single layer of TLUs, which each TLU connected to all the inputs.</p>
 <p><strong>Logistic regression: It is just a one layer neural network classifier</strong></p>
 <p>We will explore the classification problem with NN.</p>
@@ -760,7 +745,7 @@ Figure: Extracted from “Hands on Maching Learning using Keras and Tensorflow�
 </div>
 </div>
 <section id="dataset-in-pytorch">
-<h2>1.  DataSet in Pytorch<a class="headerlink" href="#dataset-in-pytorch" title="Permalink to this headline">#</a></h2>
+<h2>1.  Dataset in Pytorch<a class="headerlink" href="#dataset-in-pytorch" title="Permalink to this headline">#</a></h2>
 <p>We will read a dataset and convert into a format readable by PyTorch.</p>
 <p>We have a dataset of images of digits (0 to 9). Each image is made of 8 * 8 pixels in grey scale. We start from the familiar <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> digits data set, which provides images as arrays and labels as integers.</p>
 <p>The data is first cast as an array and we will prepare it as a PyTorch ready data.</p>
@@ -30933,7 +30918,7 @@ tensor([5, 3, 9, 9, 3, 3, 4, 9, 4, 3, 5, 3, 0, 8, 7, 3, 6, 7, 6, 2, 0, 5, 7, 4,
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Let’s create a <em>perceptron</em></p>
+            <p class="prev-next-title">4.0 The Perceptron</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="mlgeo_4.2_MultiLayerPerceptron.html" title="next page">

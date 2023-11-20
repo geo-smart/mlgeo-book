@@ -57,7 +57,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="4.3 Convolutional Neural Networks" href="mlgeo_4.3_CNN.html" />
-    <link rel="prev" title="4.2 Multi Layer Perceptrons" href="mlgeo_4.2_MultiLayerPerceptron.html" />
+    <link rel="prev" title="4.3 Model Training" href="mlgeo_4.3_ModelTraining.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -293,10 +293,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="mlgeo_4.0_perceptrons.html">
-   Let’s create a
-   <em>
-    perceptron
-   </em>
+   4.0 The Perceptron
   </a>
  </li>
  <li class="toctree-l1">
@@ -307,6 +304,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference internal" href="mlgeo_4.2_MultiLayerPerceptron.html">
    4.2 Multi Layer Perceptrons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.3_ModelTraining.html">
+   4.3 Model Training
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -320,12 +322,12 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="mlgeo_4.4_RNN.html">
+  <a class="reference internal" href="mlgeo_4.5_RNN.html">
    4.4  Recurrent Neural Networks: Processing sequences
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="mlgeo_4.5_AutoEncoder.html">
+  <a class="reference internal" href="mlgeo_4.6_AutoEncoder.html">
    4.5 Auto-encoders
   </a>
  </li>
@@ -334,27 +336,10 @@ const thebe_selector_output = ".output, .cell_output"
    4.6 NAS: Network Architecture Search
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="mlgeo_4.7_ModelTraining.html">
-   4.7 Model Training
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Chapter 6 - Workflow Management and Reproducibility
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter6-ModelWorkflows/readme.html">
-   This chapter focuces on model workflow and ML reproducibility
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Chapter 7- Introduction to Cloud Computing
+  Chapter 6- Introduction to Cloud Computing
  </span>
 </p>
 <ul class="nav bd-sidenav">
@@ -449,7 +434,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://mybinder.org/v2/gh/geo-smart/mlgeo-book/main?urlpath=lab/tree/book/Chapter4-DeepLearning/mlgeo_4.2_PINN.ipynb"
+        <a href="https://mybinder.org/v2/gh/geo-smart/mlgeo-book/main?urlpath=lab/tree/book/Chapter4-DeepLearning/mlgeo_4.3_PINN.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -509,7 +494,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/geo-smart/mlgeo-book/issues/new?title=Issue%20on%20page%20%2FChapter4-DeepLearning/mlgeo_4.2_PINN.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/geo-smart/mlgeo-book/issues/new?title=Issue%20on%20page%20%2FChapter4-DeepLearning/mlgeo_4.3_PINN.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -526,7 +511,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/geo-smart/mlgeo-book/edit/main/book/Chapter4-DeepLearning/mlgeo_4.2_PINN.ipynb"
+        <a href="https://github.com/geo-smart/mlgeo-book/edit/main/book/Chapter4-DeepLearning/mlgeo_4.3_PINN.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -554,7 +539,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/Chapter4-DeepLearning/mlgeo_4.2_PINN.ipynb"
+        <a href="../_sources/Chapter4-DeepLearning/mlgeo_4.3_PINN.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -673,6 +658,9 @@ title="Print to PDF"
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
+
 
 <span class="n">DEVICE</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
 
@@ -682,11 +670,11 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<p>We write a simple PDE</p>
-<p><span class="math notranslate nohighlight">\( \frac{dT}{dt} (t) = r (T(t) -T_1) \)</span>,</p>
+<p>We write a simple Ordinay Differential Equation:</p>
+<p><span class="math notranslate nohighlight">\( \frac{dT}{dt} (t) = r (T_1 - T(t)) \)</span>,</p>
 <p>Where <span class="math notranslate nohighlight">\(r\)</span> is a rate of temperature change (cooling or heating), <span class="math notranslate nohighlight">\(T_1\)</span> is the final - ambient temperature.</p>
 <p>Provided the initial condition that <span class="math notranslate nohighlight">\(T(t=0) = T_0 \)</span>, a theoretical solution to this equation, we write the theoretical temperature field:</p>
-<p><span class="math notranslate nohighlight">\( T(t)  = (T_0-T_1) \exp(-tr) +T_1 \)</span>.</p>
+<p><span class="math notranslate nohighlight">\( T(t)  = (T_0-T_1) \exp(-rt) +T_1 \)</span>.</p>
 <p>We will create this solution using a simple neural network. Given the theoretical solution, we can create synthetic data:</p>
 <p>First, we create synthetic, toy, noisy data.</p>
 <div class="cell docutils container">
@@ -703,10 +691,9 @@ title="Print to PDF"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tenv</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">T0</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">tau</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">R</span> <span class="o">=</span> <span class="mf">0.01</span>
 <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="n">eq</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">cooling_law</span><span class="p">,</span> <span class="n">Tenv</span><span class="o">=</span><span class="n">Tenv</span><span class="p">,</span> <span class="n">T0</span><span class="o">=</span><span class="n">T0</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span> <span class="p">)</span>
+<span class="n">eq</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">cooling_law</span><span class="p">,</span> <span class="n">Tenv</span><span class="o">=</span><span class="n">Tenv</span><span class="p">,</span> <span class="n">T0</span><span class="o">=</span><span class="n">T0</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span> <span class="p">)</span> <span class="c1"># add comments</span>
 <span class="n">temps</span> <span class="o">=</span> <span class="n">eq</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
 
 <span class="c1"># Make training data</span>
@@ -718,6 +705,7 @@ title="Print to PDF"
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Equation&#39;</span><span class="p">,</span> <span class="s1">&#39;Training data&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature (C)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -725,20 +713,13 @@ title="Print to PDF"
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_6_1.png" src="../_images/mlgeo_4.2_PINN_6_1.png" />
+<img alt="../_images/mlgeo_4.3_PINN_6_1.png" src="../_images/mlgeo_4.3_PINN_6_1.png" />
 </div>
 </div>
 <p>Create a simple neural network</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
-<span class="kn">import</span> <span class="nn">torch.utils.data</span> <span class="k">as</span> <span class="nn">thdat</span>
-
-
-
-<span class="k">def</span> <span class="nf">np_to_th</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="c1"># Convert numpy array to torch tensor</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">np_to_th</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="c1"># Convert numpy array to torch tensor</span>
     <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
@@ -753,9 +734,19 @@ title="Print to PDF"
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span>
         <span class="n">outputs</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">grad_outputs</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">outputs</span><span class="p">),</span> <span class="n">create_graph</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
-
-
-<span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a function that:</p>
+<ol class="simple">
+<li><p>Design the network</p></li>
+<li><p>Train the network</p></li>
+<li><p>Predict</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">input_dim</span><span class="p">,</span>  <span class="c1"># Number of input features</span>
@@ -847,7 +838,7 @@ Epoch 16000/20000, loss: 14.75
 Epoch 18000/20000, loss: 13.63
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_9_1.png" src="../_images/mlgeo_4.2_PINN_9_1.png" />
+<img alt="../_images/mlgeo_4.3_PINN_11_1.png" src="../_images/mlgeo_4.3_PINN_11_1.png" />
 </div>
 </div>
 <p>First, we will regularize the training using <strong>Ridge Regression</strong> of the model by adding the norm of the model weights. We first define an additional loss as the L2 norm of all hidden model parameters.</p>
@@ -886,7 +877,7 @@ Epoch 16000/20000, loss: 22.82
 Epoch 18000/20000, loss: 22.82
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_13_1.png" src="../_images/mlgeo_4.2_PINN_13_1.png" />
+<img alt="../_images/mlgeo_4.3_PINN_15_1.png" src="../_images/mlgeo_4.3_PINN_15_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -908,7 +899,7 @@ Epoch 18000/20000, loss: 22.82
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_14_1.png" src="../_images/mlgeo_4.2_PINN_14_1.png" />
+<img alt="../_images/mlgeo_4.3_PINN_16_1.png" src="../_images/mlgeo_4.3_PINN_16_1.png" />
 </div>
 </div>
 <section id="pinn">
@@ -958,7 +949,7 @@ Epoch 24000/30000, loss: 1.54
 Epoch 27000/30000, loss: 1.48
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_17_1.png" src="../_images/mlgeo_4.2_PINN_17_1.png" />
+<img alt="../_images/mlgeo_4.3_PINN_19_1.png" src="../_images/mlgeo_4.3_PINN_19_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -978,7 +969,7 @@ Epoch 27000/30000, loss: 1.48
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_18_1.png" src="../_images/mlgeo_4.2_PINN_18_1.png" />
+<img alt="../_images/mlgeo_4.3_PINN_20_1.png" src="../_images/mlgeo_4.3_PINN_20_1.png" />
 </div>
 </div>
 </section>
@@ -1035,8 +1026,18 @@ Epoch 27000/30000, loss: 1.48
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/40000, loss: 26.12
+Epoch 4000/40000, loss: 12.09
+Epoch 8000/40000, loss: 2.50
+Epoch 12000/40000, loss: 2.41
+Epoch 16000/40000, loss: 2.40
+Epoch 20000/40000, loss: 2.40
+Epoch 24000/40000, loss: 2.39
+Epoch 28000/40000, loss: 2.39
+Epoch 32000/40000, loss: 2.39
+Epoch 36000/40000, loss: 2.39
 </pre></div>
 </div>
+<img alt="../_images/mlgeo_4.3_PINN_25_1.png" src="../_images/mlgeo_4.3_PINN_25_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1052,6 +1053,15 @@ Epoch 27000/30000, loss: 1.48
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0006263194954954088
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
+</pre></div>
+</div>
+<img alt="../_images/mlgeo_4.3_PINN_26_2.png" src="../_images/mlgeo_4.3_PINN_26_2.png" />
 </div>
 </div>
 </section>
@@ -1084,11 +1094,11 @@ Epoch 27000/30000, loss: 1.48
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="mlgeo_4.2_MultiLayerPerceptron.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="mlgeo_4.3_ModelTraining.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">4.2 Multi Layer Perceptrons</p>
+            <p class="prev-next-title">4.3 Model Training</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="mlgeo_4.3_CNN.html" title="next page">
