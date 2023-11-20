@@ -618,6 +618,11 @@ title="Print to PDF"
    PINN
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#discover-model">
+   Discover model
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -640,6 +645,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pinn">
    PINN
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#discover-model">
+   Discover model
   </a>
  </li>
 </ul>
@@ -673,36 +683,22 @@ title="Print to PDF"
 </div>
 </div>
 <p>We write a simple PDE</p>
-<p><span class="math notranslate nohighlight">\( \frac{dT}{dt} (t) = T(t) / R \)</span>,</p>
-<p>Where <span class="math notranslate nohighlight">\(R\)</span> is a time scale that characterize the diffusion of temperature.</p>
-<p>As a potential solution to this equation, we write the theoretical temperature field:</p>
-<p><span class="math notranslate nohighlight">\(  \)</span></p>
-<!-- The heat equation is a diffusion equation:
-
-$\frac{\partial T}{\partial t} (x,t) = k \frac{\partial^2 T}{\partial x^2} (x,t)$,
-
-where $k$ is the diffusivity.  -->
+<p><span class="math notranslate nohighlight">\( \frac{dT}{dt} (t) = r (T(t) -T_1) \)</span>,</p>
+<p>Where <span class="math notranslate nohighlight">\(r\)</span> is a rate of temperature change (cooling or heating), <span class="math notranslate nohighlight">\(T_1\)</span> is the final - ambient temperature.</p>
+<p>Provided the initial condition that <span class="math notranslate nohighlight">\(T(t=0) = T_0 \)</span>, a theoretical solution to this equation, we write the theoretical temperature field:</p>
+<p><span class="math notranslate nohighlight">\( T(t)  = (T_0-T_1) \exp(-tr) +T_1 \)</span>.</p>
+<p>We will create this solution using a simple neural network. Given the theoretical solution, we can create synthetic data:</p>
 <p>First, we create synthetic, toy, noisy data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cooling_law</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">Tenv</span><span class="p">,</span> <span class="n">T0</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
     <span class="n">T</span> <span class="o">=</span> <span class="n">Tenv</span> <span class="o">+</span> <span class="p">(</span><span class="n">T0</span> <span class="o">-</span> <span class="n">Tenv</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">R</span> <span class="o">*</span> <span class="n">time</span><span class="p">)</span> <span class="c1">#</span>
-    <span class="c1"># return T</span>
+    <span class="k">return</span> <span class="n">T</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># def cooling_law(time, Tenv, T0, tau):</span>
-<span class="c1">#     # T = Tenv + (T0 - Tenv) * scipy.special.erf(time/k)</span>
-<span class="c1">#     T = Tenv + (T0 - Tenv) * (1 - np.exp(-time/tau))</span>
-<span class="c1">#     return T</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Make noisy synthetic data</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">cooling_law</span></code>, we create synthetic data and noise.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tenv</span> <span class="o">=</span> <span class="mi">0</span>
@@ -729,7 +725,7 @@ where $k$ is the diffusivity.  -->
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_9_1.png" src="../_images/mlgeo_4.2_PINN_9_1.png" />
+<img alt="../_images/mlgeo_4.2_PINN_6_1.png" src="../_images/mlgeo_4.2_PINN_6_1.png" />
 </div>
 </div>
 <p>Create a simple neural network</p>
@@ -829,7 +825,7 @@ where $k$ is the diffusivity.  -->
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_units</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
 <span class="n">losses</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">T</span><span class="p">)</span>
 
 
@@ -839,19 +835,19 @@ where $k$ is the diffusivity.  -->
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 45.47
-Epoch 2000/20000, loss: 16.37
-Epoch 4000/20000, loss: 2.13
-Epoch 6000/20000, loss: 1.30
-Epoch 8000/20000, loss: 1.05
-Epoch 10000/20000, loss: 0.86
-Epoch 12000/20000, loss: 0.76
-Epoch 14000/20000, loss: 0.71
-Epoch 16000/20000, loss: 0.67
-Epoch 18000/20000, loss: 0.63
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 20.08
+Epoch 2000/20000, loss: 18.49
+Epoch 4000/20000, loss: 18.30
+Epoch 6000/20000, loss: 18.07
+Epoch 8000/20000, loss: 17.69
+Epoch 10000/20000, loss: 17.22
+Epoch 12000/20000, loss: 16.50
+Epoch 14000/20000, loss: 15.71
+Epoch 16000/20000, loss: 14.75
+Epoch 18000/20000, loss: 13.63
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_12_1.png" src="../_images/mlgeo_4.2_PINN_12_1.png" />
+<img alt="../_images/mlgeo_4.2_PINN_9_1.png" src="../_images/mlgeo_4.2_PINN_9_1.png" />
 </div>
 </div>
 <p>First, we will regularize the training using <strong>Ridge Regression</strong> of the model by adding the norm of the model weights. We first define an additional loss as the L2 norm of all hidden model parameters.</p>
@@ -867,7 +863,7 @@ Epoch 18000/20000, loss: 0.63
 <p>Re-train the model from scratch by minimizing the residual and model loss.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">netreg</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">loss2_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">netreg</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_units</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">loss2_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
 
 <span class="n">losses2</span> <span class="o">=</span> <span class="n">netreg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
 
@@ -878,19 +874,19 @@ Epoch 18000/20000, loss: 0.63
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 3251.90
-Epoch 2000/20000, loss: 1686.80
-Epoch 4000/20000, loss: 844.77
-Epoch 6000/20000, loss: 366.15
-Epoch 8000/20000, loss: 129.77
-Epoch 10000/20000, loss: 42.80
-Epoch 12000/20000, loss: 25.80
-Epoch 14000/20000, loss: 25.03
-Epoch 16000/20000, loss: 25.03
-Epoch 18000/20000, loss: 25.03
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 1836.45
+Epoch 2000/20000, loss: 906.29
+Epoch 4000/20000, loss: 448.17
+Epoch 6000/20000, loss: 191.89
+Epoch 8000/20000, loss: 69.84
+Epoch 10000/20000, loss: 29.13
+Epoch 12000/20000, loss: 23.03
+Epoch 14000/20000, loss: 22.82
+Epoch 16000/20000, loss: 22.82
+Epoch 18000/20000, loss: 22.82
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_16_1.png" src="../_images/mlgeo_4.2_PINN_16_1.png" />
+<img alt="../_images/mlgeo_4.2_PINN_13_1.png" src="../_images/mlgeo_4.2_PINN_13_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -912,7 +908,7 @@ Epoch 18000/20000, loss: 25.03
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_17_1.png" src="../_images/mlgeo_4.2_PINN_17_1.png" />
+<img alt="../_images/mlgeo_4.2_PINN_14_1.png" src="../_images/mlgeo_4.2_PINN_14_1.png" />
 </div>
 </div>
 <section id="pinn">
@@ -962,7 +958,7 @@ Epoch 24000/30000, loss: 1.54
 Epoch 27000/30000, loss: 1.48
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_20_1.png" src="../_images/mlgeo_4.2_PINN_20_1.png" />
+<img alt="../_images/mlgeo_4.2_PINN_17_1.png" src="../_images/mlgeo_4.2_PINN_17_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -982,9 +978,14 @@ Epoch 27000/30000, loss: 1.48
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.2_PINN_21_1.png" src="../_images/mlgeo_4.2_PINN_21_1.png" />
+<img alt="../_images/mlgeo_4.2_PINN_18_1.png" src="../_images/mlgeo_4.2_PINN_18_1.png" />
 </div>
 </div>
+</section>
+<section id="discover-model">
+<h2>Discover model<a class="headerlink" href="#discover-model" title="Permalink to this headline">#</a></h2>
+<p>What if we wanted to learn about the learning rate?</p>
+<p>We can add the colling/heating rate <span class="math notranslate nohighlight">\(r\)</span> as a parameter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">NetDiscovery</span><span class="p">(</span><span class="n">Net</span><span class="p">):</span>
@@ -1004,6 +1005,51 @@ Epoch 27000/30000, loss: 1.48
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now define the loss function to minimize the physics loss, and adding <span class="math notranslate nohighlight">\(r\)</span> as a model parameter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">physics_loss_discovery</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+    <span class="n">temps</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+    <span class="n">dT</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">temps</span><span class="p">,</span> <span class="n">ts</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pde</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">Tenv</span> <span class="o">-</span> <span class="n">temps</span><span class="p">)</span> <span class="o">-</span> <span class="n">dT</span>
+    
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">pde</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">netdisc</span> <span class="o">=</span> <span class="n">NetDiscovery</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="n">physics_loss_discovery</span><span class="p">,</span> <span class="n">loss2_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">40000</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span> <span class="mf">5e-6</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+
+<span class="n">losses</span> <span class="o">=</span> <span class="n">netdisc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/40000, loss: 26.12
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preds</span> <span class="o">=</span> <span class="n">netdisc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">netdisc</span><span class="o">.</span><span class="n">r</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">temps</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Equation&#39;</span><span class="p">,</span><span class="s1">&#39;Training data&#39;</span><span class="p">,</span> <span class="s1">&#39;discovery PINN&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature (C)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
