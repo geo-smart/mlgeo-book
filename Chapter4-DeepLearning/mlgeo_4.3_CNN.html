@@ -52,6 +52,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="4.4 Recurrent Neural Networks: Processing sequences" href="mlgeo_4.5_RNN.html" />
@@ -596,83 +598,118 @@ title="Print to PDF"
     </div>
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   4.3 Convolutional Neural Networks
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#to-review">
+   0.0 To review
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#anatomy-of-the-conv-layer">
-     1.1 Anatomy of the Conv layer
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   1.1. Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#image-segmentation-definitions-an-aside">
+   1.2. Image segmentation definitions (an aside)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convolutions">
+   1.2 Convolutions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assembling-a-cnn">
+   1.3 Assembling a CNN
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-convolutional-layer">
+     1.3.1 The convolutional layer
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pooling-layers">
-     1.2 Pooling layers
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-activation-layer">
+     1.3.2 The activation layer
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#other-notes">
-     1.3 Other notes
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-pooling-layer">
+     1.3.3 The pooling layer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-fully-connected-layer">
+     1.3.4 The fully connected layer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#some-notes">
+     1.3.5 Some notes
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#practice-on-lenet-5-network">
-   2 Practice on LeNet-5 network
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#let-s-practice-with-a-cnn">
+   2.0 Let’s practice with a CNN!
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-the-model">
-     2.1 Create the model
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#our-model-of-choice">
+     2.1 Our model of choice
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#prepare-training">
-     2.2 Prepare training
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-lenet-5-implementation-in-pytorch">
+     2.2 A LeNet-5 implementation in pytorch
     </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#train-the-model">
-     2.3 Train the model
-    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#we-start-by-defining-some-training-parameters">
+       2.2.1 We start by defining some training parameters
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#we-then-train-the-model">
+       2.2.2 We then train the model
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#example-on-seismic-data">
    3. Example on seismic data
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#read-the-data">
      3.1 read the data
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#prep-the-data">
      3.2 Prep the data
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#define-ml-model">
      3.3 Define ML model
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#how-to-read-and-recode-published-networks">
    4. How to read and recode published networks
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#tuning-cnn-networks">
-     5. Tuning CNN networks
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tuning-cnn-networks">
+   5. Tuning CNN networks
+  </a>
  </li>
 </ul>
 
@@ -693,83 +730,118 @@ title="Print to PDF"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   4.3 Convolutional Neural Networks
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#to-review">
+   0.0 To review
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#anatomy-of-the-conv-layer">
-     1.1 Anatomy of the Conv layer
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   1.1. Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#image-segmentation-definitions-an-aside">
+   1.2. Image segmentation definitions (an aside)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convolutions">
+   1.2 Convolutions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assembling-a-cnn">
+   1.3 Assembling a CNN
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-convolutional-layer">
+     1.3.1 The convolutional layer
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pooling-layers">
-     1.2 Pooling layers
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-activation-layer">
+     1.3.2 The activation layer
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#other-notes">
-     1.3 Other notes
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-pooling-layer">
+     1.3.3 The pooling layer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-fully-connected-layer">
+     1.3.4 The fully connected layer
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#some-notes">
+     1.3.5 Some notes
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#practice-on-lenet-5-network">
-   2 Practice on LeNet-5 network
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#let-s-practice-with-a-cnn">
+   2.0 Let’s practice with a CNN!
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-the-model">
-     2.1 Create the model
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#our-model-of-choice">
+     2.1 Our model of choice
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#prepare-training">
-     2.2 Prepare training
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-lenet-5-implementation-in-pytorch">
+     2.2 A LeNet-5 implementation in pytorch
     </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#train-the-model">
-     2.3 Train the model
-    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#we-start-by-defining-some-training-parameters">
+       2.2.1 We start by defining some training parameters
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#we-then-train-the-model">
+       2.2.2 We then train the model
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#example-on-seismic-data">
    3. Example on seismic data
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#read-the-data">
      3.1 read the data
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#prep-the-data">
      3.2 Prep the data
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#define-ml-model">
      3.3 Define ML model
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#how-to-read-and-recode-published-networks">
    4. How to read and recode published networks
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#tuning-cnn-networks">
-     5. Tuning CNN networks
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tuning-cnn-networks">
+   5. Tuning CNN networks
+  </a>
  </li>
 </ul>
 
@@ -789,40 +861,165 @@ title="Print to PDF"
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">h5py</span>
-
-
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">data</span>
+<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">convolve2d</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Just like MLPs, each neuron in a CNN receives some inputs, performs a dot product, and outputs predictions that will be sent to an activation function. CNNs are designed to have images as inputs. When using fully connected layers, images have too many samples and a fully connected layer would have too many trainable parameters. CNN layers are not 1D hidden layers, they are volume of neurons.</p>
-<p><img alt="Convolutional Kernel" src="../_images/cnn2.jpeg" />
-Figure: A ConvNet arranges its neurons in three dimensions (width, height, depth), as visualized in one of the layers.</p>
-<p>The classic sequencing of a CNN (or a block) is: Convolutional Layer, Activation Layer, Pooling Layer, Fully Connected Layer.</p>
-<!-- <img src="figures/Convolution.png" alt="cnn" style="width: 400px;"/> -->
-<section id="anatomy-of-the-conv-layer">
-<h2>1.1 Anatomy of the Conv layer<a class="headerlink" href="#anatomy-of-the-conv-layer" title="Permalink to this headline">#</a></h2>
+<section id="to-review">
+<h2>0.0 To review<a class="headerlink" href="#to-review" title="Permalink to this headline">#</a></h2>
+<p>At this point, you should understand:</p>
 <ul class="simple">
-<li><p>The <strong>input</strong> “feature map” is the input data for a given layer. It is 3D for a 2D convolution. The three dimensions are: <em>height</em>, <em>width</em>, <em>depth/channels</em>. For instance, width and heights are the 2D images (e.g. 32x32 pixels), the depth can be the different RGB (1 image per color R, G, B). For <em>1D convolution</em>, the input data should be ordered as the following <strong>(batch size, number of channels, length of signal)</strong>. For <em>2D convolutions</em>, the input size is <strong>(batch size, number of channels, pixel height, pixel width)</strong>.</p></li>
-<li><p>The <strong>filters</strong> are the <strong>convolution kernels</strong> are the dimensionality of the output space. In general, the number of filters is greater than the input number of channels: the network heights and widths usually decrease throughout the networks, thus increasing the depth or number of filters does not increase the complexity too much.</p></li>
-<li><p>The <strong>kernel_size</strong> is a list of 2 integers that specifies the height and width of the 2D convolution kernel. If both integers are equal, just use a single integer value. The kernel is a filter that has weights to apply on the input values, each kernel map as 1 bias. Let’s take an example of a 3x3 input feature map, a 2x2 kernel size, a 2x2 output feature map. The highlighted part of the map in blue are those we focus on:</p></li>
+<li><p>The perceptron</p></li>
+<li><p>The role of <em>activation functions</em></p></li>
+<li><p>Why and how to implement a simple <em>gradient descent</em></p></li>
+<li><p>Loss functions</p></li>
+<li><p>Batching</p></li>
+<li><p>Multilayer perceptrons</p></li>
 </ul>
-<p><img alt="Convolution Kernel" src="img/convolution.png" /></p>
- <!-- width="600"></center> -->
-<p>Convolution with kernel window (Fig. 6.2.1 from Dive into Deep Learning).</p>
-<p>In the example above, we perform the following operation: the top-left output value is = 0×0+1×1+3×2+4×3=19. Then we repeat the process until all elements of the output map are filled. We also repeat this for each filter. Usually prefer using small but many kernels/filters.</p>
-<p><img alt="Convolutional Kernel" src="../_images/CNN_StanfordCS230.gif" /></p>
-<ul class="simple">
-<li><p>The <strong>stride</strong> is the step that the convolution skips when being applying the filters/kernels. Small strides work better in practice. It is one way to reduce the feature map, but the most popular choice for this is to use <em><strong>maxpooling</strong></em>.</p></li>
-<li><p>The <strong>padding_mode</strong> is set to either <code class="docutils literal notranslate"><span class="pre">same</span></code> or <code class="docutils literal notranslate"><span class="pre">valid</span></code> depending on whether the edges of the feature map are extended and filled with zeros (same) to fit the total length of the kernel size and stride, or whether they are ignored (valid). Prefer to use <code class="docutils literal notranslate"><span class="pre">same</span></code> especially for the hidden conv layers to avoid losing data and feature knowledge.</p></li>
-</ul>
-<p>The convolution can be 1D or 2D depending on the array input:</p>
-<p>When the input is a single dimension array (vector, time series), use a <a class="reference external" href="%21https://pytorch.org/docs/stable/generated/torch.nn.Conv1d.html#torch.nn.Conv1d">Conv1D layer</a>.</p>
-<p>When the input is a 2D image (2D array) or a time series with multiple channels (example of a seismogram with 3 components), use <a class="reference external" href="%21https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html#torch.nn.Conv2d">Conv2D layers</a>.</p>
-<p>Here are examples of a 32x32 image with three channels (RGB) sent to a 64 output channels/filters with a size of kernels of 6 pixels. The padding is “same” such that the edges of the feature maps are filled with zeros. We write the function in Pytorch.</p>
-<p>A great lecture about CNN is one done at Stanford, <a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks">CS230</a>.</p>
+</section>
+<section id="id1">
+<h2>1.1. Convolutional Neural Networks<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<p>Just like perceptrons and multilayer perceptrons, each element in a Convolutional Neural Network [<strong>CNN</strong>] receives inputs, performs a dot product, and passes that product through some activation function.</p>
+<p>These networks work on structured 2D and 3D data (e.g., images).</p>
+</section>
+<section id="image-segmentation-definitions-an-aside">
+<h2>1.2. Image segmentation definitions (an aside)<a class="headerlink" href="#image-segmentation-definitions-an-aside" title="Permalink to this headline">#</a></h2>
+<p>There are three types of image segmentation:</p>
+<ol class="simple">
+<li><p><strong>Semantic</strong>: Assigning a class or label to every image in an image.</p></li>
+</ol>
+<ol class="simple">
+<li><p><strong>Instance</strong>: Identifying and espearating objects in an image.</p></li>
+</ol>
+<ol class="simple">
+<li><p><strong>Panoptic</strong>: Combining semantic and instance segmentation.</p></li>
+</ol>
+<img alt="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*sSswaxrr6nMG2Vv1jDuxKA.jpeg" src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*sSswaxrr6nMG2Vv1jDuxKA.jpeg" />
+</section>
+<section id="convolutions">
+<h2>1.2 Convolutions<a class="headerlink" href="#convolutions" title="Permalink to this headline">#</a></h2>
+<p>As their name implies, CNNs rely on <strong>convolutions</strong>:</p>
+<p><span class="math notranslate nohighlight">\((f*g)(x)= \int\limits^{+\infty}_{\tau=-\infty}f(\tau)g(x−\tau)d\tau\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(g\)</span> is the input, <span class="math notranslate nohighlight">\(f\)</span> is the <strong>kernel</strong> of convolution, and <span class="math notranslate nohighlight">\(\tau\)</span> can be thought of as a dummy .</p>
+<img alt="https://upload.wikimedia.org/wikipedia/commons/6/6a/Convolution_of_box_signal_with_itself2.gif" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Convolution_of_box_signal_with_itself2.gif" />
+<p>For discrete functions, you simply sum:</p>
+<p><span class="math notranslate nohighlight">\((f*g)(x)= \sum\limits^{+\infty}_{\tau=-\infty} f(\tau)g(x−\tau)\)</span></p>
+<p>Convolution can extend to multiple dimensions.</p>
+<img alt="https://upload.wikimedia.org/wikipedia/commons/1/19/2D_Convolution_Animation.gif" src="https://upload.wikimedia.org/wikipedia/commons/1/19/2D_Convolution_Animation.gif" />
+<p>For example, let us consider the <strong>mean filter</strong> (here, for a 3 x 3 kernel):</p>
+<p>\begin{bmatrix}
+\frac{1}{9} &amp; \frac{1}{9} &amp; \frac{1}{9} \
+\frac{1}{9} &amp; \frac{1}{9} &amp; \frac{1}{9} \
+\frac{1}{9} &amp; \frac{1}{9} &amp; \frac{1}{9} \
+\end{bmatrix}</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load an example image from scikit-image</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">coins</span><span class="p">()</span>
+
+<span class="c1"># What is the filter length/width dimension?</span>
+<span class="n">filterDimension</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># Define a mean filter</span>
+<span class="n">mean_filter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">filterDimension</span><span class="p">,</span> <span class="n">filterDimension</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">filterDimension</span><span class="o">*</span><span class="n">filterDimension</span><span class="p">)</span>
+
+<span class="c1"># Apply the mean filter to the image using convolution</span>
+<span class="n">filtered_image</span> <span class="o">=</span> <span class="n">convolve2d</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mean_filter</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="s1">&#39;symm&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Original Image&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">filtered_image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Filtered Image&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.3_CNN_15_0.png" src="../_images/mlgeo_4.3_CNN_15_0.png" />
+</div>
+</div>
+<p>Or, we can try to look for edges:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sobel filters</span>
+<span class="n">sobel_filter_horizontal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">])</span>
+
+<span class="n">sobel_filter_vertical</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">])</span>
+
+<span class="c1"># Apply the Sobel filters to the image</span>
+<span class="n">result_horizontal</span> <span class="o">=</span> <span class="n">convolve2d</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">sobel_filter_horizontal</span><span class="p">)</span>
+<span class="n">result_vertical</span> <span class="o">=</span> <span class="n">convolve2d</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">sobel_filter_vertical</span><span class="p">)</span>
+
+<span class="c1"># Combine the horizontal and vertical edges to get the overall edges</span>
+<span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">result_horizontal</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">result_vertical</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Thresholding to accentuate the edges</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">edges</span><span class="p">[</span><span class="n">edges</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Display the original, horizontal Sobel, vertical Sobel, and combined edge images</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Original Image&#39;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">result_horizontal</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Horizontal Sobel Filter&#39;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">result_vertical</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Vertical Sobel Filter&#39;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Combined Edges (Thresholded)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.3_CNN_17_0.png" src="../_images/mlgeo_4.3_CNN_17_0.png" />
+</div>
+</div>
+</section>
+<section id="assembling-a-cnn">
+<h2>1.3 Assembling a CNN<a class="headerlink" href="#assembling-a-cnn" title="Permalink to this headline">#</a></h2>
+<p>The architecture of a CNN classically comprises:</p>
+<ol class="simple">
+<li><p>A <strong>convolutional</strong> layer</p></li>
+<li><p>An <strong>activation</strong> layer</p></li>
+<li><p>A <strong>pooling</strong> layer</p></li>
+<li><p>A <strong>fully connected</strong> layer</p></li>
+</ol>
+<section id="the-convolutional-layer">
+<h3>1.3.1 The convolutional layer<a class="headerlink" href="#the-convolutional-layer" title="Permalink to this headline">#</a></h3>
+<p><em>Note that here we will consider a CNN that takes in images and returns some output</em></p>
+<p>Aspects of this layer:</p>
+<p><strong>Inputs</strong>: In the case of 2D convolutions, three dimensions: <em>height, width, depth.</em></p>
+<p><strong>Filters</strong>: The actual convolutional kernels, with have a bias of 1 and weights for each element of the kernel. The output of these filters is a <strong>filter map</strong>. Generally, the number of filters is greater than the input depth. The <strong>kernel size</strong> often is square, but does not need to be.</p>
+<p><strong>Stride</strong>: The step size by which the filter moves.</p>
+<p><strong>Padding</strong>: Values that are added to the edges of the input.</p>
+<p><img alt="Convolution Kernel" src="https://d2l.ai/_images/correlation.svg" /></p>
+<p><em>Convolution with kernel window (Fig. 6.2.1 from Dive into Deep Learning).</em></p>
+<p>In the example above, we perform the following operation: the top-left output value is = 0×0+1×1+3×2+4×3=19. Then we repeat the process until all elements of the output map are filled. We also repeat this for each filter.</p>
+<p><sub><em>A great lecture about CNN is one done at Stanford, <a class="reference external" href="https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks">CS230</a>.</em></sub></p>
+<p>So, how might you interpret the following code?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytorch version</span>
@@ -830,25 +1027,69 @@ Figure: A ConvNet arranges its neurons in three dimensions (width, height, depth
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Conv2d(3, 64, kernel_size=(6, 6), stride=(1, 1))
+</pre></div>
+</div>
+</div>
 </div>
 </section>
-<section id="pooling-layers">
-<h2>1.2 Pooling layers<a class="headerlink" href="#pooling-layers" title="Permalink to this headline">#</a></h2>
-<p><strong>MaxPooling</strong> layers are downsampling layers. It ouputs the max value of each channel of windows in a feature map. Downsampling reduces the size of the feature-map, as well as to induce spatial-filter hierarchies by making successive convolution layers look at increasingly large windows (in terms of the fraction of the original input they cover). The pooling size is the factor of reduction in the layer size.</p>
-<p><img alt="Max Pooling" src="../_images/max_pooling.png" /></p>
-<p>Maximum pooling (Fig. 6.5.1 from Dive into Deep Learning).</p>
-<!-- 114 / 2 = 57 and 80 / 2 = 40 -->
-<p><strong>General pooling</strong> are other functions, such as average pooling or even L2-norm pooling. Average pooling was often used historically but has recently fallen out of favor compared to the max pooling operation, which has been shown to work better in practice.</p>
-<p>Pooling is designed to reduce the complexity and model size in order to deal with overfitting and computational expense. Some argue that striding is sufficient. Some also found that auto-encoders and generative adversarial networks perform better without pooling.</p>
+<section id="the-activation-layer">
+<h3>1.3.2 The activation layer<a class="headerlink" href="#the-activation-layer" title="Permalink to this headline">#</a></h3>
+<p>The convolutional layer is followed by an activation layer. This layer applies an <em>activation function</em>, such as <strong>ReLU (Rectified Linear Unit)</strong>, to the outputs of the convoution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the ReLU function</span>
+<span class="k">def</span> <span class="nf">relu</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Generate x values</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Apply the ReLU function to x</span>
+<span class="n">y_relu</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Create figure and axis</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="c1"># Plot the ReLU function</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_relu</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ReLU Function&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;ReLU Function&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;ReLU(x)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="c1"># Show the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.3_CNN_24_0.png" src="../_images/mlgeo_4.3_CNN_24_0.png" />
+</div>
+</div>
 </section>
-<section id="other-notes">
-<h2>1.3 Other notes<a class="headerlink" href="#other-notes" title="Permalink to this headline">#</a></h2>
+<section id="the-pooling-layer">
+<h3>1.3.3 The pooling layer<a class="headerlink" href="#the-pooling-layer" title="Permalink to this headline">#</a></h3>
+<p>The pooling layer allows us to <em>downsample</em> our feature maps. In general, by combining values, pooling reduces the complexity and size of models. It is not the only strategy for doing so.</p>
+<p><strong>Max pooling</strong> layers work by taking the maximum value within a given neighborhood (dictated by <em>the pooling size</em>).</p>
+<p><img alt="" src="https://raw.githubusercontent.com/d2l-ai/d2l-en/master/img/pooling.svg" /></p>
+</section>
+<section id="the-fully-connected-layer">
+<h3>1.3.4 The fully connected layer<a class="headerlink" href="#the-fully-connected-layer" title="Permalink to this headline">#</a></h3>
+<p>Finally, we include a fully connected layer (where every input is connected to every output) in our model. Often, CNNs utilize a <strong>softmax</strong> layer to transform the outputs of a fully connected layer into probabilities (i.e., values between 0 and 1).</p>
+</section>
+<section id="some-notes">
+<h3>1.3.5 Some notes<a class="headerlink" href="#some-notes" title="Permalink to this headline">#</a></h3>
 <p>In the convolutional layer, the neurons are not connected to every part of the input data.</p>
 <p>A dense layer learns global patterns. A convolution layer learns local patterns. Because of that, CNNs are <strong>translation invariant</strong> as they pick part of the image of time series and generalize the learning elsewhere. CNNs learn <strong>hierarchical patterns</strong>: a first layer learns a local pattern, a second layer combines the local features to create a broader scale feature.</p>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="practice-on-lenet-5-network">
-<h1>2 Practice on LeNet-5 network<a class="headerlink" href="#practice-on-lenet-5-network" title="Permalink to this headline">#</a></h1>
+<section id="let-s-practice-with-a-cnn">
+<h2>2.0 Let’s practice with a CNN!<a class="headerlink" href="#let-s-practice-with-a-cnn" title="Permalink to this headline">#</a></h2>
 <p>We will create a CNN LeNet architecture (LeCun et al, 1998) to classify images from the fashion MNIST data. We will write it in Keras/Tensorflow and in PyTorch.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -865,6 +1106,7 @@ Figure: A ConvNet arranges its neurons in three dimensions (width, height, depth
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span><span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
  <span class="n">transform</span><span class="o">=</span><span class="n">Compose</span><span class="p">([</span><span class="n">ToTensor</span><span class="p">(),</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.5</span><span class="p">],[</span><span class="mf">0.5</span><span class="p">])]))</span>
 <span class="n">L</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+<span class="c1"># Training set</span>
 <span class="n">Lt</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span><span class="o">*</span><span class="n">L</span><span class="p">)</span>
 
 <span class="n">train_set</span><span class="p">,</span> <span class="n">val_set</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">random_split</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">[</span><span class="n">Lt</span><span class="p">,</span><span class="n">L</span><span class="o">-</span><span class="n">Lt</span><span class="p">])</span>
@@ -877,14 +1119,43 @@ Figure: A ConvNet arranges its neurons in three dimensions (width, height, depth
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch.utils.data.dataloader.DataLoader object at 0x2b26d6080&gt;
+torch.Size([50, 1, 28, 28])
+</pre></div>
 </div>
-<section id="create-the-model">
-<h2>2.1 Create the model<a class="headerlink" href="#create-the-model" title="Permalink to this headline">#</a></h2>
-<p>We will create a CNN LeNet-5 architecture (LeCun et al, 1998) that is a sequential stack of 3 convolutional layers, 2 fully connected layers. There are several graphical representations of networks that we often find in the literature, with a few examples below.</p>
-<p><img alt="LeNet" src="../_images/lenet.svg" />
-LeNet-5 architecture</p>
-<p><img alt="Le-net" src="../_images/lenet-vert.svg" /></p>
-<p>Using words, we can see that the CNN is composed of an input map of size 28x28 pixels, and the images are in gray scales so there is a single channel. It is followed by a convolution layer of size 28x28 and depth 6 (# of channels) and kernel sizes of 5x5, a pooling layer of size 2 - stride 2, a conv layer of depth 6 (or 6 channels) and kernel size 5x5, another pooling layer of size 2 - stride 2, and then 3 fully connected (dense) layers of respective sizes 120, 84, 10. The activation functions in the original LeNet-5 were sigmoids and the last activation function was a Gaussian function,  which we replaced with softmax. One can test the role of activation functions by changing them to ReLu.</p>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display 3 images</span>
+<span class="n">num_images_to_display</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># Set up a subplot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_images_to_display</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_images_to_display</span><span class="p">):</span>
+    <span class="c1"># Get a random batch</span>
+    <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">loaded_train</span><span class="p">))</span>
+    
+    <span class="c1"># Display the image</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Label: </span><span class="si">{</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.3_CNN_30_0.png" src="../_images/mlgeo_4.3_CNN_30_0.png" />
+</div>
+</div>
+<section id="our-model-of-choice">
+<h3>2.1 Our model of choice<a class="headerlink" href="#our-model-of-choice" title="Permalink to this headline">#</a></h3>
+<p>We will create a CNN LeNet-5 architecture (LeCun et al, 1998) that is a sequential stack of 3 convolutional layers, 2 fully connected layers. There are several graphical representations of networks that we often find in the literature, such as:</p>
+<p><img alt="" src="https://d2l.ai/_images/lenet.svg" /></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Implementation in Keras</span>
@@ -906,7 +1177,9 @@ LeNet-5 architecture</p>
 </div>
 </div>
 </div>
-<p>Implementation in pytorch</p>
+</section>
+<section id="a-lenet-5-implementation-in-pytorch">
+<h3>2.2 A LeNet-5 implementation in pytorch<a class="headerlink" href="#a-lenet-5-implementation-in-pytorch" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Reshape</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -939,39 +1212,50 @@ LeNet-5 architecture</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initial input shape: 	 torch.Size([1, 1, 28, 28])
+Reshape output shape: 	 torch.Size([1, 1, 28, 28])
+Conv2d output shape: 	 torch.Size([1, 6, 28, 28])
+Sigmoid output shape: 	 torch.Size([1, 6, 28, 28])
+AvgPool2d output shape: 	 torch.Size([1, 6, 14, 14])
+Conv2d output shape: 	 torch.Size([1, 16, 10, 10])
+Sigmoid output shape: 	 torch.Size([1, 16, 10, 10])
+AvgPool2d output shape: 	 torch.Size([1, 16, 5, 5])
+Flatten output shape: 	 torch.Size([1, 400])
+Linear output shape: 	 torch.Size([1, 120])
+Sigmoid output shape: 	 torch.Size([1, 120])
+Linear output shape: 	 torch.Size([1, 84])
+Sigmoid output shape: 	 torch.Size([1, 84])
+Linear output shape: 	 torch.Size([1, 10])
+</pre></div>
 </div>
-</section>
-<section id="prepare-training">
-<h2>2.2 Prepare training<a class="headerlink" href="#prepare-training" title="Permalink to this headline">#</a></h2>
-<p>Choose the training parameters</p>
+</div>
+</div>
+<section id="we-start-by-defining-some-training-parameters">
+<h4>2.2.1 We start by defining some training parameters<a class="headerlink" href="#we-start-by-defining-some-training-parameters" title="Permalink to this headline">#</a></h4>
+<p>We need to choose some training parameters, including:</p>
 <ul class="simple">
-<li><p>error metric: accuracy</p></li>
-<li><p>loss function: <em>crossentropy</em> for multiclassification.</p></li>
-<li><p>batch size,</p></li>
-<li><p>the number of epochs (iterations).</p></li>
-<li><p>Optimizer: Adam</p></li>
+<li><p>The error metric: accuracy</p></li>
+<li><p>Our loss function: <em>cross-entropy</em> for multiclassification</p></li>
+<li><p>The batch size</p></li>
+<li><p>How many epochs (iterations)</p></li>
+<li><p>Which optimizer we would like to use (in this case, <em>Adam</em>, which is a modified version of stochastic gradient descent that leverages estimations of the first and second moments of the gradient to adapt the learning rate for each weight)</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.005</span><span class="c1"># learning rate lr</span>
 <span class="n">loss_function</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model_lenet</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>  <span class="c1"># Set fixed random number seed</span>
-<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="c1"># Set fixed random number seed</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="train-the-model">
-<h2>2.3 Train the model<a class="headerlink" href="#train-the-model" title="Permalink to this headline">#</a></h2>
-<p>Plot the accuracy scores as a function of epochs to see how well we train.</p>
+<section id="we-then-train-the-model">
+<h4>2.2.2 We then train the model<a class="headerlink" href="#we-then-train-the-model" title="Permalink to this headline">#</a></h4>
+<p>As part of our training, we will plot the accuracy scores as a function of epochs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">trainloader</span><span class="p">,</span> <span class="n">testloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span> <span class="p">):</span>
@@ -1065,6 +1349,13 @@ LeNet-5 architecture</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 1] loss: 0.936 - accuracy: 92.133
+[Epoch 2] loss: 0.212 - accuracy: 95.517
+[Epoch 3] loss: 0.134 - accuracy: 96.867
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1088,16 +1379,22 @@ LeNet-5 architecture</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+</pre></div>
+</div>
+<img alt="../_images/mlgeo_4.3_CNN_42_1.png" src="../_images/mlgeo_4.3_CNN_42_1.png" />
+</div>
 </div>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="example-on-seismic-data">
-<h1>3. Example on seismic data<a class="headerlink" href="#example-on-seismic-data" title="Permalink to this headline">#</a></h1>
+</section>
+<section id="example-on-seismic-data">
+<h2>3. Example on seismic data<a class="headerlink" href="#example-on-seismic-data" title="Permalink to this headline">#</a></h2>
 <p>In this class, we will use a simplified version of ConvNetQuake (Perol et al, 2018). The network was designed as a classification algorithm that detects seismic events and assigns their location in spatial clusters. The earthquakes from a previously known earthquake catalog were clustered using k-means. We will use the two seismic station seismograms already labeled as “earthquakes” or “noise” to perform.</p>
 <p><img alt="ConvNetQuake" src="../_images/ConvNetQuake.jpg" /></p>
-<!-- <img src="figures/ConvNetQuake.jpg" alt="ConvNetQuake" style="width: 400px;"/> -->
-<section id="read-the-data">
-<h2>3.1 read the data<a class="headerlink" href="#read-the-data" title="Permalink to this headline">#</a></h2>
+<!-- <img src="figures/ConvNetQuake.jpg" alt="ConvNetQuake" style="width: 400px;"/> --><section id="read-the-data">
+<h3>3.1 read the data<a class="headerlink" href="#read-the-data" title="Permalink to this headline">#</a></h3>
 <p>Download the data and place it in a “data” folder.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1126,7 +1423,7 @@ LeNet-5 architecture</p>
 </div>
 </section>
 <section id="prep-the-data">
-<h2>3.2 Prep the data<a class="headerlink" href="#prep-the-data" title="Permalink to this headline">#</a></h2>
+<h3>3.2 Prep the data<a class="headerlink" href="#prep-the-data" title="Permalink to this headline">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#  allocate memory</span>
@@ -1181,15 +1478,8 @@ LeNet-5 architecture</p>
 </div>
 </section>
 <section id="define-ml-model">
-<h2>3.3 Define ML model<a class="headerlink" href="#define-ml-model" title="Permalink to this headline">#</a></h2>
+<h3>3.3 Define ML model<a class="headerlink" href="#define-ml-model" title="Permalink to this headline">#</a></h3>
 <p>ConvNetQuake is a simple stack of 8 conv2d layers with 32 channels, stride of 2 kernel size of 3x3, ReLu activation functions, padding is the same</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># try here</span>
-</pre></div>
-</div>
-</div>
-</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># write model training function</span>
@@ -1220,12 +1510,12 @@ LeNet-5 architecture</p>
 </div>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="how-to-read-and-recode-published-networks">
-<h1>4. How to read and recode published networks<a class="headerlink" href="#how-to-read-and-recode-published-networks" title="Permalink to this headline">#</a></h1>
+<section id="how-to-read-and-recode-published-networks">
+<h2>4. How to read and recode published networks<a class="headerlink" href="#how-to-read-and-recode-published-networks" title="Permalink to this headline">#</a></h2>
 <p>Let us say that you read a research paper explaining the architecture of the convolutional neural network used by the authors to carry out their data analysis. How will you try to reproduce their results? They do not provide a github!</p>
 <p>Let us look at the following paper:</p>
 <p>Rouet-Leduc, B., Hulbert, C., McBrearty, I. W., Johnson, P. A. (2020). Probing slow earthquakes with deep learning. Geophysical Research Letters, 47, e2019GL085870. <a class="reference external" href="https://doi.org/10.1029/2019GL085870">https://doi.org/10.1029/2019GL085870</a>.</p>
-<p><img alt="CNN RouetLeDuc 2020" src="../_images/cnn_rouet-leduc.png" /></p>
+<p><img alt="CNN RouetLeDuc 2020" src="https://agupubs.onlinelibrary.wiley.com/cms/asset/42274df7-7069-40c1-bda1-fdbf6891f358/grl60169-fig-0001-m.jpg" /></p>
 <!-- <img src="figures/cnn_rouet-leduc.png" width="600"> -->
 <p>Schematic of the CNN and its architecture (Figure 1 from Rouet-Leduc et al. (2020)</p>
 <ul class="simple">
@@ -1242,6 +1532,7 @@ LeNet-5 architecture</p>
 <li><p><strong>Full Connected - Dense layers</strong> with 10 neurons (found in the supplementary material)</p></li>
 <li><p><strong>Full Connected - Dense layers</strong> with 1 neuron, sigmoid activation function (found in the supplementary material)</p></li>
 </ul>
+</section>
 <section id="tuning-cnn-networks">
 <h2>5. Tuning CNN networks<a class="headerlink" href="#tuning-cnn-networks" title="Permalink to this headline">#</a></h2>
 <p>There are many hyperparameters and model choices to make:</p>
