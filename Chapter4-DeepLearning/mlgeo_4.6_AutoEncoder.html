@@ -715,49 +715,55 @@ title="Print to PDF"
 <a class="reference external" href="https://lilianweng.github.io/lil-log/2018/08/12/from-autoencoder-to-beta-vae.html">https://lilianweng.github.io/lil-log/2018/08/12/from-autoencoder-to-beta-vae.html</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">h5py</span>
 <span class="kn">import</span> <span class="nn">sklearn</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">layers</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-12-02 08:29:55.719359: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2 AVX AVX2 FMA
-To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+<span class="kn">from</span> <span class="nn">torchinfo</span> <span class="kn">import</span> <span class="n">summary</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span><span class="p">,</span><span class="n">fetch_openml</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data.sampler</span> <span class="kn">import</span> <span class="n">SubsetRandomSampler</span>
+<span class="kn">from</span> <span class="nn">torchvision.transforms</span> <span class="kn">import</span> <span class="n">transforms</span><span class="p">,</span> <span class="n">ToTensor</span><span class="p">,</span> <span class="n">Compose</span><span class="p">,</span><span class="n">Normalize</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">X_train_full</span><span class="p">,</span> <span class="n">y_train_full</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">fashion_mnist</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
-<span class="c1"># print(&quot;x_train shape:&quot;, x_train.shape, &quot;y_train shape:&quot;, y_train.shape)</span>
-<span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;tshirt&quot;</span><span class="p">,</span><span class="s2">&quot;trousers&quot;</span><span class="p">,</span><span class="s2">&quot;pullover&quot;</span><span class="p">,</span><span class="s2">&quot;dress&quot;</span><span class="p">,</span><span class="s2">&quot;coat&quot;</span><span class="p">,</span><span class="s2">&quot;sandal&quot;</span><span class="p">,</span><span class="s2">&quot;shirt&quot;</span><span class="p">,</span><span class="s2">&quot;sneaker&quot;</span><span class="p">,</span><span class="s2">&quot;bag&quot;</span><span class="p">,</span><span class="s2">&quot;boot&quot;</span><span class="p">]</span>
-<span class="n">X_val</span><span class="p">,</span><span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train_full</span><span class="p">[:</span><span class="mi">5000</span><span class="p">]</span><span class="o">/</span><span class="mf">255.0</span><span class="p">,</span><span class="n">X_train_full</span><span class="p">[</span><span class="mi">5000</span><span class="p">:]</span><span class="o">/</span><span class="mf">255.0</span>
-<span class="n">y_val</span><span class="p">,</span><span class="n">y_train</span> <span class="o">=</span> <span class="n">y_train_full</span><span class="p">[:</span><span class="mi">5000</span><span class="p">],</span><span class="n">y_train_full</span><span class="p">[</span><span class="mi">5000</span><span class="p">:]</span>
-<span class="c1"># Here we have to add one dimension to the images in order to match the conv2D requirements in Keras.</span>
-<span class="c1"># And we do it for all variables.</span>
-<span class="c1"># X_train=X_train[...,None]</span>
-<span class="c1"># X_val=X_val[...,None]</span>
-<span class="c1"># X_test=X_test[...,None]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_train</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_train</span><span class="p">)))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">FashionMNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span><span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="n">transform</span><span class="o">=</span><span class="n">Compose</span><span class="p">([</span><span class="n">ToTensor</span><span class="p">(),</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.5</span><span class="p">],[</span><span class="mf">0.5</span><span class="p">])]))</span>
+<span class="n">L</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+<span class="c1"># Training set</span>
+<span class="n">Lt</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span><span class="o">*</span><span class="n">L</span><span class="p">)</span>
+
+<span class="n">train_data</span><span class="p">,</span> <span class="n">val_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">random_split</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">[</span><span class="n">Lt</span><span class="p">,</span><span class="n">L</span><span class="o">-</span><span class="n">Lt</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">train_set</span><span class="p">)</span>
+<span class="n">loaded_train</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">loaded_test</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">val_data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">loaded_train</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(55000, 28, 28)
-(55000,)
-[0 1 2 3 4 5 6 7 8 9]
-10
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch.utils.data.dataset.Subset object at 0x2af90f8b0&gt;
+torch.Size([50, 1, 28, 28])
 </pre></div>
 </div>
 </div>
@@ -765,40 +771,170 @@ To enable them in other operations, rebuild TensorFlow with the appropriate comp
 <p>Here is the example of an auto-encoder that only has fully connected layers.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stacked_encoder</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">]),</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">),</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">)</span>
-<span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;encoder&#39;</span><span class="p">)</span>
-<span class="n">stacked_decoder</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;selu&quot;</span><span class="p">,</span><span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="mi">30</span><span class="p">]),</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;sigmoid&quot;</span><span class="p">),</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">([</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">])</span>
-<span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;decoder&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">StackedEncoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StackedEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span> <span class="c1"># inherit from parent class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flatten</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">()</span> <span class="c1"># flatten the input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="c1"># 28*28 input features, 100 output features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span> <span class="c1"># 100 input features, 30 output features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">SELU</span><span class="p">()</span> <span class="c1"># activation function</span>
 
-<span class="n">stacked_ae</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span><span class="n">stacked_encoder</span><span class="p">,</span><span class="n">stacked_decoder</span><span class="p">])</span>
-<span class="n">stacked_ae</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c1"># bottleneck layer</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">class</span> <span class="nc">StackedDecoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="nb">super</span><span class="p">(</span><span class="n">StackedDecoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span> <span class="c1"># inherit from parent class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="c1"># 30 input features, 100 output features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">)</span> <span class="c1"># 100 input features, 28*28 output features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">SELU</span><span class="p">()</span> <span class="c1"># activation function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span> <span class="c1"># sigmoid function</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">class</span> <span class="nc">StackedAE</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span> <span class="c1"># general  stacked autoencoder</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">decoder</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StackedAE</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span> <span class="c1"># inherit from parent class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">encoder</span> <span class="c1"># encoder: it could be any encoder branch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">decoder</span> <span class="c1"># decoder: it could be any decoder branc</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span> <span class="c1"># reshape the output</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+<span class="c1"># Instantiate the models</span>
+<span class="n">stacked_encoder</span> <span class="o">=</span> <span class="n">StackedEncoder</span><span class="p">()</span>
+<span class="n">stacked_decoder</span> <span class="o">=</span> <span class="n">StackedDecoder</span><span class="p">()</span>
+<span class="n">stacked_ae</span> <span class="o">=</span> <span class="n">StackedAE</span><span class="p">(</span><span class="n">stacked_encoder</span><span class="p">,</span> <span class="n">stacked_decoder</span><span class="p">)</span>
+
+<span class="c1"># Print model summary</span>
+<span class="n">summary</span><span class="p">(</span><span class="n">stacked_ae</span><span class="p">,</span> <span class="n">input_size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential&quot;
-_________________________________________________________________
- Layer (type)                Output Shape              Param #   
-=================================================================
- encoder (Sequential)        (None, 30)                81530     
-                                                                 
- decoder (Sequential)        (None, 28, 28)            82284     
-                                                                 
-=================================================================
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+StackedAE                                [1000, 1, 28, 28]         --
+├─StackedEncoder: 1-1                    [1000, 30]                --
+│    └─Flatten: 2-1                      [1000, 784]               --
+│    └─Linear: 2-2                       [1000, 100]               78,500
+│    └─SELU: 2-3                         [1000, 100]               --
+│    └─Linear: 2-4                       [1000, 30]                3,030
+│    └─SELU: 2-5                         [1000, 30]                --
+├─StackedDecoder: 1-2                    [1000, 784]               --
+│    └─Linear: 2-6                       [1000, 100]               3,100
+│    └─SELU: 2-7                         [1000, 100]               --
+│    └─Linear: 2-8                       [1000, 784]               79,184
+│    └─Sigmoid: 2-9                      [1000, 784]               --
+==========================================================================================
 Total params: 163,814
 Trainable params: 163,814
 Non-trainable params: 0
-_________________________________________________________________
+Total mult-adds (M): 163.81
+==========================================================================================
+Input size (MB): 3.14
+Forward/backward pass size (MB): 8.11
+Params size (MB): 0.66
+Estimated Total Size (MB): 11.90
+==========================================================================================
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-12-01 09:08:00.117697: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2 AVX AVX2 FMA
-To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</div>
+</div>
+<p>Function to train the model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">trainloader</span><span class="p">,</span> <span class="n">testloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span> <span class="p">):</span>
+
+    <span class="c1"># Create directory for saving model</span>
+    <span class="n">dir1</span> <span class="o">=</span> <span class="s1">&#39;./stacked_ae_checkpoint&#39;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dir1</span><span class="p">,</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Define loss and optimization method</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+    
+    <span class="c1"># # Save loss and error for plotting</span>
+    <span class="n">loss_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">)</span>
+    <span class="n">loss_val_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">)</span>
+
+    <span class="c1"># # Loop on number of epochs</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+        <span class="c1"># Initialize the loss</span>
+        <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Loop on samples in train set</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">trainloader</span><span class="p">:</span>
+            <span class="c1"># Get the sample and modify the format for PyTorch</span>
+            <span class="n">inputs</span><span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+            <span class="c1"># Set the parameter gradients to zero</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span> <span class="c1"># the loss is the difference between the input and the reconstructed input</span>
+            <span class="c1"># Propagate the loss backward</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="c1"># Update the gradients</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="c1"># Add the value of the loss for this sample</span>
+            <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="c1"># Save loss at the end of each epoch</span>
+        <span class="n">loss_time</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">=</span> <span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="p">)</span>
+
+        
+
+        <span class="n">checkpoint</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;state_dict&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+            <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+                        <span class="p">}</span>
+        
+        <span class="n">f_path</span> <span class="o">=</span> <span class="n">dir1</span><span class="o">+</span><span class="s1">&#39;/checkpoint.pt&#39;</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">f_path</span><span class="p">)</span>
+        
+
+        
+        <span class="c1"># After each epoch, evaluate the performance on the test set</span>
+        <span class="k">if</span> <span class="n">testloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="n">running_val_loss</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1"># We evaluate the model, so we do not need the gradient</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span> <span class="c1"># Context-manager that disabled gradient calculation.</span>
+                <span class="c1"># Loop on samples in test set</span>
+                <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">testloader</span><span class="p">:</span>
+                    <span class="c1"># Get the sample and modify the format for PyTorch</span>
+                    <span class="n">inputs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> 
+                    <span class="c1"># Use model for sample in the test set</span>
+                    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+                    <span class="c1"># Compare predicted label and true label</span>
+                    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span> <span class="c1"># the loss is the difference between the input and the reconstructed input</span>
+                    <span class="c1"># _, predicted = torch.max(outputs.data, 1)</span>
+                    
+                    <span class="n">running_val_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        
+        <span class="n">loss_val_time</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">=</span> <span class="n">running_val_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">testloader</span><span class="p">)</span>
+        <span class="c1"># Print intermediate results on screen</span>
+        <span class="k">if</span> <span class="n">testloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[Epoch </span><span class="si">%d</span><span class="s1">] train loss: </span><span class="si">%.3f</span><span class="s1"> - val loss: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span>
+              <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="p">),</span> <span class="n">running_val_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">testloader</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[Epoch </span><span class="si">%d</span><span class="s1">] loss: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span>
+              <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="p">)))</span>
+
+    <span class="c1"># Save history of loss and test error</span>
+    <span class="k">if</span> <span class="n">testloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">loss_time</span><span class="p">,</span> <span class="n">loss_val_time</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">loss_time</span><span class="p">)</span>
+        
 </pre></div>
 </div>
 </div>
@@ -806,44 +942,21 @@ To enable them in other operations, rebuild TensorFlow with the appropriate comp
 <p>The loss function in this case is not a MSE but instead a multilabel binary classifier on the probability of the pixel.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stacked_ae</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s2">&quot;binary_crossentropy&quot;</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">1.5</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">loss_val</span><span class="p">)</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">stacked_ae</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span><span class="n">loaded_train</span><span class="p">,</span> <span class="n">loaded_test</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/keras/optimizers/optimizer_v2/gradient_descent.py:111: UserWarning: The `lr` argument is deprecated, use `learning_rate` instead.
-  super().__init__(name, **kwargs)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 1] train loss: 0.597 - val loss: 0.595
 </pre></div>
 </div>
 </div>
 </div>
+<p>Plot the loss curve</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">stacked_ae</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">X_train</span><span class="p">,</span><span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span><span class="n">X_val</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/10
-1719/1719 [==============================] - 4s 2ms/step - loss: 0.3383 - val_loss: 0.3073
-Epoch 2/10
-1719/1719 [==============================] - 4s 2ms/step - loss: 0.3056 - val_loss: 0.2986
-Epoch 3/10
-1719/1719 [==============================] - 4s 2ms/step - loss: 0.2992 - val_loss: 0.2935
-Epoch 4/10
-1719/1719 [==============================] - 4s 2ms/step - loss: 0.2952 - val_loss: 0.2899
-Epoch 5/10
-1719/1719 [==============================] - 4s 2ms/step - loss: 0.2925 - val_loss: 0.2879
-Epoch 6/10
-1719/1719 [==============================] - 4s 2ms/step - loss: 0.2906 - val_loss: 0.2862
-Epoch 7/10
-1719/1719 [==============================] - 4s 2ms/step - loss: 0.2890 - val_loss: 0.2865
-Epoch 8/10
-1719/1719 [==============================] - 4s 2ms/step - loss: 0.2879 - val_loss: 0.2856
-Epoch 9/10
-1719/1719 [==============================] - 4s 2ms/step - loss: 0.2870 - val_loss: 0.2836
-Epoch 10/10
-1719/1719 [==============================] - 4s 2ms/step - loss: 0.2861 - val_loss: 0.2827
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loss</span>  <span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_vl</span>  <span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validation loss&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -873,10 +986,26 @@ Epoch 10/10
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1/1 [==============================] - 0s 81ms/step
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">marinedenolle</span><span class="o">/</span><span class="n">Dropbox</span><span class="o">/</span><span class="n">CLASSES</span><span class="o">/</span><span class="n">ESS490</span><span class="o">/</span><span class="n">curriculum</span><span class="o">-</span><span class="n">book</span><span class="o">/</span><span class="n">book</span><span class="o">/</span><span class="n">Chapter4</span><span class="o">-</span><span class="n">DeepLearning</span><span class="o">/</span><span class="n">mlgeo_4</span><span class="mf">.6</span><span class="n">_AutoEncoder</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">Cell</span> <span class="mi">16</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="o">----&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.ipynb#X13sZmlsZQ%3D%3D?line=0&#39;</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">show_reconstruction</span><span class="p">(</span><span class="n">stacked_ae</span><span class="p">)</span>
+
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">marinedenolle</span><span class="o">/</span><span class="n">Dropbox</span><span class="o">/</span><span class="n">CLASSES</span><span class="o">/</span><span class="n">ESS490</span><span class="o">/</span><span class="n">curriculum</span><span class="o">-</span><span class="n">book</span><span class="o">/</span><span class="n">book</span><span class="o">/</span><span class="n">Chapter4</span><span class="o">-</span><span class="n">DeepLearning</span><span class="o">/</span><span class="n">mlgeo_4</span><span class="mf">.6</span><span class="n">_AutoEncoder</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">Cell</span> <span class="mi">16</span> <span class="n">line</span> <span class="mi">6</span>
+      <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.ipynb#X13sZmlsZQ%3D%3D?line=4&#39;</span><span class="o">&gt;</span><span class="mi">5</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="k">def</span> <span class="nf">show_reconstruction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">n_images</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="o">----&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.ipynb#X13sZmlsZQ%3D%3D?line=5&#39;</span><span class="o">&gt;</span><span class="mi">6</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>     <span class="n">reconstruction</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_val</span><span class="p">[:</span><span class="n">n_images</span><span class="p">])</span>
+      <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.ipynb#X13sZmlsZQ%3D%3D?line=6&#39;</span><span class="o">&gt;</span><span class="mi">7</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>     <span class="k">for</span> <span class="n">image_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_images</span><span class="p">):</span>
+      <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.ipynb#X13sZmlsZQ%3D%3D?line=7&#39;</span><span class="o">&gt;</span><span class="mi">8</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>         <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">n_images</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">image_index</span><span class="p">)</span>
+
+<span class="nn">File ~/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/torch/nn/modules/module.py:1614,</span> in <span class="ni">Module.__getattr__</span><span class="nt">(self, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1612</span>     <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1613</span>         <span class="k">return</span> <span class="n">modules</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+<span class="ne">-&gt; </span><span class="mi">1614</span> <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; object has no attribute &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1615</span>     <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+
+<span class="ne">AttributeError</span>: &#39;StackedAE&#39; object has no attribute &#39;predict&#39;
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.6_AutoEncoder_10_1.png" src="../_images/mlgeo_4.6_AutoEncoder_10_1.png" />
 </div>
 </div>
 <p>This is not bad, but not great either. One could imagine training for longer or changing the architecture to include more layers or convolutional layers.</p>
@@ -968,7 +1097,7 @@ Epoch 6/20
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/mlgeo_4.6_AutoEncoder_16_0.png" src="../_images/mlgeo_4.6_AutoEncoder_16_0.png" />
+<img alt="../_images/mlgeo_4.6_AutoEncoder_20_0.png" src="../_images/mlgeo_4.6_AutoEncoder_20_0.png" />
 </div>
 </div>
 </section>
@@ -1078,7 +1207,7 @@ Epoch 20/20
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/mlgeo_4.6_AutoEncoder_20_0.png" src="../_images/mlgeo_4.6_AutoEncoder_20_0.png" />
+<img alt="../_images/mlgeo_4.6_AutoEncoder_24_0.png" src="../_images/mlgeo_4.6_AutoEncoder_24_0.png" />
 </div>
 </div>
 </section>
