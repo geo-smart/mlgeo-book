@@ -30,6 +30,10 @@ To build our website, we need specific Python packages which are managed with th
     ```
 
 1. Create and activate the "geosmart" conda environment.
+    ```sh
+    conda env create --file conda/environment.yml
+    mamba activate curriculum_book
+    ```
 
    __NOTE__: If you're running linux or Windows use `conda/conda-linux-64.lock.yml`
     ```sh
