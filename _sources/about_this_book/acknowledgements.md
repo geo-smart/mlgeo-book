@@ -3,6 +3,8 @@
 Many researchers interested in machine learning in the geosciences, and beyond, have contributed to this book.
 
 - Marine Denolle (UW, [GitHub](https://github.com/mdenolle))
+- Akshay Mehra (UW)
+- Ziheng Sun (George Madison University)
 - Ariane Ducellier (former UW graduate student, [GitHub](https://github.com/ArianeDucellier))
 - Stefan Todoran (UW, [GitHub](https://github.com/StefanTodoran))
 - Nicoleta Cristea (UW, [GitHub](https://github.com/NCristea))
