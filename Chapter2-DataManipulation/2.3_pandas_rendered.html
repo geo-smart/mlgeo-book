@@ -748,13 +748,30 @@ title="Print to PDF"
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-
+</pre></div>
+</div>
+</div>
+</div>
+<p>This notebook uses <code class="docutils literal notranslate"><span class="pre">plotly</span></code> to make interactive plots</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install plotly
 <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 <span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
 <span class="c1"># pio.renderers.default = &#39;vscode&#39; # writes as standalone html, </span>
 <span class="c1"># pio.renderers.default = &#39;iframe&#39; # writes files as standalone html, </span>
 <span class="c1"># pio.renderers.default = &#39;png&#39; # writes files as standalone png, </span>
 <span class="c1"># try notebook, jupyterlab, png, vscode, iframe</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: plotly in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (5.17.0)
+Requirement already satisfied: tenacity&gt;=6.2.0 in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from plotly) (8.2.3)
+Requirement already satisfied: packaging in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from plotly) (23.2)
+
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> A new release of pip is available: <span class=" -Color -Color-Red">23.3.1</span> -&gt; <span class=" -Color -Color-Green">24.2</span>
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> To update, run: <span class=" -Color -Color-Green">pip install --upgrade pip</span>
 </pre></div>
 </div>
 </div>
@@ -837,10 +854,87 @@ Name: temperature, dtype: int64
 </section>
 <section id="reading-a-dataframe-from-a-csv-file">
 <h2>1.2 Reading a DataFrame from a CSV file<a class="headerlink" href="#reading-a-dataframe-from-a-csv-file" title="Permalink to this headline">#</a></h2>
-<p>We can read a pandas directly from a standard file. Here you will read a catalog of earthquakes.</p>
+<p>We can read a pandas directly from a standard file. We will download a catalog of earthquakes</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quake</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;Global_Quakes_IRIS.csv&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">gist_dir</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="o">!</span>wget <span class="s2">&quot;https://gist.githubusercontent.com/UW-MLGEO/MLGEO-dataset/blob/main/data/Global_Quakes_IRIS.csv&quot;</span>
+<span class="n">quake</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ff</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-09-24 22:28:01--  https://gist.githubusercontent.com/UW-MLGEO/MLGEO-dataset/blob/main/data/Global_Quakes_IRIS.csv
+Resolving gist.githubusercontent.com (gist.githubusercontent.com)... 185.199.108.133, 185.199.110.133, 185.199.111.133, ...
+Connecting to gist.githubusercontent.com (gist.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: https://gist.github.com/UW-MLGEO/MLGEO-dataset/blob/main/data/Global_Quakes_IRIS.csv [following]
+--2024-09-24 22:28:01--  https://gist.github.com/UW-MLGEO/MLGEO-dataset/blob/main/data/Global_Quakes_IRIS.csv
+Resolving gist.github.com (gist.github.com)... 140.82.116.4
+Connecting to gist.github.com (gist.github.com)|140.82.116.4|:443... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2024-09-24 22:28:02 ERROR 404: Not Found.
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;wget &quot;https://gist.githubusercontent.com/UW-MLGEO/MLGEO-dataset/blob/main/data/Global_Quakes_IRIS.csv&quot;&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">wget</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">quake</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ff</span><span class="p">)</span>
+
+<span class="nn">File ~/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/pandas/io/parsers/readers.py:948,</span> in <span class="ni">read_csv</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, date_format, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, on_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options, dtype_backend)</span>
+<span class="g g-Whitespace">    </span><span class="mi">935</span> <span class="n">kwds_defaults</span> <span class="o">=</span> <span class="n">_refine_defaults_read</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">936</span>     <span class="n">dialect</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">937</span>     <span class="n">delimiter</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">944</span>     <span class="n">dtype_backend</span><span class="o">=</span><span class="n">dtype_backend</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">945</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">946</span> <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">948</span> <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File ~/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/pandas/io/parsers/readers.py:611,</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">608</span> <span class="n">_validate_names</span><span class="p">(</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;names&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">610</span> <span class="c1"># Create the parser.</span>
+<span class="ne">--&gt; </span><span class="mi">611</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">TextFileReader</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">613</span> <span class="k">if</span> <span class="n">chunksize</span> <span class="ow">or</span> <span class="n">iterator</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">614</span>     <span class="k">return</span> <span class="n">parser</span>
+
+<span class="nn">File ~/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/pandas/io/parsers/readers.py:1448,</span> in <span class="ni">TextFileReader.__init__</span><span class="nt">(self, f, engine, **kwds)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1445</span>     <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1447</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="p">:</span> <span class="n">IOHandles</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="ne">-&gt; </span><span class="mi">1448</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="nn">File ~/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/pandas/io/parsers/readers.py:1705,</span> in <span class="ni">TextFileReader._make_engine</span><span class="nt">(self, f, engine)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1703</span>     <span class="k">if</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1704</span>         <span class="n">mode</span> <span class="o">+=</span> <span class="s2">&quot;b&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1705</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="o">=</span> <span class="n">get_handle</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1706</span>     <span class="n">f</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1707</span>     <span class="n">mode</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1708</span>     <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1709</span>     <span class="n">compression</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1710</span>     <span class="n">memory_map</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memory_map&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1711</span>     <span class="n">is_text</span><span class="o">=</span><span class="n">is_text</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1712</span>     <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding_errors&quot;</span><span class="p">,</span> <span class="s2">&quot;strict&quot;</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1713</span>     <span class="n">storage_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;storage_options&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1714</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1715</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">1716</span> <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="o">.</span><span class="n">handle</span>
+
+<span class="nn">File ~/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/pandas/io/common.py:907,</span> in <span class="ni">get_handle</span><span class="nt">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">902</span>     <span class="n">is_wrapped</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">903</span>         <span class="nb">isinstance</span><span class="p">(</span><span class="n">ioargs</span><span class="o">.</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">should_close</span>
+<span class="g g-Whitespace">    </span><span class="mi">904</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">906</span> <span class="k">if</span> <span class="s2">&quot;r&quot;</span> <span class="ow">in</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">907</span>     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">908</span>         <span class="s2">&quot;Expected file path name or file-like object, &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">909</span>         <span class="sa">f</span><span class="s2">&quot;got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">ioargs</span><span class="o">.</span><span class="n">filepath_or_buffer</span><span class="p">)</span><span class="si">}</span><span class="s2"> type&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">910</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">912</span> <span class="n">handles</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>  <span class="c1"># close the most recently added buffer first</span>
+<span class="g g-Whitespace">    </span><span class="mi">913</span> <span class="k">if</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">should_close</span><span class="p">:</span>
+
+<span class="ne">TypeError</span>: Expected file path name or file-like object, got &lt;class &#39;bytes&#39;&gt; type
 </pre></div>
 </div>
 </div>
@@ -872,60 +966,10 @@ Name: temperature, dtype: int64
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>time</th>
-      <th>latitude</th>
-      <th>longitude</th>
-      <th>depth</th>
-      <th>magnitude</th>
-      <th>description</th>
+      <th>Not Found</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th>0</th>
-      <td>2010-07-02 06:04:03.570</td>
-      <td>-13.6098</td>
-      <td>166.6541</td>
-      <td>34400.0</td>
-      <td>6.3</td>
-      <td>VANUATU ISLANDS</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2010-07-04 21:55:52.370</td>
-      <td>39.6611</td>
-      <td>142.5792</td>
-      <td>30100.0</td>
-      <td>6.3</td>
-      <td>NEAR EAST COAST OF HONSHU</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2010-07-10 11:43:33.000</td>
-      <td>11.1664</td>
-      <td>146.0823</td>
-      <td>16900.0</td>
-      <td>6.3</td>
-      <td>SOUTH OF MARIANA ISLANDS</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2010-07-12 00:11:20.060</td>
-      <td>-22.2789</td>
-      <td>-68.3159</td>
-      <td>109400.0</td>
-      <td>6.2</td>
-      <td>NORTHERN CHILE</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2010-07-14 08:32:21.850</td>
-      <td>-38.0635</td>
-      <td>-73.4649</td>
-      <td>25700.0</td>
-      <td>6.6</td>
-      <td>NEAR COAST OF CENTRAL CHILE</td>
-    </tr>
   </tbody>
 </table>
 </div></div></div>
@@ -1150,6 +1194,11 @@ Name: depth, Length: 1785, dtype: float64
 </pre></div>
 </div>
 </div>
+</div>
+<p>Now apply the function to the entire series</p>
+<div class="admonition-student-response-section admonition">
+<p class="admonition-title">Student response section</p>
+<p>This section is left for the student to complete.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
