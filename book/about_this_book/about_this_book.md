@@ -8,7 +8,7 @@ Instructors:
 - Marine Denolle (mdenolle@uw.edu)
 - Akshay Mehra (akmehra@uw.edu)
 
-This project is supported by the GeoSMART team (Stefan Todoran, Nicoleta Cristea, Anthony Arendt, Scott Henderson, Ziheng Sun).
+This project is supported by the GeoSMART team (Stefan Todoran, Nicoleta Cristea, Anthony Arendt, Scott Henderson, Ziheng Sun, Yiyu Ni, Akash Kharita).
 
 # Overview
 The course is intended to introduce Machine Learning in Geosciences, the basics of computing, and methodologies in applied machine learning. The course focuses on canonical and topical data sets in seismology, oceanography, cryosphere, planetary sciences, geology, and geodesy. The methods taught include unsupervised clustering, logistic regression, random forest, support vector machine, and deep learning.

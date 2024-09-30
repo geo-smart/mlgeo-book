@@ -14,6 +14,14 @@ This repository stores configuration for GeoSMART curriculum content, specifical
 
 Edit the book content by modifying the `_config.yml`, `_toc.yml` and `*.ipynb` files in the `book` directory. The book is hosted on Github Pages and will be automatically updated on push, and the student book will also be created automatically on push.
 
+Making changes requires that you set up a conda environment and build locally before making sure that it will build with github actions. We accepted rendered notebooks, but some oddities, such as kernels different than python, will make it crash. So we recommend that contributors first build the book with the added notebooks.
+
+```sh
+    conda env create -f ./conda/environment.yml
+    conda activate curriculum_book
+
+```
+
 To modify the exact differences between this book and the student book, edit `.github/workflows/clean_book.py`. When you push, a github action will clone the repo and run this python file which modifies certain parts of `*.ipynb` file contents, then pushes to the student repo. To edit the student repo's README, edit `STUDENT_README.md`. The Github Actions workflow also automatically replaces `README.md` with `STUDENT_README.md` in the student repo.
 
 ### `Student Response Sections`
