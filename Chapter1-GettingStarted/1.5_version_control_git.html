@@ -1067,10 +1067,10 @@ Then copy the <code class="docutils literal notranslate"><span class="pre">envir
 <h3>Repository Structure<a class="headerlink" href="#repository-structure" title="Permalink to this headline">#</a></h3>
 <div class="highlight-tree notranslate"><div class="highlight"><pre><span></span>your-repo/ 
 ├── .github/ # GitHub-specific files (e.g., issue templates, workflows) 
-│ ├── ISSUE_TEMPLATE/ 
-│ ├── PULL_REQUEST_TEMPLATE.md 
+│ ├── ISSUE_TEMPLATE/ # for sophisticated community package
+│ ├── PULL_REQUEST_TEMPLATE.md  # for sophisticated community package
 │ └── workflows/ 
-│ └── ci.yml # Continuous Integration configuration 
+│ └── ci.yml # Continuous Integration configuration, publish package, build container, test, build github-pages
 ├── docs/ # Documentation files 
 │ ├── conf.py # Sphinx configuration file 
 │ ├── index.rst # Main documentation file 
@@ -1088,11 +1088,21 @@ Then copy the <code class="docutils literal notranslate"><span class="pre">envir
 ├── .gitignore # Git ignore file 
 ├── environment.yml # Conda environment file 
 ├── requirements.txt # Pip requirements file 
-├── setup.py # Setup script for packaging 
+├── pyproject.toml # project TOML file for packaging 
 ├── README.md # Project README file 
 ├── LICENSE # License file 
 └── CONTRIBUTING.md # Contribution guidelines
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Github actions allow for automated workflows such as:</p>
+<ul class="simple">
+<li><p>Build and Publish GitHub Pages (a tool for HTML)</p></li>
+<li><p>Build and push Docker Container (a tool for containers)</p></li>
+<li><p>Testing codes</p></li>
+<li><p>Set up, test, publish a Pypi package</p></li>
+</ul>
 </div>
 </section>
 <section id="explanation-of-key-files-and-directories">
@@ -1107,7 +1117,7 @@ Then copy the <code class="docutils literal notranslate"><span class="pre">envir
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code></strong>: Lists the pip dependencies for the project.</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">setup.py</span></code></strong> or <strong><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></strong>: Python packages have standards for packaging projects. <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> is the traditional way of defining a python package. Because of new standard, we only detail the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> below. You may find other examples of <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> projects online.</p></li>
 <li><p><strong><a class="reference external" href="https://github.com/matiassingers/awesome-readme"><code class="docutils literal notranslate"><span class="pre">README.md</span></code></a></strong>: The main README file that provides an overview of the project.</p></li>
-<li><p><strong><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">LICENSE</span></code></span></strong>: The license file for the project. Licensing is very important, you may find additional explanation for licensing on <a class="reference external" href="https://choosealicense.com/">ChooseALicense</a>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">LICENSE</span></code></strong>: The license file for the project. Licensing is very important, you may find additional explanation for licensing on <a class="reference external" href="https://choosealicense.com/">ChooseALicense</a>. You may need a specific language for a <strong>software license</strong> and for a <strong>data license</strong>.</p></li>
 <li><p><strong><a class="reference external" href="https://github.com/geo-smart/mlgeo-book/blob/main/CONTRIBUTING.md"><code class="docutils literal notranslate"><span class="pre">CONTRIBUTING.md</span></code></a></strong>: Guidelines for contributing to the project. <a class="reference external" href="https://github.com/mntnr/awesome-contributing">Awesome contributing guides</a> can be used for inspiration!</p></li>
 </ul>
 </section>
