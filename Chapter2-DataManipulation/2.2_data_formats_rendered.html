@@ -614,6 +614,39 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#json-javascript-object-notation">
+   JSON (JavaScript Object Notation)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tabular-data-formats">
+   Tabular Data Formats
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#csv-comma-separated-values">
+     <strong>
+      CSV (Comma-Separated Values)
+     </strong>
+     :
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#parquet">
+     <strong>
+      Parquet
+     </strong>
+     :
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#geospatial-data">
+   Geospatial Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#raster-data">
    1. Raster data
   </a>
@@ -682,6 +715,39 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#json-javascript-object-notation">
+   JSON (JavaScript Object Notation)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tabular-data-formats">
+   Tabular Data Formats
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#csv-comma-separated-values">
+     <strong>
+      CSV (Comma-Separated Values)
+     </strong>
+     :
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#parquet">
+     <strong>
+      Parquet
+     </strong>
+     :
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#geospatial-data">
+   Geospatial Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#raster-data">
    1. Raster data
   </a>
@@ -743,39 +809,86 @@ title="Print to PDF"
   <section class="tex2jax_ignore mathjax_ignore" id="data-formats">
 <h1>2.2 Data Formats<a class="headerlink" href="#data-formats" title="Permalink to this headline">#</a></h1>
 <p>In this tutorial, we will manipulate the data structure from and to several data formats.</p>
-<p>The formats that support unstructured (non relational) data are:</p>
-<ul class="simple">
-<li><p>JSON: JavaScript Object Notation, an open standard file format that uses human-readable text. The data may be attribute-value pairs and arrays. It is language-independent. The syntax looks like this</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Smith&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;isAlive&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-  <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span>
-  <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;streetAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;21 2nd Street&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;New York&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;NY&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;postalCode&quot;</span><span class="p">:</span> <span class="s2">&quot;10021-3100&quot;</span>
-  <span class="p">}</span>
+<section id="json-javascript-object-notation">
+<h2>JSON (JavaScript Object Notation)<a class="headerlink" href="#json-javascript-object-notation" title="Permalink to this headline">#</a></h2>
+<p>JSON is a lightweight, human-readable data format used in web applications and APIs for data exchange. SON is used to store metadata, configuration files, and small datasets, particularly when working with web-based applications or interacting with APIs (e.g., querying weather data or geospatial information from an API).
+Here is a simple example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;location&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Yellowstone&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;latitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">44.423691</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;longitude&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">-110.588516</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;elevation_m&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2399</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;temperature_c&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">22.5</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The character encoding is UTF-8. The data types in JSON files may be numbers, string, boolean, array, object (collection of name-value pairs), or null. More information on JSON from the <span class="xref myst">EarthDataScience course</span>.</p>
+<p>In Python, you create simply a JSON file with the JSON library:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="s2">&quot;Yellowstone&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="mf">44.423691</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">110.588516</span><span class="p">},</span>
+    <span class="s2">&quot;elevation_m&quot;</span><span class="p">:</span> <span class="mi">2399</span><span class="p">,</span>
+    <span class="s2">&quot;temperature_c&quot;</span><span class="p">:</span> <span class="mf">22.5</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tabular-data-formats">
+<h2>Tabular Data Formats<a class="headerlink" href="#tabular-data-formats" title="Permalink to this headline">#</a></h2>
+<p>Tabular data are common in geosciences. The <em>CSV</em> format is convienent, human-readable files for <em>small data sets</em> that store data in rows. The <em>Parquet</em> format is machine-readable for <em>large data sets</em> that supports compression.</p>
+<section id="csv-comma-separated-values">
+<h3><strong>CSV (Comma-Separated Values)</strong>:<a class="headerlink" href="#csv-comma-separated-values" title="Permalink to this headline">#</a></h3>
+<p>CSV is a simple, widely-used format for tabular data, often used in geoscience for sharing and storing smaller datasets (e.g., soil samples, environmental readings).
+It stores data as plain text, making it easy to read but can be inefficient for large datasets. It is most often read using <code class="docutils literal notranslate"><span class="pre">pandas</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Reading a CSV file</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Writing a CSV file</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;output.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="parquet">
+<h3><strong>Parquet</strong>:<a class="headerlink" href="#parquet" title="Permalink to this headline">#</a></h3>
+<p>Parquet is a binary, columnar storage format optimized for efficiency, particularly for large datasets. It is widely used in big data environments (e.g., storing satellite imagery or climate model outputs)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Writing the dictionary data to a Parquet file</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">data</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">&#39;data.parquet&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Reading the Parquet file</span>
+<span class="n">df_read</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">&#39;data.parquet&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_read</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="geospatial-data">
+<h2>Geospatial Data<a class="headerlink" href="#geospatial-data" title="Permalink to this headline">#</a></h2>
 <p>The main formats that support pixelized raster data are:</p>
 <ul class="simple">
 <li><p><strong>GeoTIFF</strong>: metadata standard that allows for georeferencing information embedded in a TIFF (Tagged Image File Format) file.  <strong>GeoTIFF</strong> is enhanced to be cloud optimized.</p></li>
 <li><p><strong>GeoJSON</strong>: GeoJSON is a format for encoding a variety of geographic data structures in the JSON format.</p></li>
-</ul>
-<p>The formats that support tabular data are:</p>
-<ul class="simple">
-<li><p>CSV</p></li>
-<li><p>Parquet</p></li>
-</ul>
-<p>The data formats for big heterogeneous data (different data types):</p>
-<ul class="simple">
-<li><p>NetCDF4</p></li>
-<li><p>HDF5</p></li>
-<li><p>Zarr</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -801,6 +914,7 @@ title="Print to PDF"
 </div>
 </div>
 </div>
+</section>
 <section id="raster-data">
 <h2>1. Raster data<a class="headerlink" href="#raster-data" title="Permalink to this headline">#</a></h2>
 <section id="rasterio-to-read-geotiff">
