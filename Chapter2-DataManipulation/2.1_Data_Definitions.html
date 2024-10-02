@@ -342,6 +342,18 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Chapter 5 - Workflow Management and Reproducibility
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter5-ModelWorkflows/readme.html">
+   This chapter focuces on model workflow and ML reproducibility
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Chapter 6- Introduction to Cloud Computing
  </span>
 </p>
@@ -573,13 +585,28 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-data-modality">
-   The data modality
+  <a class="reference internal nav-link" href="#data-modality-in-geosciences">
+   Data modality in Geosciences
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-formats-in-geosciences">
+   Data Formats in Geosciences
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#arrays">
+   Arrays
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#data-frames">
    Data Frames
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#lecture-slides">
+   Lecture Slides
   </a>
  </li>
 </ul>
@@ -602,13 +629,28 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-data-modality">
-   The data modality
+  <a class="reference internal nav-link" href="#data-modality-in-geosciences">
+   Data modality in Geosciences
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-formats-in-geosciences">
+   Data Formats in Geosciences
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#arrays">
+   Arrays
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#data-frames">
    Data Frames
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#lecture-slides">
+   Lecture Slides
   </a>
  </li>
 </ul>
@@ -623,20 +665,78 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="data-definitions">
 <h1>2.1 Data Definitions<a class="headerlink" href="#data-definitions" title="Permalink to this headline">#</a></h1>
-<p>Geoscientific data is particularly diverse: point measurements of soil moisture, high rate time series (1000 samples per second) seismograms, rasterized LandSAT imagery, Geospatial and Temporal simulated geophysical fields.</p>
-<section id="the-data-modality">
-<h2>The data modality<a class="headerlink" href="#the-data-modality" title="Permalink to this headline">#</a></h2>
-<p>Modality refers to the field, or genre of measurements. Different modalities may be seismograms, GPS displacement time series, surface air temperature time series. All of them are point-based measurements, share the same data type (1D arrays), could be saved in the same data format (e.g., CSV file), but sense different physical fields.</p>
-<p><strong>The data type</strong> refers to the type of an object. Geoscientific data is <em>numeric</em> (floats, integer) and from which you can calculate things. It can also be <em>categorical</em> (i.e. qualitative or nominal).</p>
-<p><strong>The data format</strong> refers to the specific type of parsing schema in a file (H5, CSV, JSON). It can be binary (H5), using standard character encodings (CSV, JSON), compressed (H5, Parquet), … more details in Chapter 2.5.</p>
-<p>The difference in dimensionalities among geoscientific data challenges the design of machine learning models across disciplines. For most machine-learning practices, data modalities are classified as <strong>dimension</strong>. One example is a geophysical model that uses sattelite imagery (2D in space) with time series (1D in time) from point-based sensor measurements to predict an output.</p>
+<p>Data is foundational to geosciences, allowing us to observe, model, and predict natural processes. Understanding the various types of data, their formats, and how they are structured is key to effectively using them in research and applications. In this lecture, we will discuss data modalities encountered in geoscience, typical data formats, the concept of arrays, and data frames. Geoscientific data is particularly diverse: point measurements of soil moisture, high rate time series (1000 samples per second) seismograms, rasterized LandSAT imagery, Geospatial and Temporal simulated geophysical fields.</p>
+<!-- For Vscode -->
+<p><img alt="Geoscientific Temporal Data" src="../_images/Dalle-geoscientific-data.png" /></p>
+<!-- For Jupyter Book -->
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/Dalle-geoscientific-data.png"><img alt="../_images/Dalle-geoscientific-data.png" src="../_images/Dalle-geoscientific-data.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">AI-Art from Dall-e: geoscientific data with dataframes, geospatial, and temporal data.</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><em>AI-Art from Dall-e: geoscientific data with dataframes, geospatial, and temporal data.</em></p>
+<hr class="docutils" />
+<section id="data-modality-in-geosciences">
+<h2>Data modality in Geosciences<a class="headerlink" href="#data-modality-in-geosciences" title="Permalink to this headline">#</a></h2>
+<p>In geosciences, data come in multiple modalities depending on the source, nature of the measurements, and intended applications:</p>
+<ul class="simple">
+<li><p><strong>In-situ Data</strong>: Measurements taken directly at the site of interest. In-situ data often comes as time series. Examples include:</p>
+<ul>
+<li><p>Temperature readings from weather stations.</p></li>
+<li><p>Seismic wave data from seismographs.</p></li>
+<li><p>Soil moisture content from field sensors.</p></li>
+</ul>
+</li>
+<li><p><strong>Remote Sensing Data</strong>: Collected from instruments not in direct contact with the object of study, often using satellites, drones, or aircraft. <em>Geospatial Data</em> are tied to specific locations on Earth’s surface, often represented as maps or grids (e.g., GIS data). Examples include:</p>
+<ul>
+<li><p>Spectral data (e.g., multispectral or hyperspectral images) from satellites.</p></li>
+<li><p>Topography data using LiDAR or radar systems.</p></li>
+<li><p>Sea surface temperature from satellites.</p></li>
+</ul>
+</li>
+<li><p><strong>Model Data</strong>: Simulated data generated from computational models. For example:</p>
+<ul>
+<li><p>Climate models predicting future temperatures or precipitation.</p></li>
+<li><p>Hydrological models simulating water flow in river basins.</p></li>
+</ul>
+</li>
+<li><p><strong>Geophysical Data</strong>: Subsurface measurements derived through indirect methods like seismic surveys, gravity, or magnetic studies.</p></li>
+</ul>
+</section>
+<section id="data-formats-in-geosciences">
+<h2>Data Formats in Geosciences<a class="headerlink" href="#data-formats-in-geosciences" title="Permalink to this headline">#</a></h2>
+<p>Geoscientific data is typically stored in formats that optimize storage, access, and sharing. Common formats include:</p>
+<p><strong>NetCDF</strong> (Network Common Data Form): Commonly used for multidimensional scientific data, such as atmospheric, oceanic, or climate model outputs. It efficiently stores array-based data with metadata.</p>
+<p><strong>HDF</strong> (Hierarchical Data Format): Similar to NetCDF but more general, used for large datasets including satellite imagery.</p>
+<p><strong>CSV</strong> (Comma-Separated Values): A simple format for tabular data. It’s human-readable and widely supported across software, but less efficient for large or multidimensional datasets.</p>
+<p><strong>GeoTIFF</strong>: A popular format for raster geospatial data, often used in remote sensing and GIS applications.</p>
+<p><strong>Shapefiles</strong>: A vector data format for geographic information system (GIS) software, which contains geometric locations and attribute information of spatial features.</p>
+<p>Most of these files are not cloud optimized, and we will explore next new format to accomodate large cloud storage systems.</p>
+</section>
+<section id="arrays">
+<h2>Arrays<a class="headerlink" href="#arrays" title="Permalink to this headline">#</a></h2>
+<p>An array is a fundamental data structure used to store collections of values, often representing multidimensional data (e.g., gridded spatial data). Arrays in geosciences typically represent data like temperature, pressure, or rainfall on a grid.</p>
+<p>Typical Dimensions of Arrays:</p>
+<ul class="simple">
+<li><p>1D Arrays: A single sequence of data, such as temperature measurements over time at one location.</p></li>
+<li><p>2D Arrays: Often represent gridded spatial data (e.g., a map of precipitation over a region).</p></li>
+<li><p>3D Arrays: Can include additional dimensions, such as time or depth. For instance, a 3D array could represent temperature at various depths and over time for a given region, 3D Earth model of geophysical properties such as seismic wavespeed, time varying (snapshots) of seismic wavefields, …</p></li>
+<li><p>4D Arrays: Add even more complexity, such as a time-varying 3D grid (e.g., atmospheric data changing over space and time), time-lapse images of the subsurface properties.</p></li>
+</ul>
 </section>
 <section id="data-frames">
 <h2>Data Frames<a class="headerlink" href="#data-frames" title="Permalink to this headline">#</a></h2>
-<p>A <strong>DataFrame</strong> is a tabular data structure that organizes data into a 2-dimensional table of rows and columns, much like a spreadsheet. Dataframes are relational databases. Their <em>data schema</em> defines how data is organized within the dataframe: it defines the column names to specific values.</p>
-<p>Data frames can be saved in row based file formats (Comma Separated Value CSV) or column-based formats (Parquet).</p>
-<p><span class="xref myst">Lecture Slides</span>[! (<a class="reference external" href="https://docs.google.com/presentation/d/1PVu8vbYtX0G4W41TB537Irm5V845E4uPsIrWQRfoQB0/edit?usp=sharing">https://docs.google.com/presentation/d/1PVu8vbYtX0G4W41TB537Irm5V845E4uPsIrWQRfoQB0/edit?usp=sharing</a>)
-See Lecture Slides.</p>
+<p>A data frame is a two-dimensional, tabular data structure, commonly used in data analysis. Data frames can be thought of as equivalent to a spreadsheet or database table, where:</p>
+<ul class="simple">
+<li><p>Each <strong>column</strong> represents a variable or feature (e.g., date, location, temperature).</p></li>
+<li><p>Each <strong>row</strong> corresponds to an observation or data point.
+Data frames are popular in programming environments like R and Python (via the Pandas library) because they offer flexibility in handling mixed data types (numerical, categorical, etc.) and are ideal for statistical analysis and data manipulation.</p></li>
+</ul>
+</section>
+<section id="lecture-slides">
+<h2>Lecture Slides<a class="headerlink" href="#lecture-slides" title="Permalink to this headline">#</a></h2>
+<p><a class="reference external" href="https://docs.google.com/presentation/d/1PVu8vbYtX0G4W41TB537Irm5V845E4uPsIrWQRfoQB0/edit?usp=sharing"><img alt="Lecture Slides" src="img/Google_Slides_Logo.svg" /></a></p>
 </section>
 </section>
 
