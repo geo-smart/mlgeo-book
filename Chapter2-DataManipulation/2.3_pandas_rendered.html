@@ -54,7 +54,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="2.4 Data Arrays" href="2.4_Arrays.html" />
+    <link rel="next" title="2.4 DataFrame Exploration" href="2.4_dataframes_prep.html" />
     <link rel="prev" title="2.2 Data Formats" href="2.2_data_formats_rendered.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -201,13 +201,18 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="2.4_Arrays.html">
-   2.4 Data Arrays
+  <a class="reference internal" href="2.4_dataframes_prep.html">
+   2.4 DataFrame Exploration
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="2.5_resampling.html">
-   2.5 Resampling Methods
+  <a class="reference internal" href="2.5_Arrays.html">
+   2.5 Data Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.6_resampling.html">
+   2.6 Resampling Methods
   </a>
  </li>
  <li class="toctree-l1">
@@ -662,6 +667,11 @@ title="Print to PDF"
       <a class="reference internal nav-link" href="#advanced-time-series-data-manipulation-with-lambda-functions">
        1.5 Advanced: Time Series Data Manipulation with Lambda Functions
       </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#aggregate-function">
+       1.6 Aggregate function
+      </a>
       <ul class="nav section-nav flex-column">
        <li class="toc-h4 nav-item toc-entry">
         <a class="reference internal nav-link" href="#aggregating-multiple-columns-with-multiple-functions">
@@ -761,6 +771,11 @@ title="Print to PDF"
      <li class="toc-h3 nav-item toc-entry">
       <a class="reference internal nav-link" href="#advanced-time-series-data-manipulation-with-lambda-functions">
        1.5 Advanced: Time Series Data Manipulation with Lambda Functions
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#aggregate-function">
+       1.6 Aggregate function
       </a>
       <ul class="nav section-nav flex-column">
        <li class="toc-h4 nav-item toc-entry">
@@ -938,23 +953,24 @@ Name: temperature, dtype: int64
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="n">gist_dir</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="o">!</span>wget <span class="s2">&quot;https://gist.githubusercontent.com/UW-MLGEO/MLGEO-dataset/main/data/Global_Quakes_IRIS.csv&quot;</span>
+<span class="o">!</span>wget <span class="s2">&quot;https://raw.githubusercontent.com/UW-MLGEO/MLGeo-dataset/refs/heads/main/data/Global_Quakes_IRIS.csv&quot;</span>
+<span class="c1"># !wget &quot;https://github.com/UW-MLGEO/MLGeo-dataset/blob/main/data/Global_Quakes_IRIS.csv&quot;</span>
 <span class="n">ff</span> <span class="o">=</span> <span class="s2">&quot;Global_Quakes_IRIS.csv&quot;</span>
 <span class="n">quake</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ff</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-10-04 06:23:53--  https://gist.githubusercontent.com/UW-MLGEO/MLGEO-dataset/main/data/Global_Quakes_IRIS.csv
-Resolving gist.githubusercontent.com (gist.githubusercontent.com)... 185.199.109.133, 185.199.111.133, 185.199.110.133, ...
-Connecting to gist.githubusercontent.com (gist.githubusercontent.com)|185.199.109.133|:443... connected.
-HTTP request sent, awaiting response... 301 Moved Permanently
-Location: https://gist.github.com/UW-MLGEO/MLGEO-dataset/main/data/Global_Quakes_IRIS.csv [following]
---2024-10-04 06:23:53--  https://gist.github.com/UW-MLGEO/MLGEO-dataset/main/data/Global_Quakes_IRIS.csv
-Resolving gist.github.com (gist.github.com)... 140.82.116.3
-Connecting to gist.github.com (gist.github.com)|140.82.116.3|:443... connected.
-HTTP request sent, awaiting response... 404 Not Found
-2024-10-04 06:23:53 ERROR 404: Not Found.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-10-07 05:13:23--  https://raw.githubusercontent.com/UW-MLGEO/MLGeo-dataset/refs/heads/main/data/Global_Quakes_IRIS.csv
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.109.133, 185.199.110.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 129629 (127K) [text/plain]
+Saving to: ‘Global_Quakes_IRIS.csv.1’
+
+Global_Quakes_IRIS. 100%[===================&gt;] 126.59K  --.-KB/s    in 0.05s   
+
+2024-10-07 05:13:23 (2.35 MB/s) - ‘Global_Quakes_IRIS.csv.1’ saved [129629/129629]
 </pre></div>
 </div>
 </div>
@@ -1472,7 +1488,7 @@ Name: depth, Length: 1785, dtype: float64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># or like this</span>
-<span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="o">=</span><span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="o">=</span><span class="n">quake</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span> 
 </pre></div>
 </div>
 </div>
@@ -1739,23 +1755,10 @@ Scenario: Suppose you have daily temperature data, and you want to calculate a 7
 </div></div></div>
 </div>
 <p>Here, <code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x.mean()</span></code> calculates the rolling mean over a 3-day window for temperature data, which is essential in climate analysis for smoothing short-term fluctuations.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>### 1.6 Aggregate function
-
-The ``agg``  is a powerful method in Pandas that allows you to perform multiple operations on DataFrames and Series. You can apply one or more aggregation functions such as ``sum``, ``mean``, ``min``, ``max``, etc., on different columns or groups of data.
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>  Cell In[81], line 3
-    The ``agg``  is a powerful method in Pandas that allows you to perform multiple operations on DataFrames and Series. You can apply one or more aggregation functions such as ``sum``, ``mean``, ``min``, ``max``, etc., on different columns or groups of data.
-        ^
-SyntaxError: invalid syntax
-</pre></div>
-</div>
-</div>
-</div>
+</section>
+<section id="aggregate-function">
+<h3>1.6 Aggregate function<a class="headerlink" href="#aggregate-function" title="Permalink to this headline">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">agg</span></code> is a powerful method in Pandas that allows you to perform multiple operations on DataFrames and Series. You can apply one or more aggregation functions such as <code class="docutils literal notranslate"><span class="pre">sum</span></code>, <code class="docutils literal notranslate"><span class="pre">mean</span></code>, <code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code>, etc., on different columns or groups of data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample DataFrame</span>
@@ -2216,14 +2219,14 @@ Name: station, Length: 29439, dtype: object
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/js/lzmy975n0l5bjbmr9db291m00000gn/T/ipykernel_7231/3238846712.py:2: UserWarning:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/js/lzmy975n0l5bjbmr9db291m00000gn/T/ipykernel_26544/3238846712.py:2: UserWarning:
 
 Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.
 </pre></div>
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">DateParseError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">41</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">78</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># convert start_time and end_time to datetime</span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;start_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;start_time&#39;</span><span class="p">])</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;end_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;end_time&#39;</span><span class="p">])</span>
@@ -2644,124 +2647,6 @@ Could not infer format, so each element will be parsed individually, falling bac
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>0</th>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
-      <th>4</th>
-      <th>5</th>
-      <th>6</th>
-      <th>7</th>
-      <th>8</th>
-      <th>9</th>
-      <th>10</th>
-      <th>11</th>
-      <th>12</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>AAR</td>
-      <td>NC</td>
-      <td>EHZ</td>
-      <td>--</td>
-      <td>0.0</td>
-      <td>1976/07/20,17:38:00</td>
-      <td>1977/12/01,22:37:00</td>
-      <td>39.27594</td>
-      <td>-121.02696</td>
-      <td>911.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>AAR</td>
-      <td>NC</td>
-      <td>EHZ</td>
-      <td>--</td>
-      <td>0.0</td>
-      <td>1977/12/01,22:37:00</td>
-      <td>1981/06/12,19:15:00</td>
-      <td>39.27594</td>
-      <td>-121.02696</td>
-      <td>911.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>AAR</td>
-      <td>NC</td>
-      <td>EHZ</td>
-      <td>--</td>
-      <td>0.0</td>
-      <td>1981/06/12,19:15:00</td>
-      <td>1984/01/01,00:00:00</td>
-      <td>39.27594</td>
-      <td>-121.02696</td>
-      <td>911.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>AAR</td>
-      <td>NC</td>
-      <td>EHZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>1984/01/01,00:00:00</td>
-      <td>1985/11/03,22:00:00</td>
-      <td>39.27594</td>
-      <td>-121.02696</td>
-      <td>911.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>AAR</td>
-      <td>NC</td>
-      <td>EHZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>1985/11/03,22:00:00</td>
-      <td>1987/03/10,23:15:00</td>
-      <td>39.27594</td>
-      <td>-121.02696</td>
-      <td>911.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2778,221 +2663,6 @@ Could not infer format, so each element will be parsed individually, falling bac
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>station</th>
-      <th>network</th>
-      <th>channel</th>
-      <th>location</th>
-      <th>rate</th>
-      <th>start_time</th>
-      <th>end_time</th>
-      <th>latitude</th>
-      <th>longitude</th>
-      <th>elevation</th>
-      <th>depth</th>
-      <th>dip</th>
-      <th>azimuth</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>15600</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>1999/08/03,00:00:00</td>
-      <td>2000/06/06,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15601</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2000/06/06,00:00:00</td>
-      <td>2000/06/06,16:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15602</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2000/06/06,16:00:00</td>
-      <td>2000/07/12,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15603</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2000/07/12,00:00:00</td>
-      <td>2002/01/24,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15604</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2002/01/24,00:00:00</td>
-      <td>2002/01/24,23:50:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>15728</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>MNE</td>
-      <td>--</td>
-      <td>10.0</td>
-      <td>2000/06/06,16:00:00</td>
-      <td>2000/07/12,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15729</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>MNN</td>
-      <td>--</td>
-      <td>10.0</td>
-      <td>1999/08/03,00:00:00</td>
-      <td>2000/06/06,16:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15730</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>MNN</td>
-      <td>--</td>
-      <td>10.0</td>
-      <td>2000/06/06,16:00:00</td>
-      <td>2000/07/12,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15731</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>MNZ</td>
-      <td>--</td>
-      <td>10.0</td>
-      <td>1999/08/03,00:00:00</td>
-      <td>2000/06/06,16:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15732</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>MNZ</td>
-      <td>--</td>
-      <td>10.0</td>
-      <td>2000/06/06,16:00:00</td>
-      <td>2000/07/12,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-  </tbody>
-</table>
-<p>133 rows × 13 columns</p>
-</div></div></div>
 </div>
 <p>Now select two stations of your choice using <code class="docutils literal notranslate"><span class="pre">|</span></code>.</p>
 <div class="cell docutils container">
@@ -3001,221 +2671,6 @@ Could not infer format, so each element will be parsed individually, falling bac
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>station</th>
-      <th>network</th>
-      <th>channel</th>
-      <th>location</th>
-      <th>rate</th>
-      <th>start_time</th>
-      <th>end_time</th>
-      <th>latitude</th>
-      <th>longitude</th>
-      <th>elevation</th>
-      <th>depth</th>
-      <th>dip</th>
-      <th>azimuth</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>15600</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>1999/08/03,00:00:00</td>
-      <td>2000/06/06,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15601</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2000/06/06,00:00:00</td>
-      <td>2000/06/06,16:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15602</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2000/06/06,16:00:00</td>
-      <td>2000/07/12,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15603</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2000/07/12,00:00:00</td>
-      <td>2002/01/24,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15604</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2002/01/24,00:00:00</td>
-      <td>2002/01/24,23:50:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>16345</th>
-      <td>KHBB</td>
-      <td>NC</td>
-      <td>VFP</td>
-      <td>--</td>
-      <td>0.1</td>
-      <td>2022/08/09,18:00:00</td>
-      <td>3000/01/01,00:00:00</td>
-      <td>40.65990</td>
-      <td>-123.21966</td>
-      <td>1864.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>16346</th>
-      <td>KHBB</td>
-      <td>NC</td>
-      <td>VKI</td>
-      <td>--</td>
-      <td>0.1</td>
-      <td>2022/08/09,18:00:00</td>
-      <td>3000/01/01,00:00:00</td>
-      <td>40.65990</td>
-      <td>-123.21966</td>
-      <td>1864.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>16347</th>
-      <td>KHBB</td>
-      <td>NC</td>
-      <td>VMU</td>
-      <td>--</td>
-      <td>0.1</td>
-      <td>2022/08/09,18:00:00</td>
-      <td>3000/01/01,00:00:00</td>
-      <td>40.65990</td>
-      <td>-123.21966</td>
-      <td>1864.0</td>
-      <td>0.0</td>
-      <td>-54.7</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>16348</th>
-      <td>KHBB</td>
-      <td>NC</td>
-      <td>VMV</td>
-      <td>--</td>
-      <td>0.1</td>
-      <td>2022/08/09,18:00:00</td>
-      <td>3000/01/01,00:00:00</td>
-      <td>40.65990</td>
-      <td>-123.21966</td>
-      <td>1864.0</td>
-      <td>0.0</td>
-      <td>-54.7</td>
-      <td>330.0</td>
-    </tr>
-    <tr>
-      <th>16349</th>
-      <td>KHBB</td>
-      <td>NC</td>
-      <td>VMW</td>
-      <td>--</td>
-      <td>0.1</td>
-      <td>2022/08/09,18:00:00</td>
-      <td>3000/01/01,00:00:00</td>
-      <td>40.65990</td>
-      <td>-123.21966</td>
-      <td>1864.0</td>
-      <td>0.0</td>
-      <td>-54.7</td>
-      <td>210.0</td>
-    </tr>
-  </tbody>
-</table>
-<p>228 rows × 13 columns</p>
-</div></div></div>
 </div>
 <p>Now select a given station and a specific channel code, example is <code class="docutils literal notranslate"><span class="pre">KCPB</span></code> and channel code <code class="docutils literal notranslate"><span class="pre">HNZ</span></code>.</p>
 <div class="cell docutils container">
@@ -3224,220 +2679,6 @@ Could not infer format, so each element will be parsed individually, falling bac
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>station</th>
-      <th>network</th>
-      <th>channel</th>
-      <th>location</th>
-      <th>rate</th>
-      <th>start_time</th>
-      <th>end_time</th>
-      <th>latitude</th>
-      <th>longitude</th>
-      <th>elevation</th>
-      <th>depth</th>
-      <th>dip</th>
-      <th>azimuth</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>15701</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>HNZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>2002/10/17,00:00:00</td>
-      <td>2006/06/26,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15702</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>HNZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>2006/06/26,00:00:00</td>
-      <td>2006/10/18,00:08:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15703</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>HNZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>2006/10/18,00:08:00</td>
-      <td>2006/10/19,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15704</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>HNZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>2006/10/19,00:00:00</td>
-      <td>2006/11/14,23:30:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15705</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>HNZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>2006/11/14,23:30:00</td>
-      <td>2010/11/01,22:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15706</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>HNZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>2010/11/01,22:00:00</td>
-      <td>2011/07/13,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15707</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>HNZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>2011/07/13,00:00:00</td>
-      <td>2011/09/07,19:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15708</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>HNZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>2011/09/07,19:00:00</td>
-      <td>2015/10/29,18:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15709</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>HNZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>2015/10/29,18:00:00</td>
-      <td>2016/04/28,16:39:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15710</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>HNZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>2016/04/28,16:39:00</td>
-      <td>2019/09/13,17:30:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15711</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>HNZ</td>
-      <td>--</td>
-      <td>100.0</td>
-      <td>2019/09/13,17:30:00</td>
-      <td>2022/11/15,18:19:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>-90.0</td>
-      <td>0.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>You may also choose the pandas function <code class="docutils literal notranslate"><span class="pre">isin</span></code> to select rows that have a given attribute that belongs to a list. For instance, use <code class="docutils literal notranslate"><span class="pre">isin</span></code> to select all rows that have the key <code class="docutils literal notranslate"><span class="pre">station</span></code> within a list <code class="docutils literal notranslate"><span class="pre">['KCBP','KHBB'</span> <span class="pre">]</span></code>.</p>
 <div class="cell docutils container">
@@ -3446,221 +2687,6 @@ Could not infer format, so each element will be parsed individually, falling bac
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>station</th>
-      <th>network</th>
-      <th>channel</th>
-      <th>location</th>
-      <th>rate</th>
-      <th>start_time</th>
-      <th>end_time</th>
-      <th>latitude</th>
-      <th>longitude</th>
-      <th>elevation</th>
-      <th>depth</th>
-      <th>dip</th>
-      <th>azimuth</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>15600</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>1999/08/03,00:00:00</td>
-      <td>2000/06/06,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15601</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2000/06/06,00:00:00</td>
-      <td>2000/06/06,16:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15602</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2000/06/06,16:00:00</td>
-      <td>2000/07/12,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15603</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2000/07/12,00:00:00</td>
-      <td>2002/01/24,00:00:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>15604</th>
-      <td>KCPB</td>
-      <td>NC</td>
-      <td>BHE</td>
-      <td>--</td>
-      <td>50.0</td>
-      <td>2002/01/24,00:00:00</td>
-      <td>2002/01/24,23:50:00</td>
-      <td>39.68631</td>
-      <td>-123.58242</td>
-      <td>1261.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>16345</th>
-      <td>KHBB</td>
-      <td>NC</td>
-      <td>VFP</td>
-      <td>--</td>
-      <td>0.1</td>
-      <td>2022/08/09,18:00:00</td>
-      <td>3000/01/01,00:00:00</td>
-      <td>40.65990</td>
-      <td>-123.21966</td>
-      <td>1864.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>16346</th>
-      <td>KHBB</td>
-      <td>NC</td>
-      <td>VKI</td>
-      <td>--</td>
-      <td>0.1</td>
-      <td>2022/08/09,18:00:00</td>
-      <td>3000/01/01,00:00:00</td>
-      <td>40.65990</td>
-      <td>-123.21966</td>
-      <td>1864.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>16347</th>
-      <td>KHBB</td>
-      <td>NC</td>
-      <td>VMU</td>
-      <td>--</td>
-      <td>0.1</td>
-      <td>2022/08/09,18:00:00</td>
-      <td>3000/01/01,00:00:00</td>
-      <td>40.65990</td>
-      <td>-123.21966</td>
-      <td>1864.0</td>
-      <td>0.0</td>
-      <td>-54.7</td>
-      <td>90.0</td>
-    </tr>
-    <tr>
-      <th>16348</th>
-      <td>KHBB</td>
-      <td>NC</td>
-      <td>VMV</td>
-      <td>--</td>
-      <td>0.1</td>
-      <td>2022/08/09,18:00:00</td>
-      <td>3000/01/01,00:00:00</td>
-      <td>40.65990</td>
-      <td>-123.21966</td>
-      <td>1864.0</td>
-      <td>0.0</td>
-      <td>-54.7</td>
-      <td>330.0</td>
-    </tr>
-    <tr>
-      <th>16349</th>
-      <td>KHBB</td>
-      <td>NC</td>
-      <td>VMW</td>
-      <td>--</td>
-      <td>0.1</td>
-      <td>2022/08/09,18:00:00</td>
-      <td>3000/01/01,00:00:00</td>
-      <td>40.65990</td>
-      <td>-123.21966</td>
-      <td>1864.0</td>
-      <td>0.0</td>
-      <td>-54.7</td>
-      <td>210.0</td>
-    </tr>
-  </tbody>
-</table>
-<p>228 rows × 13 columns</p>
-</div></div></div>
 </div>
 <p><strong>Q</strong> Use panda native functions to calculate how many unique sites (station names) there are in the network.</p>
 <div class="cell docutils container">
@@ -3682,22 +2708,6 @@ Could not infer format, so each element will be parsed individually, falling bac
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># students answer here</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>KCPB    78
-JSGB    73
-KMPB    72
-KHMB    63
-CCH1    60
-        ..
-LAMB     1
-LBA      1
-PBY      1
-MCW      1
-MMW      1
-Name: station, Length: 905, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -3724,25 +2734,6 @@ Name: station, Length: 905, dtype: int64
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      1984-01-01 00:00:00
-1      1987-05-01 00:00:00
-2      1994-11-28 00:00:00
-3      1984-11-27 18:45:00
-4      1987-05-01 00:00:00
-               ...        
-7150   1995-07-02 12:00:00
-7151   1995-07-02 12:00:00
-7152   1995-03-02 19:00:00
-7153   1995-07-02 12:00:00
-7154   1995-07-02 12:00:00
-Name: start_time, Length: 7136, dtype: datetime64[ns]
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas._libs.tslibs.timestamps.Timestamp
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -3758,23 +2749,6 @@ Name: start_time, Length: 7136, dtype: datetime64[ns]
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>station
-AAR   1984-01-01 00:00:00
-AAS   1984-11-27 18:45:00
-ABJ   1984-01-01 00:00:00
-ABR   1984-01-01 00:00:00
-ADW   1984-01-01 00:00:00
-              ...        
-VCL   1984-01-01 00:00:00
-VRC   1993-09-23 22:20:00
-VSP   1993-09-24 22:05:00
-VWB   1985-01-01 00:00:00
-WMP   1995-03-02 19:00:00
-Length: 905, dtype: datetime64[ns]
-</pre></div>
-</div>
-</div>
 </div>
 <p>Select the stations that were deployed first and recovered last using <code class="docutils literal notranslate"><span class="pre">agg</span></code> and lambda functions</p>
 <div class="cell docutils container">
@@ -3783,94 +2757,6 @@ Length: 905, dtype: datetime64[ns]
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>start_time</th>
-      <th>end_time</th>
-    </tr>
-    <tr>
-      <th>station</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>AAR</th>
-      <td>1984-01-01 00:00:00</td>
-      <td>2006-01-04 19:19:00</td>
-    </tr>
-    <tr>
-      <th>AAS</th>
-      <td>1984-11-27 18:45:00</td>
-      <td>2021-08-13 16:50:00</td>
-    </tr>
-    <tr>
-      <th>ABJ</th>
-      <td>1984-01-01 00:00:00</td>
-      <td>2019-06-26 19:17:00</td>
-    </tr>
-    <tr>
-      <th>ABR</th>
-      <td>1984-01-01 00:00:00</td>
-      <td>1997-08-04 21:02:00</td>
-    </tr>
-    <tr>
-      <th>ADW</th>
-      <td>1984-01-01 00:00:00</td>
-      <td>2006-04-20 01:08:00</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>VCL</th>
-      <td>1984-01-01 00:00:00</td>
-      <td>1985-03-25 21:30:00</td>
-    </tr>
-    <tr>
-      <th>VRC</th>
-      <td>1993-09-23 22:20:00</td>
-      <td>2001-07-12 16:50:00</td>
-    </tr>
-    <tr>
-      <th>VSP</th>
-      <td>1993-09-24 22:05:00</td>
-      <td>2001-07-12 16:50:00</td>
-    </tr>
-    <tr>
-      <th>VWB</th>
-      <td>1985-01-01 00:00:00</td>
-      <td>1985-03-25 19:00:00</td>
-    </tr>
-    <tr>
-      <th>WMP</th>
-      <td>1995-03-02 19:00:00</td>
-      <td>2002-05-08 22:30:00</td>
-    </tr>
-  </tbody>
-</table>
-<p>905 rows × 2 columns</p>
-</div></div></div>
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="csv-vs-parquet">
@@ -3885,11 +2771,8 @@ Length: 905, dtype: datetime64[ns]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>66.6 ms ± 4.45 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;ls&#39; is not recognized as an internal or external command,
-operable program or batch file.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>195 ms ± 1.29 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+-rw-r--r--@ 1 marinedenolle  staff   4.2M Oct  7 05:15 my_metadata.csv
 </pre></div>
 </div>
 </div>
@@ -3899,6 +2782,12 @@ operable program or batch file.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> data.to_parquet(&quot;my_metadata.pq&quot;)
 <span class="o">!</span>ls -lh my_metadata.pq
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>25.2 ms ± 10.8 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+-rw-r--r--@ 1 marinedenolle  staff   591K Oct  7 05:15 my_metadata.pq
 </pre></div>
 </div>
 </div>
@@ -3939,10 +2828,10 @@ operable program or batch file.
             <p class="prev-next-title">2.2 Data Formats</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="2.4_Arrays.html" title="next page">
+    <a class='right-next' id="next-link" href="2.4_dataframes_prep.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">2.4 Data Arrays</p>
+        <p class="prev-next-title">2.4 DataFrame Exploration</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

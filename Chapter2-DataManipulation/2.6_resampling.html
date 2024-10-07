@@ -1,0 +1,1695 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>2.6 Resampling Methods &#8212; ML Geo Curriculum</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2.7 Spectral Transforms" href="2.7_data_spectral_transforms.html" />
+    <link rel="prev" title="2.5 Data Arrays" href="2.5_Arrays.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/GeoSMART_logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ML Geo Curriculum</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../about_this_book/about_this_book.html">
+                    Machine Learning in the Geosciences
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://geo-smart.github.io/index.html">
+   Geosmart website
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/acknowledgements.html">
+   Acknowlegments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/0_mlgeo_project.html">
+   Primer
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 1 - Open Source Ecosystem with Python
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/readme.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.1_open_reproducible_science.html">
+   1.1 Open Reproducible Science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.2_jupyter_environment.html">
+   1.3 Jupyter Environment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.3_python_environment.html">
+   1.3 Python Ecosystem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.4_computational_environments.html">
+   1.4 Computing Environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.5_version_control_git.html">
+   1.5 Version Control &amp; GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.6_data_gallery.html">
+   1.6 Data Gallery
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 2 - Data Manipulation
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.1_Data_Definitions.html">
+   2.1 Data Definitions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.2_data_formats_rendered.html">
+   2.2 Data Formats
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.3_pandas_rendered.html">
+   2.3 Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.4_dataframes_prep.html">
+   2.4 DataFrame Exploration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.5_Arrays.html">
+   2.5 Data Arrays
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   2.6 Resampling Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.7_data_spectral_transforms.html">
+   2.7 Spectral Transforms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.8_statistical_considerations.html">
+   2.8 Statistical Considerations for geoscientific Data and Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.9_feature_engineering.html">
+   2.9 Feature engineering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.10_dimensionality_reduction.html">
+   2.10 Dimensionality Reduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.11_MLready_data.html">
+   2.11 ML-ready data
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 3 - Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.1_clustering.html">
+   3.1 Clustering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
+   3.2 Classification and Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.3_binary_classification.html">
+   3.3 Binary classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.4_multiclass_classification.html">
+   3.4 Multiclass Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.5_logistic_regression.html">
+   3.5 Logistic regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.6_randomForest_regression.html">
+   3.6 Random Forests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.7_hyperparameter_tuning.html">
+   3.7 Hyperparameter Tuning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.8_ensemble_learning.html">
+   3.8 Ensemble learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.9_autoML.html">
+   3.9 AutoML
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 4 - Deep Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.html">
+   4.0 The Perceptron
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.1_neural_networks.html">
+   4.1 Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.2_MultiLayerPerceptron.html">
+   4.2 Multi Layer Perceptrons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_ModelTraining.html">
+   4.3 Model Training
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_PINN.html">
+   4.2 Physics-Informed Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_CNN.html">
+   4.3 Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.5_RNN.html">
+   4.4  Recurrent Neural Networks: Processing sequences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.html">
+   4.5 Auto-encoders
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_NAS.html">
+   4.6 NAS: Network Architecture Search
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 5 - Workflow Management and Reproducibility
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter5-ModelWorkflows/readme.html">
+   This chapter focuces on model workflow and ML reproducibility
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 6- Introduction to Cloud Computing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/cloudmaven">
+   Browser Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/Denolle-Lab/azure">
+   Terraform Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://tljh.jupyter.org/en/latest/">
+   Cloud Provider ML Jupyterhubs
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/glossary.html">
+   Glossaries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/geo-smart/mlgeo-book/main?urlpath=lab/tree/book/Chapter2-DataManipulation/2.6_resampling.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/issues/new?title=Issue%20on%20page%20%2FChapter2-DataManipulation/2.6_resampling.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/edit/main/book/Chapter2-DataManipulation/2.6_resampling.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Chapter2-DataManipulation/2.6_resampling.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples-of-resampling-techniques-level-1">
+   1. Examples of resampling techniques (Level 1)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#randomization">
+     1.1 Randomization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bootstrapping">
+     1.2 Bootstrapping
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#monte-carlo">
+     1.3 Monte Carlo
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-resampling-for-robust-model-inference-level-2">
+   Using resampling for robust model inference (Level 2)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plate-motion-geodetic-data">
+     2.1 Plate Motion - Geodetic Data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#linear-regression">
+   2.2 Linear regression
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     2.3 Bootstrapping
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cross-validation">
+     2.4 Cross validation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#leave-one-out-cross-validation">
+     2.5 Leave One Out Cross Validation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#k-fold-cross-validation">
+     2.6 K-fold cross validation
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>2.6 Resampling Methods</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples-of-resampling-techniques-level-1">
+   1. Examples of resampling techniques (Level 1)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#randomization">
+     1.1 Randomization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bootstrapping">
+     1.2 Bootstrapping
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#monte-carlo">
+     1.3 Monte Carlo
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-resampling-for-robust-model-inference-level-2">
+   Using resampling for robust model inference (Level 2)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plate-motion-geodetic-data">
+     2.1 Plate Motion - Geodetic Data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#linear-regression">
+   2.2 Linear regression
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     2.3 Bootstrapping
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cross-validation">
+     2.4 Cross validation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#leave-one-out-cross-validation">
+     2.5 Leave One Out Cross Validation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#k-fold-cross-validation">
+     2.6 K-fold cross validation
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="resampling-methods">
+<h1>2.6 Resampling Methods<a class="headerlink" href="#resampling-methods" title="Permalink to this headline">#</a></h1>
+<p>Data have natural variability, which we often have to account for.</p>
+<p>Among other applications (e.g., uncertainity propagation or assigning confidence intervals to some statistic), <strong>resampling methods</strong> can help us explore this varaibility.</p>
+<p>Broadly, resampling refers to any technique where we repeatedly draw observations from some sample.</p>
+<!---
+Note that the follow statement is specific to resampling for model evaluation:
+    Resampling methods involve repeatedly drawing samples from a training set  and re-fitting a model. The collection of best-fit models provides confidence in model fitting.
+More broadly, resampling methods refer to any technique where we repeatedly draw observations from some sample. We should use the more broad definition at the introduction of this section.
+--->
+<p>The lecture introduces resampling techniques in several ways. We explore various fundamental examples of resampling (Level 1) and demonstrate how resampling can be used for model inference of a linear regression (Level 2).</p>
+<p>First of all, import some useful modules:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">zipfile</span><span class="o">,</span> <span class="nn">io</span><span class="o">,</span> <span class="nn">gzip</span><span class="o">,</span> <span class="nn">glob</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We define a random generator</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="examples-of-resampling-techniques-level-1">
+<h2>1. Examples of resampling techniques (Level 1)<a class="headerlink" href="#examples-of-resampling-techniques-level-1" title="Permalink to this headline">#</a></h2>
+<section id="randomization">
+<h3>1.1 Randomization<a class="headerlink" href="#randomization" title="Permalink to this headline">#</a></h3>
+<p>As we introduced in class:</p>
+<p>Given two datasets, <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, and a parameter, <span class="math notranslate nohighlight">\(x\)</span>, we can randomly assign observations to either <span class="math notranslate nohighlight">\(A\)</span> or <span class="math notranslate nohighlight">\(B\)</span>, calculate some statistic (e.g., <span class="math notranslate nohighlight">\(x_A - x_B\)</span>), and repeat to build a distribution of that statistic.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We begin with two datasets, A and B</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">5.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># We then calculate the means of each dataset</span>
+<span class="n">mean_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">mean_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The means of A and B are, &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">mean_A</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; and &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">mean_B</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, respectively.&#39;</span><span class="p">)</span>
+
+<span class="c1"># And, for the sake of illustration, also calculate the difference between these means</span>
+
+<span class="n">diff_means</span> <span class="o">=</span> <span class="n">mean_A</span> <span class="o">-</span> <span class="n">mean_B</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The difference of means is, &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">diff_means</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The means of A and B are, 4.8190425043357745 and 5.7062434298834965, respectively.
+The difference of means is, -0.887200925547722.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we will want to resample.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, how many times do we want to resample?</span>
+<span class="n">number_runs</span> <span class="o">=</span> <span class="mi">10000</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Next, we create an array that will store the difference of means</span>
+<span class="n">array_of_diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">number_runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="c1"># To ease computational burden, let&#39;s declare some variables</span>
+<span class="c1"># A combined list of A and B</span>
+<span class="n">combined</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span>
+<span class="c1"># Length of A and B</span>
+<span class="n">length_A</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For each time we resample, we recalculate the mean and recalculate the difference</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For each run:</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_runs</span><span class="p">):</span>
+    <span class="c1"># Let us shuffle the combined list</span>
+    <span class="c1"># Note that shuffle works in place!</span>
+    <span class="n">rng</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">combined</span><span class="p">)</span>
+    <span class="c1"># Now, split the list into A and B, maintaining their original sizes</span>
+    <span class="c1"># Notice the slice syntax!</span>
+    <span class="n">new_A</span> <span class="o">=</span> <span class="n">combined</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">length_A</span><span class="p">]</span>
+    <span class="n">new_B</span> <span class="o">=</span> <span class="n">combined</span><span class="p">[</span><span class="n">length_A</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">combined</span><span class="p">)]</span>
+    <span class="c1"># Calculate and store a difference of means</span>
+    <span class="n">array_of_diffs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">new_A</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">new_B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot up the array of diffs</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">array_of_diffs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Given an alpha of 0.05, can we accept or reject the null hypothesis of no difference in means?</span>
+
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">lower_critical_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">array_of_diffs</span><span class="p">,</span> <span class="n">alpha</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">upper_critical_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">array_of_diffs</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">alpha</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># Plot the critical values and the observed value</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">diff_means</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">lower_critical_value</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">upper_critical_value</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Difference of means&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Observed difference of means&#39;</span><span class="p">,</span> <span class="s1">&#39;Lower critical value&#39;</span><span class="p">,</span> <span class="s1">&#39;Upper critical value&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center left&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+<span class="c1"># Show your plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.6_resampling_10_0.png" src="../_images/2.6_resampling_10_0.png" />
+</div>
+</div>
+</section>
+<section id="bootstrapping">
+<h3>1.2 Bootstrapping<a class="headerlink" href="#bootstrapping" title="Permalink to this headline">#</a></h3>
+<p>When bootstrapping, you repeatedly draw observations, <strong>with replacement</strong>, from a dataset. Since you are drawing with replacement, your newly resampled dataset likely will contain duplicate observations from the original sample.</p>
+<p>Bootstrapping does not make strong assumptions about the underlying distribution of the dataset.</p>
+<p>We will first create correlated data using the numpy function <code class="docutils literal notranslate"><span class="pre">random.multivariate_normal</span></code> (<a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.multivariate_normal.html">docs here</a>). The mean of both data will be zero and their covariance is -0.75.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We begin with a dataset where two variables are strongly correlated</span>
+<span class="n">correlated_data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">.75</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">.75</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First, we check that the data is indeed anticorrelated by plotting one against the other</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Observation&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.6_resampling_14_0.png" src="../_images/2.6_resampling_14_0.png" />
+</div>
+</div>
+<p>We can verify that the Pearson <a class="reference external" href="https://en.wikipedia.org/wiki/Correlation_coefficient">correlation coefficient</a> is close to our target using the numpy function <code class="docutils literal notranslate"><span class="pre">corrcoef</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The correlation matrix of the first and second columns of correlated_data</span>
+<span class="n">correlation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Check the correlation coefficient</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The correlation coefficient is: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">correlation_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.7490650993380316.
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now take a subset of the data — think of the subset as a <em>sample of the true population</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nsubset</span><span class="o">=</span><span class="mi">10</span>
+<span class="n">subset</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">nsubset</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can calculate the correlation coefficent of this sample.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Report the correlation coefficient of the subset</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The correlation coefficient of our sample is: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">subset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">subset</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot up both the original data and our sample</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">subset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">subset</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;True population&#39;</span><span class="p">,</span> <span class="s1">&#39;Subset&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient of our sample is: -0.8238774989356271.
+</pre></div>
+</div>
+<img alt="../_images/2.6_resampling_20_1.png" src="../_images/2.6_resampling_20_1.png" />
+</div>
+</div>
+<p>Now, we will bootstrap. Once again, we define a number of runs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">number_runs</span> <span class="o">=</span><span class="mi">1000</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each time we resample, we will calculate and store the correlation coefficent of the resampled data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array that will keep track of the outputs of our resampling loop. In this case, we just want to record the correlation coefficient of each new sample. </span>
+<span class="n">corr_coef_collector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">number_runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Let&#39;s also get the length of the subset</span>
+<span class="c1"># When bootstrapping, the size of your resampled dataset should match the size of your original sample!</span>
+<span class="n">length_sub</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+
+<span class="c1"># Now, for each run</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_runs</span><span class="p">):</span>
+    <span class="c1"># We want to draw length_sub samples WITH REPLACEMENT</span>
+    <span class="n">new_pairs</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">length_sub</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Calculate and store the correlation coefficient</span>
+    <span class="n">corr_coef_collector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">new_pairs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">new_pairs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Plot up the corr_coef_collector values</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">corr_coef_collector</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Correlation coefficient&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+
+<span class="c1"># Show the true correlation coefficient</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">correlation_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">corr_coef_collector</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;True correlation coefficient&#39;</span><span class="p">,</span> <span class="s1">&#39;Median correlation coefficient&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.6_resampling_24_0.png" src="../_images/2.6_resampling_24_0.png" />
+</div>
+</div>
+<p>We see that the median Pearson coefficient is not exactly the true Pearson coefficient. Why is that?</p>
+<p>What happens if you increase the size of the subset (e.g., your sample of the true population)?</p>
+</section>
+<section id="monte-carlo">
+<h3>1.3 Monte Carlo<a class="headerlink" href="#monte-carlo" title="Permalink to this headline">#</a></h3>
+<p>Named after the casino in Monaco, Monte Carlo methods involve <em>simulating new data</em> based on a known (or assumed!) statistical model. Unlike the previous two examples, we do not take draws from an existing sample.</p>
+<p>Monte Carlo techniques have many applications. For example, you might see Monte Carlo methods used for probabilistic risk assessment, uncertainty propagation in models, and evaluating complex systems’ performance. It is especially valuable when dealing with complex geospatial, environmental, or engineering models, where the relationships among variables are not easily captured by simple parametric methods.</p>
+<p>Here, we demonstrate Monte Carlo sampling by trying to estimate <span class="math notranslate nohighlight">\(\pi\)</span>.</p>
+<p>We begin with a central conceit: that the ratio of the area of a circle to the area of the square is <span class="math notranslate nohighlight">\(\pi/4\)</span>.</p>
+<p>We then imagine a circle of radius 1 that is inscribed within a square with sides going from -1 to 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;re going to draw a (x,y) point from a *uniform* distribution and then determine whether that point sits within the circle. If it does, we append it to two lists: points within the circle and points within the square. If not, we append it only to a list of points inside the square</span>
+<span class="n">in_circle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">in_square</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># Now, let&#39;s generate many samples</span>
+<span class="c1"># Here, we redefine number_runs for efficiency&#39;s sake</span>
+<span class="n">number_runs</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_runs</span><span class="p">):</span> <span class="c1"># note that _ allows to avoid creating a variable</span>
+    <span class="c1"># Okay, get an x point and a y point</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># How far is this point from the origin?</span>
+    <span class="n">origin_dist</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span>
+    <span class="c1"># If origin_dist is less than 1, then this point is inside the circle</span>
+    <span class="k">if</span> <span class="n">origin_dist</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">in_circle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">in_circle</span><span class="p">,</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">in_square</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">in_square</span><span class="p">,</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can visualize what we just did</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">in_square</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">in_square</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">in_circle</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">in_circle</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;X coordinate&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Y coordinate&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Points in square&#39;</span><span class="p">,</span> <span class="s1">&#39;Points in circle&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center left&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.6_resampling_29_0.png" src="../_images/2.6_resampling_29_0.png" />
+</div>
+</div>
+<p>We now estimate <span class="math notranslate nohighlight">\(\pi\)</span> by using the length of the number points in the circle and in the quarter as approximation to their area.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let us estimate pi</span>
+
+<span class="n">pi_est</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">in_circle</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_square</span><span class="p">))</span>
+              
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;We estimate the value of pi to be: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pi_est</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We estimate the value of pi to be: 3.12.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now with a few runs, we do not get a good answer.</p>
+<p>In fact, a Monte Carlo approach needs more runs to <strong>converge</strong>.</p>
+<p>You should explore how changing the number of runs changes your estimate of <span class="math notranslate nohighlight">\(\pi\)</span> (and how your calculation converges).</p>
+</section>
+</section>
+<section id="using-resampling-for-robust-model-inference-level-2">
+<h2>Using resampling for robust model inference (Level 2)<a class="headerlink" href="#using-resampling-for-robust-model-inference-level-2" title="Permalink to this headline">#</a></h2>
+<section id="plate-motion-geodetic-data">
+<h3>2.1 Plate Motion - Geodetic Data<a class="headerlink" href="#plate-motion-geodetic-data" title="Permalink to this headline">#</a></h3>
+<p>For this tutorial, we use a GPS time series in the Pacific Northwest and explore the long term motions that are due to the Cascadia subduction zone.</p>
+<p>We will download GPS time series from the University of Nevada - Reno <span class="xref myst">data center</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The station designation</span>
+<span class="n">sta</span><span class="o">=</span><span class="s2">&quot;P395&quot;</span>
+<span class="n">file_url</span><span class="o">=</span><span class="s2">&quot;http://geodesy.unr.edu/gps_timeseries/tenv/IGS14/&quot;</span><span class="o">+</span> <span class="n">sta</span> <span class="o">+</span> <span class="s2">&quot;.tenv&quot;</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>  <span class="c1"># download, read text, split lines into a list</span>
+<span class="n">ue</span><span class="o">=</span><span class="p">[];</span><span class="n">un</span><span class="o">=</span><span class="p">[];</span><span class="n">uv</span><span class="o">=</span><span class="p">[];</span><span class="n">se</span><span class="o">=</span><span class="p">[];</span><span class="n">sn</span><span class="o">=</span><span class="p">[];</span><span class="n">sv</span><span class="o">=</span><span class="p">[];</span><span class="n">date</span><span class="o">=</span><span class="p">[];</span><span class="n">date_year</span><span class="o">=</span><span class="p">[];</span><span class="n">df</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">iday</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>  <span class="c1"># this loops through the days of data</span>
+    <span class="n">crap</span><span class="o">=</span><span class="n">iday</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">crap</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">:</span>
+      <span class="k">continue</span>
+    <span class="n">date</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">crap</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">date_year</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="n">ue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">un</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">uv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+<span class="c1">#             # errors</span>
+    <span class="n">se</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">sn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">11</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">sv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">12</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We now make a data frame</span>
+<span class="n">crap</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;station&#39;</span><span class="p">:</span><span class="n">sta</span><span class="p">,</span><span class="s1">&#39;date&#39;</span><span class="p">:</span><span class="n">date</span><span class="p">,</span><span class="s1">&#39;date_year&#39;</span><span class="p">:</span><span class="n">date_year</span><span class="p">,</span><span class="s1">&#39;east&#39;</span><span class="p">:</span><span class="n">ue</span><span class="p">,</span><span class="s1">&#39;north&#39;</span><span class="p">:</span><span class="n">un</span><span class="p">,</span><span class="s1">&#39;up&#39;</span><span class="p">:</span><span class="n">uv</span><span class="p">}</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">crap</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;date_year&#39;</span><span class="p">,</span><span class="s1">&#39;east&#39;</span><span class="p">,</span><span class="s1">&#39;north&#39;</span><span class="p">,</span><span class="s1">&#39;up&#39;</span><span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">crap</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;date_year&#39;</span><span class="p">,</span><span class="s1">&#39;east&#39;</span><span class="p">,</span><span class="s1">&#39;north&#39;</span><span class="p">,</span><span class="s1">&#39;up&#39;</span><span class="p">])])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date_year</th>
+      <th>east</th>
+      <th>north</th>
+      <th>up</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>6341.000000</td>
+      <td>6341.000000</td>
+      <td>6341.000000</td>
+      <td>6341.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>2014.772434</td>
+      <td>-52.534263</td>
+      <td>-30.076831</td>
+      <td>1.899511</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>5.033255</td>
+      <td>32.520022</td>
+      <td>17.516241</td>
+      <td>5.618141</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>2006.067100</td>
+      <td>-114.314000</td>
+      <td>-65.245000</td>
+      <td>-39.508000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>2010.409300</td>
+      <td>-80.010000</td>
+      <td>-45.813000</td>
+      <td>-1.841000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>2014.765200</td>
+      <td>-49.487000</td>
+      <td>-29.918000</td>
+      <td>1.720000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>2019.126600</td>
+      <td>-24.855000</td>
+      <td>-14.940000</td>
+      <td>5.482000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>2023.726200</td>
+      <td>3.927000</td>
+      <td>3.157000</td>
+      <td>28.663000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the GPS time series</span>
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span><span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;east&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">]);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;East (mm)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">]);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;North (mm)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;up&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">]);</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Up (mm)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (years)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (years)&#39;)
+</pre></div>
+</div>
+<img alt="../_images/2.6_resampling_36_1.png" src="../_images/2.6_resampling_36_1.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="linear-regression">
+<h2>2.2 Linear regression<a class="headerlink" href="#linear-regression" title="Permalink to this headline">#</a></h2>
+<p>There is a clean <strong>linear trend</strong> in the horizontal position data over the course of the past 16 years. We can fit the data using:</p>
+<p><span class="math notranslate nohighlight">\(E(t) = V_e t + u_e,\)</span><br />
+<span class="math notranslate nohighlight">\(N(t) = V_n t + u_n,\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(t\)</span> is time. We want to regress the data to find the coefficients <span class="math notranslate nohighlight">\(V_e\)</span>, <span class="math notranslate nohighlight">\(u_e\)</span>, <span class="math notranslate nohighlight">\(V_n\)</span>, <span class="math notranslate nohighlight">\(u_n\)</span>. The displacements are mostly westward, so we will just focus on the East <span class="math notranslate nohighlight">\(E(t)\)</span> component for this exercise. The coefficients <span class="math notranslate nohighlight">\(u_e\)</span> and <span class="math notranslate nohighlight">\(u_n\)</span> are the intercept at <span class="math notranslate nohighlight">\(t=0\)</span>. They are not zero in this case because <span class="math notranslate nohighlight">\(t\)</span> starts in 2006. The coefficients <span class="math notranslate nohighlight">\(V_e\)</span> and <span class="math notranslate nohighlight">\(V_n\)</span> have the dimension of velocities:</p>
+<p><span class="math notranslate nohighlight">\(V_e \sim E(t) / t\)</span> , <span class="math notranslate nohighlight">\(V_n \sim N(t) / t\)</span> ,</p>
+<p>therefore, we will use this example to discuss a simple <strong>linear regression</strong> and resampling method. We will use both a Scipy function and a Scikit-learn function.</p>
+<p>To measure a fit performance, we will measure how well the variance is reduced by fitting the data (scatter points) against the model. The variance is:</p>
+<p><span class="math notranslate nohighlight">\(\text{Var}(x) = 1/n \sum_{i=1}^n (x_i-\hat{x})^2\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(\hat{x}\)</span> is the mean of <span class="math notranslate nohighlight">\(x\)</span>.  When fitting the regression, we predict the values <span class="math notranslate nohighlight">\(x_{pred}\)</span>. The residuals are the differences between the data and the predicted values: <span class="math notranslate nohighlight">\(e = x - x_{pred} \)</span>. <span class="math notranslate nohighlight">\(R^2\)</span> or <i> coefficient of determination</i> is:</p>
+<p><span class="math notranslate nohighlight">\(R^2 = 1 - \text{Var}(x-x_{pred}) /\text{Var}(x)  = 1 - \text{Var}(e) /\text{Var}(x) \)</span></p>
+<p>The smaller the error, the “better” the fit (we will discuss later that a fit can be too good!), the closer <span class="math notranslate nohighlight">\(R^2\)</span> is to one.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># now let&#39;s find the trends and detrend the data.</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="c1"># linear regression such that: displacement = Velocity * time</span>
+<span class="c1"># velocity in the East component.</span>
+<span class="n">Ve</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r_value</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">std_err</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">linregress</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;east&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">])</span>
+<span class="c1"># horizontal plate motion:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sta</span><span class="p">,</span><span class="s2">&quot;overall plate motion there&quot;</span><span class="p">,</span><span class="n">Ve</span><span class="p">,</span><span class="s1">&#39;mm/year&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;parameters: Coefficient of determination </span><span class="si">%f</span><span class="s2">4.2, P-value </span><span class="si">%f</span><span class="s2">4.2, standard deviation of errors </span><span class="si">%f</span><span class="s2">4.2&quot;</span>\
+      <span class="o">%</span><span class="p">(</span><span class="n">r_value</span><span class="p">,</span><span class="n">p_value</span><span class="p">,</span><span class="n">std_err</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P395 overall plate motion there -6.438107857588663 mm/year
+parameters: Coefficient of determination -0.9964524.2, P-value 0.0000004.2, standard deviation of errors 0.0068304.2
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also use the <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> package:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="c1"># convert the data into numpy arrays.</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;east&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="c1"># reshaping was necessary to be an argument of Linear regress</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># perform the linear regression. First we will use the entire available data</span>
+<span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="c1"># we will first perform the fit:</span>
+<span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">E</span><span class="p">)</span>
+<span class="c1"># We will first predict the fit:</span>
+<span class="n">Epred</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
+
+<span class="c1"># The coefficients</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient / Velocity eastward (mm/year): &#39;</span><span class="p">,</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">E</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;East (mm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">Epred</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient / Velocity eastward (mm/year):  -6.438107857588658
+</pre></div>
+</div>
+<img alt="../_images/2.6_resampling_40_1.png" src="../_images/2.6_resampling_40_1.png" />
+</div>
+</div>
+<p>To evaluate the errors of the model fit using the module <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>, we will use the following function</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">r2_score</span>
+<span class="c1"># The mean squared error</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean squared error (mm): </span><span class="si">%.2f</span><span class="s1">&#39;</span>
+      <span class="o">%</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">Epred</span><span class="p">))</span>
+<span class="c1"># The coefficient of determination: 1 is the perfect prediction</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of determination: </span><span class="si">%.2f</span><span class="s1">&#39;</span>
+      <span class="o">%</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">Epred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean squared error (mm): 7.49
+Coefficient of determination: 0.99
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id1">
+<h3>2.3 Bootstrapping<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
+<p>Now we will use again bootstrapping to estimate the slope of the regression over many resampled data.</p>
+<p>Scikit-learn seems to have deprecated the bootstrap function, but we can find <code class="docutils literal notranslate"><span class="pre">resample</span></code> in the <code class="docutils literal notranslate"><span class="pre">utils</span></code> module. Make sure you use <code class="docutils literal notranslate"><span class="pre">replace=True</span></code>.
+For reproducible results, you can select a fixed <code class="docutils literal notranslate"><span class="pre">random_state=int</span></code> to be kept in the workflow. Usually bootstrapping is done over many times (unlike K-fold cross validation).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">resample</span>
+<span class="n">k</span><span class="o">=</span><span class="mi">1000</span>
+<span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="c1"># initalize a vector to store the regression values</span>
+<span class="n">mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">r2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">iik</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>    
+    <span class="n">ii</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">)),</span><span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">n_samples</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span><span class="c1"># new indices</span>
+    <span class="n">E_b</span><span class="p">,</span> <span class="n">t_b</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+    <span class="c1"># now fit the data on the training set.</span>
+    <span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+    <span class="c1"># Fit on training data:</span>
+    <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_b</span><span class="p">,</span><span class="n">E_b</span><span class="p">)</span>
+    <span class="n">Epred_val</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="c1"># test on the validation set.</span>
+
+    <span class="c1"># The coefficients</span>
+    <span class="n">vel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+
+<span class="c1"># the data shows clearly a trend, so the predictions of the trends are close to each other:</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean of the velocity estimates </span><span class="si">%f</span><span class="s2">4.2 and the standard deviation </span><span class="si">%f</span><span class="s2">4.2&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribution of eastward velocities (mm/year)&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.4382164.2 and the standard deviation 0.0060364.2
+</pre></div>
+</div>
+<img alt="../_images/2.6_resampling_44_1.png" src="../_images/2.6_resampling_44_1.png" />
+</div>
+</div>
+</section>
+<section id="cross-validation">
+<h3>2.4 Cross validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">#</a></h3>
+<p>x</p>
+<p>Cross-validation is a widely used technique in machine learning to assess the <strong>performance</strong> and <strong>generalization</strong> of a model. It involves partitioning the dataset into multiple subsets, training the model on a portion of the data, and then evaluating its performance on the remaining data. This process is repeated several times, and <em>the results are averaged</em> to obtain a more reliable estimate of the model’s performance. The primary goal is <em>to mitigate the risk of overfitting and obtain a more robust evaluation metric</em>.</p>
+<p>There are several tutorials on <span class="xref myst">cross-validation</span>.</p>
+<p>Cross-validation divides the data set between a <em>training</em> set and a <em>validation</em> set:</p>
+<div>
+<img src="ValsetApproach.png" width="500"/>
+</div>
+From: scikit-learn: concept for training and validation set.
+<p>Often the validation set ends up underestimating the prediction errors (model uncertainties) because the validation set is often smaller than the training set. To alleviate that, we can perform cross-validation over many folds of selecting a validation and training set.</p>
+<div>
+<img src="grid_search_cross_validation.png" width="500"/>
+</div>
+From: scikit-learn
+<ul class="simple">
+<li><p><strong>Data Splitting</strong>: Cross-validation involves <em>partitioning a dataset into multiple subsets</em>, typically a training set and a testing set. This splitting allows for model assessment and validation.</p></li>
+<li><p><strong>Estimation</strong>: Cross-validation is primarily used to <em>assess the predictive performance</em> of machine learning models or statistical models. It helps in estimating how well a model will generalize to new, unseen data by testing its performance on data that was not used in training.</p></li>
+<li><p><strong>Correlated Data</strong>: Cross-validation does not explicitly address correlated data, and its effectiveness can be influenced by the data splitting strategy. <em>When data exhibits strong correlations, it’s essential to carefully design the cross-validation procedure to ensure that all subsets represent the overall data distribution</em>.</p></li>
+<li><p><strong>Applications</strong>: Cross-validation is widely employed in <em>model selection</em>, <em>hyperparameter tuning</em>, and <em>assessing the generalization ability</em> of models.</p></li>
+</ul>
+<p>We will now randomly select a training and validation set using the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> module:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we randomly select values and split the data between training and validation set.</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">ShuffleSplit</span>
+<span class="c1"># we split once the data between a training and a validating set </span>
+<span class="n">n</span><span class="o">=</span><span class="mi">1</span> <span class="c1"># we do this selection once</span>
+<span class="n">v_size</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="c1"># 30% of the data will be randomly selected to be the validation set.</span>
+
+<span class="n">rs</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">val_index</span> <span class="ow">in</span> <span class="n">rs</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">E</span><span class="p">):</span>
+    <span class="n">E_train</span><span class="p">,</span> <span class="n">E_val</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">E</span><span class="p">[</span><span class="n">val_index</span><span class="p">]</span>
+    <span class="n">t_train</span><span class="p">,</span> <span class="n">t_val</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">val_index</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">E_train</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;East (mm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">t_val</span><span class="p">,</span><span class="n">E_val</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (years)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;East component&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;training set&#39;</span><span class="p">,</span><span class="s1">&#39;validation set&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1ca300220&gt;
+</pre></div>
+</div>
+<img alt="../_images/2.6_resampling_46_1.png" src="../_images/2.6_resampling_46_1.png" />
+</div>
+</div>
+<p>Now fit the data and evaluate the error</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># now fit the data on the training set.</span>
+<span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="c1"># Fit on training data:</span>
+<span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">E_train</span><span class="p">)</span>
+<span class="c1"># We will first predict the fit:</span>
+<span class="n">Epred</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_train</span><span class="p">)</span> 
+<span class="n">Epred_val</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_val</span><span class="p">)</span> 
+
+<span class="c1"># The coefficients</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training set: Coefficient / Velocity eastward (mm/year): &#39;</span><span class="p">,</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MSE (mean square error) on training set (mm): </span><span class="si">%.2f</span><span class="s1">&#39;</span>
+      <span class="o">%</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">E_train</span><span class="p">))</span>
+<span class="c1"># The coefficient of determination: 1 is the perfect prediction</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient of determination on training set: </span><span class="si">%.2f</span><span class="s1">&#39;</span>
+      <span class="o">%</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">Epred</span><span class="p">,</span> <span class="n">E_train</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MSE on validation set (mm): </span><span class="si">%.2f</span><span class="s1"> and coefficient of determiniation on </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">Epred_val</span><span class="p">,</span> <span class="n">E_val</span><span class="p">),</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">Epred_val</span><span class="p">,</span> <span class="n">E_val</span><span class="p">)))</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">E</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;East (mm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">Epred</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_val</span><span class="p">,</span><span class="n">Epred_val</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="s1">&#39;fit on training&#39;</span><span class="p">,</span><span class="s1">&#39;fit on validation&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Random selection for data split&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training set: Coefficient / Velocity eastward (mm/year):  -6.442660214306567
+MSE (mean square error) on training set (mm): 7.32
+Coefficient of determination on training set: 0.99
+MSE on validation set (mm): 7.88 and coefficient of determiniation on 0.99
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Random selection for data split&#39;)
+</pre></div>
+</div>
+<img alt="../_images/2.6_resampling_48_2.png" src="../_images/2.6_resampling_48_2.png" />
+</div>
+</div>
+<p>We can also select the training and validation to be chronological. If the “state” of the data changes through time, this may induce a bias in the training. But let’s see.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_train</span><span class="p">,</span> <span class="n">E_val</span> <span class="o">=</span> <span class="n">E</span><span class="p">[:</span><span class="mi">2</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="o">//</span><span class="mi">3</span><span class="p">],</span> <span class="n">E</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="o">//</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">t_train</span><span class="p">,</span> <span class="n">t_val</span> <span class="o">=</span> <span class="n">t</span><span class="p">[:</span><span class="mi">2</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="o">//</span><span class="mi">3</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="o">//</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">E_train</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;East (mm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">t_val</span><span class="p">,</span><span class="n">E_val</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (years)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;East component&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;training set&#39;</span><span class="p">,</span><span class="s1">&#39;validation set&#39;</span><span class="p">])</span>
+
+<span class="c1"># now fit the data on the training set.</span>
+<span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="c1"># Fit on training data:</span>
+<span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">E_train</span><span class="p">)</span>
+<span class="c1"># We will first predict the fit:</span>
+<span class="n">Epred</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
+<span class="n">Epred_val</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_val</span><span class="p">)</span> 
+
+<span class="c1"># The coefficients</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; Training set: Coefficient / Velocity eastward (mm/year): &#39;</span><span class="p">,</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Validation set MSE (mm) and Coef of Determination: </span><span class="si">%.2f</span><span class="s1">,</span><span class="si">%.2f</span><span class="s1">&#39;</span> 
+<span class="o">%</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E_val</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">),</span><span class="n">r2_score</span><span class="p">(</span><span class="n">E_val</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)))</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">Epred</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_val</span><span class="p">,</span><span class="n">Epred_val</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="s1">&#39;fit on training&#39;</span><span class="p">,</span><span class="s1">&#39;fit on validation&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Chronological selection for data split&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Training set: Coefficient / Velocity eastward (mm/year):  -6.147744826538707
+Validation set MSE (mm) and Coef of Determination: 17.72,0.85
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Chronological selection for data split&#39;)
+</pre></div>
+</div>
+<img alt="../_images/2.6_resampling_50_2.png" src="../_images/2.6_resampling_50_2.png" />
+</div>
+</div>
+<p>Now you see that the choice of <em>training</em> vs <em>validating</em> data is important to fit a model that will generalize.</p>
+</section>
+<section id="leave-one-out-cross-validation">
+<h3>2.5 Leave One Out Cross Validation<a class="headerlink" href="#leave-one-out-cross-validation" title="Permalink to this headline">#</a></h3>
+<p>LOOCV splits the data in 2 sets (training and validation) <i>n</i> times (<i>n</i> is the number of data points). At each repeat, the training set is <strong>all but one</strong> data, the validation set is one element.</p>
+<div>
+<img src="LOOCV.png" width="500"/>
+</div>
+Advantages: it has far less bias with respect to the training data. It does not overestimate the test error. Repeated LOOCV will give the exact same results.
+<p>Disadvantages: it is computationally intensive.</p>
+<ul class="simple">
+<li><p><strong>Data Splitting</strong>: LOOCV is an extreme form of cross-validation where, for each iteration, only one data point is left out as the test set, and the remaining data is used as the training set. This process is repeated for each data point, effectively creating as many folds as there are data points.</p></li>
+<li><p><strong>Estimation</strong>: LOOCV is primarily used for assessing model performance and estimating predictive accuracy. By evaluating the model against all data points one at a time, LOOCV provides a robust assessment of a model’s ability to generalize to unseen data.</p></li>
+<li><p><strong>Correlated Data</strong>: LOOCV, like other cross-validation methods, may not explicitly address correlated data. However, its performance can be influenced by the correlation structure in the data. For datasets with strong correlations, LOOCV may lead to models that are overly optimistic since it often tests a model on data points that are closely related to the training set.</p></li>
+<li><p><strong>Applications</strong>: LOOCV is valuable for evaluating machine learning and statistical models, particularly when you have a limited amount of data.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">LeaveOneOut</span>
+<span class="n">loo</span> <span class="o">=</span> <span class="n">LeaveOneOut</span><span class="p">()</span>
+
+<span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span> <span class="c1"># initalize a vector to store the regression values</span>
+<span class="n">mse_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
+<span class="n">mse_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
+<span class="n">r2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">loo</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">E</span><span class="p">):</span>    
+    <span class="n">E_train</span><span class="p">,</span> <span class="n">E_val</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">E</span><span class="p">[</span><span class="n">val_index</span><span class="p">]</span>
+    <span class="n">t_train</span><span class="p">,</span> <span class="n">t_val</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">val_index</span><span class="p">]</span>
+    <span class="c1"># now fit the data on the training set.</span>
+    <span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+    <span class="c1"># Fit on training data:</span>
+    <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">E_train</span><span class="p">)</span>
+    <span class="c1"># We will first predict the fit:</span>
+    <span class="n">Epred_train</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_train</span><span class="p">)</span> 
+    <span class="n">Epred_val</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_val</span><span class="p">)</span> 
+
+    <span class="c1"># The coefficients</span>
+    <span class="n">vel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mse_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E_train</span><span class="p">,</span> <span class="n">Epred_train</span><span class="p">)</span>
+    <span class="n">mse_val</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E_val</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)</span>
+    <span class="n">r2s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">r2_score</span><span class="p">(</span><span class="n">E_val</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)</span>
+    <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+
+<span class="c1"># the data shows clearly a trend, so the predictions of the trends are close to each other:</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean of the velocity estimates </span><span class="si">%f</span><span class="s2">4.2 and the standard deviation </span><span class="si">%f</span><span class="s2">4.2&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
+<span class="c1"># the test error is the average of the mean-square-errors</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CV = </span><span class="si">%4.2f</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mse_val</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.4381084.2 and the standard deviation 0.0000794.2
+CV = 7.87
+</pre></div>
+</div>
+</div>
+</div>
+<p>LOOCV is rarely used in practice. This example is just to show the extreme end member of cross-fold validation.</p>
+</section>
+<section id="k-fold-cross-validation">
+<h3>2.6 K-fold cross validation<a class="headerlink" href="#k-fold-cross-validation" title="Permalink to this headline">#</a></h3>
+<p>Designed to reduce the computational cost of LOOCV. Randomly devide over <i>k</i> groups/folds of approximately equal size. It is typical to use <i>5</i> or <i>10</i>.</p>
+<div>
+<img src="Kfold.png" width="500"/>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+
+<span class="c1"># let&#39;s try on 10-folds, 10 adjacent split of the data.</span>
+<span class="n">k</span><span class="o">=</span><span class="mi">10</span>
+<span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+
+<span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="c1"># initalize a vector to store the regression values</span>
+<span class="n">mse_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">mse_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">r2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">val_index</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">E</span><span class="p">):</span>    
+    <span class="n">E_train</span><span class="p">,</span> <span class="n">E_val</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">E</span><span class="p">[</span><span class="n">val_index</span><span class="p">]</span>
+    <span class="n">t_train</span><span class="p">,</span> <span class="n">t_val</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">val_index</span><span class="p">]</span>
+    <span class="c1"># now fit the data on the training set.</span>
+    <span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+    <span class="c1"># Fit on training data:</span>
+    <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t_train</span><span class="p">,</span><span class="n">E_train</span><span class="p">)</span>
+    <span class="c1"># We will first predict the fit:</span>
+    <span class="n">Epred_train</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_train</span><span class="p">)</span> 
+    <span class="n">Epred_val</span><span class="o">=</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t_val</span><span class="p">)</span> 
+
+    <span class="c1"># The coefficients</span>
+    <span class="n">vel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mse_val</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E_val</span><span class="p">,</span> <span class="n">Epred_val</span><span class="p">)</span>
+    <span class="n">mse_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">E_train</span><span class="p">,</span> <span class="n">Epred_train</span><span class="p">)</span>
+    <span class="n">r2s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">r2_score</span><span class="p">(</span><span class="n">E_train</span><span class="p">,</span> <span class="n">Epred_train</span><span class="p">)</span>
+    <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+
+<span class="c1"># the data shows clearly a trend, so the predictions of the trends are close to each other:</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean of the velocity estimates </span><span class="si">%4.2f</span><span class="s2"> and the standard deviation </span><span class="si">%4.2f</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
+<span class="c1"># the test error is the average of the mean-square-errors</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean MSE for training set : </span><span class="si">%4.2f</span><span class="s2"> and the validation set: </span><span class="si">%4.2f</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mse_train</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mse_val</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.44 and the standard deviation 0.04
+mean MSE for training set : 7.43 and the validation set: 8.78
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Chapter2-DataManipulation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="2.5_Arrays.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">2.5 Data Arrays</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="2.7_data_spectral_transforms.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2.7 Spectral Transforms</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By eScience Institute, University of Washington<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
