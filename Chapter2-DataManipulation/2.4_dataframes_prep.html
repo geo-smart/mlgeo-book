@@ -643,6 +643,11 @@ title="Print to PDF"
    Feature distribution
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exercise">
+   4. Exercise
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -687,6 +692,11 @@ title="Print to PDF"
    Feature distribution
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exercise">
+   4. Exercise
+  </a>
+ </li>
 </ul>
 
                         </nav>
@@ -714,23 +724,24 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-10-07 09:38:29--  https://raw.githubusercontent.com/UW-MLGEO/MLGeo-dataset/refs/heads/main/data/Skyserver_SQL2_27_2018%206_51_39%20PM.csv
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.111.133, 185.199.110.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-10-07 10:06:41--  https://raw.githubusercontent.com/UW-MLGEO/MLGeo-dataset/refs/heads/main/data/Skyserver_SQL2_27_2018%206_51_39%20PM.csv
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.108.133, 185.199.109.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 1377602 (1.3M) [text/plain]
 Saving to: ‘Skyserver_SQL2_27_2018 6_51_39 PM.csv’
 
 Skyserver_SQL2_27_2 100%[===================&gt;]   1.31M  --.-KB/s    in 0.1s    
 
-2024-10-07 09:38:30 (10.1 MB/s) - ‘Skyserver_SQL2_27_2018 6_51_39 PM.csv’ saved [1377602/1377602]
+2024-10-07 10:06:41 (11.3 MB/s) - ‘Skyserver_SQL2_27_2018 6_51_39 PM.csv’ saved [1377602/1377602]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;Skyserver_SQL2_27_2018 6_51_39 PM.csv&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># df = pd.read_csv(r&quot;path\to\file.csv&quot;) # Windows</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Skyserver_SQL2_27_2018 6_51_39 PM.csv&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1139,6 +1150,16 @@ memory usage: 1.4+ MB
 </table>
 </div></div></div>
 </div>
+</section>
+<section id="handling-missing-values-nans-zeros">
+<h2>Handling Missing Values (NaNs) &amp; Zeros<a class="headerlink" href="#handling-missing-values-nans-zeros" title="Permalink to this headline">#</a></h2>
+<p>Geoscience datasets often contain missing values (e.g., due to sensor malfunctions or data collection gaps) and zeros (which may or may not be meaningful depending on the context). You’ll need to treat these cases carefully.</p>
+<p>Missing data is common in geoscientific applications. In a pandas DataFrame, missing values are typically represented as NaNs. You can handle NaNs in several ways depending on the context:</p>
+<ul class="simple">
+<li><p><strong>Remove rows/columns with NaNs</strong>: If the missing data is minimal or irrelevant, you can drop it.</p></li>
+<li><p><strong>Impute missing values</strong>: For geoscience data, you might fill NaNs with interpolated values, means, or more sophisticated imputation techniques.</p></li>
+<li><p><strong>Zeros</strong>: Zeros can sometimes be valid measurements, like in precipitation data (no rainfall). However, zeros might also indicate missing or incorrect data in some cases. It’s important to distinguish between meaningful zeros and errors.</p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check for missing values (NaNs)</span>
@@ -1201,16 +1222,6 @@ dtype: int64
 </div>
 </div>
 </div>
-</section>
-<section id="handling-missing-values-nans-zeros">
-<h2>Handling Missing Values (NaNs) &amp; Zeros<a class="headerlink" href="#handling-missing-values-nans-zeros" title="Permalink to this headline">#</a></h2>
-<p>Geoscience datasets often contain missing values (e.g., due to sensor malfunctions or data collection gaps) and zeros (which may or may not be meaningful depending on the context). You’ll need to treat these cases carefully.</p>
-<p>Missing data is common in geoscientific applications. In a pandas DataFrame, missing values are typically represented as NaNs. You can handle NaNs in several ways depending on the context:</p>
-<ul class="simple">
-<li><p><strong>Remove rows/columns with NaNs</strong>: If the missing data is minimal or irrelevant, you can drop it.</p></li>
-<li><p><strong>Impute missing values</strong>: For geoscience data, you might fill NaNs with interpolated values, means, or more sophisticated imputation techniques.</p></li>
-<li><p><strong>Zeros</strong>: Zeros can sometimes be valid measurements, like in precipitation data (no rainfall). However, zeros might also indicate missing or incorrect data in some cases. It’s important to distinguish between meaningful zeros and errors.</p></li>
-</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 1: Remove rows with NaNs</span>
@@ -1235,31 +1246,11 @@ dtype: int64
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Final check for NaNs and zeros</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df_cleaned</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">((</span><span class="n">df_cleaned</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>objid        0
-ra           0
-dec          0
-u            0
-g            0
-r            0
-i            0
-z            0
-run          0
-rerun        0
-camcol       0
-field        0
-specobjid    0
-class        0
-redshift     0
-plate        0
-mjd          0
-fiberid      0
-dtype: int64
-objid         0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>objid         0
 ra            0
 dec           0
 u             0
@@ -1281,6 +1272,326 @@ dtype: int64
 </pre></div>
 </div>
 </div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find rows where redshift is zero</span>
+<span class="n">redshift_zeros</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="p">[</span><span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;redshift&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">redshift_zeros</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             objid          ra        dec         u         g         r  \
+413   1.237650e+18  153.398300  -0.175485  19.52077  17.50807  16.52395   
+1427  1.237650e+18  228.547774   0.539264  18.36191  17.01026  16.28012   
+1747  1.237650e+18  160.613763  -0.169214  18.62606  17.14186  16.55617   
+1748  1.237650e+18  160.619206  -0.117873  17.91615  16.14398  15.44278   
+1749  1.237650e+18  160.633146  -0.010845  19.01287  17.56112  17.00329   
+1868  1.237650e+18  220.731839  -0.721282  19.33014  18.34351  18.12662   
+3077  1.237650e+18  172.693652  -0.625297  19.38104  18.31248  17.73633   
+4325  1.237650e+18  199.431687   0.176529  19.59316  17.73319  16.84315   
+4545  1.237650e+18  140.699557   0.617955  19.19350  16.85946  15.96408   
+4757  1.237650e+18  180.886273  -3.436909  19.57545  18.04842  17.45899   
+6359  1.237650e+18  199.254590  66.341243  17.76033  16.26974  15.73430   
+6360  1.237650e+18  199.367375  66.274861  18.95181  17.92678  17.59843   
+7093  1.237650e+18  172.559689  -0.039697  19.00117  17.56111  17.03416   
+7094  1.237650e+18  172.561237  -0.163786  18.59660  18.18159  18.41018   
+7354  1.237650e+18  183.138856  -0.296560  19.29746  17.33194  16.24203   
+7793  1.237650e+18  199.476825  66.271863  17.57708  16.54746  16.45055   
+7999  1.237650e+18  184.567089  -0.266950  16.08831  14.76971  14.30379   
+9192  1.237650e+18  163.378927   0.749052  18.21892  17.28857  16.92855   
+9365  1.237650e+18  210.004774   0.136646  16.04955  14.70751  14.23094   
+
+             i         z   run  rerun  camcol  field     specobjid   class  \
+413   16.08269  15.73608   756    301       3    251  3.041580e+17  GALAXY   
+1427  15.86637  15.55808   752    301       5    568  3.503260e+17  GALAXY   
+1747  16.31177  16.18899   756    301       3    299  2.881180e+18  GALAXY   
+1748  15.17762  15.06172   756    301       3    299  2.689790e+18  GALAXY   
+1749  16.78721  16.71456   756    301       3    299  2.689780e+18  GALAXY   
+1868  18.01338  18.04648   752    301       2    515  3.303440e+18  GALAXY   
+3077  17.59461  17.40401   756    301       2    380  3.222370e+18  GALAXY   
+4325  16.47792  16.25525   752    301       4    373  3.294510e+18  GALAXY   
+4545  15.62928  15.43447  1239    301       5    136  8.391540e+18  GALAXY   
+4757  17.24059  17.12977  1140    301       1    187  3.727430e+17  GALAXY   
+6359  15.53528  15.46769  1412    301       2    207  2.752860e+18  GALAXY   
+6360  17.49268  17.48002  1412    301       2    207  2.752870e+18  GALAXY   
+7093  16.85775  16.79400   756    301       3    379  3.222400e+18  GALAXY   
+7094  18.62141  18.96124   756    301       3    379  3.239270e+18  GALAXY   
+7354  15.73388  15.31874   752    301       3    264  3.232080e+17  GALAXY   
+7793  16.43711  16.51397  1412    301       2    208  2.752870e+18  GALAXY   
+7999  14.10942  14.05211   752    301       3    274  2.880100e+18  GALAXY   
+9192  16.79046  16.72699   756    301       5    318  4.318070e+18  GALAXY   
+9365  14.39961  13.99685   752    301       4    444  3.390620e+17  GALAXY   
+
+     redshift  plate    mjd  fiberid  
+413      &lt;NA&gt;    270  51909      601  
+1427     &lt;NA&gt;    311  51665      622  
+1747     &lt;NA&gt;   2559  54208       23  
+1748     &lt;NA&gt;   2389  54213       44  
+1749     &lt;NA&gt;   2389  54213       23  
+1868     &lt;NA&gt;   2934  54626      192  
+3077     &lt;NA&gt;   2862  54471      145  
+4325     &lt;NA&gt;   2926  54625      479  
+4545     &lt;NA&gt;   7453  56749      756  
+4757     &lt;NA&gt;    331  52368      256  
+6359     &lt;NA&gt;   2445  54573      142  
+6360     &lt;NA&gt;   2445  54573      165  
+7093     &lt;NA&gt;   2862  54471      287  
+7094     &lt;NA&gt;   2877  54523      192  
+7354     &lt;NA&gt;    287  52023      273  
+7793     &lt;NA&gt;   2445  54573      177  
+7999     &lt;NA&gt;   2558  54140      192  
+9192     &lt;NA&gt;   3835  55570      880  
+9365     &lt;NA&gt;    301  51942      605  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;redshift&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;NA&gt;&#39;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_cleaned</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;redshift&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cleaned</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Index: 9981 entries, 0 to 9999
+Data columns (total 18 columns):
+ #   Column     Non-Null Count  Dtype  
+---  ------     --------------  -----  
+ 0   objid      9981 non-null   float64
+ 1   ra         9981 non-null   float64
+ 2   dec        9981 non-null   float64
+ 3   u          9981 non-null   float64
+ 4   g          9981 non-null   float64
+ 5   r          9981 non-null   float64
+ 6   i          9981 non-null   float64
+ 7   z          9981 non-null   float64
+ 8   run        9981 non-null   int64  
+ 9   rerun      9981 non-null   int64  
+ 10  camcol     9981 non-null   int64  
+ 11  field      9981 non-null   int64  
+ 12  specobjid  9981 non-null   float64
+ 13  class      9981 non-null   object 
+ 14  redshift   9981 non-null   object 
+ 15  plate      9981 non-null   int64  
+ 16  mjd        9981 non-null   int64  
+ 17  fiberid    9981 non-null   int64  
+dtypes: float64(9), int64(7), object(2)
+memory usage: 1.4+ MB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cleaned</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;cleaned_data.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df_cleaned</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>objid</th>
+      <th>ra</th>
+      <th>dec</th>
+      <th>u</th>
+      <th>g</th>
+      <th>r</th>
+      <th>i</th>
+      <th>z</th>
+      <th>run</th>
+      <th>rerun</th>
+      <th>camcol</th>
+      <th>field</th>
+      <th>specobjid</th>
+      <th>plate</th>
+      <th>mjd</th>
+      <th>fiberid</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>9.981000e+03</td>
+      <td>9981.000000</td>
+      <td>9981.000000</td>
+      <td>9981.000000</td>
+      <td>9981.000000</td>
+      <td>9981.000000</td>
+      <td>9981.000000</td>
+      <td>9981.000000</td>
+      <td>9981.000000</td>
+      <td>9981.0</td>
+      <td>9981.000000</td>
+      <td>9981.000000</td>
+      <td>9.981000e+03</td>
+      <td>9981.000000</td>
+      <td>9981.000000</td>
+      <td>9981.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>1.237650e+18</td>
+      <td>175.517213</td>
+      <td>14.844845</td>
+      <td>18.619527</td>
+      <td>17.372414</td>
+      <td>16.841475</td>
+      <td>16.583973</td>
+      <td>16.423153</td>
+      <td>981.181545</td>
+      <td>301.0</td>
+      <td>3.649835</td>
+      <td>302.355876</td>
+      <td>1.643135e+18</td>
+      <td>1459.311191</td>
+      <td>52941.578800</td>
+      <td>353.134956</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.000000e+00</td>
+      <td>47.817346</td>
+      <td>25.213167</td>
+      <td>0.828204</td>
+      <td>0.945234</td>
+      <td>1.067648</td>
+      <td>1.141790</td>
+      <td>1.203094</td>
+      <td>273.314213</td>
+      <td>0.0</td>
+      <td>1.666876</td>
+      <td>162.661046</td>
+      <td>2.013847e+18</td>
+      <td>1788.643981</td>
+      <td>1510.820579</td>
+      <td>206.198503</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.237650e+18</td>
+      <td>8.235100</td>
+      <td>-5.382632</td>
+      <td>12.988970</td>
+      <td>12.799550</td>
+      <td>12.431600</td>
+      <td>11.947210</td>
+      <td>11.610410</td>
+      <td>308.000000</td>
+      <td>301.0</td>
+      <td>1.000000</td>
+      <td>11.000000</td>
+      <td>2.995780e+17</td>
+      <td>266.000000</td>
+      <td>51578.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>1.237650e+18</td>
+      <td>157.348280</td>
+      <td>-0.541062</td>
+      <td>18.178060</td>
+      <td>16.815140</td>
+      <td>16.173370</td>
+      <td>15.853950</td>
+      <td>15.619920</td>
+      <td>752.000000</td>
+      <td>301.0</td>
+      <td>2.000000</td>
+      <td>184.000000</td>
+      <td>3.389220e+17</td>
+      <td>301.000000</td>
+      <td>51900.000000</td>
+      <td>187.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>1.237650e+18</td>
+      <td>180.393638</td>
+      <td>0.405891</td>
+      <td>18.852980</td>
+      <td>17.495150</td>
+      <td>16.859240</td>
+      <td>16.555270</td>
+      <td>16.389960</td>
+      <td>756.000000</td>
+      <td>301.0</td>
+      <td>4.000000</td>
+      <td>299.000000</td>
+      <td>4.966550e+17</td>
+      <td>441.000000</td>
+      <td>51997.000000</td>
+      <td>351.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>1.237650e+18</td>
+      <td>201.561819</td>
+      <td>35.852405</td>
+      <td>19.259070</td>
+      <td>18.010370</td>
+      <td>17.512870</td>
+      <td>17.258610</td>
+      <td>17.142010</td>
+      <td>1331.000000</td>
+      <td>301.0</td>
+      <td>5.000000</td>
+      <td>414.000000</td>
+      <td>2.881300e+18</td>
+      <td>2559.000000</td>
+      <td>54468.000000</td>
+      <td>510.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.237650e+18</td>
+      <td>260.884382</td>
+      <td>68.542265</td>
+      <td>19.599900</td>
+      <td>19.918970</td>
+      <td>24.802040</td>
+      <td>28.179630</td>
+      <td>22.833060</td>
+      <td>1412.000000</td>
+      <td>301.0</td>
+      <td>6.000000</td>
+      <td>768.000000</td>
+      <td>9.468830e+18</td>
+      <td>8410.000000</td>
+      <td>57481.000000</td>
+      <td>1000.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </section>
 <section id="correlation-analysis">
@@ -1327,7 +1638,6 @@ dtype: int64
       <th>camcol</th>
       <th>field</th>
       <th>specobjid</th>
-      <th>redshift</th>
       <th>plate</th>
       <th>mjd</th>
       <th>fiberid</th>
@@ -1349,7 +1659,6 @@ dtype: int64
       <td>4</td>
       <td>267</td>
       <td>3.722360e+18</td>
-      <td>-0.000009</td>
       <td>3306</td>
       <td>54922</td>
       <td>491</td>
@@ -1369,7 +1678,6 @@ dtype: int64
       <td>4</td>
       <td>267</td>
       <td>3.638140e+17</td>
-      <td>-0.000055</td>
       <td>323</td>
       <td>51615</td>
       <td>541</td>
@@ -1389,7 +1697,6 @@ dtype: int64
       <td>4</td>
       <td>268</td>
       <td>3.232740e+17</td>
-      <td>0.123111</td>
       <td>287</td>
       <td>52023</td>
       <td>513</td>
@@ -1409,7 +1716,6 @@ dtype: int64
       <td>4</td>
       <td>269</td>
       <td>3.722370e+18</td>
-      <td>-0.000111</td>
       <td>3306</td>
       <td>54922</td>
       <td>510</td>
@@ -1429,7 +1735,6 @@ dtype: int64
       <td>4</td>
       <td>269</td>
       <td>3.722370e+18</td>
-      <td>0.000590</td>
       <td>3306</td>
       <td>54922</td>
       <td>512</td>
@@ -1481,11 +1786,11 @@ Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda
 <span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> To update, run: <span class=" -Color -Color-Green">pip install --upgrade pip</span>
 </pre></div>
 </div>
-<img alt="../_images/2.4_dataframes_prep_18_1.png" src="../_images/2.4_dataframes_prep_18_1.png" />
+<img alt="../_images/2.4_dataframes_prep_22_1.png" src="../_images/2.4_dataframes_prep_22_1.png" />
 </div>
 </div>
 <p>Look for high correlations, which can indicate redundancy among features. In cases where variables are highly correlated, you may decide to drop one to avoid multicollinearity.</p>
-<p>The Spearman rank correlation coefficient is a non-parametric measure of rank correlation that assesses the strength and direction of the monotonic relationship between two variables. It is particularly useful in geoscientific data analysis for several reasons:</p>
+<p>The <strong>Spearman rank</strong> correlation coefficient is a non-parametric measure of rank correlation that assesses the strength and direction of the monotonic relationship between two variables. It is particularly useful in geoscientific data analysis for several reasons:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate Spearman correlation matrix</span>
@@ -1499,7 +1804,7 @@ Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.4_dataframes_prep_21_0.png" src="../_images/2.4_dataframes_prep_21_0.png" />
+<img alt="../_images/2.4_dataframes_prep_25_0.png" src="../_images/2.4_dataframes_prep_25_0.png" />
 </div>
 </div>
 </section>
@@ -1531,7 +1836,7 @@ Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.4_dataframes_prep_23_0.png" src="../_images/2.4_dataframes_prep_23_0.png" />
+<img alt="../_images/2.4_dataframes_prep_27_0.png" src="../_images/2.4_dataframes_prep_27_0.png" />
 </div>
 </div>
 <p>Are there features that could allow us to discriminate between the objects?</p>
@@ -1574,11 +1879,11 @@ Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Galaxy Summary:
                   u          g          r          i          z
-mean      18.804339  17.350216  16.649506  16.272770  16.017923
-median    18.988990  17.496555  16.741390  16.349395  16.073810
-std        0.692389   0.757240   0.848500   0.885694   0.947040
-skewness  -1.542348  -1.181716  -0.597915  -0.388773  -0.250084
-kurtosis   3.047878   2.231176   2.991016   3.152505   2.195078
+mean      18.805389  17.351101  16.649801  16.272373  16.017019
+median    18.989040  17.496600  16.741430  16.349380  16.072650
+std        0.690544   0.755898   0.847409   0.884605   0.945635
+skewness  -1.538958  -1.179191  -0.597441  -0.391759  -0.255175
+kurtosis   3.041600   2.232646   3.012774   3.178772   2.210926
 
 QSO Summary:
                   u          g          r          i          z
@@ -1599,6 +1904,9 @@ kurtosis   0.261756  -0.312878   0.397651   3.043535   0.094121
 </div>
 </div>
 </div>
+</section>
+<section id="exercise">
+<h2>4. Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">#</a></h2>
 </section>
 </section>
 
