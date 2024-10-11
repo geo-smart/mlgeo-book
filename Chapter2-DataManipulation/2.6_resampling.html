@@ -56,7 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="2.7 Spectral Transforms" href="2.7_data_spectral_transforms.html" />
+    <link rel="next" title="2.7 Statistical Considerations for geoscientific Data and Noise" href="2.7_statistical_considerations.html" />
     <link rel="prev" title="2.5 Data Arrays" href="2.5_Arrays.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -218,27 +218,32 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="2.7_data_spectral_transforms.html">
+  <a class="reference internal" href="2.7_statistical_considerations.html">
+   2.7 Statistical Considerations for geoscientific Data and Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.8_data_spectral_transforms.html">
    2.7 Spectral Transforms
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="2.8_statistical_considerations.html">
-   2.8 Statistical Considerations for geoscientific Data and Noise
+  <a class="reference internal" href="2.9_synthetic_noise.html">
+   2.9 Synthetic noise
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="2.9_feature_engineering.html">
+  <a class="reference internal" href="2.10_feature_engineering.html">
    2.9 Feature engineering
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="2.10_dimensionality_reduction.html">
+  <a class="reference internal" href="2.11_dimensionality_reduction.html">
    2.10 Dimensionality Reduction
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="2.11_MLready_data.html">
+  <a class="reference internal" href="2.12_MLready_data.html">
    2.11 ML-ready data
   </a>
  </li>
@@ -829,8 +834,8 @@ More broadly, resampling methods refer to any technique where we repeatedly draw
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The means of A and B are, 4.8190425043357745 and 5.7062434298834965, respectively.
-The difference of means is, -0.887200925547722.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The means of A and B are, 4.916816615939592 and 5.629794831291764, respectively.
+The difference of means is, -0.7129782153521722.
 </pre></div>
 </div>
 </div>
@@ -943,7 +948,7 @@ The difference of means is, -0.887200925547722.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.7490650993380316.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.7589433978306135.
 </pre></div>
 </div>
 </div>
@@ -974,7 +979,7 @@ The difference of means is, -0.887200925547722.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient of our sample is: -0.8238774989356271.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient of our sample is: -0.8537303444308123.
 </pre></div>
 </div>
 <img alt="../_images/2.6_resampling_20_1.png" src="../_images/2.6_resampling_20_1.png" />
@@ -1086,7 +1091,7 @@ The difference of means is, -0.887200925547722.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We estimate the value of pi to be: 3.12.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We estimate the value of pi to be: 3.04.
 </pre></div>
 </div>
 </div>
@@ -1115,13 +1120,9 @@ The difference of means is, -0.887200925547722.
       <span class="k">continue</span>
     <span class="n">date</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">crap</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
     <span class="n">date_year</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-    <span class="n">ue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
-    <span class="n">un</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
-    <span class="n">uv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
-<span class="c1">#             # errors</span>
-    <span class="n">se</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
-    <span class="n">sn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">11</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
-    <span class="n">sv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">12</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">ue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">un</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">uv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1166,59 +1167,59 @@ The difference of means is, -0.887200925547722.
   <tbody>
     <tr>
       <th>count</th>
-      <td>6341.000000</td>
-      <td>6341.000000</td>
-      <td>6341.000000</td>
-      <td>6341.000000</td>
+      <td>6799.000000</td>
+      <td>6.799000e+03</td>
+      <td>6.799000e+03</td>
+      <td>6799.000000</td>
     </tr>
     <tr>
       <th>mean</th>
-      <td>2014.772434</td>
-      <td>-52.534263</td>
-      <td>-30.076831</td>
-      <td>1.899511</td>
+      <td>2015.400365</td>
+      <td>3.347623e+06</td>
+      <td>4.987420e+09</td>
+      <td>53038.873887</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>5.033255</td>
-      <td>32.520022</td>
-      <td>17.516241</td>
-      <td>5.618141</td>
+      <td>5.394198</td>
+      <td>3.484142e+01</td>
+      <td>1.870622e+01</td>
+      <td>5.637131</td>
     </tr>
     <tr>
       <th>min</th>
       <td>2006.067100</td>
-      <td>-114.314000</td>
-      <td>-65.245000</td>
-      <td>-39.508000</td>
+      <td>3.347558e+06</td>
+      <td>4.987420e+09</td>
+      <td>52997.270000</td>
     </tr>
     <tr>
       <th>25%</th>
-      <td>2010.409300</td>
-      <td>-80.010000</td>
-      <td>-45.813000</td>
-      <td>-1.841000</td>
+      <td>2010.739250</td>
+      <td>3.347592e+06</td>
+      <td>4.987420e+09</td>
+      <td>53035.100000</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>2014.765200</td>
-      <td>-49.487000</td>
-      <td>-29.918000</td>
-      <td>1.720000</td>
+      <td>2015.392200</td>
+      <td>3.347626e+06</td>
+      <td>4.987420e+09</td>
+      <td>53038.670000</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>2019.126600</td>
-      <td>-24.855000</td>
-      <td>-14.940000</td>
-      <td>5.482000</td>
+      <td>2020.067050</td>
+      <td>3.347653e+06</td>
+      <td>4.987420e+09</td>
+      <td>53042.450000</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>2023.726200</td>
-      <td>3.927000</td>
-      <td>3.157000</td>
-      <td>28.663000</td>
+      <td>2024.742000</td>
+      <td>3.347683e+06</td>
+      <td>4.987420e+09</td>
+      <td>53065.440000</td>
     </tr>
   </tbody>
 </table>
@@ -1228,8 +1229,8 @@ The difference of means is, -0.887200925547722.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the GPS time series</span>
 <span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span><span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;east&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">]);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;East (mm)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">]);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;North (mm)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;east&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">]);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Easting (mm)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">]);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Northing (mm)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;up&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">]);</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Up (mm)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (years)&#39;</span><span class="p">)</span>
 </pre></div>
@@ -1239,7 +1240,7 @@ The difference of means is, -0.887200925547722.
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (years)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_36_1.png" src="../_images/2.6_resampling_36_1.png" />
+<img alt="../_images/2.6_resampling_37_1.png" src="../_images/2.6_resampling_37_1.png" />
 </div>
 </div>
 </section>
@@ -1272,8 +1273,8 @@ The difference of means is, -0.887200925547722.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P395 overall plate motion there -6.438107857588663 mm/year
-parameters: Coefficient of determination -0.9964524.2, P-value 0.0000004.2, standard deviation of errors 0.0068304.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P395 overall plate motion there 0.0 mm/year
+parameters: Coefficient of determination 0.0000004.2, P-value 1.0000004.2, standard deviation of errors 0.0000004.2
 </pre></div>
 </div>
 </div>
@@ -1307,10 +1308,10 @@ parameters: Coefficient of determination -0.9964524.2, P-value 0.0000004.2, stan
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient / Velocity eastward (mm/year):  -6.438107857588658
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient / Velocity eastward (mm/year):  0.0
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_40_1.png" src="../_images/2.6_resampling_40_1.png" />
+<img alt="../_images/2.6_resampling_41_1.png" src="../_images/2.6_resampling_41_1.png" />
 </div>
 </div>
 <p>To evaluate the errors of the model fit using the module <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>, we will use the following function</p>
@@ -1327,8 +1328,8 @@ parameters: Coefficient of determination -0.9964524.2, P-value 0.0000004.2, stan
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean squared error (mm): 7.49
-Coefficient of determination: 0.99
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean squared error (mm): 0.00
+Coefficient of determination: 1.00
 </pre></div>
 </div>
 </div>
@@ -1368,10 +1369,10 @@ For reproducible results, you can select a fixed <code class="docutils literal n
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.4382164.2 and the standard deviation 0.0060364.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates 0.0000004.2 and the standard deviation 0.0000004.2
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_44_1.png" src="../_images/2.6_resampling_44_1.png" />
+<img alt="../_images/2.6_resampling_45_1.png" src="../_images/2.6_resampling_45_1.png" />
 </div>
 </div>
 </section>
@@ -1418,10 +1419,10 @@ From: scikit-learn
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x1ca300220&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x30baba520&gt;
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_46_1.png" src="../_images/2.6_resampling_46_1.png" />
+<img alt="../_images/2.6_resampling_47_1.png" src="../_images/2.6_resampling_47_1.png" />
 </div>
 </div>
 <p>Now fit the data and evaluate the error</p>
@@ -1456,16 +1457,16 @@ From: scikit-learn
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training set: Coefficient / Velocity eastward (mm/year):  -6.442660214306567
-MSE (mean square error) on training set (mm): 7.32
-Coefficient of determination on training set: 0.99
-MSE on validation set (mm): 7.88 and coefficient of determiniation on 0.99
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training set: Coefficient / Velocity eastward (mm/year):  0.0
+MSE (mean square error) on training set (mm): 0.00
+Coefficient of determination on training set: 1.00
+MSE on validation set (mm): 0.00 and coefficient of determiniation on 1.00
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Random selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_48_2.png" src="../_images/2.6_resampling_48_2.png" />
+<img alt="../_images/2.6_resampling_49_2.png" src="../_images/2.6_resampling_49_2.png" />
 </div>
 </div>
 <p>We can also select the training and validation to be chronological. If the “state” of the data changes through time, this may induce a bias in the training. But let’s see.</p>
@@ -1502,14 +1503,14 @@ MSE on validation set (mm): 7.88 and coefficient of determiniation on 0.99
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Training set: Coefficient / Velocity eastward (mm/year):  -6.147744826538707
-Validation set MSE (mm) and Coef of Determination: 17.72,0.85
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Training set: Coefficient / Velocity eastward (mm/year):  0.0
+Validation set MSE (mm) and Coef of Determination: 0.00,1.00
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Chronological selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_50_2.png" src="../_images/2.6_resampling_50_2.png" />
+<img alt="../_images/2.6_resampling_51_2.png" src="../_images/2.6_resampling_51_2.png" />
 </div>
 </div>
 <p>Now you see that the choice of <em>training</em> vs <em>validating</em> data is important to fit a model that will generalize.</p>
@@ -1564,8 +1565,8 @@ Advantages: it has far less bias with respect to the training data. It does not 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.4381084.2 and the standard deviation 0.0000794.2
-CV = 7.87
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates 0.0000004.2 and the standard deviation 0.0000004.2
+CV = 0.00
 </pre></div>
 </div>
 </div>
@@ -1616,8 +1617,8 @@ CV = 7.87
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -6.44 and the standard deviation 0.04
-mean MSE for training set : 7.43 and the validation set: 8.78
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates 0.00 and the standard deviation 0.00
+mean MSE for training set : 0.00 and the validation set: 0.00
 </pre></div>
 </div>
 </div>
@@ -1660,10 +1661,10 @@ mean MSE for training set : 7.43 and the validation set: 8.78
             <p class="prev-next-title">2.5 Data Arrays</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="2.7_data_spectral_transforms.html" title="next page">
+    <a class='right-next' id="next-link" href="2.7_statistical_considerations.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">2.7 Spectral Transforms</p>
+        <p class="prev-next-title">2.7 Statistical Considerations for geoscientific Data and Noise</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
