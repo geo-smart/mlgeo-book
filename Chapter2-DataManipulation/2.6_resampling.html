@@ -801,8 +801,28 @@ More broadly, resampling methods refer to any technique where we repeatedly draw
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># fix the random seed for reproducibility. Place it on the top to reproduce the entire notebook exactly once. But use it in every cell to re-run each cells independently.</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We define a random generator</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generator(PCG64) at 0x318353900
 </pre></div>
 </div>
 </div>
@@ -816,6 +836,8 @@ More broadly, resampling methods refer to any technique where we repeatedly draw
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We begin with two datasets, A and B</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="n">B</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">5.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
@@ -834,8 +856,8 @@ More broadly, resampling methods refer to any technique where we repeatedly draw
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The means of A and B are, 4.916816615939592 and 5.629794831291764, respectively.
-The difference of means is, -0.7129782153521722.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The means of A and B are, 4.874325971290356 and 5.473420405447642, respectively.
+The difference of means is, -0.5990944341572852.
 </pre></div>
 </div>
 </div>
@@ -904,7 +926,7 @@ The difference of means is, -0.7129782153521722.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.6_resampling_10_0.png" src="../_images/2.6_resampling_10_0.png" />
+<img alt="../_images/2.6_resampling_12_0.png" src="../_images/2.6_resampling_12_0.png" />
 </div>
 </div>
 </section>
@@ -933,7 +955,7 @@ The difference of means is, -0.7129782153521722.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.6_resampling_14_0.png" src="../_images/2.6_resampling_14_0.png" />
+<img alt="../_images/2.6_resampling_16_0.png" src="../_images/2.6_resampling_16_0.png" />
 </div>
 </div>
 <p>We can verify that the Pearson <a class="reference external" href="https://en.wikipedia.org/wiki/Correlation_coefficient">correlation coefficient</a> is close to our target using the numpy function <code class="docutils literal notranslate"><span class="pre">corrcoef</span></code>.</p>
@@ -941,14 +963,32 @@ The difference of means is, -0.7129782153521722.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The correlation matrix of the first and second columns of correlated_data</span>
 <span class="n">correlation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">correlated_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
-
-<span class="c1"># Check the correlation coefficient</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">correlation_matrix</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.        , -0.72540304],
+       [-0.72540304,  1.        ]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the correlation coefficient</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The correlation coefficient is: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">correlation_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.7589433978306135.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient is: -0.7254030411293304.
 </pre></div>
 </div>
 </div>
@@ -957,7 +997,28 @@ The difference of means is, -0.7129782153521722.
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nsubset</span><span class="o">=</span><span class="mi">10</span>
-<span class="n">subset</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">nsubset</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">subset</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">nsubset</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subset</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.08149552, -0.75473902],
+       [-0.15064708, -0.88421426],
+       [ 0.03331803,  0.51951422],
+       [ 0.58669726,  0.51967288],
+       [ 0.42511267,  0.47888931],
+       [-0.05371048,  0.15998988],
+       [ 0.13428352,  0.24026582],
+       [-0.13976786,  0.57151718],
+       [-0.74081486,  0.22763649],
+       [ 0.02037839, -0.36898269]])
 </pre></div>
 </div>
 </div>
@@ -979,10 +1040,10 @@ The difference of means is, -0.7129782153521722.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient of our sample is: -0.8537303444308123.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The correlation coefficient of our sample is: -0.19742697173045337.
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_20_1.png" src="../_images/2.6_resampling_20_1.png" />
+<img alt="../_images/2.6_resampling_25_1.png" src="../_images/2.6_resampling_25_1.png" />
 </div>
 </div>
 <p>Now, we will bootstrap. Once again, we define a number of runs.</p>
@@ -1002,11 +1063,62 @@ The difference of means is, -0.7129782153521722.
 <span class="c1"># Let&#39;s also get the length of the subset</span>
 <span class="c1"># When bootstrapping, the size of your resampled dataset should match the size of your original sample!</span>
 <span class="n">length_sub</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+<span class="n">length_sub</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subset</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.08149552, -0.75473902],
+       [-0.15064708, -0.88421426],
+       [ 0.03331803,  0.51951422],
+       [ 0.58669726,  0.51967288],
+       [ 0.42511267,  0.47888931],
+       [-0.05371048,  0.15998988],
+       [ 0.13428352,  0.24026582],
+       [-0.13976786,  0.57151718],
+       [-0.74081486,  0.22763649],
+       [ 0.02037839, -0.36898269]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nsubset</span><span class="o">=</span><span class="mi">10</span>
 
+<span class="n">subset</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.08149552, -0.75473902],
+       [-0.15064708, -0.88421426],
+       [ 0.03331803,  0.51951422],
+       [ 0.58669726,  0.51967288],
+       [ 0.42511267,  0.47888931],
+       [-0.05371048,  0.15998988],
+       [ 0.13428352,  0.24026582],
+       [-0.13976786,  0.57151718],
+       [-0.74081486,  0.22763649],
+       [ 0.02037839, -0.36898269]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nsubset</span><span class="o">=</span><span class="mi">500</span>
 <span class="c1"># Now, for each run</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_runs</span><span class="p">):</span>
     <span class="c1"># We want to draw length_sub samples WITH REPLACEMENT</span>
-    <span class="n">new_pairs</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">length_sub</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">new_pairs</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">correlated_data</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">nsubset</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1"># Calculate and store the correlation coefficient</span>
     <span class="n">corr_coef_collector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">new_pairs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">new_pairs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
 
@@ -1024,7 +1136,7 @@ The difference of means is, -0.7129782153521722.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.6_resampling_24_0.png" src="../_images/2.6_resampling_24_0.png" />
+<img alt="../_images/2.6_resampling_32_0.png" src="../_images/2.6_resampling_32_0.png" />
 </div>
 </div>
 <p>We see that the median Pearson coefficient is not exactly the true Pearson coefficient. Why is that?</p>
@@ -1076,7 +1188,7 @@ The difference of means is, -0.7129782153521722.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.6_resampling_29_0.png" src="../_images/2.6_resampling_29_0.png" />
+<img alt="../_images/2.6_resampling_37_0.png" src="../_images/2.6_resampling_37_0.png" />
 </div>
 </div>
 <p>We now estimate <span class="math notranslate nohighlight">\(\pi\)</span> by using the length of the number points in the circle and in the quarter as approximation to their area.</p>
@@ -1091,7 +1203,7 @@ The difference of means is, -0.7129782153521722.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We estimate the value of pi to be: 3.04.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We estimate the value of pi to be: 3.28.
 </pre></div>
 </div>
 </div>
@@ -1111,31 +1223,205 @@ The difference of means is, -0.7129782153521722.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The station designation</span>
 <span class="n">sta</span><span class="o">=</span><span class="s2">&quot;P395&quot;</span>
-<span class="n">file_url</span><span class="o">=</span><span class="s2">&quot;http://geodesy.unr.edu/gps_timeseries/tenv/IGS14/&quot;</span><span class="o">+</span> <span class="n">sta</span> <span class="o">+</span> <span class="s2">&quot;.tenv&quot;</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>  <span class="c1"># download, read text, split lines into a list</span>
-<span class="n">ue</span><span class="o">=</span><span class="p">[];</span><span class="n">un</span><span class="o">=</span><span class="p">[];</span><span class="n">uv</span><span class="o">=</span><span class="p">[];</span><span class="n">se</span><span class="o">=</span><span class="p">[];</span><span class="n">sn</span><span class="o">=</span><span class="p">[];</span><span class="n">sv</span><span class="o">=</span><span class="p">[];</span><span class="n">date</span><span class="o">=</span><span class="p">[];</span><span class="n">date_year</span><span class="o">=</span><span class="p">[];</span><span class="n">df</span><span class="o">=</span><span class="p">[]</span>
-<span class="k">for</span> <span class="n">iday</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>  <span class="c1"># this loops through the days of data</span>
-    <span class="n">crap</span><span class="o">=</span><span class="n">iday</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">crap</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">:</span>
-      <span class="k">continue</span>
-    <span class="n">date</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">crap</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-    <span class="n">date_year</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-    <span class="n">ue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
-    <span class="n">un</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
-    <span class="n">uv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">crap</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;http://geodesy.unr.edu/gps_timeseries/tenv/IGS14/&quot;</span> <span class="o">+</span> <span class="n">sta</span> <span class="o">+</span> <span class="s2">&quot;.tenv&quot;</span><span class="p">)</span>
+<span class="n">zip_file_url</span><span class="o">=</span><span class="s2">&quot;http://geodesy.unr.edu/gps_timeseries/tenv/IGS14/&quot;</span><span class="o">+</span> <span class="n">sta</span> <span class="o">+</span> <span class="s2">&quot;.tenv&quot;</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">zip_file_url</span><span class="p">)</span>
+
+
+<span class="c1"># create a list of strings with itemized list above</span>
+<span class="n">ll</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;station ID (SSSS)&#39;</span><span class="p">,</span><span class="s1">&#39;date (yymmmdd)&#39;</span><span class="p">,</span>
+<span class="s1">&#39;decimal year&#39;</span><span class="p">,</span><span class="s1">&#39;modified Julian day&#39;</span><span class="p">,</span><span class="s1">&#39;GPS week&#39;</span><span class="p">,</span><span class="s1">&#39;day of GPS week&#39;</span><span class="p">,</span>
+<span class="s1">&#39;longitude (degrees) of reference meridian&#39;</span><span class="p">,</span><span class="s1">&#39;delta e (m)&#39;</span><span class="p">,</span>
+<span class="s1">&#39;delta n (m)&#39;</span><span class="p">,</span><span class="s1">&#39;delta v (m)&#39;</span><span class="p">,</span><span class="s1">&#39;antenna height (m)&#39;</span><span class="p">,</span>
+<span class="s1">&#39;sigma e (m)&#39;</span><span class="p">,</span><span class="s1">&#39;sigma n (m)&#39;</span><span class="p">,</span><span class="s1">&#39;sigma v (m)&#39;</span><span class="p">,</span>
+<span class="s1">&#39;correlation en&#39;</span><span class="p">,</span><span class="s1">&#39;correlation ev&#39;</span><span class="p">,</span><span class="s1">&#39;correlation nv&#39;</span><span class="p">]</span>
+      
+
+<span class="c1"># transform r.content into a pandas dataframe</span>
+<span class="c1"># first split r.content with \n separator</span>
+<span class="c1"># Decode the content if it&#39;s in bytes</span>
+<span class="n">content_str</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+<span class="c1"># Split the content by the newline character</span>
+<span class="n">lines</span> <span class="o">=</span> <span class="n">content_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Now `lines` is a list of strings, each representing a line from the content</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># then transform lines into a pandas dataframe</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">])</span>
+<span class="c1"># assign column names to df a</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">ll</span>
+
+<span class="c1">#convert columns to numeric</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>http://geodesy.unr.edu/gps_timeseries/tenv/IGS14/P395.tenv
+P395 06JAN25 2006.0671 53760 1359 3 -123.9  3347.67917   4987420.31375   53.03678  0.0083 0.00069 0.00105 0.00327 -0.04832  0.01695 -0.31816
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station ID (SSSS)</th>
+      <th>date (yymmmdd)</th>
+      <th>decimal year</th>
+      <th>modified Julian day</th>
+      <th>GPS week</th>
+      <th>day of GPS week</th>
+      <th>longitude (degrees) of reference meridian</th>
+      <th>delta e (m)</th>
+      <th>delta n (m)</th>
+      <th>delta v (m)</th>
+      <th>antenna height (m)</th>
+      <th>sigma e (m)</th>
+      <th>sigma n (m)</th>
+      <th>sigma v (m)</th>
+      <th>correlation en</th>
+      <th>correlation ev</th>
+      <th>correlation nv</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>P395</td>
+      <td>06JAN25</td>
+      <td>2006.0671</td>
+      <td>53760.0</td>
+      <td>1359.0</td>
+      <td>3.0</td>
+      <td>-123.9</td>
+      <td>3347.67917</td>
+      <td>4.987420e+06</td>
+      <td>53.03678</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00327</td>
+      <td>-0.04832</td>
+      <td>0.01695</td>
+      <td>-0.31816</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>P395</td>
+      <td>06JAN26</td>
+      <td>2006.0698</td>
+      <td>53761.0</td>
+      <td>1359.0</td>
+      <td>4.0</td>
+      <td>-123.9</td>
+      <td>3347.68086</td>
+      <td>4.987420e+06</td>
+      <td>53.03003</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00104</td>
+      <td>0.00321</td>
+      <td>-0.04648</td>
+      <td>0.00271</td>
+      <td>-0.30970</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>P395</td>
+      <td>06JAN27</td>
+      <td>2006.0726</td>
+      <td>53762.0</td>
+      <td>1359.0</td>
+      <td>5.0</td>
+      <td>-123.9</td>
+      <td>3347.68072</td>
+      <td>4.987420e+06</td>
+      <td>53.03906</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00326</td>
+      <td>-0.02367</td>
+      <td>0.00817</td>
+      <td>-0.31941</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>P395</td>
+      <td>06JAN28</td>
+      <td>2006.0753</td>
+      <td>53763.0</td>
+      <td>1359.0</td>
+      <td>6.0</td>
+      <td>-123.9</td>
+      <td>3347.67938</td>
+      <td>4.987420e+06</td>
+      <td>53.04382</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00324</td>
+      <td>-0.03681</td>
+      <td>0.00908</td>
+      <td>-0.30515</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>P395</td>
+      <td>06JAN29</td>
+      <td>2006.0780</td>
+      <td>53764.0</td>
+      <td>1360.0</td>
+      <td>0.0</td>
+      <td>-123.9</td>
+      <td>3347.68042</td>
+      <td>4.987420e+06</td>
+      <td>53.03513</td>
+      <td>0.0083</td>
+      <td>0.00068</td>
+      <td>0.00105</td>
+      <td>0.00328</td>
+      <td>-0.04815</td>
+      <td>0.00619</td>
+      <td>-0.33029</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># remove first value for delta e, delta n, delta v to make relative position with respect to the first time. Add these as new columns</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;new delta e (m)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;delta e (m)&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;delta e (m)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;new delta n (m)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;delta n (m)&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;delta n (m)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;new delta v (m)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;delta v (m)&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;delta v (m)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We now make a data frame</span>
-<span class="n">crap</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;station&#39;</span><span class="p">:</span><span class="n">sta</span><span class="p">,</span><span class="s1">&#39;date&#39;</span><span class="p">:</span><span class="n">date</span><span class="p">,</span><span class="s1">&#39;date_year&#39;</span><span class="p">:</span><span class="n">date_year</span><span class="p">,</span><span class="s1">&#39;east&#39;</span><span class="p">:</span><span class="n">ue</span><span class="p">,</span><span class="s1">&#39;north&#39;</span><span class="p">:</span><span class="n">un</span><span class="p">,</span><span class="s1">&#39;up&#39;</span><span class="p">:</span><span class="n">uv</span><span class="p">}</span>
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">crap</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;date_year&#39;</span><span class="p">,</span><span class="s1">&#39;east&#39;</span><span class="p">,</span><span class="s1">&#39;north&#39;</span><span class="p">,</span><span class="s1">&#39;up&#39;</span><span class="p">])</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">crap</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span><span class="s1">&#39;date_year&#39;</span><span class="p">,</span><span class="s1">&#39;east&#39;</span><span class="p">,</span><span class="s1">&#39;north&#39;</span><span class="p">,</span><span class="s1">&#39;up&#39;</span><span class="p">])])</span>
-<span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1158,68 +1444,143 @@ The difference of means is, -0.7129782153521722.
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>date_year</th>
-      <th>east</th>
-      <th>north</th>
-      <th>up</th>
+      <th>station ID (SSSS)</th>
+      <th>date (yymmmdd)</th>
+      <th>decimal year</th>
+      <th>modified Julian day</th>
+      <th>GPS week</th>
+      <th>day of GPS week</th>
+      <th>longitude (degrees) of reference meridian</th>
+      <th>delta e (m)</th>
+      <th>delta n (m)</th>
+      <th>delta v (m)</th>
+      <th>antenna height (m)</th>
+      <th>sigma e (m)</th>
+      <th>sigma n (m)</th>
+      <th>sigma v (m)</th>
+      <th>correlation en</th>
+      <th>correlation ev</th>
+      <th>correlation nv</th>
+      <th>new delta e (m)</th>
+      <th>new delta n (m)</th>
+      <th>new delta v (m)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>count</th>
-      <td>6799.000000</td>
-      <td>6.799000e+03</td>
-      <td>6.799000e+03</td>
-      <td>6799.000000</td>
+      <th>0</th>
+      <td>P395</td>
+      <td>06JAN25</td>
+      <td>2006.0671</td>
+      <td>53760.0</td>
+      <td>1359.0</td>
+      <td>3.0</td>
+      <td>-123.9</td>
+      <td>3347.67917</td>
+      <td>4.987420e+06</td>
+      <td>53.03678</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00327</td>
+      <td>-0.04832</td>
+      <td>0.01695</td>
+      <td>-0.31816</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
     </tr>
     <tr>
-      <th>mean</th>
-      <td>2015.400365</td>
-      <td>3.347623e+06</td>
-      <td>4.987420e+09</td>
-      <td>53038.873887</td>
+      <th>1</th>
+      <td>P395</td>
+      <td>06JAN26</td>
+      <td>2006.0698</td>
+      <td>53761.0</td>
+      <td>1359.0</td>
+      <td>4.0</td>
+      <td>-123.9</td>
+      <td>3347.68086</td>
+      <td>4.987420e+06</td>
+      <td>53.03003</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00104</td>
+      <td>0.00321</td>
+      <td>-0.04648</td>
+      <td>0.00271</td>
+      <td>-0.30970</td>
+      <td>0.00169</td>
+      <td>-0.00067</td>
+      <td>-0.00675</td>
     </tr>
     <tr>
-      <th>std</th>
-      <td>5.394198</td>
-      <td>3.484142e+01</td>
-      <td>1.870622e+01</td>
-      <td>5.637131</td>
+      <th>2</th>
+      <td>P395</td>
+      <td>06JAN27</td>
+      <td>2006.0726</td>
+      <td>53762.0</td>
+      <td>1359.0</td>
+      <td>5.0</td>
+      <td>-123.9</td>
+      <td>3347.68072</td>
+      <td>4.987420e+06</td>
+      <td>53.03906</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00326</td>
+      <td>-0.02367</td>
+      <td>0.00817</td>
+      <td>-0.31941</td>
+      <td>0.00155</td>
+      <td>0.00101</td>
+      <td>0.00228</td>
     </tr>
     <tr>
-      <th>min</th>
-      <td>2006.067100</td>
-      <td>3.347558e+06</td>
-      <td>4.987420e+09</td>
-      <td>52997.270000</td>
+      <th>3</th>
+      <td>P395</td>
+      <td>06JAN28</td>
+      <td>2006.0753</td>
+      <td>53763.0</td>
+      <td>1359.0</td>
+      <td>6.0</td>
+      <td>-123.9</td>
+      <td>3347.67938</td>
+      <td>4.987420e+06</td>
+      <td>53.04382</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00324</td>
+      <td>-0.03681</td>
+      <td>0.00908</td>
+      <td>-0.30515</td>
+      <td>0.00021</td>
+      <td>-0.00150</td>
+      <td>0.00704</td>
     </tr>
     <tr>
-      <th>25%</th>
-      <td>2010.739250</td>
-      <td>3.347592e+06</td>
-      <td>4.987420e+09</td>
-      <td>53035.100000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>2015.392200</td>
-      <td>3.347626e+06</td>
-      <td>4.987420e+09</td>
-      <td>53038.670000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>2020.067050</td>
-      <td>3.347653e+06</td>
-      <td>4.987420e+09</td>
-      <td>53042.450000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>2024.742000</td>
-      <td>3.347683e+06</td>
-      <td>4.987420e+09</td>
-      <td>53065.440000</td>
+      <th>4</th>
+      <td>P395</td>
+      <td>06JAN29</td>
+      <td>2006.0780</td>
+      <td>53764.0</td>
+      <td>1360.0</td>
+      <td>0.0</td>
+      <td>-123.9</td>
+      <td>3347.68042</td>
+      <td>4.987420e+06</td>
+      <td>53.03513</td>
+      <td>0.0083</td>
+      <td>0.00068</td>
+      <td>0.00105</td>
+      <td>0.00328</td>
+      <td>-0.04815</td>
+      <td>0.00619</td>
+      <td>-0.33029</td>
+      <td>0.00125</td>
+      <td>-0.00162</td>
+      <td>-0.00165</td>
     </tr>
   </tbody>
 </table>
@@ -1227,20 +1588,15 @@ The difference of means is, -0.7129782153521722.
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the GPS time series</span>
-<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span><span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;east&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">]);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Easting (mm)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">]);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Northing (mm)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;up&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">]);</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Up (mm)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (years)&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;decimal year&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;new delta e (m)&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;East displacement&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (years)&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x319394a90&gt;]
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_37_1.png" src="../_images/2.6_resampling_37_1.png" />
+<img alt="../_images/2.6_resampling_46_1.png" src="../_images/2.6_resampling_46_1.png" />
 </div>
 </div>
 </section>
@@ -1260,21 +1616,389 @@ The difference of means is, -0.7129782153521722.
 <p>The smaller the error, the “better” the fit (we will discuss later that a fit can be too good!), the closer <span class="math notranslate nohighlight">\(R^2\)</span> is to one.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># remove nans with dropna for the specific delta e column and replace df with the new dataframe</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;delta e (m)&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station ID (SSSS)</th>
+      <th>date (yymmmdd)</th>
+      <th>decimal year</th>
+      <th>modified Julian day</th>
+      <th>GPS week</th>
+      <th>day of GPS week</th>
+      <th>longitude (degrees) of reference meridian</th>
+      <th>delta e (m)</th>
+      <th>delta n (m)</th>
+      <th>delta v (m)</th>
+      <th>antenna height (m)</th>
+      <th>sigma e (m)</th>
+      <th>sigma n (m)</th>
+      <th>sigma v (m)</th>
+      <th>correlation en</th>
+      <th>correlation ev</th>
+      <th>correlation nv</th>
+      <th>new delta e (m)</th>
+      <th>new delta n (m)</th>
+      <th>new delta v (m)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>P395</td>
+      <td>06JAN25</td>
+      <td>2006.0671</td>
+      <td>53760.0</td>
+      <td>1359.0</td>
+      <td>3.0</td>
+      <td>-123.9</td>
+      <td>3347.67917</td>
+      <td>4.987420e+06</td>
+      <td>53.03678</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00327</td>
+      <td>-0.04832</td>
+      <td>0.01695</td>
+      <td>-0.31816</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>P395</td>
+      <td>06JAN26</td>
+      <td>2006.0698</td>
+      <td>53761.0</td>
+      <td>1359.0</td>
+      <td>4.0</td>
+      <td>-123.9</td>
+      <td>3347.68086</td>
+      <td>4.987420e+06</td>
+      <td>53.03003</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00104</td>
+      <td>0.00321</td>
+      <td>-0.04648</td>
+      <td>0.00271</td>
+      <td>-0.30970</td>
+      <td>0.00169</td>
+      <td>-0.00067</td>
+      <td>-0.00675</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>P395</td>
+      <td>06JAN27</td>
+      <td>2006.0726</td>
+      <td>53762.0</td>
+      <td>1359.0</td>
+      <td>5.0</td>
+      <td>-123.9</td>
+      <td>3347.68072</td>
+      <td>4.987420e+06</td>
+      <td>53.03906</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00326</td>
+      <td>-0.02367</td>
+      <td>0.00817</td>
+      <td>-0.31941</td>
+      <td>0.00155</td>
+      <td>0.00101</td>
+      <td>0.00228</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>P395</td>
+      <td>06JAN28</td>
+      <td>2006.0753</td>
+      <td>53763.0</td>
+      <td>1359.0</td>
+      <td>6.0</td>
+      <td>-123.9</td>
+      <td>3347.67938</td>
+      <td>4.987420e+06</td>
+      <td>53.04382</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00324</td>
+      <td>-0.03681</td>
+      <td>0.00908</td>
+      <td>-0.30515</td>
+      <td>0.00021</td>
+      <td>-0.00150</td>
+      <td>0.00704</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>P395</td>
+      <td>06JAN29</td>
+      <td>2006.0780</td>
+      <td>53764.0</td>
+      <td>1360.0</td>
+      <td>0.0</td>
+      <td>-123.9</td>
+      <td>3347.68042</td>
+      <td>4.987420e+06</td>
+      <td>53.03513</td>
+      <td>0.0083</td>
+      <td>0.00068</td>
+      <td>0.00105</td>
+      <td>0.00328</td>
+      <td>-0.04815</td>
+      <td>0.00619</td>
+      <td>-0.33029</td>
+      <td>0.00125</td>
+      <td>-0.00162</td>
+      <td>-0.00165</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;decimal year&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;new delta e (m)&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;East displacement&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x3195279a0&gt;]
+</pre></div>
+</div>
+<img alt="../_images/2.6_resampling_50_1.png" src="../_images/2.6_resampling_50_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station ID (SSSS)</th>
+      <th>date (yymmmdd)</th>
+      <th>decimal year</th>
+      <th>modified Julian day</th>
+      <th>GPS week</th>
+      <th>day of GPS week</th>
+      <th>longitude (degrees) of reference meridian</th>
+      <th>delta e (m)</th>
+      <th>delta n (m)</th>
+      <th>delta v (m)</th>
+      <th>antenna height (m)</th>
+      <th>sigma e (m)</th>
+      <th>sigma n (m)</th>
+      <th>sigma v (m)</th>
+      <th>correlation en</th>
+      <th>correlation ev</th>
+      <th>correlation nv</th>
+      <th>new delta e (m)</th>
+      <th>new delta n (m)</th>
+      <th>new delta v (m)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>P395</td>
+      <td>06JAN25</td>
+      <td>2006.0671</td>
+      <td>53760.0</td>
+      <td>1359.0</td>
+      <td>3.0</td>
+      <td>-123.9</td>
+      <td>3347.67917</td>
+      <td>4.987420e+06</td>
+      <td>53.03678</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00327</td>
+      <td>-0.04832</td>
+      <td>0.01695</td>
+      <td>-0.31816</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>P395</td>
+      <td>06JAN26</td>
+      <td>2006.0698</td>
+      <td>53761.0</td>
+      <td>1359.0</td>
+      <td>4.0</td>
+      <td>-123.9</td>
+      <td>3347.68086</td>
+      <td>4.987420e+06</td>
+      <td>53.03003</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00104</td>
+      <td>0.00321</td>
+      <td>-0.04648</td>
+      <td>0.00271</td>
+      <td>-0.30970</td>
+      <td>0.00169</td>
+      <td>-0.00067</td>
+      <td>-0.00675</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>P395</td>
+      <td>06JAN27</td>
+      <td>2006.0726</td>
+      <td>53762.0</td>
+      <td>1359.0</td>
+      <td>5.0</td>
+      <td>-123.9</td>
+      <td>3347.68072</td>
+      <td>4.987420e+06</td>
+      <td>53.03906</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00326</td>
+      <td>-0.02367</td>
+      <td>0.00817</td>
+      <td>-0.31941</td>
+      <td>0.00155</td>
+      <td>0.00101</td>
+      <td>0.00228</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>P395</td>
+      <td>06JAN28</td>
+      <td>2006.0753</td>
+      <td>53763.0</td>
+      <td>1359.0</td>
+      <td>6.0</td>
+      <td>-123.9</td>
+      <td>3347.67938</td>
+      <td>4.987420e+06</td>
+      <td>53.04382</td>
+      <td>0.0083</td>
+      <td>0.00069</td>
+      <td>0.00105</td>
+      <td>0.00324</td>
+      <td>-0.03681</td>
+      <td>0.00908</td>
+      <td>-0.30515</td>
+      <td>0.00021</td>
+      <td>-0.00150</td>
+      <td>0.00704</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>P395</td>
+      <td>06JAN29</td>
+      <td>2006.0780</td>
+      <td>53764.0</td>
+      <td>1360.0</td>
+      <td>0.0</td>
+      <td>-123.9</td>
+      <td>3347.68042</td>
+      <td>4.987420e+06</td>
+      <td>53.03513</td>
+      <td>0.0083</td>
+      <td>0.00068</td>
+      <td>0.00105</td>
+      <td>0.00328</td>
+      <td>-0.04815</td>
+      <td>0.00619</td>
+      <td>-0.33029</td>
+      <td>0.00125</td>
+      <td>-0.00162</td>
+      <td>-0.00165</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># now let&#39;s find the trends and detrend the data.</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 <span class="c1"># linear regression such that: displacement = Velocity * time</span>
 <span class="c1"># velocity in the East component.</span>
-<span class="n">Ve</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r_value</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">std_err</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">linregress</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;east&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">])</span>
+
+<span class="n">Ve</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r_value</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">std_err</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">linregress</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;decimal year&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;new delta e (m)&#39;</span><span class="p">])</span>
 <span class="c1"># horizontal plate motion:</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sta</span><span class="p">,</span><span class="s2">&quot;overall plate motion there&quot;</span><span class="p">,</span><span class="n">Ve</span><span class="p">,</span><span class="s1">&#39;mm/year&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sta</span><span class="p">,</span><span class="s2">&quot;overall plate motion there&quot;</span><span class="p">,</span><span class="n">Ve</span><span class="p">,</span><span class="s1">&#39;m/year&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;parameters: Coefficient of determination </span><span class="si">%f</span><span class="s2">4.2, P-value </span><span class="si">%f</span><span class="s2">4.2, standard deviation of errors </span><span class="si">%f</span><span class="s2">4.2&quot;</span>\
       <span class="o">%</span><span class="p">(</span><span class="n">r_value</span><span class="p">,</span><span class="n">p_value</span><span class="p">,</span><span class="n">std_err</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P395 overall plate motion there 0.0 mm/year
-parameters: Coefficient of determination 0.0000004.2, P-value 1.0000004.2, standard deviation of errors 0.0000004.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P395 overall plate motion there -0.0064397312911273945 m/year
+parameters: Coefficient of determination -0.9970084.2, P-value 0.0000004.2, standard deviation of errors 0.0000064.2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;new delta e (m)&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
 </pre></div>
 </div>
 </div>
@@ -1284,8 +2008,10 @@ parameters: Coefficient of determination 0.0000004.2, P-value 1.0000004.2, stand
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 <span class="c1"># convert the data into numpy arrays.</span>
-<span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;east&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="c1"># reshaping was necessary to be an argument of Linear regress</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_year&#39;</span><span class="p">][</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sta</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;new delta e (m)&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="c1"># reshaping was necessary to be an argument of Linear regress</span>
+<span class="c1"># E = np.asarray(df[&#39;east&#39;][df[&#39;station&#39;]==sta]).reshape(-1, 1)# reshaping was necessary to be an argument of Linear regress</span>
+<span class="c1"># make a new time array</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;decimal year&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="mi">1000</span><span class="p">)</span>
 
 <span class="c1"># perform the linear regression. First we will use the entire available data</span>
@@ -1297,21 +2023,19 @@ parameters: Coefficient of determination 0.0000004.2, P-value 1.0000004.2, stand
 
 <span class="c1"># The coefficients</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coefficient / Velocity eastward (mm/year): &#39;</span><span class="p">,</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">E</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;East (mm)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">Epred</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(())</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(())</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># plot the data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">E</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient / Velocity eastward (mm/year):  0.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient / Velocity eastward (mm/year):  -0.006439731291127403
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_41_1.png" src="../_images/2.6_resampling_41_1.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x318690940&gt;]
+</pre></div>
+</div>
+<img alt="../_images/2.6_resampling_55_2.png" src="../_images/2.6_resampling_55_2.png" />
 </div>
 </div>
 <p>To evaluate the errors of the model fit using the module <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>, we will use the following function</p>
@@ -1329,7 +2053,7 @@ parameters: Coefficient of determination 0.0000004.2, P-value 1.0000004.2, stand
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean squared error (mm): 0.00
-Coefficient of determination: 1.00
+Coefficient of determination: 0.99
 </pre></div>
 </div>
 </div>
@@ -1363,16 +2087,18 @@ For reproducible results, you can select a fixed <code class="docutils literal n
 <span class="c1"># the data shows clearly a trend, so the predictions of the trends are close to each other:</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean of the velocity estimates </span><span class="si">%f</span><span class="s2">4.2 and the standard deviation </span><span class="si">%f</span><span class="s2">4.2&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span><span class="p">)))</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribution of eastward velocities (mm/year)&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribution of eastward velocities (mm/year)&#39;</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># only show a few values in the x-axis</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates 0.0000004.2 and the standard deviation 0.0000004.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -0.0064404.2 and the standard deviation 0.0000064.2
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_45_1.png" src="../_images/2.6_resampling_45_1.png" />
+<img alt="../_images/2.6_resampling_59_1.png" src="../_images/2.6_resampling_59_1.png" />
 </div>
 </div>
 </section>
@@ -1414,10 +2140,10 @@ From: scikit-learn</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x30baba520&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x3196996a0&gt;
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_47_1.png" src="../_images/2.6_resampling_47_1.png" />
+<img alt="../_images/2.6_resampling_61_1.png" src="../_images/2.6_resampling_61_1.png" />
 </div>
 </div>
 <p>Now fit the data and evaluate the error</p>
@@ -1452,16 +2178,16 @@ From: scikit-learn</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training set: Coefficient / Velocity eastward (mm/year):  0.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training set: Coefficient / Velocity eastward (mm/year):  -0.006437910455226973
 MSE (mean square error) on training set (mm): 0.00
-Coefficient of determination on training set: 1.00
-MSE on validation set (mm): 0.00 and coefficient of determiniation on 1.00
+Coefficient of determination on training set: 0.99
+MSE on validation set (mm): 0.00 and coefficient of determiniation on 0.99
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Random selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_49_2.png" src="../_images/2.6_resampling_49_2.png" />
+<img alt="../_images/2.6_resampling_63_2.png" src="../_images/2.6_resampling_63_2.png" />
 </div>
 </div>
 <p>We can also select the training and validation to be chronological. If the “state” of the data changes through time, this may induce a bias in the training. But let’s see.</p>
@@ -1498,14 +2224,14 @@ MSE on validation set (mm): 0.00 and coefficient of determiniation on 1.00
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Training set: Coefficient / Velocity eastward (mm/year):  0.0
-Validation set MSE (mm) and Coef of Determination: 0.00,1.00
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Training set: Coefficient / Velocity eastward (mm/year):  -0.006250720119447979
+Validation set MSE (mm) and Coef of Determination: 0.00,0.92
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Chronological selection for data split&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.6_resampling_51_2.png" src="../_images/2.6_resampling_51_2.png" />
+<img alt="../_images/2.6_resampling_65_2.png" src="../_images/2.6_resampling_65_2.png" />
 </div>
 </div>
 <p>Now you see that the choice of <em>training</em> vs <em>validating</em> data is important to fit a model that will generalize.</p>
@@ -1560,7 +2286,7 @@ Advantages: it has far less bias with respect to the training data. It does not 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates 0.0000004.2 and the standard deviation 0.0000004.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -0.0064404.2 and the standard deviation 0.0000004.2
 CV = 0.00
 </pre></div>
 </div>
@@ -1612,7 +2338,7 @@ CV = 0.00
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates 0.00 and the standard deviation 0.00
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean of the velocity estimates -0.01 and the standard deviation 0.00
 mean MSE for training set : 0.00 and the validation set: 0.00
 </pre></div>
 </div>
