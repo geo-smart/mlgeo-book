@@ -1,0 +1,99 @@
+Traceback (most recent call last):
+  File "/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/usr/share/miniconda3/envs/geosmart/lib/python3.10/asyncio/base_events.py", line 646, in run_until_complete
+    return future.result()
+  File "/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import butter, filtfilt
+import pandas as pd
+
+# Example: Sea surface temperature time series (synthetic data for simplicity)
+# Generate a synthetic SST time series with a trend, seasonal cycle, and noise
+np.random.seed(42)
+time = np.arange(0, 365 * 10, 1)  # 10 years of daily data
+trend = 0.01 * time  # Long-term warming trend
+seasonal = 10 * np.sin(2 * np.pi * time / 365)  # Seasonal cycle
+noise = np.random.normal(0, 0.5, len(time))  # Random noise
+
+sst = trend + seasonal + noise
+
+# Plot the raw data
+plt.figure(figsize=(10, 4))
+plt.plot(time, sst, label='Raw SST')
+plt.xlabel('Time (days)')
+plt.ylabel('Sea Surface Temperature (°C)')
+plt.title('Raw Sea Surface Temperature Data')
+plt.legend()
+plt.show()
+
+# Low-pass filter to isolate long-term trend
+def butter_lowpass(cutoff, fs, order=5):
+    nyquist = 0.5 * fs
+    normal_cutoff = cutoff / nyquist
+    b, a = butter(order, normal_cutoff, btype='low', analog=False)
+    return b, a
+
+# Apply low-pass filter
+cutoff = 1 / 365  # Cutoff frequency (1 cycle per year, isolating long-term trend)
+fs = 1  # Sampling frequency (1 sample per day)
+b, a = butter_lowpass(cutoff, fs)
+sst_lowpass = filtfilt(b, a, sst)
+
+# Plot the filtered data (long-term trend)
+plt.figure(figsize=(10, 4))
+plt.plot(time, sst, label='Raw SST')
+plt.plot(time, sst_lowpass, label='Low-pass Filtered (Long-term Trend)', color='red')
+plt.xlabel('Time (days)')
+plt.ylabel('Sea Surface Temperature (°C)')
+plt.title('Low-pass Filtered Sea Surface Temperature (Long-term Trend)')
+plt.legend()
+plt.show()
+
+# High-pass filter to isolate short-term fluctuations
+def butter_highpass(cutoff, fs, order=5):
+    nyquist = 0.5 * fs
+    normal_cutoff = cutoff / nyquist
+    b, a = butter(order, normal_cutoff, btype='high', analog=False)
+    return b, a
+
+# Apply high-pass filter
+cutoff = 1 / 30  # Cutoff frequency (1 cycle per month, isolating short-term variations)
+b, a = butter_highpass(cutoff, fs)
+sst_highpass = filtfilt(b, a, sst)
+
+# Plot the filtered data (short-term fluctuations)
+plt.figure(figsize=(10, 4))
+plt.plot(time, sst, label='Raw SST')
+plt.plot(time, sst_highpass, label='High-pass Filtered (Short-term Fluctuations)', color='green')
+plt.xlabel('Time (days)')
+plt.ylabel('Sea Surface Temperature (°C)')
+plt.title('High-pass Filtered Sea Surface Temperature (Short-term Fluctuations)')
+plt.legend()
+plt.show()
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
+Input [0;32mIn [1][0m, in [0;36m<cell line: 1>[0;34m()[0m
+[0;32m----> 1[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
+[1;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpyplot[39;00m [38;5;28;01mas[39;00m [38;5;21;01mplt[39;00m
+[1;32m      3[0m [38;5;28;01mfrom[39;00m [38;5;21;01mscipy[39;00m[38;5;21;01m.[39;00m[38;5;21;01msignal[39;00m [38;5;28;01mimport[39;00m butter, filtfilt
+
+[0;31mModuleNotFoundError[0m: No module named 'numpy'
+ModuleNotFoundError: No module named 'numpy'
+

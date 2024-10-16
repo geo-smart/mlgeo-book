@@ -19,7 +19,44 @@ nbclient.exceptions.CellExecutionError: An error occurred while executing the fo
 ------------------
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.signal as sig
+
+# Generate synthetic time series (e.g., for seismic or SST data)
+n = 1000  # Number of time points
+time = np.linspace(0, 100, n)
+
+# Generate white noise (Gaussian distribution)
+white_noise = np.random.normal(0, 1, n)
+
+# Generate pink noise (1/f noise)
+def generate_pink_noise(size):
+    frequencies = np.fft.fftfreq(size)
+    pink_spectrum = np.random.normal(size=size) / np.where(frequencies == 0, np.inf, np.abs(frequencies))
+    pink_noise = np.fft.ifft(pink_spectrum).real
+    return pink_noise
+
+pink_noise = generate_pink_noise(n)
+
+# Plot white noise and pink noise
+plt.figure(figsize=(10, 6))
+
+# White noise
+plt.subplot(2, 1, 1)
+plt.plot(time, white_noise, label='White Noise')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.title('Synthetic White Noise')
+plt.grid()
+
+# Pink noise
+plt.subplot(2, 1, 2)
+plt.plot(time, pink_noise, label='Pink Noise', color='orange')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.title('Synthetic Pink Noise (1/f Noise)')
+plt.grid()
+
+plt.tight_layout()
+plt.show()
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
@@ -27,7 +64,7 @@ import scipy.signal as sig
 Input [0;32mIn [1][0m, in [0;36m<cell line: 1>[0;34m()[0m
 [0;32m----> 1[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
 [1;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpyplot[39;00m [38;5;28;01mas[39;00m [38;5;21;01mplt[39;00m
-[1;32m      3[0m [38;5;28;01mimport[39;00m [38;5;21;01mscipy[39;00m[38;5;21;01m.[39;00m[38;5;21;01msignal[39;00m [38;5;28;01mas[39;00m [38;5;21;01msig[39;00m
+[1;32m      4[0m [38;5;66;03m# Generate synthetic time series (e.g., for seismic or SST data)[39;00m
 
 [0;31mModuleNotFoundError[0m: No module named 'numpy'
 ModuleNotFoundError: No module named 'numpy'

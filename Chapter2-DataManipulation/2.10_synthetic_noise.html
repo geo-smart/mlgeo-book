@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>2.9 Synthetic noise &#8212; ML Geo Curriculum</title>
+    <title>2.10 Synthetic noise &#8212; ML Geo Curriculum</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -56,8 +56,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="2.9 Feature engineering" href="2.10_feature_engineering.html" />
-    <link rel="prev" title="2.7 Spectral Transforms" href="2.8_data_spectral_transforms.html" />
+    <link rel="next" title="2.9 Feature engineering" href="2.11_feature_engineering.html" />
+    <link rel="prev" title="2.9 Filtering Data" href="2.9_filtering_data.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -224,26 +224,31 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="2.8_data_spectral_transforms.html">
-   2.7 Spectral Transforms
+   2.8 Spectral Transforms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.9_filtering_data.html">
+   2.9 Filtering Data
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   2.9 Synthetic noise
+   2.10 Synthetic noise
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="2.10_feature_engineering.html">
+  <a class="reference internal" href="2.11_feature_engineering.html">
    2.9 Feature engineering
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="2.11_dimensionality_reduction.html">
+  <a class="reference internal" href="2.12_dimensionality_reduction.html">
    2.10 Dimensionality Reduction
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="2.12_MLready_data.html">
+  <a class="reference internal" href="2.13_MLready_data.html">
    2.11 ML-ready data
   </a>
  </li>
@@ -461,7 +466,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://mybinder.org/v2/gh/geo-smart/mlgeo-book/main?urlpath=lab/tree/book/Chapter2-DataManipulation/2.9_synthetic_noise.ipynb"
+        <a href="https://mybinder.org/v2/gh/geo-smart/mlgeo-book/main?urlpath=lab/tree/book/Chapter2-DataManipulation/2.10_synthetic_noise.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -521,7 +526,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/geo-smart/mlgeo-book/issues/new?title=Issue%20on%20page%20%2FChapter2-DataManipulation/2.9_synthetic_noise.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/geo-smart/mlgeo-book/issues/new?title=Issue%20on%20page%20%2FChapter2-DataManipulation/2.10_synthetic_noise.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -538,7 +543,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/geo-smart/mlgeo-book/edit/main/book/Chapter2-DataManipulation/2.9_synthetic_noise.ipynb"
+        <a href="https://github.com/geo-smart/mlgeo-book/edit/main/book/Chapter2-DataManipulation/2.10_synthetic_noise.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -566,7 +571,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/Chapter2-DataManipulation/2.9_synthetic_noise.ipynb"
+        <a href="../_sources/Chapter2-DataManipulation/2.10_synthetic_noise.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -626,6 +631,62 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   1. Introduction
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#types-of-noise">
+     Types of Noise
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#use-in-geosciences">
+     Use in Geosciences
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d-time-series-example-generating-white-and-pink-noise">
+     1D Time Series Example: Generating White and Pink Noise
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#explanation">
+       Explanation:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#applications">
+       Applications:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d-geospatial-example-generating-spatially-correlated-noise">
+     2D Geospatial Example: Generating Spatially Correlated Noise
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id1">
+       Explanation:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id2">
+       Applications:
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#synthetic-noise-in-transient-events">
+   2. Synthetic Noise in Transient Events
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#event-signal">
    1. Event Signal
   </a>
@@ -656,7 +717,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>2.9 Synthetic noise</h1>
+                <h1>2.10 Synthetic noise</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -666,6 +727,62 @@ title="Print to PDF"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   1. Introduction
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#types-of-noise">
+     Types of Noise
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#use-in-geosciences">
+     Use in Geosciences
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d-time-series-example-generating-white-and-pink-noise">
+     1D Time Series Example: Generating White and Pink Noise
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#explanation">
+       Explanation:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#applications">
+       Applications:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d-geospatial-example-generating-spatially-correlated-noise">
+     2D Geospatial Example: Generating Spatially Correlated Noise
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id1">
+       Explanation:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id2">
+       Applications:
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#synthetic-noise-in-transient-events">
+   2. Synthetic Noise in Transient Events
+  </a>
+ </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#event-signal">
    1. Event Signal
@@ -699,7 +816,163 @@ title="Print to PDF"
               <div>
                 
   <section class="tex2jax_ignore mathjax_ignore" id="synthetic-noise">
-<h1>2.9 Synthetic noise<a class="headerlink" href="#synthetic-noise" title="Permalink to this headline">#</a></h1>
+<h1>2.10 Synthetic noise<a class="headerlink" href="#synthetic-noise" title="Permalink to this headline">#</a></h1>
+<p><em><strong>Generation of Synthetic Noise for Geoscientific Data</strong></em></p>
+<section id="introduction">
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>In geosciences, noise can come from various sources such as environmental factors, instrumentation errors, or anthropogenic activities. Understanding and simulating noise is critical for developing robust data processing techniques, testing algorithms, and validating models. By generating synthetic noise, we can create controlled datasets that simulate real-world scenarios, making it easier to refine techniques for filtering, detection, and interpretation.</p>
+<p>This lecture explores how to generate synthetic noise for geoscientific data in two cases:</p>
+<ol class="simple">
+<li><p><strong>1D Time Series Data</strong>: This could represent data such as seismic records, atmospheric pressure, or sea surface temperature.</p></li>
+<li><p><strong>2D Geospatial Data</strong>: This could represent a spatial field, like topographic maps, soil moisture, or temperature distribution across a region.
+A realistic example is shown at the end for seismological use cases.</p></li>
+</ol>
+<section id="types-of-noise">
+<h3>Types of Noise<a class="headerlink" href="#types-of-noise" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p><strong>White Noise</strong>: A random signal with constant power spectral density across all frequencies. This type of noise is common in instrumentation errors.</p></li>
+<li><p><strong>Pink Noise</strong>: A signal with a power spectrum inversely proportional to its frequency, often seen in natural systems like climate data.</p></li>
+<li><p><strong>Gaussian Noise</strong>: A specific form of white noise with a normal (Gaussian) distribution of values.</p></li>
+<li><p><strong>Spatially Correlated Noise</strong>: Noise that varies smoothly over space, often simulating environmental or systematic errors in geospatial datasets.</p></li>
+</ul>
+</section>
+<section id="use-in-geosciences">
+<h3>Use in Geosciences<a class="headerlink" href="#use-in-geosciences" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>In time series data (e.g., seismic signals), synthetic noise is often added to evaluate the effectiveness of filtering and detection algorithms.</p></li>
+<li><p>In geospatial datasets, noise can mimic errors introduced by sensors, atmospheric distortions, or spatial smoothing.</p></li>
+</ul>
+</section>
+<section id="d-time-series-example-generating-white-and-pink-noise">
+<h3>1D Time Series Example: Generating White and Pink Noise<a class="headerlink" href="#d-time-series-example-generating-white-and-pink-noise" title="Permalink to this headline">#</a></h3>
+<p>Below is a Python example that demonstrates how to generate and visualize synthetic white and pink noise in a 1D time series, such as for seismic or atmospheric data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Generate synthetic time series (e.g., for seismic or SST data)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># Number of time points</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Generate white noise (Gaussian distribution)</span>
+<span class="n">white_noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Generate pink noise (1/f noise)</span>
+<span class="k">def</span> <span class="nf">generate_pink_noise</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+    <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">pink_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">frequencies</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">frequencies</span><span class="p">))</span>
+    <span class="n">pink_noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">pink_spectrum</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+    <span class="k">return</span> <span class="n">pink_noise</span>
+
+<span class="n">pink_noise</span> <span class="o">=</span> <span class="n">generate_pink_noise</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Plot white noise and pink noise</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># White noise</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">white_noise</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;White Noise&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Synthetic White Noise&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+<span class="c1"># Pink noise</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">pink_noise</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Pink Noise&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Synthetic Pink Noise (1/f Noise)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.10_synthetic_noise_1_0.png" src="../_images/2.10_synthetic_noise_1_0.png" />
+</div>
+</div>
+<section id="explanation">
+<h4>Explanation:<a class="headerlink" href="#explanation" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p><strong>White Noise</strong>: A time series of Gaussian-distributed random values, which simulates random instrumentation errors.</p></li>
+<li><p><strong>Pink Noise</strong>: Generated in the frequency domain by applying a 1/f scaling to the frequency components. This noise mimics natural processes, which often exhibit low-frequency dominance.</p></li>
+</ul>
+</section>
+<section id="applications">
+<h4>Applications:<a class="headerlink" href="#applications" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p><strong>Seismic Data</strong>: White noise can simulate background noise, while pink noise can simulate natural geophysical processes.</p></li>
+<li><p><strong>Atmospheric Data</strong>: Synthetic noise is added to test filtering techniques for atmospheric time series data, such as removing random disturbances.</p></li>
+</ul>
+</section>
+</section>
+<section id="d-geospatial-example-generating-spatially-correlated-noise">
+<h3>2D Geospatial Example: Generating Spatially Correlated Noise<a class="headerlink" href="#d-geospatial-example-generating-spatially-correlated-noise" title="Permalink to this headline">#</a></h3>
+<p>For geospatial data, we often deal with noise that is not purely random but has spatial correlations. This could be due to atmospheric interference or sensor inaccuracies that vary smoothly over space. Below is an example of generating spatially correlated noise in a 2D grid, which might represent a topographic map, temperature distribution, or soil moisture.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
+
+<span class="c1"># Generate a 2D grid (e.g., geospatial data, such as a topographic map)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Size of the grid</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Generate 2D white noise</span>
+<span class="n">white_noise_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+
+<span class="c1"># Generate spatially correlated noise using a Gaussian filter</span>
+<span class="n">spatially_correlated_noise</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">white_noise_2d</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Plot the synthetic 2D white noise and correlated noise</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># White noise (unfiltered)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">white_noise_2d</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;2D White Noise&#39;</span><span class="p">)</span>
+
+<span class="c1"># Spatially correlated noise</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">spatially_correlated_noise</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;2D Spatially Correlated Noise&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.10_synthetic_noise_3_0.png" src="../_images/2.10_synthetic_noise_3_0.png" />
+</div>
+</div>
+<section id="id1">
+<h4>Explanation:<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p><strong>White Noise in 2D</strong>: A random field of Gaussian noise, where each point is independent of the others.</p></li>
+<li><p><strong>Spatially Correlated Noise</strong>: This noise is generated by applying a Gaussian filter to the white noise, which smooths it and introduces spatial correlations. This simulates real-world noise, such as sensor errors or atmospheric interference that vary smoothly across a geographic region.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h4>Applications:<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p><strong>Remote Sensing Data</strong>: Spatially correlated noise is often introduced into remote sensing images, such as satellite-based soil moisture or temperature data, to simulate atmospheric distortion.</p></li>
+<li><p><strong>Topographic Maps</strong>: Synthetic noise can simulate measurement errors or interpolation artifacts in spatial datasets like topographic or geophysical maps.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="synthetic-noise-in-transient-events">
+<h2>2. Synthetic Noise in Transient Events<a class="headerlink" href="#synthetic-noise-in-transient-events" title="Permalink to this headline">#</a></h2>
 <p>Here we will construct a time series with 1 ricker wavelet as a source and synthetic noise</p>
 <p>We will analyze their statistical properties and compare the distributions. Present this as a binary classification problem.</p>
 <div class="cell docutils container">
@@ -720,6 +993,7 @@ title="Print to PDF"
 </div>
 </div>
 </div>
+</section>
 <section id="event-signal">
 <h2>1. Event Signal<a class="headerlink" href="#event-signal" title="Permalink to this headline">#</a></h2>
 <p>We will create an event signal as a Ricker wavelet of specified width, 4 seconds in time.</p>
@@ -743,7 +1017,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.9_synthetic_noise_4_0.png" src="../_images/2.9_synthetic_noise_4_0.png" />
+<img alt="../_images/2.10_synthetic_noise_9_0.png" src="../_images/2.10_synthetic_noise_9_0.png" />
 </div>
 </div>
 <p>The Ricker wavelet is a smooth function with a signal in a specific frequency band. Let’s plot it’s absolute Fourier amplitude spectrum.</p>
@@ -777,7 +1051,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.9_synthetic_noise_7_0.png" src="../_images/2.9_synthetic_noise_7_0.png" />
+<img alt="../_images/2.10_synthetic_noise_12_0.png" src="../_images/2.10_synthetic_noise_12_0.png" />
 </div>
 </div>
 <p>What does the event data distribution looks like?</p>
@@ -792,7 +1066,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.9_synthetic_noise_9_0.png" src="../_images/2.9_synthetic_noise_9_0.png" />
+<img alt="../_images/2.10_synthetic_noise_14_0.png" src="../_images/2.10_synthetic_noise_14_0.png" />
 </div>
 </div>
 <p>We created a pure signal not contaminated by noise. Let’s create a <em>noise</em> time series to add on the <em>signal</em> time series.</p>
@@ -811,7 +1085,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.9_synthetic_noise_11_0.png" src="../_images/2.9_synthetic_noise_11_0.png" />
+<img alt="../_images/2.10_synthetic_noise_16_0.png" src="../_images/2.10_synthetic_noise_16_0.png" />
 </div>
 </div>
 <p>Check the Fourier amplitude spectrum of the noise</p>
@@ -829,7 +1103,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.9_synthetic_noise_13_0.png" src="../_images/2.9_synthetic_noise_13_0.png" />
+<img alt="../_images/2.10_synthetic_noise_18_0.png" src="../_images/2.10_synthetic_noise_18_0.png" />
 </div>
 </div>
 <p>OK, they look very different in the spectral domain!
@@ -865,7 +1139,7 @@ Let’s add noise to the data and plot it.</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time in s&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.9_synthetic_noise_18_1.png" src="../_images/2.9_synthetic_noise_18_1.png" />
+<img alt="../_images/2.10_synthetic_noise_23_1.png" src="../_images/2.10_synthetic_noise_23_1.png" />
 </div>
 </div>
 <p>Noise may have different frequency content, or <em>color</em>. We can construct a time series of noise based on its Fourier amplitude spectrum.</p>
@@ -896,7 +1170,7 @@ Let’s add noise to the data and plot it.</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Noise with random phase and white spectrum&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.9_synthetic_noise_21_1.png" src="../_images/2.9_synthetic_noise_21_1.png" />
+<img alt="../_images/2.10_synthetic_noise_26_1.png" src="../_images/2.10_synthetic_noise_26_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -930,7 +1204,7 @@ Let’s add noise to the data and plot it.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.9_synthetic_noise_25_0.png" src="../_images/2.9_synthetic_noise_25_0.png" />
+<img alt="../_images/2.10_synthetic_noise_30_0.png" src="../_images/2.10_synthetic_noise_30_0.png" />
 </div>
 </div>
 <p>Let’s compare the data distribution between the pure signal, the noise signal, and the combined signals.</p>
@@ -944,7 +1218,7 @@ Let’s add noise to the data and plot it.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.9_synthetic_noise_27_0.png" src="../_images/2.9_synthetic_noise_27_0.png" />
+<img alt="../_images/2.10_synthetic_noise_32_0.png" src="../_images/2.10_synthetic_noise_32_0.png" />
 </div>
 </div>
 <p>Now in class, calculate the statistical moments between the clean data, the noise, and the noisy data. Explore what features might be discriminate between <strong>signal</strong> and <strong>noise</strong> and explore their sensitivity to noise levels.</p>
@@ -971,9 +1245,9 @@ The second moment of the signal is: 0.0132973926342017
 The third moment of the signal is: 0.006434906304516136
 The fourth moment of the signal is: 0.007495006078435612
 The first moment of the noise is: 0.0
-The second moment of the noise is: 0.07094755358789713
-The third moment of the noise is: -0.00015211022576318623
-The fourth moment of the noise is: 0.015246388348034143
+The second moment of the noise is: 0.06302659210056046
+The third moment of the noise is: -0.00032277342830262275
+The fourth moment of the noise is: 0.01170464605173267
 </pre></div>
 </div>
 </div>
@@ -1084,7 +1358,7 @@ Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.9_synthetic_noise_38_0.png" src="../_images/2.9_synthetic_noise_38_0.png" />
+<img alt="../_images/2.10_synthetic_noise_43_0.png" src="../_images/2.10_synthetic_noise_43_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1109,7 +1383,7 @@ Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.9_synthetic_noise_39_0.png" src="../_images/2.9_synthetic_noise_39_0.png" />
+<img alt="../_images/2.10_synthetic_noise_44_0.png" src="../_images/2.10_synthetic_noise_44_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1129,10 +1403,10 @@ Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x17a9ebeb0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x16d096220&gt;]
 </pre></div>
 </div>
-<img alt="../_images/2.9_synthetic_noise_40_1.png" src="../_images/2.9_synthetic_noise_40_1.png" />
+<img alt="../_images/2.10_synthetic_noise_45_1.png" src="../_images/2.10_synthetic_noise_45_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1147,10 +1421,10 @@ Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Histogram of the noise&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Histogram of the noise phase&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.9_synthetic_noise_41_1.png" src="../_images/2.9_synthetic_noise_41_1.png" />
+<img alt="../_images/2.10_synthetic_noise_46_1.png" src="../_images/2.10_synthetic_noise_46_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1167,7 +1441,7 @@ Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.9_synthetic_noise_42_0.png" src="../_images/2.9_synthetic_noise_42_0.png" />
+<img alt="../_images/2.10_synthetic_noise_47_0.png" src="../_images/2.10_synthetic_noise_47_0.png" />
 </div>
 </div>
 </section>
@@ -1205,14 +1479,14 @@ Requirement already satisfied: six&gt;=1.5 in /Users/marinedenolle/opt/miniconda
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="2.8_data_spectral_transforms.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="2.9_filtering_data.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">2.7 Spectral Transforms</p>
+            <p class="prev-next-title">2.9 Filtering Data</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="2.10_feature_engineering.html" title="next page">
+    <a class='right-next' id="next-link" href="2.11_feature_engineering.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">2.9 Feature engineering</p>
