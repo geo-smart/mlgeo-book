@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>2.10 Feature Engineering &#8212; ML Geo Curriculum</title>
+    <title>2.11 Feature Engineering &#8212; ML Geo Curriculum</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -54,7 +54,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="2.11 Dimensionality Reduction" href="2.12_dimensionality_reduction.html" />
+    <link rel="next" title="2.12 Dimensionality Reduction" href="2.12_dimensionality_reduction.html" />
     <link rel="prev" title="2.10 Synthetic noise" href="2.10_synthetic_noise.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -237,12 +237,12 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   2.10 Feature Engineering
+   2.11 Feature Engineering
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="2.12_dimensionality_reduction.html">
-   2.11 Dimensionality Reduction
+   2.12 Dimensionality Reduction
   </a>
  </li>
  <li class="toctree-l1">
@@ -698,7 +698,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>2.10 Feature Engineering</h1>
+                <h1>2.11 Feature Engineering</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -780,7 +780,7 @@ title="Print to PDF"
               <div>
                 
   <section class="tex2jax_ignore mathjax_ignore" id="feature-engineering">
-<h1>2.10 Feature Engineering<a class="headerlink" href="#feature-engineering" title="Permalink to this headline">#</a></h1>
+<h1>2.11 Feature Engineering<a class="headerlink" href="#feature-engineering" title="Permalink to this headline">#</a></h1>
 <section id="introduction">
 <h2>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
 <p>The process of feature engineering involves manipulating, transforming, and selecting raw data into features that can be used in statistical analysis and prediction.</p>
@@ -835,13 +835,28 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autocorrelation of the seasonal component is 0.66
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autocorrelation of the seasonal component is 0.63
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x17d223760&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x319ac7fd0&gt;
 </pre></div>
 </div>
 <img alt="../_images/2.11_feature_engineering_1_2.png" src="../_images/2.11_feature_engineering_1_2.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">365</span><span class="p">)</span> 
+
+<span class="n">autocorr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">crap</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">crap</span><span class="p">[</span><span class="mi">1</span><span class="p">:])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The autocorrelation of the seasonal component is </span><span class="si">{</span><span class="n">autocorr</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autocorrelation of the seasonal component is 0.01
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -895,7 +910,7 @@ title="Print to PDF"
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;2D Spatially Correlated Noise&#39;)
 </pre></div>
 </div>
-<img alt="../_images/2.11_feature_engineering_3_1.png" src="../_images/2.11_feature_engineering_3_1.png" />
+<img alt="../_images/2.11_feature_engineering_4_1.png" src="../_images/2.11_feature_engineering_4_1.png" />
 </div>
 </div>
 <p>spatial correlation of the white noise</p>
@@ -955,7 +970,7 @@ title="Print to PDF"
 
 
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">autocorrelation_white</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">autocorrelation_white</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">)</span>
@@ -984,7 +999,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2.11_feature_engineering_8_0.png" src="../_images/2.11_feature_engineering_8_0.png" />
+<img alt="../_images/2.11_feature_engineering_9_0.png" src="../_images/2.11_feature_engineering_9_0.png" />
 </div>
 </div>
 <p>Estimate the feature “correlation length” of the two images. The correlation length is often measured as the distance at which the autocorelation function decays to 1/e of its maximum value.</p>
@@ -1006,7 +1021,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimated correlation length for white noise: 0.07 and for spatially correlated noise: 0.56
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimated correlation length for white noise: 0.06 and for spatially correlated noise: 0.66
 </pre></div>
 </div>
 </div>
@@ -1313,7 +1328,7 @@ Name: count, dtype: int64
  &lt;BarContainer object of 10 artists&gt;)
 </pre></div>
 </div>
-<img alt="../_images/2.11_feature_engineering_28_1.png" src="../_images/2.11_feature_engineering_28_1.png" />
+<img alt="../_images/2.11_feature_engineering_29_1.png" src="../_images/2.11_feature_engineering_29_1.png" />
 </div>
 </div>
 <p>Now are read the data. It is stored in an HDF5 files under a finite number of groups. Each groups has an array of datasets that correspond to the waveforms. To link the metadata to the waveform files, the key trace_name has the dataset ID. The address is labeled as follows:</p>
@@ -1362,6 +1377,18 @@ Name: count, dtype: int64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ldata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;bucket1$0,:3,:15001&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crap</span><span class="o">=</span><span class="n">read_data</span><span class="p">(</span><span class="n">ldata</span><span class="p">[</span><span class="mi">530</span><span class="p">],</span><span class="n">f</span><span class="p">)</span>
 <span class="c1">#print the dimension of a givan data</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The first dimension of the data is </span><span class="si">{</span><span class="n">crap</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -1388,7 +1415,7 @@ Name: count, dtype: int64
 The second dimension of the data is 15001
 </pre></div>
 </div>
-<img alt="../_images/2.11_feature_engineering_36_1.png" src="../_images/2.11_feature_engineering_36_1.png" />
+<img alt="../_images/2.11_feature_engineering_38_1.png" src="../_images/2.11_feature_engineering_38_1.png" />
 </div>
 </div>
 <p>We will just extract the Z component and reshape them into a single array.</p>
@@ -1470,14 +1497,14 @@ Requirement already satisfied: pure-eval in /Users/marinedenolle/opt/miniconda3/
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1720, 15001)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We have a total of 1720 data sample and each has 15001 data poins
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span> <span class="c1">#Z.shape[0]):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Extracting features from sample </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
         <span class="n">X</span><span class="o">=</span><span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,:],</span><span class="n">fs</span><span class="o">=</span><span class="mf">100.</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
@@ -1490,6 +1517,235 @@ Requirement already satisfied: pure-eval in /Users/marinedenolle/opt/miniconda3/
 
 <span class="c1"># change the column names to remove the prefix 0_</span>
 <span class="n">X</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;0_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting features from sample 0/1720
+Extracting features from sample 1/1720
+Extracting features from sample 2/1720
+Extracting features from sample 3/1720
+Extracting features from sample 4/1720
+Extracting features from sample 5/1720
+Extracting features from sample 6/1720
+Extracting features from sample 7/1720
+Extracting features from sample 8/1720
+Extracting features from sample 9/1720
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Absolute energy</th>
+      <th>Area under the curve</th>
+      <th>Autocorrelation</th>
+      <th>Average power</th>
+      <th>Centroid</th>
+      <th>ECDF Percentile Count_0</th>
+      <th>ECDF Percentile Count_1</th>
+      <th>ECDF Percentile_0</th>
+      <th>ECDF Percentile_1</th>
+      <th>ECDF_0</th>
+      <th>...</th>
+      <th>Wavelet variance_1</th>
+      <th>Wavelet variance_2</th>
+      <th>Wavelet variance_3</th>
+      <th>Wavelet variance_4</th>
+      <th>Wavelet variance_5</th>
+      <th>Wavelet variance_6</th>
+      <th>Wavelet variance_7</th>
+      <th>Wavelet variance_8</th>
+      <th>Zero crossing rate</th>
+      <th>source_type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>9.742864e+08</td>
+      <td>31207.637387</td>
+      <td>9.742864e+08</td>
+      <td>6.495243e+06</td>
+      <td>78.466491</td>
+      <td>3000.0</td>
+      <td>12000.0</td>
+      <td>-298.208729</td>
+      <td>151.301746</td>
+      <td>0.000067</td>
+      <td>...</td>
+      <td>1395.348318</td>
+      <td>2495.550398</td>
+      <td>3674.667437</td>
+      <td>5530.106304</td>
+      <td>8072.751642</td>
+      <td>11149.616998</td>
+      <td>14670.487177</td>
+      <td>18719.058340</td>
+      <td>235.0</td>
+      <td>earthquake</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>8.402399e+07</td>
+      <td>9063.005871</td>
+      <td>8.402399e+07</td>
+      <td>5.601600e+05</td>
+      <td>58.830080</td>
+      <td>3000.0</td>
+      <td>12000.0</td>
+      <td>-77.708776</td>
+      <td>48.153323</td>
+      <td>0.000067</td>
+      <td>...</td>
+      <td>921.217046</td>
+      <td>1395.363737</td>
+      <td>1567.561286</td>
+      <td>1256.932809</td>
+      <td>880.666612</td>
+      <td>682.995650</td>
+      <td>637.912389</td>
+      <td>674.893518</td>
+      <td>272.0</td>
+      <td>earthquake</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>9.015331e+07</td>
+      <td>6910.552647</td>
+      <td>9.015331e+07</td>
+      <td>6.010221e+05</td>
+      <td>63.002674</td>
+      <td>3000.0</td>
+      <td>12000.0</td>
+      <td>-29.206673</td>
+      <td>47.147688</td>
+      <td>0.000067</td>
+      <td>...</td>
+      <td>12754.759956</td>
+      <td>23536.460101</td>
+      <td>26033.368648</td>
+      <td>22937.003326</td>
+      <td>18408.577823</td>
+      <td>14822.361811</td>
+      <td>12640.580469</td>
+      <td>11471.174193</td>
+      <td>1085.0</td>
+      <td>earthquake</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>7.096144e+08</td>
+      <td>24553.426193</td>
+      <td>7.096144e+08</td>
+      <td>4.730763e+06</td>
+      <td>66.389598</td>
+      <td>3000.0</td>
+      <td>12000.0</td>
+      <td>-114.501055</td>
+      <td>213.176390</td>
+      <td>0.000067</td>
+      <td>...</td>
+      <td>27267.403246</td>
+      <td>55930.185792</td>
+      <td>66419.654741</td>
+      <td>64470.555161</td>
+      <td>60589.434231</td>
+      <td>58693.473343</td>
+      <td>60371.152906</td>
+      <td>66502.811011</td>
+      <td>803.0</td>
+      <td>earthquake</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>9.082897e+08</td>
+      <td>28869.941529</td>
+      <td>9.082897e+08</td>
+      <td>6.055265e+06</td>
+      <td>50.864641</td>
+      <td>3000.0</td>
+      <td>12000.0</td>
+      <td>-294.543856</td>
+      <td>38.136901</td>
+      <td>0.000067</td>
+      <td>...</td>
+      <td>5822.304317</td>
+      <td>10699.777184</td>
+      <td>15313.786784</td>
+      <td>17756.953569</td>
+      <td>18258.559868</td>
+      <td>18086.534963</td>
+      <td>17987.856997</td>
+      <td>18139.370933</td>
+      <td>1361.0</td>
+      <td>earthquake</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 390 columns</p>
+</div></div></div>
+</div>
+<p>In a general code, you may package this into a function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_features</span><span class="p">(</span><span class="n">Z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to calculate features from the data</span>
+<span class="sd">    Z: 2D array of seismic data data</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    X: DataFrame of the features</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Extracting features from sample </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">X</span><span class="o">=</span><span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,:],</span><span class="n">fs</span><span class="o">=</span><span class="mf">100.</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">X</span><span class="p">[</span><span class="s1">&#39;source_type&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;source_type&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">XX</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,:],</span><span class="n">fs</span><span class="o">=</span><span class="mf">100.</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">XX</span><span class="p">[</span><span class="s1">&#39;source_type&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;source_type&#39;</span><span class="p">]</span>
+            <span class="n">X</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">XX</span><span class="p">,</span><span class="n">X</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># change the column names to remove the prefix 0_</span>
+    <span class="n">X</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;0_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate features from the seismic data and time it</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">calculate_features</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Time taken to calculate features: </span><span class="si">{</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3214,47 +3470,7 @@ Extracting features from sample 1716/1720
 Extracting features from sample 1717/1720
 Extracting features from sample 1718/1720
 Extracting features from sample 1719/1720
-</pre></div>
-</div>
-</div>
-</div>
-<p>In a general code, you may package this into a function.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_features</span><span class="p">(</span><span class="n">Z</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to calculate features from the data</span>
-<span class="sd">    Z: 2D array of seismic data data</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">    X: DataFrame of the features</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Extracting features from sample </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
-            <span class="n">X</span><span class="o">=</span><span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,:],</span><span class="n">fs</span><span class="o">=</span><span class="mf">100.</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">X</span><span class="p">[</span><span class="s1">&#39;source_type&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;source_type&#39;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">XX</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,:],</span><span class="n">fs</span><span class="o">=</span><span class="mf">100.</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">XX</span><span class="p">[</span><span class="s1">&#39;source_type&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;source_type&#39;</span><span class="p">]</span>
-            <span class="n">X</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">XX</span><span class="p">,</span><span class="n">X</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="c1"># change the column names to remove the prefix 0_</span>
-    <span class="n">X</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;0_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">X</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate features from the seismic data and time it</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">calculate_features</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Time taken to calculate features: </span><span class="si">{</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+Time taken to calculate features: 1115.64 seconds
 </pre></div>
 </div>
 </div>
@@ -3284,26 +3500,26 @@ Extracting features from sample 1719/1720
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>0_Absolute energy</th>
-      <th>0_Area under the curve</th>
-      <th>0_Autocorrelation</th>
-      <th>0_Average power</th>
-      <th>0_Centroid</th>
-      <th>0_ECDF Percentile Count_0</th>
-      <th>0_ECDF Percentile Count_1</th>
-      <th>0_ECDF Percentile_0</th>
-      <th>0_ECDF Percentile_1</th>
-      <th>0_ECDF_0</th>
+      <th>Absolute energy</th>
+      <th>Area under the curve</th>
+      <th>Autocorrelation</th>
+      <th>Average power</th>
+      <th>Centroid</th>
+      <th>ECDF Percentile Count_0</th>
+      <th>ECDF Percentile Count_1</th>
+      <th>ECDF Percentile_0</th>
+      <th>ECDF Percentile_1</th>
+      <th>ECDF_0</th>
       <th>...</th>
-      <th>0_Wavelet variance_1</th>
-      <th>0_Wavelet variance_2</th>
-      <th>0_Wavelet variance_3</th>
-      <th>0_Wavelet variance_4</th>
-      <th>0_Wavelet variance_5</th>
-      <th>0_Wavelet variance_6</th>
-      <th>0_Wavelet variance_7</th>
-      <th>0_Wavelet variance_8</th>
-      <th>0_Zero crossing rate</th>
+      <th>Wavelet variance_1</th>
+      <th>Wavelet variance_2</th>
+      <th>Wavelet variance_3</th>
+      <th>Wavelet variance_4</th>
+      <th>Wavelet variance_5</th>
+      <th>Wavelet variance_6</th>
+      <th>Wavelet variance_7</th>
+      <th>Wavelet variance_8</th>
+      <th>Zero crossing rate</th>
       <th>source_type</th>
     </tr>
   </thead>
@@ -3455,6 +3671,180 @@ no of samples in the new dataframe:1717
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Absolute energy</th>
+      <th>Area under the curve</th>
+      <th>Autocorrelation</th>
+      <th>Average power</th>
+      <th>Centroid</th>
+      <th>ECDF Percentile Count_0</th>
+      <th>ECDF Percentile Count_1</th>
+      <th>ECDF Percentile_0</th>
+      <th>ECDF Percentile_1</th>
+      <th>ECDF_0</th>
+      <th>...</th>
+      <th>Wavelet variance_1</th>
+      <th>Wavelet variance_2</th>
+      <th>Wavelet variance_3</th>
+      <th>Wavelet variance_4</th>
+      <th>Wavelet variance_5</th>
+      <th>Wavelet variance_6</th>
+      <th>Wavelet variance_7</th>
+      <th>Wavelet variance_8</th>
+      <th>Zero crossing rate</th>
+      <th>source_type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000067</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.0</td>
+      <td>surface_event</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.325603e+09</td>
+      <td>5.627850e+04</td>
+      <td>2.325603e+09</td>
+      <td>1.550402e+07</td>
+      <td>76.418530</td>
+      <td>3000.0</td>
+      <td>12000.0</td>
+      <td>292.999790</td>
+      <td>450.250905</td>
+      <td>0.000067</td>
+      <td>...</td>
+      <td>6.678689e+02</td>
+      <td>1.055538e+03</td>
+      <td>2.530908e+03</td>
+      <td>5.790352e+03</td>
+      <td>1.165462e+04</td>
+      <td>2.118641e+04</td>
+      <td>3.548474e+04</td>
+      <td>5.549514e+04</td>
+      <td>28.0</td>
+      <td>surface_event</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>8.705101e+11</td>
+      <td>7.477590e+05</td>
+      <td>8.705101e+11</td>
+      <td>5.803400e+09</td>
+      <td>74.967691</td>
+      <td>3000.0</td>
+      <td>12000.0</td>
+      <td>2434.988468</td>
+      <td>5493.021391</td>
+      <td>0.000067</td>
+      <td>...</td>
+      <td>9.263918e+07</td>
+      <td>2.386667e+08</td>
+      <td>2.936940e+08</td>
+      <td>2.466776e+08</td>
+      <td>1.717919e+08</td>
+      <td>1.109657e+08</td>
+      <td>6.954319e+07</td>
+      <td>4.344068e+07</td>
+      <td>258.0</td>
+      <td>surface_event</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>9.606099e+11</td>
+      <td>1.168706e+06</td>
+      <td>9.606099e+11</td>
+      <td>6.404066e+09</td>
+      <td>74.660640</td>
+      <td>3000.0</td>
+      <td>12000.0</td>
+      <td>-9228.169002</td>
+      <td>-6414.699254</td>
+      <td>0.000067</td>
+      <td>...</td>
+      <td>2.431281e+06</td>
+      <td>7.334504e+06</td>
+      <td>1.268369e+07</td>
+      <td>1.649068e+07</td>
+      <td>1.778231e+07</td>
+      <td>1.683463e+07</td>
+      <td>1.469724e+07</td>
+      <td>1.235497e+07</td>
+      <td>16.0</td>
+      <td>surface_event</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3.595338e+11</td>
+      <td>7.343233e+05</td>
+      <td>3.595338e+11</td>
+      <td>2.396892e+09</td>
+      <td>74.976185</td>
+      <td>3000.0</td>
+      <td>12000.0</td>
+      <td>-4927.503218</td>
+      <td>-4863.251218</td>
+      <td>0.000067</td>
+      <td>...</td>
+      <td>4.896885e+03</td>
+      <td>1.023186e+04</td>
+      <td>1.774939e+04</td>
+      <td>2.750474e+04</td>
+      <td>3.936635e+04</td>
+      <td>5.330725e+04</td>
+      <td>6.934682e+04</td>
+      <td>8.750847e+04</td>
+      <td>0.0</td>
+      <td>surface_event</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 390 columns</p>
+</div></div></div>
+</div>
 </section>
 </section>
 <section id="explore-correlation-among-features">
@@ -3480,6 +3870,9 @@ no of samples in the new dataframe:1717
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.11_feature_engineering_56_0.png" src="../_images/2.11_feature_engineering_56_0.png" />
 </div>
 </div>
 </section>
@@ -3522,16 +3915,25 @@ no of samples in the new dataframe:1717
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature</span> <span class="o">=</span> <span class="s1">&#39;0_Area under the curve&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature</span> <span class="o">=</span> <span class="s1">&#39;Area under the curve&#39;</span>
 <span class="n">plot_feature_histograms</span><span class="p">(</span><span class="n">new_X</span><span class="p">,</span> <span class="n">feature</span><span class="p">)</span>
 
-<span class="n">feature</span> <span class="o">=</span> <span class="s1">&#39;0_Kurtosis&#39;</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="s1">&#39;Kurtosis&#39;</span>
 <span class="n">plot_feature_histograms</span><span class="p">(</span><span class="n">new_X</span><span class="p">,</span> <span class="n">feature</span><span class="p">)</span>
 
-<span class="n">feature</span> <span class="o">=</span> <span class="s1">&#39;0_Spectral variation&#39;</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="s1">&#39;Spectral variation&#39;</span>
 <span class="n">plot_feature_histograms</span><span class="p">(</span><span class="n">new_X</span><span class="p">,</span> <span class="n">feature</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2.11_feature_engineering_59_0.png" src="../_images/2.11_feature_engineering_59_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/pandas/core/arraylike.py:396: RuntimeWarning: invalid value encountered in log10
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+</pre></div>
+</div>
+<img alt="../_images/2.11_feature_engineering_59_2.png" src="../_images/2.11_feature_engineering_59_2.png" />
+<img alt="../_images/2.11_feature_engineering_59_3.png" src="../_images/2.11_feature_engineering_59_3.png" />
 </div>
 </div>
 <section id="student-exercise">
@@ -3580,7 +3982,7 @@ no of samples in the new dataframe:1717
     <a class='right-next' id="next-link" href="2.12_dimensionality_reduction.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">2.11 Dimensionality Reduction</p>
+        <p class="prev-next-title">2.12 Dimensionality Reduction</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
