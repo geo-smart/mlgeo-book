@@ -23,21 +23,22 @@ from scipy.signal import butter, filtfilt
 import pandas as pd
 
 # Example: Sea surface temperature time series (synthetic data for simplicity)
-# Generate a synthetic SST time series with a trend, seasonal cycle, and noise
+# Generate a synthetic climate time series with a trend, seasonal cycle, and noise
 np.random.seed(42)
+
 time = np.arange(0, 365 * 10, 1)  # 10 years of daily data
 trend = 0.01 * time  # Long-term warming trend
 seasonal = 10 * np.sin(2 * np.pi * time / 365)  # Seasonal cycle
 noise = np.random.normal(0, 0.5, len(time))  # Random noise
 
-sst = trend + seasonal + noise
+clima = trend + seasonal + 5*noise
 
 # Plot the raw data
 plt.figure(figsize=(10, 4))
-plt.plot(time, sst, label='Raw SST')
+plt.plot(time, clima, label='Raw Data')
 plt.xlabel('Time (days)')
-plt.ylabel('Sea Surface Temperature (°C)')
-plt.title('Raw Sea Surface Temperature Data')
+plt.ylabel('Time Series (°C)')
+plt.title('Climate Time Series Data')
 plt.legend()
 plt.show()
 
@@ -52,15 +53,15 @@ def butter_lowpass(cutoff, fs, order=5):
 cutoff = 1 / 365  # Cutoff frequency (1 cycle per year, isolating long-term trend)
 fs = 1  # Sampling frequency (1 sample per day)
 b, a = butter_lowpass(cutoff, fs)
-sst_lowpass = filtfilt(b, a, sst)
+clima_lowpass = filtfilt(b, a, clima)
 
 # Plot the filtered data (long-term trend)
 plt.figure(figsize=(10, 4))
-plt.plot(time, sst, label='Raw SST')
-plt.plot(time, sst_lowpass, label='Low-pass Filtered (Long-term Trend)', color='red')
+plt.plot(time, clima, label='Raw Clima')
+plt.plot(time, clima_lowpass, label='Low-pass Filtered (Long-term Trend)', color='red')
 plt.xlabel('Time (days)')
-plt.ylabel('Sea Surface Temperature (°C)')
-plt.title('Low-pass Filtered Sea Surface Temperature (Long-term Trend)')
+plt.ylabel('Clima (°C)')
+plt.title('Low-pass Filtered Climate Data (Long-term Trend)')
 plt.legend()
 plt.show()
 
@@ -74,15 +75,15 @@ def butter_highpass(cutoff, fs, order=5):
 # Apply high-pass filter
 cutoff = 1 / 30  # Cutoff frequency (1 cycle per month, isolating short-term variations)
 b, a = butter_highpass(cutoff, fs)
-sst_highpass = filtfilt(b, a, sst)
+clima_highpass = filtfilt(b, a, clima)
 
 # Plot the filtered data (short-term fluctuations)
 plt.figure(figsize=(10, 4))
-plt.plot(time, sst, label='Raw SST')
-plt.plot(time, sst_highpass, label='High-pass Filtered (Short-term Fluctuations)', color='green')
+plt.plot(time, clima, label='Raw SST')
+plt.plot(time, clima_highpass, label='High-pass Filtered (Short-term Fluctuations)', color='green')
 plt.xlabel('Time (days)')
-plt.ylabel('Sea Surface Temperature (°C)')
-plt.title('High-pass Filtered Sea Surface Temperature (Short-term Fluctuations)')
+plt.ylabel('Climate Data (°C)')
+plt.title('High-pass Filtered Climate Data (Short-term Fluctuations)')
 plt.legend()
 plt.show()
 ------------------
