@@ -1,0 +1,810 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>3.1 Classification and Regression &#8212; ML Geo Curriculum</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.2 Clustering: Unsupervied Classification" href="3.2_clustering.html" />
+    <link rel="prev" title="Assignment: Preparing AI-Ready Data for The Final Project" href="../Chapter2-DataManipulation/2.20_Final_Project_Assignement.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/GeoSMART_logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ML Geo Curriculum</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../about_this_book/about_this_book.html">
+                    Machine Learning in the Geosciences
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://geo-smart.github.io/index.html">
+   Geosmart website
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/acknowledgements.html">
+   Acknowlegments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/0_mlgeo_project.html">
+   Primer
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 1 - Open Source Ecosystem with Python
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/readme.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.1_open_reproducible_science.html">
+   1.1 Open Reproducible Science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.2_jupyter_environment.html">
+   1.3 Jupyter Environment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.3_python_environment.html">
+   1.3 Python Ecosystem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.4_computational_environments.html">
+   1.4 Computing Environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.5_version_control_git.html">
+   1.5 Version Control &amp; GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.6_data_gallery.html">
+   1.6 Data Gallery
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 2 - Data Manipulation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.1_Data_Definitions.html">
+   2.1 Data Definitions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.2_data_formats_rendered.html">
+   2.2 Data Formats
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.3_pandas_rendered.html">
+   2.3 Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.4_dataframes_prep.html">
+   2.4 DataFrame Exploration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.5_Arrays.html">
+   2.5 Data Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.6_resampling.html">
+   2.6 Resampling Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.7_statistical_considerations.html">
+   2.7 Statistical Considerations for geoscientific Data and Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.8_data_spectral_transforms.html">
+   2.8 Spectral Transforms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.9_filtering_data.html">
+   2.9 Filtering Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.10_synthetic_noise.html">
+   2.10 Synthetic noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.11_feature_engineering.html">
+   2.11 Feature Engineering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.12_dimensionality_reduction.html">
+   2.12 Dimensionality Reduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.13_MLready_data.html">
+   2.13 ML-ready data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.20_Final_Project_Assignement.html">
+   Assignment:
+   <strong>
+    Preparing AI-Ready Data for The Final Project
+   </strong>
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 3 - Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   3.1 Classification and Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2_clustering.html">
+   3.2 Clustering: Unsupervied Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3_binary_classification.html">
+   3.3 Binary classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4_multiclass_classification.html">
+   3.4 Multiclass Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.5_logistic_regression.html">
+   3.5 Logistic regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.6_randomForest_regression.html">
+   3.6 Random Forests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.7_hyperparameter_tuning.html">
+   3.7 Hyperparameter Tuning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.8_ensemble_learning.html">
+   3.8 Ensemble learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.9_autoML.html">
+   3.9 AutoML
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 4 - Deep Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.html">
+   4.0 The Perceptron
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.1_neural_networks.html">
+   4.1 Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.2_MultiLayerPerceptron.html">
+   4.2 Multi Layer Perceptrons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_ModelTraining.html">
+   4.3 Model Training
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_PINN.html">
+   4.2 Physics-Informed Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_CNN.html">
+   4.3 Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.5_RNN.html">
+   4.4  Recurrent Neural Networks: Processing sequences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.html">
+   4.5 Auto-encoders
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_NAS.html">
+   4.6 NAS: Network Architecture Search
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 5 - Workflow Management and Reproducibility
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter5-ModelWorkflows/readme.html">
+   This chapter focuces on model workflow and ML reproducibility
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 6- Introduction to Cloud Computing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/cloudmaven">
+   Browser Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/Denolle-Lab/azure">
+   Terraform Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://tljh.jupyter.org/en/latest/">
+   Cloud Provider ML Jupyterhubs
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/glossary.html">
+   Glossaries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/geo-smart/mlgeo-book/main?urlpath=lab/tree/book/Chapter3-MachineLearning/3.1_classification_regression.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/issues/new?title=Issue%20on%20page%20%2FChapter3-MachineLearning/3.1_classification_regression.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/edit/main/book/Chapter3-MachineLearning/3.1_classification_regression.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Chapter3-MachineLearning/3.1_classification_regression.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classification-algorithms">
+   1. Classification Algorithms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#regression-algorithms">
+   2. Regression Algorithms
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-regression">
+     2.1 Linear Regression
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>3.1 Classification and Regression</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classification-algorithms">
+   1. Classification Algorithms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#regression-algorithms">
+   2. Regression Algorithms
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-regression">
+     2.1 Linear Regression
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="classification-and-regression">
+<h1>3.1 Classification and Regression<a class="headerlink" href="#classification-and-regression" title="Permalink to this headline">#</a></h1>
+<p>Problems that need a <em>quantitative</em> response (numeric value) are <strong>regression</strong>; problems that need a <em>qualitative</em> response (boolean or category) are <strong>classification</strong>. Many statistical methods can be applied to both types of problems.</p>
+<p><strong>Binary</strong> classification has two output classes. They usually end up being “A” and “not A”. Examples are “earthquake” or “no earthquake=noise”. <strong>Multiclass</strong> classification refers to one with more than two classes.</p>
+<p>Classification here requires that we know the labels, it is a form of <em>supervised learning</em>.</p>
+<section id="classification-algorithms">
+<h2>1. Classification Algorithms<a class="headerlink" href="#classification-algorithms" title="Permalink to this headline">#</a></h2>
+<p>There are several classifier algorithms, which we will summarize below before practicing.</p>
+<ul class="simple">
+<li><p><strong>Logistic Regression</strong>:</p></li>
+<li><p><strong>Linear Discriminant Analysis (LDA)</strong>: The LDA optimiziation methods produces an optimal dimensionality reductions to a decision line for classificaiton. It is based on variance reduction and has analogy to a PCA coordinate system.</p></li>
+<li><p><strong>Stochastic Gradient Descent (SGD)</strong>:</p></li>
+<li><p><strong>Naive Bayes (NB)</strong>: Simple algorithm that requires little hyper-parameters, provides interpretable results. The algorithm computes conditional probabilities and uses the product as a decision rule to maximize the probability in each class.</p></li>
+<li><p><strong>K-nearest neighbors (KNN)</strong>: Choose <em>K</em> as the numbers of nearest data points to consider. Gather each data sample and the K nearest ones, assign the class that is most represented in that group (the mode of the K labels).</p></li>
+<li><p><strong>Support Vector Machine (SVM)</strong>: Finds the hyperplanes that separate the classes with sufficient margins. The hyperplanes can be linear and more complex (kernels SVM such as radial basis function and polynomial kernels). SVM was very popular for limited training data.</p></li>
+<li><p><strong>Random Forest (RF)</strong>: Decision trees are common for prediction pipelines. <em>Decision tree learning</em> is a method to create a predictive model of trees based on the data. More on that this monday.</p></li>
+</ul>
+<p>Some classifiers can handle multi class natively (Stochastic Gradient Descent - SGD; Random Forest classification;  Naive Bayes). Others are strictly binary classifiers (Logistic Regression, Support Vector Machine classifier - SVM).</p>
+</section>
+<section id="regression-algorithms">
+<h2>2. Regression Algorithms<a class="headerlink" href="#regression-algorithms" title="Permalink to this headline">#</a></h2>
+<section id="linear-regression">
+<h3>2.1 Linear Regression<a class="headerlink" href="#linear-regression" title="Permalink to this headline">#</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(y\)</span> be the data, and <span class="math notranslate nohighlight">\(\hat{y}\)</span> be the predicted value of the data. A general linear regression can be formulated as</p>
+<p><span class="math notranslate nohighlight">\(\hat{y} = w_0 + w_1 x_1 + ... + w_n x_n = h_w (\mathbf{x})\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{\hat{y}} = \mathbf{G} \mathbf{w}\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(y\)</span> is a data vector of length <span class="math notranslate nohighlight">\(m\)</span>, <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is a feature vector of length <span class="math notranslate nohighlight">\(n\)</span>. <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is a vector of model parameter, <span class="math notranslate nohighlight">\(h_w\)</span> is referred to as the <em>hypothesis function</em> or the <em>model</em> using the model parameter <span class="math notranslate nohighlight">\(w\)</span>. In the most simple case of a linear regression with time, the formulation becomes:</p>
+<p><span class="math notranslate nohighlight">\(\hat{y} = w_0 + w_1 t\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(x_1 = t\)</span> the time feature.</p>
+<p>To evaluate how well the model performs, we will compute a <em>loss score</em>, or a <em>residual</em>. It is the result of applying a <em>loss</em> or <em>cost</em> or <em>objective</em> function to the prediction and the data. The most basic <em>cost function</em> is the <strong>Mean Square Error (MSE)</strong>:</p>
+<p><span class="math notranslate nohighlight">\(MSE(\mathbf{x},h_w) = \frac{1}{m} \sum_{i=1}^{m} \left( h_w(\mathbf{x})_i - y_i  \right)^2  = \frac{1}{m} \sum_{i=1}^{m} \left( \hat{y}_i - y_i  \right)^2 \)</span>, in the case of a linear regression.</p>
+<p>The <em>Normal Equation</em> is the solution to the linear regression that minimize the MSE.</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{w} = \left( \mathbf{x}^T\mathbf{x} \right)^{-1} \mathbf{x}^T \mathbf{y}\)</span></p>
+<p>This compares with the classic inverse problem framed by <span class="math notranslate nohighlight">\(\mathbf{d} = \mathbf{G} \mathbf{m}\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{m} = \left( \mathbf{G}^T\mathbf{G} \right)^{-1} \mathbf{G}^T \mathbf{d} \)</span></p>
+<p>It can be solved using Numpy linear algebra module. If <span class="math notranslate nohighlight">\(\left( \mathbf{x}^T\mathbf{x} \right) \)</span> is singular and cannot be inverted, a lower rank matrix called the <em>pseudoinverse</em> can be calculated using singular value decomposition. We also used in a previous class the Scikit-learn function for <code class="docutils literal notranslate"><span class="pre">sklearn.linear_model.LinearRegression</span></code>, which is the implementation of the <em>pseudoinverse</em>. We practice below how to use these standard inversions:</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Chapter3-MachineLearning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../Chapter2-DataManipulation/2.20_Final_Project_Assignement.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Assignment: <strong>Preparing AI-Ready Data for The Final Project</strong></p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="3.2_clustering.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">3.2 Clustering: Unsupervied Classification</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By eScience Institute, University of Washington<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

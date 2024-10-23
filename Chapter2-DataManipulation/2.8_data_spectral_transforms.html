@@ -268,13 +268,13 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter3-MachineLearning/3.1_clustering.html">
-   3.1 Clustering
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.1_classification_regression.html">
+   3.1 Classification and Regression
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
-   3.2 Classification and Regression
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.2_clustering.html">
+   3.2 Clustering: Unsupervied Classification
   </a>
  </li>
  <li class="toctree-l1">
@@ -840,10 +840,10 @@ title="Print to PDF"
 </ul>
 <p><strong>Why spectrograms are important</strong></p>
 <ul class="simple">
-<li><p><em><strong>Time-frequency Analysis</strong></em>R: Spectrograms allow us to see how the frequency content of a signal evolves over time, making them suitable for studying non-stationary data.</p></li>
-<li><p><em><strong>Feature Extraction</strong></em>R: Spectrograms highlight transient events and long-duration patterns, making them ideal for detecting and characterizing geophysical phenomena like earthquakes, landslides, or atmospheric waves.</p></li>
-<li><p><em><strong>Multiscale Analysis</strong></em>R: Many natural processes operate at different time scales. Spectrograms allow us to visualize and extract features across these scales.</p></li>
-<li><p><em><strong>Visualization</strong></em>R: They offer a compact and interpretable visualization of complex time-series data.</p></li>
+<li><p><em><strong>Time-frequency Analysis</strong></em>: Spectrograms allow us to see how the frequency content of a signal evolves over time, making them suitable for studying non-stationary data.</p></li>
+<li><p><em><strong>Feature Extraction</strong></em>: Spectrograms highlight transient events and long-duration patterns, making them ideal for detecting and characterizing geophysical phenomena like earthquakes, landslides, or atmospheric waves.</p></li>
+<li><p><em><strong>Multiscale Analysis</strong></em>: Many natural processes operate at different time scales. Spectrograms allow us to visualize and extract features across these scales.</p></li>
+<li><p><em><strong>Visualization</strong></em>: They offer a compact and interpretable visualization of complex time-series data.</p></li>
 </ul>
 <p>In this section, we will transform the data by projecting it onto basis of functions. The two most used transforms as the <strong>Fourier</strong> and the <strong>wavelet</strong> transforms.</p>
 <p>::warning::
@@ -952,11 +952,22 @@ Filtering any data needs to be done carefully and potential artefact due to filt
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.fftpack</span> <span class="kn">import</span> <span class="n">fft</span><span class="p">,</span> <span class="n">ifft</span><span class="p">,</span> <span class="n">fftfreq</span><span class="p">,</span> <span class="n">next_fast_len</span>
 
 <span class="n">npts</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span>
+
 <span class="c1">## FFT the signals</span>
 <span class="c1"># fill up until 2^N value to speed up the FFT</span>
 <span class="n">Nfft</span> <span class="o">=</span> <span class="n">next_fast_len</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="c1"># this will be an even number</span>
+
+
+
 <span class="n">freqVec</span> <span class="o">=</span> <span class="n">fftfreq</span><span class="p">(</span><span class="n">Nfft</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+
+
+
+
 <span class="n">Z</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+
+
 <span class="n">Zhat</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">Nfft</span><span class="p">)</span><span class="c1">#/np.sqrt(Z[0].stats.npts)</span>
 </pre></div>
 </div>
@@ -971,7 +982,9 @@ Plot the amplitude and phase spectra</p>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">);</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amplitude (m/s)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">Zhat</span><span class="p">))</span>
+
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">Zhat</span><span class="p">[:</span><span class="n">Nfft</span><span class="o">//</span><span class="mi">2</span><span class="p">]))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
