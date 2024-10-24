@@ -1,0 +1,1158 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>3.1 Concepts in training supervision &#8212; ML Geo Curriculum</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.2 Classification and Regression" href="3.2_classification_regression.html" />
+    <link rel="prev" title="Assignment: Preparing AI-Ready Data for The Final Project" href="../Chapter2-DataManipulation/2.20_Final_Project_Assignement.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/GeoSMART_logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ML Geo Curriculum</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../about_this_book/about_this_book.html">
+                    Machine Learning in the Geosciences
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://geo-smart.github.io/index.html">
+   Geosmart website
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/acknowledgements.html">
+   Acknowlegments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/0_mlgeo_project.html">
+   Primer
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 1 - Open Source Ecosystem with Python
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/readme.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.1_open_reproducible_science.html">
+   1.1 Open Reproducible Science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.2_jupyter_environment.html">
+   1.3 Jupyter Environment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.3_python_environment.html">
+   1.3 Python Ecosystem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.4_computational_environments.html">
+   1.4 Computing Environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.5_version_control_git.html">
+   1.5 Version Control &amp; GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.6_data_gallery.html">
+   1.6 Data Gallery
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 2 - Data Manipulation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.1_Data_Definitions.html">
+   2.1 Data Definitions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.2_data_formats_rendered.html">
+   2.2 Data Formats
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.3_pandas_rendered.html">
+   2.3 Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.4_dataframes_prep.html">
+   2.4 DataFrame Exploration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.5_Arrays.html">
+   2.5 Data Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.6_resampling.html">
+   2.6 Resampling Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.7_statistical_considerations.html">
+   2.7 Statistical Considerations for geoscientific Data and Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.8_data_spectral_transforms.html">
+   2.8 Spectral Transforms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.9_filtering_data.html">
+   2.9 Filtering Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.10_synthetic_noise.html">
+   2.10 Synthetic noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.11_feature_engineering.html">
+   2.11 Feature Engineering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.12_dimensionality_reduction.html">
+   2.12 Dimensionality Reduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.13_MLready_data.html">
+   2.13 ML-ready data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.20_Final_Project_Assignement.html">
+   Assignment:
+   <strong>
+    Preparing AI-Ready Data for The Final Project
+   </strong>
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 3 - Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   3.1 Concepts in training supervision
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2_classification_regression.html">
+   3.2 Classification and Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3_clustering.html">
+   3.3 Clustering: Unsupervied Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4_binary_classification.html">
+   3.4 Binary classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.5_multiclass_classification.html">
+   3.5 Multiclass Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.6_logistic_regression.html">
+   3.6 Logistic regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.7_randomForest_regression.html">
+   3.7 Random Forests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.9_ensemble_learning.html">
+   3.9 Ensemble learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.10_autoML.html">
+   3.10 AutoML
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 4 - Deep Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.html">
+   4.0 The Perceptron
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.1_neural_networks.html">
+   4.1 Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.2_MultiLayerPerceptron.html">
+   4.2 Multi Layer Perceptrons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_ModelTraining.html">
+   4.3 Model Training
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_PINN.html">
+   4.2 Physics-Informed Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_CNN.html">
+   4.3 Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.5_RNN.html">
+   4.4  Recurrent Neural Networks: Processing sequences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.html">
+   4.5 Auto-encoders
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_NAS.html">
+   4.6 NAS: Network Architecture Search
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 5 - Workflow Management and Reproducibility
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter5-ModelWorkflows/readme.html">
+   This chapter focuces on model workflow and ML reproducibility
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 6- Introduction to Cloud Computing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/cloudmaven">
+   Browser Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/Denolle-Lab/azure">
+   Terraform Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://tljh.jupyter.org/en/latest/">
+   Cloud Provider ML Jupyterhubs
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/glossary.html">
+   Glossaries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/issues/new?title=Issue%20on%20page%20%2FChapter3-MachineLearning/3.1_concepts_supervision.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/edit/main/book/Chapter3-MachineLearning/3.1_concepts_supervision.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Chapter3-MachineLearning/3.1_concepts_supervision.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unsupervised-learning">
+   1. Unsupervised Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-techniques">
+     Key Techniques
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#advantages-and-challenges">
+     Advantages and Challenges
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#semi-supervised-learning">
+   2. Semi-Supervised Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-approaches">
+     Key Approaches
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#self-supervised-learning">
+   3. Self-Supervised Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-concepts">
+     Key Concepts
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reinforcement-learning">
+   4 Reinforcement Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-components">
+     Key Components
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-algorithms">
+     Key Algorithms
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#active-learning">
+   6. Active Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Key Components
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Key Algorithms
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     Advantages and Challenges
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#comparative-overview">
+   7. Comparative Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#key-takeaways">
+   Key Takeaways:
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>3.1 Concepts in training supervision</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unsupervised-learning">
+   1. Unsupervised Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-techniques">
+     Key Techniques
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#advantages-and-challenges">
+     Advantages and Challenges
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#semi-supervised-learning">
+   2. Semi-Supervised Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-approaches">
+     Key Approaches
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#self-supervised-learning">
+   3. Self-Supervised Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-concepts">
+     Key Concepts
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reinforcement-learning">
+   4 Reinforcement Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-components">
+     Key Components
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-algorithms">
+     Key Algorithms
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#active-learning">
+   6. Active Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Key Components
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Key Algorithms
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     Advantages and Challenges
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#comparative-overview">
+   7. Comparative Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#key-takeaways">
+   Key Takeaways:
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="concepts-in-training-supervision">
+<h1>3.1 Concepts in training supervision<a class="headerlink" href="#concepts-in-training-supervision" title="Permalink to this headline">#</a></h1>
+<p>Slides for a general overview that combines chapter 3.1 and 3.2 can be found below</p>
+<p><span class="xref myst"><img alt="Class Slides" src="../_images/img" /></span></p>
+<p>Different learning paradigms cater to various types of data and problem settings. This chapter explores the general frameworks for training models, focusing on unsupervised learning, semi-supervised learning, self-supervised learning, and reinforcement learning. Understanding these frameworks will equip you with the knowledge to select the most suitable approach for your geoscientific research.</p>
+<section id="unsupervised-learning">
+<h2>1. Unsupervised Learning<a class="headerlink" href="#unsupervised-learning" title="Permalink to this headline">#</a></h2>
+<p>Unsupervised learning involves training models on datasets without labeled outputs. The goal is to uncover hidden patterns, structures, or features within the data. Unlike supervised learning, there are no explicit target variables to guide the learning process.</p>
+<section id="key-techniques">
+<h3>Key Techniques<a class="headerlink" href="#key-techniques" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p><strong>Clustering</strong>: Groups similar data points based on feature similarity.</p>
+<ul>
+<li><p><strong>Examples</strong>: K-means, Hierarchical Clustering, DBSCAN.</p></li>
+</ul>
+</li>
+<li><p><strong>Dimensionality Reduction</strong>: Reduces the number of features while preserving essential information.</p>
+<ul>
+<li><p><strong>Examples</strong>: Principal Component Analysis (PCA), t-Distributed Stochastic Neighbor Embedding (t-SNE).</p></li>
+</ul>
+</li>
+<li><p><strong>Anomaly Detection</strong>: Identifies data points that deviate significantly from the norm.</p>
+<ul>
+<li><p><strong>Examples</strong>: Isolation Forest, One-Class SVM.</p></li>
+</ul>
+</li>
+</ul>
+<p>Examples in geosciences might be geochemical anomaly detection to Identifying areas with unusual mineral concentrations (REF); seismic facies analysis to grouping seismic data to interpret subsurface geological structures (REF), or climate pattern discovery by Uncovering patterns in climate data to understand atmospheric phenomena (REF).</p>
+</section>
+<section id="advantages-and-challenges">
+<h3>Advantages and Challenges<a class="headerlink" href="#advantages-and-challenges" title="Permalink to this headline">#</a></h3>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Advantages</p></th>
+<th class="head"><p>Challenges</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No need for labeled data, which can be costly or impractical to obtain.</p></td>
+<td><p>Interpretation of results can be subjective.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Useful for exploratory data analysis.</p></td>
+<td><p>Model evaluation is less straightforward due to the absence of ground truth.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="semi-supervised-learning">
+<h2>2. Semi-Supervised Learning<a class="headerlink" href="#semi-supervised-learning" title="Permalink to this headline">#</a></h2>
+<p>Semi-supervised learning combines a small amount of labeled data with a large amount of unlabeled data during training. It leverages the unlabeled data to improve model performance, especially when obtaining labels is expensive or time-consuming.</p>
+<section id="key-approaches">
+<h3>Key Approaches<a class="headerlink" href="#key-approaches" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p><strong>Self-Training</strong>: The model is initially trained on labeled data, then used to predict labels for unlabeled data, which are added to the training set iteratively.</p></li>
+<li><p><strong>Co-Training</strong>: Two or more models are trained on different subsets or views of the data, each helping to label the unlabeled data for the other.</p></li>
+<li><p><strong>Graph-Based Methods</strong>: Use graph structures to represent data points and propagate labels through connections.</p></li>
+</ul>
+<p>Appliations in geosciences may be enhancing land cover mapping were few ground truth labels exist (REF), predicting minerals from abundant but unlabeled geophysical data sets (REF), or assessing environmental hazards such as landslides and floors with limited labeled incidents (REF).</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Advantages</p></th>
+<th class="head"><p>Challenges</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Improves model accuracy with less labeled data.</p></td>
+<td><p>Risk of propagating incorrect labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cost-effective when labeling is expensive.</p></td>
+<td><p>Model performance heavily depends on the quality of the initial labeled dataset.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="self-supervised-learning">
+<h2>3. Self-Supervised Learning<a class="headerlink" href="#self-supervised-learning" title="Permalink to this headline">#</a></h2>
+<p>Self-supervised learning is a subset of unsupervised learning where the data itself provides the supervision. Models are trained to predict parts of the data from other parts, creating surrogate tasks that generate labels from the data’s structure.</p>
+<section id="key-concepts">
+<h3>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p><strong>Pretext Tasks</strong>: Artificial tasks designed to train models on inherent data structures.</p>
+<ul>
+<li><p><strong>Examples</strong>: Predicting missing data, solving jigsaw puzzles with image patches, temporal order verification.</p></li>
+</ul>
+</li>
+<li><p><strong>Representation Learning</strong>: The model learns meaningful representations that can be transferred to downstream tasks.</p></li>
+</ul>
+<p>Examples in the geosciences might be training models to reconstruct missing portions of seismic signals (REF) or time series forecasting such as predicting future geophysical measurements based on past data (REF).</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Advantages</p></th>
+<th class="head"><p>Challenges</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Utilizes vast amounts of unlabeled data.</p></td>
+<td><p>Designing effective pretext tasks can be non-trivial.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Produces robust feature representations.</p></td>
+<td><p>The learned representations may not always transfer well to specific tasks.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="reinforcement-learning">
+<h2>4 Reinforcement Learning<a class="headerlink" href="#reinforcement-learning" title="Permalink to this headline">#</a></h2>
+<p>Reinforcement learning (RL) is a learning paradigm where an agent interacts with an environment to achieve a goal. The agent learns to make decisions by performing actions and receiving feedback in the form of rewards or penalties.</p>
+<section id="key-components">
+<h3>Key Components<a class="headerlink" href="#key-components" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p><strong>Agent</strong>: The entity making decisions.</p></li>
+<li><p><strong>nvironment</strong>: The context in which the agent operates.</p></li>
+<li><p><strong>State</strong>: A representation of the current situation.</p></li>
+<li><p><strong>Action</strong>: Choices available to the agent.</p></li>
+<li><p><strong>Reward Signal</strong>: Feedback received after an action, guiding the learning process.</p></li>
+<li><p><strong>Policy</strong>: The strategy used by the agent to decide actions based on states.</p></li>
+<li><p><strong>Value Function</strong>: Estimates how good it is to be in a certain state or to perform an action.</p></li>
+</ul>
+</section>
+<section id="key-algorithms">
+<h3>Key Algorithms<a class="headerlink" href="#key-algorithms" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p><strong>Q-Learning</strong>: Learns the value of action-state pairs to derive an optimal policy.</p></li>
+<li><p><strong>Deep Q-Networks (DQN)</strong>: Uses neural networks to approximate Q-values in high-dimensional spaces.</p></li>
+<li><p><strong>Policy Gradients</strong>: Optimizes the policy directly by maximizing expected rewards.</p></li>
+<li><p><strong>Actor-Critic Methods</strong>: Combines value-based and policy-based approaches for improved learning.</p></li>
+</ul>
+<!-- Examples in geosciences might be (REF) that determined optimal drilling strategies to maximize yield in resouce extraction, or (REF) that developed policies for sustainable land use and conservation efforts, and (REF) that developed a model to guide drones in mapping or surveying tasks for automomous exploration. -->
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Advantages</p></th>
+<th class="head"><p>Challenges</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Suitable for sequential decision-making problems.</p></td>
+<td><p>Requires extensive interactions with the environment.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Capable of learning complex behaviors.</p></td>
+<td><p>Computationally intensive and may suffer from convergence issues.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="active-learning">
+<h2>6. Active Learning<a class="headerlink" href="#active-learning" title="Permalink to this headline">#</a></h2>
+<p>Active learning is a machine learning paradigm where the model actively queries the user or some other information source to obtain the desired outputs at new data points. This approach is particularly useful when labeled data is scarce or expensive to obtain, as it aims to achieve high accuracy with minimal labeled data.</p>
+<section id="id1">
+<h3>Key Components<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p><strong>Query Strategy</strong>: The method used to select which data points to label next.</p>
+<ul>
+<li><p><strong>Examples</strong>:</p>
+<ul>
+<li><p><strong>Uncertainty Sampling</strong>: Selecting seismic data points where the model is least certain about the subsurface structure.</p></li>
+<li><p><strong>Query by Committee</strong>: Using multiple models to identify geological samples with the highest disagreement in mineral classification.</p></li>
+<li><p><strong>Expected Model Change</strong>: Choosing geophysical measurements that would most significantly alter the current model of a mineral deposit if labeled.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Oracle</strong>: The source of the true labels, often a human annotator or an expert.</p>
+<ul>
+<li><p><strong>Examples</strong>:</p>
+<ul>
+<li><p>A geologist providing labels for rock samples.</p></li>
+<li><p>A climate scientist annotating weather pattern data.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Stopping Criterion</strong>: The condition that determines when the active learning process should stop.</p>
+<ul>
+<li><p><strong>Examples</strong>:</p>
+<ul>
+<li><p>Fixed budget: Stopping after labeling a predetermined number of seismic survey points.</p></li>
+<li><p>Performance threshold: Halting when the model’s accuracy in predicting mineral deposits reaches a satisfactory level.</p></li>
+<li><p>Convergence criteria: Ceasing the process when additional labeled geophysical data no longer significantly improves the model.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id2">
+<h3>Key Algorithms<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p><strong>Uncertainty Sampling</strong>: Selects data points where the model is least certain about the predictions.</p></li>
+<li><p><strong>Query by Committee</strong>: Uses a committee of models to select data points where there is maximum disagreement among the models.</p></li>
+<li><p><strong>Expected Model Change</strong>: Chooses data points that would result in the greatest change to the current model if labeled and added to the training set.</p></li>
+<li><p><strong>Density-Weighted Methods</strong>: Combines uncertainty with the density of data points to ensure diverse and informative samples are selected.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>Advantages and Challenges<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Advantages</p></th>
+<th class="head"><p>Challenges</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reduces the amount of labeled data needed.</p></td>
+<td><p>Requires an effective query strategy.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cost-effective when labeling is expensive.</p></td>
+<td><p>The quality of the oracle can impact performance.</p></td>
+</tr>
+<tr class="row-even"><td><p>Can improve model performance significantly.</p></td>
+<td><p>Determining the stopping criterion can be difficult.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="comparative-overview">
+<h2>7. Comparative Overview<a class="headerlink" href="#comparative-overview" title="Permalink to this headline">#</a></h2>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Learning Paradigm</p></th>
+<th class="head"><p>Typical usage</p></th>
+<th class="head"><p>Data Status</p></th>
+<th class="head"><p>Model Evaluation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Supervised</strong></p></td>
+<td><p>Automate workflows for data mining or develop surrogate models</p></td>
+<td><p>Labeled</p></td>
+<td><p>silhouette score or through domain-specific interpretation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Unsupervised</strong></p></td>
+<td><p>Explore or understand the data’s structure.</p></td>
+<td><p>Unlabeled</p></td>
+<td><p>silhouette score or through domain-specific interpretation.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Semi-Supervised</strong></p></td>
+<td><p>automating workflows</p></td>
+<td><p>Limited labeled data and mostly unlabeled data</p></td>
+<td><p>Performance measured on labeled validation sets.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Self-Supervised</strong></p></td>
+<td><p>Feature representations learning</p></td>
+<td><p>Unlabeled data with inherent structure</p></td>
+<td><p>Indirectly evaluated by the performance on downstream tasks after fine-tuning.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Reinforcement</strong></p></td>
+<td><p>Applicable when decisions need to be made sequentially with feedback from interactions.</p></td>
+<td><p>An environment where the agent can interact and receive rewards</p></td>
+<td><p>Cumulative rewards or achieving the desired level of performance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Active</strong></p></td>
+<td><p>Continuous model training to improve performance</p></td>
+<td><p>mostly unlabeled, a few labeled data</p></td>
+<td><p>Performance measured on labeled validation sets, focusing on the efficiency of the labeling process.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways:<a class="headerlink" href="#key-takeaways" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p><strong>Framework Selection</strong>: Align your choice of learning framework with the nature of your data and the problem at hand.</p></li>
+<li><p><strong>Data Utilization</strong>: Maximize the value of available data, whether labeled or unlabeled, through appropriate learning paradigms.</p></li>
+<li><p><strong>Continuous Learning</strong>: Stay abreast of advancements in machine learning to incorporate new techniques and improve model performance.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Chapter3-MachineLearning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../Chapter2-DataManipulation/2.20_Final_Project_Assignement.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Assignment: <strong>Preparing AI-Ready Data for The Final Project</strong></p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="3.2_classification_regression.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">3.2 Classification and Regression</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By eScience Institute, University of Washington<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
