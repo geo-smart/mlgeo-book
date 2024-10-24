@@ -1,5 +1,5 @@
 ---
-title: "Classification and regression approaches"
+title: "Introduction to Machine Learning Concepts"
 author: "ESS 469/569"
 institute: "University of Washington"
 fontsize: "24pt"
@@ -17,7 +17,11 @@ header-includes: |
 
 ---
 
-# Key terms (some may be review)
+# Introduction
+
+We will review key concepts in Machine Learning: classification, regression, and strategies to train and evaluate models.
+
+# Key terms 
 
 \onslide<1->**Unsupervised learning**: Using *unlabeled* datasets. \emphasis{Here, we are looking for patterns or structure within the data.}
 

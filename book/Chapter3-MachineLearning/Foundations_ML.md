@@ -1,7 +1,8 @@
-# 3.1 Framing a Machine Learning Approach
+# 3.1 Choosing a Machine Learning Approach
 
 
 This chapter aims to introduce key concepts in Machine Learning: Classification, Regression, strategies to train these models
+ 
  We will discuss how these methods apply to geoscientific data and provide practical, hands-on exercises using synthetic datasets.
 
 ## 5.1 Classification in Geosciences
