@@ -310,6 +310,11 @@ const thebe_selector_output = ".output, .cell_output"
    3.10 AutoML
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.20_final_project_cml.html">
+   3.20 Final Project - Classic Machine Learning
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -645,6 +650,16 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#random-forest">
    2. Random Forest
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concepts">
+   2.1 Concepts
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#practice">
+   2.2 Practice
+  </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#first-we-will-download-the-data">
@@ -733,6 +748,16 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#random-forest">
    2. Random Forest
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concepts">
+   2.1 Concepts
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#practice">
+   2.2 Practice
+  </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#first-we-will-download-the-data">
@@ -807,10 +832,66 @@ title="Print to PDF"
 <h1>3.7 Random Forests<a class="headerlink" href="#random-forests" title="Permalink to this headline">#</a></h1>
 <section id="decision-trees">
 <h2>1. Decision Trees<a class="headerlink" href="#decision-trees" title="Permalink to this headline">#</a></h2>
-<p>TO ADD</p>
+<p>A <strong>decision tree</strong> is a supervised learning algorithm used for both classification and regression tasks. It is a flowchart-like structure where:</p>
+<ul class="simple">
+<li><p><strong>Internal nodes</strong> represent tests on features (attributes),</p></li>
+<li><p><strong>Branches</strong> represent the outcomes of these tests, and</p></li>
+<li><p><strong>Leaf nodes</strong> represent the final output or decision (such as a class label or a predicted value).</p></li>
+</ul>
+<p>Each node in the tree splits the data into subsets based on feature values that minimize a certain cost function, such as <strong>Gini impurity</strong> or <strong>entropy</strong> for classification, and <strong>mean squared error</strong> for regression.</p>
+<hr class="docutils" />
+<p><strong>2. How Decision Trees Work</strong></p>
+<ol class="simple">
+<li><p><strong>Splitting:</strong> The algorithm begins at the root node by selecting a feature that best splits the dataset according to a chosen criterion. For classification, common metrics are <strong>Gini impurity</strong> or <strong>information gain</strong>.</p></li>
+<li><p><strong>Recursive Partitioning:</strong> This process is recursively applied to the resulting subsets, creating branches of the tree. Each decision aims to simplify the problem by reducing uncertainty about the outcome.</p></li>
+<li><p><strong>Stopping Criteria:</strong> The algorithm continues until it reaches a stopping condition, which could be a minimum node size or a maximum tree depth, to prevent overfitting.</p></li>
+<li><p><strong>Prediction:</strong> Once the tree is trained, it can classify new data points by traversing the tree from the root to a leaf, following the decisions at each node.</p></li>
+</ol>
+<hr class="docutils" />
+<p><strong>3. Why Are Decision Trees Relevant in Geoscientific Research?</strong></p>
+<p>Decision trees are particularly useful in geoscientific research for several reasons:</p>
+<ul class="simple">
+<li><p><strong>Interpretability:</strong> Decision trees provide a clear, visual representation of how decisions are made. In geosciences, where models must often be explainable to a wide range of stakeholders (e.g., policymakers, environmentalists), decision trees allow users to understand and trust the predictions.</p></li>
+<li><p><strong>Handling Complex, Nonlinear Relationships:</strong> Geoscientific data, such as environmental or climate data, often exhibit complex relationships between variables. Decision trees can naturally capture these nonlinear relationships without the need for heavy data preprocessing.</p></li>
+<li><p><strong>Handling Missing Data:</strong> Decision trees can handle datasets with missing values, which is common in geoscience due to the challenges of continuous monitoring in harsh environments or remote locations.</p></li>
+<li><p><strong>Feature Importance:</strong> Decision trees rank the importance of each feature based on its contribution to the model. This is valuable in geosciences to identify which factors (e.g., temperature, precipitation, or seismic activity) have the most impact on a particular outcome (e.g., predicting landslides or earthquakes).</p></li>
+<li><p><strong>Scalability:</strong> Decision trees can be applied to large datasets, often found in geosciences, with minimal computational overhead. They can be adapted to distributed computing frameworks to handle vast geospatial datasets.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>4. Geoscientific Applications</strong></p>
+<ul class="simple">
+<li><p><strong>Seismic Event Classification:</strong> Decision trees can classify seismic events (e.g., earthquakes, volcanic eruptions) based on waveforms, frequency content, and other features.</p></li>
+<li><p><strong>Landslide Risk Prediction:</strong> They can model complex interactions between environmental variables like slope, soil type, and rainfall, identifying areas at higher risk of landslides.</p></li>
+<li><p><strong>Climate Classification and Prediction:</strong> Decision trees can be used to classify climate zones based on environmental variables or predict future climate patterns by analyzing historical weather data.</p></li>
+</ul>
 </section>
+<hr class="docutils" />
 <section id="random-forest">
 <h2>2. Random Forest<a class="headerlink" href="#random-forest" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="concepts">
+<h2>2.1 Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">#</a></h2>
+<p><strong>1. What Are Random Forests?</strong></p>
+<p>A <strong>random forest</strong> is an ensemble learning method that builds on the foundation of decision trees. Instead of relying on a single decision tree, random forests combine the predictions of <strong>many decision trees</strong> to improve accuracy, robustness, and reduce overfitting. Each tree in the forest independently makes a prediction, and the forest aggregates these predictions—typically by majority voting for classification tasks or averaging for regression tasks—to make a final decision.</p>
+<hr class="docutils" />
+<p><strong>2. How Do Random Forests Work?</strong></p>
+<ol class="simple">
+<li><p><strong>Bootstrap Aggregation (Bagging):</strong> Each decision tree in a random forest is trained on a different subset of the original dataset. This is achieved through bootstrapping, where random samples (with replacement) are drawn from the dataset for each tree. This diversity in training data allows trees to develop slightly different models, reducing the likelihood that all trees make the same errors.</p></li>
+<li><p><strong>Feature Randomness:</strong> At each split, a random subset of features is chosen for consideration, rather than the full feature set. This randomness decorrelates the trees from each other, further reducing the chance of overfitting and enhancing generalization.</p></li>
+<li><p><strong>Prediction Aggregation:</strong> Once all trees in the forest have made their predictions, random forests aggregate these to produce a final output. For classification, it’s usually a majority vote across trees; for regression, the final output is the average prediction across trees.</p></li>
+</ol>
+<hr class="docutils" />
+<p><strong>3. Why Random Forests Are Valuable in Geoscientific Research</strong></p>
+<p>Random forests address some limitations of single decision trees, making them particularly powerful for geoscientific applications:</p>
+<ul class="simple">
+<li><p><strong>Increased Accuracy and Reduced Overfitting:</strong> The ensemble approach of random forests typically improves prediction accuracy over a single decision tree. This is crucial in geosciences, where data can be noisy, and precise predictions are required for applications like hazard assessment.</p></li>
+<li><p><strong>Better Generalization:</strong> Random forests generalize better than single trees due to the diversity in the ensemble. This means that random forests are more likely to perform well on new, unseen data, which is vital in dynamic geoscientific contexts (e.g., changing climate patterns or evolving geological conditions).</p></li>
+<li><p><strong>Feature Importance and Interpretability:</strong> Like decision trees, random forests provide feature importance scores, indicating which features contribute most to predictions. This helps geoscientists identify key drivers of a phenomenon, such as factors leading to landslides or influencing seismic activity.</p></li>
+<li><p><strong>Scalability:</strong> Random forests are highly scalable and can be distributed across multiple processors, making them suitable for large geospatial datasets commonly encountered in geoscience, such as remote sensing data.</p></li>
+</ul>
+</section>
+<section id="practice">
+<h2>2.2 Practice<a class="headerlink" href="#practice" title="Permalink to this headline">#</a></h2>
 <p>In this tutorial, we will apply random forest regression model on a set of features to predict maximum temperature on a current day. Our example dataset is obtained from NOAA (<a class="reference external" href="https://www.noaa.gov/">https://www.noaa.gov/</a>) and contained one year recording of daily temperatures at Seattle in 2016.</p>
 <p>This Jupyter notebook is modified from Will Koehrsen’s tutorial on Random Forests at <a class="reference external" href="https://towardsdatascience.com/random-forest-in-python-24d0893d51c0">towardsdatascience</a>.</p>
 <section id="first-we-will-download-the-data">
