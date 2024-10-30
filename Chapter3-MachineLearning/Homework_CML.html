@@ -1,0 +1,1298 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Homework Classic Machine Learning (50 points) &#8212; ML Geo Curriculum</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.0 The Perceptron" href="../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.html" />
+    <link rel="prev" title="3.20 Final Project - Classic Machine Learning" href="3.20_final_project_cml.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/GeoSMART_logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ML Geo Curriculum</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../about_this_book/about_this_book.html">
+                    Machine Learning in the Geosciences
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://geo-smart.github.io/index.html">
+   Geosmart website
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/acknowledgements.html">
+   Acknowlegments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/0_mlgeo_project.html">
+   Primer
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 1 - Open Source Ecosystem with Python
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/readme.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.1_open_reproducible_science.html">
+   1.1 Open Reproducible Science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.2_jupyter_environment.html">
+   1.3 Jupyter Environment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.3_python_environment.html">
+   1.3 Python Ecosystem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.4_computational_environments.html">
+   1.4 Computing Environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.5_version_control_git.html">
+   1.5 Version Control &amp; GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.6_data_gallery.html">
+   1.6 Data Gallery
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 2 - Data Manipulation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.1_Data_Definitions.html">
+   2.1 Data Definitions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.2_data_formats_rendered.html">
+   2.2 Data Formats
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.3_pandas_rendered.html">
+   2.3 Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.4_dataframes_prep.html">
+   2.4 DataFrame Exploration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.5_Arrays.html">
+   2.5 Data Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.6_resampling.html">
+   2.6 Resampling Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.7_statistical_considerations.html">
+   2.7 Statistical Considerations for geoscientific Data and Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.8_data_spectral_transforms.html">
+   2.8 Spectral Transforms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.9_filtering_data.html">
+   2.9 Filtering Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.10_synthetic_noise.html">
+   2.10 Synthetic noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.11_feature_engineering.html">
+   2.11 Feature Engineering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.12_dimensionality_reduction.html">
+   2.12 Dimensionality Reduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.13_MLready_data.html">
+   2.13 ML-ready data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.20_Final_Project_Assignement.html">
+   Assignment:
+   <strong>
+    Preparing AI-Ready Data for The Final Project
+   </strong>
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 3 - Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.1_concepts_supervision.html">
+   3.1 Concepts in training supervision
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2_classification_regression.html">
+   3.2 Classification and Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3_clustering.html">
+   3.3 Clustering: Unsupervied Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4_binary_classification.html">
+   3.4 Binary classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.5_multiclass_classification.html">
+   3.5 Multiclass Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.6_logistic_regression.html">
+   3.6 Logistic regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.7_randomForest_regression.html">
+   3.7 Random Forests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.9_ensemble_learning.html">
+   3.9 Ensemble learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.10_autoML.html">
+   3.10 AutoML
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.20_final_project_cml.html">
+   3.20 Final Project - Classic Machine Learning
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Homework Classic Machine Learning (50 points)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 4 - Deep Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.html">
+   4.0 The Perceptron
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.1_neural_networks.html">
+   4.1 Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.2_MultiLayerPerceptron.html">
+   4.2 Multi Layer Perceptrons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_ModelTraining.html">
+   4.3 Model Training
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_PINN.html">
+   4.2 Physics-Informed Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_CNN.html">
+   4.3 Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.5_RNN.html">
+   4.4  Recurrent Neural Networks: Processing sequences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.html">
+   4.5 Auto-encoders
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_NAS.html">
+   4.6 NAS: Network Architecture Search
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 5 - Workflow Management and Reproducibility
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter5-ModelWorkflows/readme.html">
+   This chapter focuces on model workflow and ML reproducibility
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 6- Introduction to Cloud Computing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/cloudmaven">
+   Browser Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/Denolle-Lab/azure">
+   Terraform Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://tljh.jupyter.org/en/latest/">
+   Cloud Provider ML Jupyterhubs
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/glossary.html">
+   Glossaries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/geo-smart/mlgeo-book/main?urlpath=lab/tree/book/Chapter3-MachineLearning/Homework_CML.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/issues/new?title=Issue%20on%20page%20%2FChapter3-MachineLearning/Homework_CML.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/edit/main/book/Chapter3-MachineLearning/Homework_CML.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Chapter3-MachineLearning/Homework_CML.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#importing-libraries">
+   Importing Libraries
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-preparation-20-points">
+   1. Data Preparation (20 points)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-read">
+     1.1 Data read
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-cleaning">
+     1.2 Data Cleaning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-correlations">
+     1.3 Data correlations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-exploration">
+     1.5 Data exploration
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#a-distributions-of-redshift">
+       1.5.a. Distributions of redshift
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#b-right-ascension-ra-and-declination-dec">
+       1.5.b. Right ascension (ra) and declination (dec)
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#c-filters-u-g-r-i-z">
+       1.5.c Filters - u,g,r,i,z
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-dimensionality-reduction">
+     1.6 Data Dimensionality Reduction
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unsupervised-clustering-with-kmeans-20-points">
+   2. Unsupervised Clustering with KMeans (20 points)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#perform-preliminary-kmeans-10-points">
+   2.1 Perform preliminary Kmeans (10 points)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#find-the-optimal-number-of-clusters-5-points">
+   2.2 Find the optimal number of clusters (5 points)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#discuss-performance-of-clustering-5-points">
+   2.3 Discuss performance of clustering ( 5 points)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#machine-learning-models-30-points">
+   3 Machine Learning Models (30 points)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#feature-scaling">
+     3.1 Feature Scaling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#test-train-validation-data-sets">
+     3.2 Test, train, validation data sets.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-k-nearest-neighbors-3-points">
+     3.3.a K Nearest Neighbors (3 points)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#b-naive-bayes-3-points">
+     3.3.b Naive Bayes (3 points)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#c-random-forest-classifier-2-points">
+     3.3.c Random Forest Classifier (2 points)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d-support-vector-machine-classifier-2-points">
+     3.3.d Support Vector Machine Classifier (2 points)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#e-multi-layer-perceptron-3-points">
+     3.3.e Multi-Layer Perceptron (3 points)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model-performance-and-comparison">
+     3.4 Model performance and comparison
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-confusion-matrix-and-interpretation">
+     3.4.a Confusion Matrix and interpretation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-k-fold-cross-validation">
+     3.4.a K Fold Cross Validation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#c-and-the-winner-is">
+     3.4.c And the winner is …
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary-4-points">
+   4 Summary (4 points)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#feature-importance-using-random-forest-classifier">
+     4.1 Feature Importance using Random Forest Classifier
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Homework Classic Machine Learning (50 points)</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#importing-libraries">
+   Importing Libraries
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-preparation-20-points">
+   1. Data Preparation (20 points)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-read">
+     1.1 Data read
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-cleaning">
+     1.2 Data Cleaning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-correlations">
+     1.3 Data correlations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-exploration">
+     1.5 Data exploration
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#a-distributions-of-redshift">
+       1.5.a. Distributions of redshift
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#b-right-ascension-ra-and-declination-dec">
+       1.5.b. Right ascension (ra) and declination (dec)
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#c-filters-u-g-r-i-z">
+       1.5.c Filters - u,g,r,i,z
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-dimensionality-reduction">
+     1.6 Data Dimensionality Reduction
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unsupervised-clustering-with-kmeans-20-points">
+   2. Unsupervised Clustering with KMeans (20 points)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#perform-preliminary-kmeans-10-points">
+   2.1 Perform preliminary Kmeans (10 points)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#find-the-optimal-number-of-clusters-5-points">
+   2.2 Find the optimal number of clusters (5 points)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#discuss-performance-of-clustering-5-points">
+   2.3 Discuss performance of clustering ( 5 points)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#machine-learning-models-30-points">
+   3 Machine Learning Models (30 points)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#feature-scaling">
+     3.1 Feature Scaling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#test-train-validation-data-sets">
+     3.2 Test, train, validation data sets.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-k-nearest-neighbors-3-points">
+     3.3.a K Nearest Neighbors (3 points)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#b-naive-bayes-3-points">
+     3.3.b Naive Bayes (3 points)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#c-random-forest-classifier-2-points">
+     3.3.c Random Forest Classifier (2 points)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d-support-vector-machine-classifier-2-points">
+     3.3.d Support Vector Machine Classifier (2 points)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#e-multi-layer-perceptron-3-points">
+     3.3.e Multi-Layer Perceptron (3 points)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model-performance-and-comparison">
+     3.4 Model performance and comparison
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-confusion-matrix-and-interpretation">
+     3.4.a Confusion Matrix and interpretation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-k-fold-cross-validation">
+     3.4.a K Fold Cross Validation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#c-and-the-winner-is">
+     3.4.c And the winner is …
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary-4-points">
+   4 Summary (4 points)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#feature-importance-using-random-forest-classifier">
+     4.1 Feature Importance using Random Forest Classifier
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="homework-classic-machine-learning-50-points">
+<h1>Homework Classic Machine Learning (50 points)<a class="headerlink" href="#homework-classic-machine-learning-50-points" title="Permalink to this headline">#</a></h1>
+<p>In this Homework, we will try to classify observations of space to be either stars, galaxies or quasars based on the RD14 from the Sloan Digital Sky Survey  (SDSS). The Sloan Digital Sky Survey is a project which offers public data of space observations. Observations have been made since 1998 and have been made accessible to everyone who is interested.</p>
+<p><a class="reference external" href="http://www.sdss.org/">http://www.sdss.org/</a>
+<img alt="alt text" src="http://www.fingerprintdigitalmedia.com/wp-content/uploads/2014/08/sdss1.jpg" /></p>
+<p>For this purpose a special 2.5 m diameter telescope was built at the Apache Point Observatory in New Mexico, USA. The telescope uses a camera of 30 CCD-Chips with 2048x2048 image points each. The chips are ordered in 5 rows with 6 chips in each row. Each row observes the space through different optical filters (u, g, r, i, z) at wavelengths of approximately 354, 476, 628, 769, 925 nm.</p>
+<p>In this homework we will train several classifier to predict the class of a celestial object based on the observations (features). We will practice data prep, dimensionality reduction, model design and training, model comparison, and feature importance selection.</p>
+<section id="importing-libraries">
+<h2>Importing Libraries<a class="headerlink" href="#importing-libraries" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-preparation-20-points">
+<h2>1. Data Preparation (20 points)<a class="headerlink" href="#data-preparation-20-points" title="Permalink to this headline">#</a></h2>
+<p>We follow the following steps:</p>
+<ul class="simple">
+<li><p>read (1 point)</p></li>
+<li><p>clean (3 points)</p></li>
+<li><p>correlate (4 points)</p></li>
+<li><p>explore, spread of values (3 points)</p></li>
+<li><p>dimensionality reduction (9 points)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget <span class="s2">&quot;https://raw.githubusercontent.com/UW-MLGEO/MLGeo-dataset/refs/heads/main/data/Skyserver_SQL2_27_2018 6_51_39 PM.csv&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="data-read">
+<h3>1.1 Data read<a class="headerlink" href="#data-read" title="Permalink to this headline">#</a></h3>
+<p>Read the pandas fata frame from the csv file “Skyserver_SQL2_27_2018 6_51_39 PM.csv” and skip the first row.</p>
+<p><strong>Task: read pandas data frame (1 point)</strong></p>
+<p>Save a copy of the data frame just in case.</p>
+<p><strong>Description of the data fields</strong></p>
+<ul class="simple">
+<li><p>objid = Object Identifier, self explanatory.</p></li>
+<li><p>ra = J2000 Right Ascension (r-band). Angular that is measured eastward along the celestial equator from the Sun at the March equinox to the hour circle of the point above the earth in question.   <a class="reference external" href="https://en.wikipedia.org/wiki/Right_ascension">https://en.wikipedia.org/wiki/Right_ascension</a></p></li>
+<li><p>dec = J2000 Declination (r-band). Angle that is measured north or south of the celestial equator, along the hour circle passing through the point in question. <a class="reference external" href="https://en.wikipedia.org/wiki/Declination">https://en.wikipedia.org/wiki/Declination</a></p></li>
+</ul>
+<p>The Gunn astronomic magnitude system. u, g, r, i, z represent the response of the 5 bands of the telescope.</p>
+<p>Further Information: <a class="reference external" href="http://astroweb.case.edu/ssm/ASTR620/mags.html">http://astroweb.case.edu/ssm/ASTR620/mags.html</a></p>
+<ul class="simple">
+<li><p>u = better of DeV/Exp magnitude fit</p></li>
+<li><p>g = better of DeV/Exp magnitude fit</p></li>
+<li><p>r = better of DeV/Exp magnitude fit</p></li>
+<li><p>i = better of DeV/Exp magnitude fit</p></li>
+<li><p>z = better of DeV/Exp magnitude fit</p></li>
+</ul>
+<p>Run, rerun, camcol and field are features which describe a field within an image taken by the SDSS. A field is basically a part of the entire image corresponding to 2048 by 1489 pixels.</p>
+<ul class="simple">
+<li><p>run = Run Number, which identifies the specific scan.</p></li>
+<li><p>rereun = Rerun Number, which specifies how the image was processed.</p></li>
+<li><p>camcol = Camera column, a number from 1 to 6, identifying the scanline within the run.</p></li>
+<li><p>field = Field number, which typically starts at 11 (after an initial rampup time), and can be as large as 800 for particularly long runs.</p></li>
+<li><p>specobjid = Object Identifier</p></li>
+<li><p>class = object class (galaxy, star or quasar object): The class identifies an object to be either a galaxy, star or quasar. This will be the response variable which we will be trying to predict.</p></li>
+<li><p>redshift = Final Redshift: In physics, <strong>redshift</strong> happens when light or other electromagnetic radiation from an object is increased in wavelength, or shifted to the red end of the spectrum.</p></li>
+<li><p>plate = plate number: Each spectroscopic exposure employs a large, thin, circular metal <strong>plate</strong> that positions optical fibers via holes drilled at the locations of the images in the telescope focal plane. These fibers then feed into the spectrographs. Each plate has a unique serial number, which is called plate in views such as SpecObj in the CAS.</p></li>
+<li><p>mjd = MJD of observation, <strong>Modified Julian Date</strong>, used to indicate the date that a given piece of SDSS data (image or spectrum) was taken.</p></li>
+<li><p>fiberid = fiber ID. The SDSS spectrograph uses optical fibers to direct the light at the focal plane from individual objects to the slithead. Each object is assigned a corresponding <strong>fiberID</strong>.</p></li>
+</ul>
+<p><strong>Further information on SDSS images and their attributes:</strong></p>
+<p><a class="reference external" href="http://www.sdss3.org/dr9/imaging/imaging_basics.php">http://www.sdss3.org/dr9/imaging/imaging_basics.php</a></p>
+<p><a class="reference external" href="http://www.sdss3.org/dr8/glossary.php">http://www.sdss3.org/dr8/glossary.php</a></p>
+</section>
+<section id="data-cleaning">
+<h3>1.2 Data Cleaning<a class="headerlink" href="#data-cleaning" title="Permalink to this headline">#</a></h3>
+<p>Basic stats about our dataset.</p>
+<p><strong>Task: Provide basic infor for the pandas dataframe head (0.5 point)</strong></p>
+<p><strong>Task: Find the data types of the database (floats, string, etc etc) using the <code class="docutils literal notranslate"><span class="pre">info()</span></code> function (0.5 point).</strong></p>
+<p>Are there any obvious feature (or element of the dataframe) that should not impact our prediction?</p>
+<p><strong>objid</strong> and <strong>specobjid</strong> are just identifiers for accessing the rows back when they were stored in the original databank. Therefore we will not need them for classification as they are not related to the outcome.
+The features <strong>run</strong>, <strong>rerun</strong>, <strong>camcol</strong> and <strong>field</strong> are values which describe parts of the camera at the moment when making the observation, e.g. ‘run’ represents the corresponding scan which captured the oject.</p>
+<p>Source: <a class="reference external" href="http://www.sdss3.org/dr9/imaging/imaging_basics.php">http://www.sdss3.org/dr9/imaging/imaging_basics.php</a></p>
+<p><strong>Task: Drop these columns in the pandas dataframe. (1 point)</strong></p>
+<p>Find our how many examples there are, how many attributes or feature, and the type of class.</p>
+<p><strong>Task: How many objects are in each class? (1 point)</strong></p>
+<p>The classes are “GALAXY”, “STAR”, and “QSO” (quasars). They are defined as strings, but we will convert them to integer in order to apply a loss function on the class labels during training. For this, we use the <code class="docutils literal notranslate"><span class="pre">sklearn.preprocessing.LabelEncoder()</span></code> function. We will do so and modify the classes in the dataframe. We should keep a copy of the original data frame to be safe.</p>
+</section>
+<section id="data-correlations">
+<h3>1.3 Data correlations<a class="headerlink" href="#data-correlations" title="Permalink to this headline">#</a></h3>
+<p>Now let’s find the most basic correlations among features. This can be done using the <code class="docutils literal notranslate"><span class="pre">corr()</span></code> function to apply on the pandas dataframe. Evaluate this function and comment on what feature is correlated among others. It is convenient to use the matplotlib function <code class="docutils literal notranslate"><span class="pre">matshow()</span></code> for clarity. <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> is a python module that makes really pretty statistical plots <a class="reference external" href="https://seaborn.pydata.org/index.html">https://seaborn.pydata.org/index.html</a>. Install it with <code class="docutils literal notranslate"><span class="pre">pip</span></code> and import it.</p>
+<p><strong>Task: Plot the correlation matrix that can be called in the pandas dataframe. (2 points)</strong></p>
+<p>Hints:</p>
+<p>Use functions of <code class="docutils literal notranslate"><span class="pre">heatmap</span></code>, add the labels in the axes. The colormap <code class="docutils literal notranslate"><span class="pre">coolwarm</span></code> is nice for divergent scales like correlations that vary between -1 and 1. The argument <code class="docutils literal notranslate"><span class="pre">center=0</span></code> ensures that the colormap is divergent from zero. Make sure to ignore the label column “class”. Remember that dropping a column can be done in place <code class="docutils literal notranslate"><span class="pre">sdss_df.drop('class',</span> <span class="pre">axis=1)</span></code>.</p>
+<p><strong>Task: Reproduce the same plot for each of the three classes. (1 point)</strong>
+You can select the values from the pandas dataframe by selecting over the column ‘class’.</p>
+<p><strong>Task: Can you comment on groups of observations that can be grouped together or that appear independent from each other given these correlations, and if there is any difference between the three celestial objects? (<strong>1 point</strong>)</strong></p>
+</section>
+<section id="data-exploration">
+<h3>1.5 Data exploration<a class="headerlink" href="#data-exploration" title="Permalink to this headline">#</a></h3>
+<p>Given the structure of the correlations, we will explore the values of the data.</p>
+<section id="a-distributions-of-redshift">
+<h4>1.5.a. Distributions of redshift<a class="headerlink" href="#a-distributions-of-redshift" title="Permalink to this headline">#</a></h4>
+<p>“redshifting” happens when the source of light is becoming more distant to the receiver: the object is moving away from Earth.</p>
+<p><strong>Task: plot histograms for the ‘redshift’ feature column for each class (1 point).</strong></p>
+<p><strong>Task : Describe briefly the difference between the three histograms. (0.5 point)</strong></p>
+<!-- # answer -->
+<ul class="simple">
+<li><p><strong>Star:</strong></p></li>
+<li><p><strong>Galaxy:</strong></p></li>
+<li><p><strong>QSO:</strong></p></li>
+</ul>
+</section>
+<section id="b-right-ascension-ra-and-declination-dec">
+<h4>1.5.b. Right ascension (ra) and declination (dec)<a class="headerlink" href="#b-right-ascension-ra-and-declination-dec" title="Permalink to this headline">#</a></h4>
+<p>We will now plot the right ascension versus the declination depending on the class. You can use the <code class="docutils literal notranslate"><span class="pre">lmplot</span></code> function in <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> (<a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.lmplot.html">https://seaborn.pydata.org/generated/seaborn.lmplot.html</a>) to represent the sky view of these objects.</p>
+<p><strong>Task: do you see any obvious differences such that one could easily discriminate between the two coordinates? (0.5 point)</strong></p>
+</section>
+<section id="c-filters-u-g-r-i-z">
+<h4>1.5.c Filters - u,g,r,i,z<a class="headerlink" href="#c-filters-u-g-r-i-z" title="Permalink to this headline">#</a></h4>
+<p>Recall: u, g, r, i, z represent the different wavelengths which are used to capture the observations. According to the correlation matrix, they are correlated for all three classes.</p>
+<p>Therefore it is interesting to see that band ‘u’ is less correlated to the other bands.</p>
+<p><strong>Task Plot histograms and discuss why you expect these features to be correlated (1 points)</strong></p>
+<!-- Anwer: --></section>
+</section>
+<section id="data-dimensionality-reduction">
+<h3>1.6 Data Dimensionality Reduction<a class="headerlink" href="#data-dimensionality-reduction" title="Permalink to this headline">#</a></h3>
+<p>At this point, we are left with 8 features: redshift, u, g, r, i, z, ra, and dec. Among these, the filters (u, g, r, i, z) are correlated to each other. There is therefore a potential for reducing the dimensions of the features using PCA on these 5 features.</p>
+<p>We will use the skilearn function <code class="docutils literal notranslate"><span class="pre">sklearn.decomposition.PCA()</span></code> to fit and transform the data into the PC coordinates. Lets’ first explore how many PCs we need. Fit the PCA function over the total number of filters. You will fit the PCA function over an array with the columns selected from the dataframe.</p>
+<p><strong>Task: Perform the PCA over a max number of PCs, output the explained variance ratio values, decide on an appropriate maximum number of PC to use (6 points)</strong></p>
+<p><em>Answer on how many PCs to use</em></p>
+<p>We will now re-perform PCA with the number of PCs you found is most appropriate. Re-apply the fit-transform function. Update the dataframe by adding the PCA value(s) and dropping the columns of the 5 filter features.</p>
+<p><strong>Task: PCA again, fit and transform, update the dataframe with the new feature(s) (3 points)</strong></p>
+</section>
+</section>
+<section id="unsupervised-clustering-with-kmeans-20-points">
+<h2>2. Unsupervised Clustering with KMeans (20 points)<a class="headerlink" href="#unsupervised-clustering-with-kmeans-20-points" title="Permalink to this headline">#</a></h2>
+<p>In this section, we will explore if the data features will be sufficient for classification. As a first exploration, we will perform unsupervised classification with Kmeans clustering.</p>
+</section>
+<section id="perform-preliminary-kmeans-10-points">
+<h2>2.1 Perform preliminary Kmeans (10 points)<a class="headerlink" href="#perform-preliminary-kmeans-10-points" title="Permalink to this headline">#</a></h2>
+<p>Implement Kmeans here for a given number of clusters and on the features of interest. Choose 3 features.</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> to perform Kmeans.</p></li>
+<li><p>Repeat Kmeans and discuss (in a markdown cell) the stability of clustering (e.g., use visualization to qualitatively assess the stability).</p></li>
+</ul>
+</section>
+<section id="find-the-optimal-number-of-clusters-5-points">
+<h2>2.2 Find the optimal number of clusters (5 points)<a class="headerlink" href="#find-the-optimal-number-of-clusters-5-points" title="Permalink to this headline">#</a></h2>
+<p>Use a method to establish the optimal number of clusters.</p>
+</section>
+<section id="discuss-performance-of-clustering-5-points">
+<h2>2.3 Discuss performance of clustering ( 5 points)<a class="headerlink" href="#discuss-performance-of-clustering-5-points" title="Permalink to this headline">#</a></h2>
+<ol class="simple">
+<li><p>Perform silhouette analysis (silhouette visualization and score)</p></li>
+</ol>
+<ol class="simple">
+<li><p>Calculate (python cell) and discuss (net markdown cell) homogeneity with respect to the ground truth labels using 3 appropriate metrics.</p></li>
+</ol>
+<p><strong>Question:</strong>
+After performing KMeans clustering and calculating the completeness, homogeneity, and Fowlkes-Mallows scores, how can you determine if these scores are good? Compare the obtained scores to the ideal values and explain what each score indicates about the clustering quality. What do you find from your results?</p>
+</section>
+<section id="machine-learning-models-30-points">
+<h2>3 Machine Learning Models (30 points)<a class="headerlink" href="#machine-learning-models-30-points" title="Permalink to this headline">#</a></h2>
+<p>We will now train different models on this dataset. We have a total of 8 features, 3 classes, and 10,000 samples. We will use K-Nearest Neighbors, Naive Bayes, Random Forest, Support Vector Machine, Multi Layer Perceptron.</p>
+<p>We now follow a normal machine learning workflow:</p>
+<ul class="simple">
+<li><p>Feature scaling (3) points)</p></li>
+<li><p>Train/test set split (2 points)</p></li>
+<li><p>Model design, training, testing (15 points)</p></li>
+<li><p>Model comparisons, pick your winner, discuss feature importance using Random Forest. (10 points)</p></li>
+</ul>
+<section id="feature-scaling">
+<h3>3.1 Feature Scaling<a class="headerlink" href="#feature-scaling" title="Permalink to this headline">#</a></h3>
+<p>Scaling all values to be within the (0, 1) interval will reduce the distortion due to exceptionally high values and make some algorithms converge faster. You can scale the features only by dropping the “class” column without modifying the dataframe in place, using the pandas function <code class="docutils literal notranslate"><span class="pre">drop()</span></code>.</p>
+<p><strong>Task: Scale just the features (3 points)</strong></p>
+</section>
+<section id="test-train-validation-data-sets">
+<h3>3.2 Test, train, validation data sets.<a class="headerlink" href="#test-train-validation-data-sets" title="Permalink to this headline">#</a></h3>
+<p><strong>Task: Split the data into a training and a test part.  (2 points)</strong></p>
+<p>The models will be trained on the training data set and tested on the test data set</p>
+<p>Computation time is important to account for when scaling up the data set and the model size. You can evaluate the relative computational time using the function <code class="docutils literal notranslate"><span class="pre">time.perf_counter()</span></code> to evaluate the absolute time. Then compare the computational time by making the difference between two time stamps:</p>
+<p><code class="docutils literal notranslate"><span class="pre">t1=time.perf_counter()</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">t2=time.perf_counter()</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">tcomp</span> <span class="pre">=</span> <span class="pre">t2</span> <span class="pre">-</span> <span class="pre">t1</span></code></p>
+<p>We will also assess the model performance of these multi-class classifiers. We will evaluate the average of the scores over the 3 class labels.</p>
+<p>In the following, we will be testing over several classifiers. Follow the steps:</p>
+<ol class="simple">
+<li><p>model definition/design</p></li>
+<li><p>training</p></li>
+<li><p>prediction on test</p></li>
+<li><p>evaluation: a) print the classification_report; b) save the precision, recall, fscore and accuracy in variables</p></li>
+</ol>
+</section>
+<section id="a-k-nearest-neighbors-3-points">
+<h3>3.3.a K Nearest Neighbors (3 points)<a class="headerlink" href="#a-k-nearest-neighbors-3-points" title="Permalink to this headline">#</a></h3>
+<p>Check out the function arguments and definition here: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html">https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html</a></p>
+</section>
+<section id="b-naive-bayes-3-points">
+<h3>3.3.b Naive Bayes (3 points)<a class="headerlink" href="#b-naive-bayes-3-points" title="Permalink to this headline">#</a></h3>
+<p>Check out the sklearn tutorial pages here: <a class="reference external" href="https://scikit-learn.org/stable/modules/naive_bayes.html#naive-bayes">https://scikit-learn.org/stable/modules/naive_bayes.html#naive-bayes</a>. We propose to use the Gaussian Naive Bayes.</p>
+<p>Naive Bayes assumes the data to be normally distributed which can be achieved by scaling using the MaxAbsScaler. For this example then we will use the unscaled data, then rescale it.</p>
+</section>
+<section id="c-random-forest-classifier-2-points">
+<h3>3.3.c Random Forest Classifier (2 points)<a class="headerlink" href="#c-random-forest-classifier-2-points" title="Permalink to this headline">#</a></h3>
+<p>Check out the tutorial page here: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html</a></p>
+</section>
+<section id="d-support-vector-machine-classifier-2-points">
+<h3>3.3.d Support Vector Machine Classifier (2 points)<a class="headerlink" href="#d-support-vector-machine-classifier-2-points" title="Permalink to this headline">#</a></h3>
+<p>Check out the sklearn information page here: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC">https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC</a></p>
+</section>
+<section id="e-multi-layer-perceptron-3-points">
+<h3>3.3.e Multi-Layer Perceptron (3 points)<a class="headerlink" href="#e-multi-layer-perceptron-3-points" title="Permalink to this headline">#</a></h3>
+<p>Check out the information page here: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html">https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html</a></p>
+</section>
+<section id="model-performance-and-comparison">
+<h3>3.4 Model performance and comparison<a class="headerlink" href="#model-performance-and-comparison" title="Permalink to this headline">#</a></h3>
+</section>
+<section id="a-confusion-matrix-and-interpretation">
+<h3>3.4.a Confusion Matrix and interpretation<a class="headerlink" href="#a-confusion-matrix-and-interpretation" title="Permalink to this headline">#</a></h3>
+<p><strong>Task: Plot the confusion matrix (2 points)</strong></p>
+<p>Use sklearn ``ConfusionMatrixDisplay” from the sklearn to visualize the confusion matrix</p>
+<p><strong>Task: Comment on what you see the best classifier is likely to be (1 point).</strong> You can also comment on the misclassification and confusion rates.</p>
+</section>
+<section id="a-k-fold-cross-validation">
+<h3>3.4.a K Fold Cross Validation<a class="headerlink" href="#a-k-fold-cross-validation" title="Permalink to this headline">#</a></h3>
+<p>We will now perform k fold cross valdiation for the classifiers. We use the function <code class="docutils literal notranslate"><span class="pre">cross_val_score</span></code> on each ewstimator, on the training set, with 10 folds, and use accuracy as a score metric.</p>
+<p><strong>Task: perform the cross validation over K folds, output the mean and standard deviation of the accuracy (3 points)</strong></p>
+<p><strong>Task: Which method won the Xval test (1 point) ?</strong></p>
+<p>see the cell below</p>
+<!-- answer here -->
+</section>
+<section id="c-and-the-winner-is">
+<h3>3.4.c And the winner is …<a class="headerlink" href="#c-and-the-winner-is" title="Permalink to this headline">#</a></h3>
+<p>Let’s compare the results.
+<strong>Task: Create a pandas dataframe with all of the performance metrics, including the results from K-fold cross validation. (2 points)</strong></p>
+<p><strong>Task: Comment on the accuracy and performance and choose a winner. (1 point)</strong></p>
+<p>see the cell below</p>
+<!-- answer here -->
+</section>
+</section>
+<section id="summary-4-points">
+<h2>4 Summary (4 points)<a class="headerlink" href="#summary-4-points" title="Permalink to this headline">#</a></h2>
+<section id="feature-importance-using-random-forest-classifier">
+<h3>4.1 Feature Importance using Random Forest Classifier<a class="headerlink" href="#feature-importance-using-random-forest-classifier" title="Permalink to this headline">#</a></h3>
+<p>Decision Trees have the unique property of being able to order features by their ability to split between the classes. If some features dominate over other in the predictive power of classes, one can further reduce the dimension of the features for additional analysis. The vector of feature importance is the module <code class="docutils literal notranslate"><span class="pre">rfc.feature_importances_</span></code>, sorted with ascending importance. Store the vector of importance .</p>
+<p><strong>Task: plot a bar plot using the function <code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.bar</span></code>. (2 points)</strong></p>
+<p><strong>Task: What are the top three features (1 point)?</strong></p>
+<p>enter in the cell below</p>
+<!-- answer --><p>In this notebook, you have learned that redshift was the best predictor of what object you are observing. Now, did you actualy need to do this all to find this out? Probably not if you were an astrophysicist! But hey, we are not. So great job!</p>
+<p><strong>Task: Briefly comment on what you have learned (1 point)</strong></p>
+<p>see the cell below</p>
+<!-- answer --></section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Chapter3-MachineLearning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="3.20_final_project_cml.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">3.20 Final Project - Classic Machine Learning</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4.0 The Perceptron</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By eScience Institute, University of Washington<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
