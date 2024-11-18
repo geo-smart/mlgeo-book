@@ -659,18 +659,23 @@ title="Print to PDF"
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#loss-functions">
-     1. Loss functions
+    <a class="reference internal nav-link" href="#standard-loss-functions">
+     1. Standard Loss functions
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#regressions">
-       1.1 Regressions
+      <a class="reference internal nav-link" href="#regression">
+       1.1 Regression
       </a>
      </li>
      <li class="toc-h3 nav-item toc-entry">
       <a class="reference internal nav-link" href="#classification">
        1.2 Classification
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#customization">
+       2 Customization
       </a>
      </li>
     </ul>
@@ -705,24 +710,12 @@ title="Print to PDF"
        3.4 Mini Batch Gradient Descent
       </a>
      </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#other-optimizers">
-       3.5 Other optimizers
-      </a>
-     </li>
     </ul>
    </li>
    <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#under-fitting-and-overfitting">
      4. Under-fitting and Overfitting
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#examples">
-       Examples
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -800,18 +793,23 @@ title="Print to PDF"
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#loss-functions">
-     1. Loss functions
+    <a class="reference internal nav-link" href="#standard-loss-functions">
+     1. Standard Loss functions
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#regressions">
-       1.1 Regressions
+      <a class="reference internal nav-link" href="#regression">
+       1.1 Regression
       </a>
      </li>
      <li class="toc-h3 nav-item toc-entry">
       <a class="reference internal nav-link" href="#classification">
        1.2 Classification
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#customization">
+       2 Customization
       </a>
      </li>
     </ul>
@@ -846,24 +844,12 @@ title="Print to PDF"
        3.4 Mini Batch Gradient Descent
       </a>
      </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#other-optimizers">
-       3.5 Other optimizers
-      </a>
-     </li>
     </ul>
    </li>
    <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#under-fitting-and-overfitting">
      4. Under-fitting and Overfitting
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#examples">
-       Examples
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -947,18 +933,55 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<section id="loss-functions">
-<h2>1. Loss functions<a class="headerlink" href="#loss-functions" title="Permalink to this headline">#</a></h2>
-<section id="regressions">
-<h3>1.1 Regressions<a class="headerlink" href="#regressions" title="Permalink to this headline">#</a></h3>
+<section id="standard-loss-functions">
+<h2>1. Standard Loss functions<a class="headerlink" href="#standard-loss-functions" title="Permalink to this headline">#</a></h2>
+<p>A loss function measures how well a model’s predictions align with the ground truth. It provides a numerical value that quantifies the “error” or “misfit,” which the optimization algorithm minimizes during training.</p>
+<p>Purpose: Drives the neural network’s learning by guiding updates to the model’s parameters via backpropagation.</p>
+<p>In geoscience, data often involve</p>
+<ul class="simple">
+<li><p>complex, noisy, and heterogeneous datasets (e.g., seismic waveforms, geospatial grids).</p></li>
+<li><p>Unique domain-specific goals, such as predicting rare events (e.g., earthquakes, landslides) or optimizing energy resources.
+Loss functions are critical because they shape how the neural network interprets errors and focus learning on specific aspects of the data or model goals (e.g., spatial accuracy, uncertainty quantification).</p></li>
+</ul>
+<section id="regression">
+<h3>1.1 Regression<a class="headerlink" href="#regression" title="Permalink to this headline">#</a></h3>
 <p>Loss functions measure the difference between the data and the predictions. Loss functions <span class="math notranslate nohighlight">\(\mathcal{L}(\mathbf{y},\mathbf{\hat{y}},\mathbf{w}) \)</span> quantify the magnitude of the residuals between the ground truth labels <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> and the predicted outputs <span class="math notranslate nohighlight">\(\mathbf{\hat{y}}\)</span> are differentiable with respect to model parameters.</p>
 <p>In regressions, the most common loss functions are:</p>
 <ul>
-<li><p>Mean Square Error:</p>
+<li><p>Mean Square Error:
+MSE penalizes large errors, is suitable when the error distribution is normal.</p>
 <p><span class="math notranslate nohighlight">\( MSE(\mathbf{y},\mathbf{\hat{y}},\mathbf{w}) = \frac{1}{m} \sum_{i=1}^m \left( \hat{y}_i - y_i \right) ^2 \)</span></p>
 </li>
 <li><p>Mean Absolute Error:
-<span class="math notranslate nohighlight">\(MAE(\mathbf{y},\mathbf{\hat{y}},\mathbf{w}) = \frac{1}{m} \sum_{i=1}^m |\hat{y}_i - y_i|\)</span></p></li>
+MAE penalizes less large errors, is suitable when the error distribution is exponential (heavy-tailed disribution).Caveats When Using MAE:</p>
+<ul class="simple">
+<li><p>Gradient Behavior:</p>
+<ul>
+<li><p>MAE has constant gradients (±1) for errors, which may lead to slower convergence during optimization, particularly with gradient-based optimizers like SGD.</p></li>
+<li><p>Using advanced optimizers (e.g., Adam) or combining MAE with other loss functions can address this.</p></li>
+</ul>
+</li>
+<li><p>For models requiring smoother training curves and higher sensitivity to large errors, MSE might be preferred.</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(MAE(\mathbf{y},\mathbf{\hat{y}},\mathbf{w}) = \frac{1}{m} \sum_{i=1}^m |\hat{y}_i - y_i|\)</span></p>
+</li>
+<li><p>Huber Loss: combining MSE and MAE
+If you want a balance, consider using Huber Loss (which combines MAE and MSE).</p>
+<ol class="simple">
+<li><p><strong>Quadratic Term</strong>:</p>
+<ul class="simple">
+<li><p>When the error <span class="math notranslate nohighlight">\(( |y - \hat{y}| )\)</span> is small <span class="math notranslate nohighlight">\(( \leq \delta )\)</span>, the loss behaves like <strong>MSE</strong> <span class="math notranslate nohighlight">\((( \frac{1}{2}(y - \hat{y})^2 ))\)</span>.</p></li>
+<li><p>This allows for smoother gradients and better convergence during training.</p></li>
+</ul>
+</li>
+<li><p><strong>Linear Term</strong>:</p>
+<ul class="simple">
+<li><p>When the error <span class="math notranslate nohighlight">\(( |y - \hat{y}| )\)</span> is large <span class="math notranslate nohighlight">\(( &gt; \delta )\)</span>, the loss behaves like <strong>MAE</strong> <span class="math notranslate nohighlight">\(( \delta \cdot |y - \hat{y}| - \frac{1}{2}\delta^2 )\)</span>.</p></li>
+<li><p>This reduces the influence of large errors or outliers.</p></li>
+</ul>
+</li>
+</ol>
+</li>
 </ul>
 <p>The regression aims to find <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> that minimizes the loss function <span class="math notranslate nohighlight">\(\mathcal{L} \)</span>. Other loss functions that may be used can be found here: <a class="reference external" href="https://heartbeat.fritz.ai/5-regression-loss-functions-all-machine-learners-should-know-4fb140e9d4b0">https://heartbeat.fritz.ai/5-regression-loss-functions-all-machine-learners-should-know-4fb140e9d4b0</a></p>
 </section>
@@ -967,7 +990,7 @@ title="Print to PDF"
 <p><em><strong>Binary Classification</strong></em></p>
 <p>The Logistic regression estimates the probability that an instance belongs to the positive class. If the probability is above a threshold, then the instance is classified in the positive class. The probability is estimated using a <strong>logistic sigmoid function</strong>:</p>
 <p><span class="math notranslate nohighlight">\(\sigma(x) = \frac{1}{1+ \exp(-x)}\)</span></p>
-<p>Training a logistic regression is to tune the model such that the output score is low for a negative instance and high for a positive instance. The loss function associated with logistic regression is the <span class="math notranslate nohighlight">\(\log\)</span> function due to its property that it is really high at low values of <span class="math notranslate nohighlight">\(x\)</span> and really low at high values of <span class="math notranslate nohighlight">\(x\)</span>. The cost function over a batch of <span class="math notranslate nohighlight">\(m\)</span> instances is the sum of the individual instance cost functions, which is called the <strong>Log Loss</strong>:</p>
+<p>Training a logistic regression is to tune the model such that the output score is low for a negative instance and high for a positive instance. The loss function associated with logistic regression is the <span class="math notranslate nohighlight">\(\log\)</span> function due to its property that it is really high at low values of <span class="math notranslate nohighlight">\(x\)</span> and really low at high values of <span class="math notranslate nohighlight">\(x\)</span>. The cost function over a batch of <span class="math notranslate nohighlight">\(m\)</span> instances is the sum of the individual instance cost functions, which is called the <strong>cross-entropy loss</strong>:</p>
 <p><span class="math notranslate nohighlight">\( \mathcal{L}(\mathbf{w}) = - \frac{1}{m} \sum_{i=1}^m \left[ y_i \log(\hat{p}_i(\mathbf{w})) + (1 - y_i) \log(1-\hat{p}_i(\mathbf{w}))\right]  \)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(m\)</span> is the number of instances, <span class="math notranslate nohighlight">\(\hat{p}_i = \sigma(\mathbf{w}(x)) \)</span> is the probability output by the model of the instance <span class="math notranslate nohighlight">\(x\)</span>, and <span class="math notranslate nohighlight">\(y_i\)</span> is the class of the instance. The log loss is differentiable with respect to the model parameters, and one can use Gradient Descent to optimize the model parameters.</p>
 <p>In Scikit-learn, <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> is equivalent to training a logistic regression using a log loss <code class="docutils literal notranslate"><span class="pre">SGDClassifier(loss='log')</span></code>.</p>
@@ -976,9 +999,23 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(\hat{p}_k = \sigma(\mathbf{s}) = \frac{\exp(s_k)}{ \sum_{i=1}^K \exp(s_i)}\)</span></p>
 <p>The <strong>softmax</strong> function is the activation layer to be added at the last layer of a neural network for classification.
 An appropriate loss function to use is called <em><strong>Cross Entropy</strong></em> cost function:</p>
-<p><span class="math notranslate nohighlight">\( \mathcal{L}(\mathbf{y}),\mathbf{\hat{y}}),\mathbf{w}) = - \frac{1}{m} \sum_{i=1}^m  \sum_{i=1}^K y_i \log(\hat{p}_i(\mathbf{w}))  \)</span>,</p>
+<p><span class="math notranslate nohighlight">\( \mathcal{L}(\mathbf{y},\mathbf{\hat{y}},\mathbf{w}) = - \frac{1}{m} \sum_{i=1}^m  \sum_{i=1}^K y_i \log(\hat{p}_i(\mathbf{w}))  \)</span>,</p>
 <p>where <span class="math notranslate nohighlight">\(m\)</span> is the batch size, or number of instances-data samples– used in training.</p>
 <p>The rest of the training requires similar tricks to the regression model training. The performance metrics are precision, recall, F1 scores etc etc as seen in previous notes.</p>
+</section>
+<section id="customization">
+<h3>2 Customization<a class="headerlink" href="#customization" title="Permalink to this headline">#</a></h3>
+<p>Standard loss functions may fail to capture unique geoscientific objectives, such as:</p>
+<ul class="simple">
+<li><p>Spatial-temporal coherence.</p></li>
+<li><p>Rare event detection.</p></li>
+<li><p>Physical constraints (e.g., energy conservation).
+Provided that losses can be differentiated, we can customize the loss based on the task. For examples:</p></li>
+<li><p>To address class imbalance: Increase weights for rare seismic events.</p></li>
+<li><p>Multi-objective Loss: Combines multiple goals, e.g., spatial accuracy and temporal consistency. For example, a combined MSE for seismic amplitude prediction and a term for maintaining temporal coherence.</p></li>
+<li><p>Physics-Informed Loss Functions: Incorporates domain knowledge (e.g., governing equations). For example, penalize outputs that violate physical laws, such as conservation of mass or energy.</p></li>
+<li><p>Uncertainty-Aware Loss: Penalizes under- or over-confidence in probabilistic forecasts. For example, use negative log-likelihood for probabilistic predictions of earthquake magnitudes.</p></li>
+</ul>
 </section>
 </section>
 <section id="convexity-of-the-loss-and-learning-rate">
@@ -992,23 +1029,29 @@ An appropriate loss function to use is called <em><strong>Cross Entropy</strong>
 <p>Gradient Descent marches down the loss function through by sampling the parameter space: it evaluates the loss function and attempts to find its global minimum. The model <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is updated iteratively in the direction that reduces the loss:</p>
 <p><span class="math notranslate nohighlight">\(w_j^{(k + 1)} = w_j^{(k)} - \alpha \frac{\partial \mathcal{L}}{\partial w_j}\)</span> for <span class="math notranslate nohighlight">\(j = 1 , \cdots , n ,\)</span></p>
 <p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is the <strong>learning rate</strong>.</p>
-<table><tr>
-<td> <img src="../img/GD_cartoon.jpeg" alt="Gradient Descent" style="width: 400px;"/>  </td>
-<td> <img src="../img//GD_non_global.png" alt="Gradient Descent non convex" style="width: 400px;"/> </td>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><img alt="Gradient Descent" src="../_images/GD_cartoon.jpeg" /></p></th>
+<th class="head"><p><img alt="Gradient Descent non convex" src="../_images/GD_non_global.png" /></p></th>
 </tr>
-<tr>
-<td>Gradient descent for a convex, well behaved loss function. </td>
-<td> Gradient descent in a poorly behaved loss function with local minima. <td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Gradient descent for a convex, well-behaved loss function.</p></td>
+<td><p>Gradient descent in a poorly behaved loss function with local minima.</p></td>
 </tr>
+</tbody>
 </table>
-<table><tr>
-<td> <img src="../img/GD_AlphaTooSmall.png" alt="Learning rate too small" style="width: 400px;"/> </td>
-<td> <img src="../img/GD_AlphaTooLarge.png" alt="Learning rate too large" style="width: 400px;"/> </td>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><img alt="Gradient Descent" src="../_images/GD_AlphaTooSmall.png" /></p></th>
+<th class="head"><p><img alt="Gradient Descent non convex" src="../_images/GD_AlphaTooLarge.png" /></p></th>
 </tr>
-<tr>
-<td>Learning rate $\alpha$ is too small. It will take longer to converge. </td>
-<td> Learning rate $\alpha$ is too large. Converge to global minimum.  <td>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Learning rate <span class="math notranslate nohighlight">\(\alpha\)</span> is too small. It will take longer to converge.</p></td>
+<td><p>Learning rate <span class="math notranslate nohighlight">\(\alpha\)</span> is too large. Converge to global minimum.</p></td>
 </tr>
+</tbody>
 </table>
 </section>
 <section id="batch-gradient-descent">
@@ -1034,10 +1077,6 @@ An appropriate loss function to use is called <em><strong>Cross Entropy</strong>
 <h3>3.4 Mini Batch Gradient Descent<a class="headerlink" href="#mini-batch-gradient-descent" title="Permalink to this headline">#</a></h3>
 <p>It is a combination of Batch GD and SGD. Minibatch computes the gradient over a subset of instances (as against a single one in SGD or the full one in Batched GD). At each step, using one minibatch randomly drawn from our dataset, we will estimate the gradient of the loss with respect to our parameters. Next, we will update our parameters in the direction that may reduce the loss.</p>
 </section>
-<section id="other-optimizers">
-<h3>3.5 Other optimizers<a class="headerlink" href="#other-optimizers" title="Permalink to this headline">#</a></h3>
-<p>Adam</p>
-</section>
 </section>
 <section id="under-fitting-and-overfitting">
 <h2>4. Under-fitting and Overfitting<a class="headerlink" href="#under-fitting-and-overfitting" title="Permalink to this headline">#</a></h2>
@@ -1056,95 +1095,6 @@ This part is due to the noisiness of the data itself. The only way to reduce thi
 <p>More robust assessment of the model fitting is through <strong>cross validation</strong>.</p>
 <p>Some solutions are to reduce the model size, reduce the number of attributes in the training data, gather more training data, to reduce the noise in the training data (fix data errors and remove outliers). Another way to keep the model complexity but constrain its variance is called <strong>regularization</strong>.</p>
 <p><em><strong>You do not know if you overfit, until you do</strong></em>. The model may not be complex enough until your reached overfitting. Once reached, back up a little bit to find the best tradeoff in optimization and generalization.</p>
-<section id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">#</a></h3>
-<p>We create a toy example of a simple regression model.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-
-<span class="k">def</span> <span class="nf">plot_learning_curves</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span><span class="n">c1</span><span class="o">=</span><span class="s2">&quot;b+&quot;</span><span class="p">,</span><span class="n">c2</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">):</span>
-    <span class="c1"># Setting the random_state variable in the train_test_split is necessary to reproduce the results. </span>
-    <span class="c1"># When tuning parameters such as test_size, you need to set the random state otherwise too many parameters change.</span>
-    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-    <span class="n">train_errors</span><span class="p">,</span> <span class="n">val_errors</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)):</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:</span><span class="n">m</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[:</span><span class="n">m</span><span class="p">])</span>
-        <span class="n">y_train_predict</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:</span><span class="n">m</span><span class="p">])</span>
-        <span class="n">y_val_predict</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
-        <span class="n">train_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_train</span><span class="p">[:</span><span class="n">m</span><span class="p">],</span> <span class="n">y_train_predict</span><span class="p">))</span>
-        <span class="n">val_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_val</span><span class="p">,</span> <span class="n">y_val_predict</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">train_errors</span><span class="p">),</span> <span class="n">c1</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">val_errors</span><span class="p">),</span><span class="n">c2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;training&#39;</span><span class="p">,</span><span class="s1">&#39;validation&#39;</span><span class="p">])</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Learning curve&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;RMSE&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Training size&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">date_year</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="mi">365</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ue</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="mi">365</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="c1"># G = np.c_[np.ones((len(x),1)),x]</span>
-<span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="c1"># minmax scaling</span>
-<span class="n">newy</span> <span class="o">=</span> <span class="n">y</span> <span class="o">/</span> <span class="n">scale</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="c1"># learning rate</span>
-<span class="n">sgd_reg</span> <span class="o">=</span> <span class="n">SGDRegressor</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">tol</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span><span class="n">penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">eta0</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
-<span class="n">sgd_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">newy</span><span class="p">)</span>
-<span class="n">y_predict</span><span class="o">=</span><span class="n">sgd_reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y_predict</span><span class="o">*</span><span class="n">scale</span><span class="p">,</span><span class="s2">&quot;m&quot;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;East displacement (mm) at AC29&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/utils/validation.py:1183: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
-  y = column_or_1d(y, warn=True)
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;East displacement (mm) at AC29&#39;)
-</pre></div>
-</div>
-<img alt="../_images/mlgeo_4.3_ModelTraining_10_2.png" src="../_images/mlgeo_4.3_ModelTraining_10_2.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_learning_curves</span><span class="p">(</span><span class="n">sgd_reg</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0, 2.0)
-</pre></div>
-</div>
-<img alt="../_images/mlgeo_4.3_ModelTraining_11_1.png" src="../_images/mlgeo_4.3_ModelTraining_11_1.png" />
-</div>
-</div>
-<p>Let’s read and interpret these curves.</p>
-<p>You will notice that when you re-run the cell with <code class="docutils literal notranslate"><span class="pre">plot_learning_curves</span></code> that you will get different answers: this is because the initialization of the SGD will give different answers. This is a first reason why one should run these multiple times and then average over the curves.</p>
-<ul class="simple">
-<li><p><strong>The good signs</strong>:</p></li>
-</ul>
-<p>Loss curves plateau at low value for both training and validation. Training loss should be smaller, but not by much, than the validation loss. Low loss values are signs of good fit and good generalization.</p>
-<ul class="simple">
-<li><p><strong>The bad signs: underfitting</strong>:</p></li>
-</ul>
-<p>RMSE are high for both training and validation.</p>
-<ul class="simple">
-<li><p><strong>The bad signs: overfitting</strong>:</p></li>
-</ul>
-<p>RMSE is low for training but high for validation.</p>
-</section>
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="regularization">
@@ -1211,26 +1161,18 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/utils/validation.py:1183: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
-  y = column_or_1d(y, warn=True)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1.282202506964987, -28.232053040564] [1.3020249866927003, array([-28.21907473])] [1.1549214831474401, -28.14542351286436] [-0.8073373888433721, -27.16296722254477]
-</pre></div>
-</div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">marinedenolle</span><span class="o">/</span><span class="n">Dropbox</span><span class="o">/</span><span class="n">CLASSES</span><span class="o">/</span><span class="n">ESS490</span><span class="o">/</span><span class="n">curriculum</span><span class="o">-</span><span class="n">book</span><span class="o">/</span><span class="n">book</span><span class="o">/</span><span class="n">Chapter4</span><span class="o">-</span><span class="n">DeepLearning</span><span class="o">/</span><span class="n">mlgeo_4</span><span class="mf">.7</span><span class="n">_ModelTraining</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">Cell</span> <span class="mi">22</span> <span class="n">line</span> <span class="mi">3</span>
-     <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb#X30sZmlsZQ%3D%3D?line=32&#39;</span><span class="o">&gt;</span><span class="mi">33</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span><span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-     <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb#X30sZmlsZQ%3D%3D?line=33&#39;</span><span class="o">&gt;</span><span class="mi">34</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">G</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w_sgd</span><span class="p">))</span>
-<span class="o">---&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb#X30sZmlsZQ%3D%3D?line=34&#39;</span><span class="o">&gt;</span><span class="mi">35</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">G</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w_ridge</span><span class="p">))</span>
-     <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb#X30sZmlsZQ%3D%3D?line=35&#39;</span><span class="o">&gt;</span><span class="mi">36</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">G</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w_lasso</span><span class="p">))</span>
-     <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/marinedenolle/Dropbox/CLASSES/ESS490/curriculum-book/book/Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb#X30sZmlsZQ%3D%3D?line=36&#39;</span><span class="o">&gt;</span><span class="mi">37</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">G</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w_ela</span><span class="p">))</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">ela_reg</span> <span class="o">=</span> <span class="n">ElasticNet</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span><span class="n">l1_ratio</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="c1"># prep the data again</span>
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">date_year</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="o">*</span><span class="mi">365</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ue</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="o">*</span><span class="mi">365</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-<span class="ne">ValueError</span>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+<span class="ne">NameError</span>: name &#39;date_year&#39; is not defined
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.3_ModelTraining_14_3.png" src="../_images/mlgeo_4.3_ModelTraining_14_3.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1265,7 +1207,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.0, 30.0)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.3_ModelTraining_15_2.png" src="../_images/mlgeo_4.3_ModelTraining_15_2.png" />
+<img alt="../_images/mlgeo_4.3_ModelTraining_10_2.png" src="../_images/mlgeo_4.3_ModelTraining_10_2.png" />
 </div>
 </div>
 <p>We see that there needs to be at least 10 samples in the training set for the models to generalize reasonably well. We also  see that all of the regularization mechanisms yield seemingly similar behavior at the training. After a sufficient number of samples, validation loss goes below training loss.</p>
@@ -1284,7 +1226,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/mlgeo_4.3_ModelTraining_17_0.png" src="../_images/mlgeo_4.3_ModelTraining_17_0.png" />
+<img alt="../_images/mlgeo_4.3_ModelTraining_12_0.png" src="../_images/mlgeo_4.3_ModelTraining_12_0.png" />
 </div>
 </div>
 <p>The data looks complex, with the superposition of a linear trend and oscillatory signals. Let’s fit a general polynomial form. We will start with a simple model.</p>
@@ -1315,7 +1257,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x16b4d22e0&gt;]
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.3_ModelTraining_19_2.png" src="../_images/mlgeo_4.3_ModelTraining_19_2.png" />
+<img alt="../_images/mlgeo_4.3_ModelTraining_14_2.png" src="../_images/mlgeo_4.3_ModelTraining_14_2.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1328,7 +1270,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.0, 100.0)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.3_ModelTraining_20_1.png" src="../_images/mlgeo_4.3_ModelTraining_20_1.png" />
+<img alt="../_images/mlgeo_4.3_ModelTraining_15_1.png" src="../_images/mlgeo_4.3_ModelTraining_15_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1359,7 +1301,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2.0, 4.0)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.3_ModelTraining_21_1.png" src="../_images/mlgeo_4.3_ModelTraining_21_1.png" />
+<img alt="../_images/mlgeo_4.3_ModelTraining_16_1.png" src="../_images/mlgeo_4.3_ModelTraining_16_1.png" />
 </div>
 </div>
 </section>
@@ -3446,7 +3388,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.0, 30.0)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.3_ModelTraining_24_2.png" src="../_images/mlgeo_4.3_ModelTraining_24_2.png" />
+<img alt="../_images/mlgeo_4.3_ModelTraining_19_2.png" src="../_images/mlgeo_4.3_ModelTraining_19_2.png" />
 </div>
 </div>
 <p>You may also consider the parameter <code class="docutils literal notranslate"><span class="pre">early_stopping=True</span></code> in SGD to automatically implement early stopping and deal with overfitting.</p>
