@@ -17,29 +17,51 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import functools
-import matplotlib.pyplot as plt
 import numpy as np
-import torch
-import scipy
-import torch.nn as nn
-import torch.optim as optim
+import matplotlib.pyplot as plt
 
+# Parameters
+nx, ny = 50, 50  # Number of grid points in x and y directions
+dx, dy = 1.0, 1.0  # Grid spacing in x and y directions
+alpha = 0.01  # Thermal diffusivity
+dt = 0.1  # Time step
+nt = 100  # Number of time steps
 
-DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# Initial temperature field
+T = np.zeros((nx, ny))
+T[nx//4:3*nx//4, ny//4:3*ny//4] = 100  # Initial heat source in the center
 
-torch.manual_seed(42)
-np.random.seed(10)
+# Function to update the temperature field
+def update_temperature(T, alpha, dx, dy, dt):
+    T_new = T.copy()
+    T_new[1:-1, 1:-1] = T[1:-1, 1:-1] + alpha * dt * (
+        (T[2:, 1:-1] - 2 * T[1:-1, 1:-1] + T[:-2, 1:-1]) / dx**2 +
+        (T[1:-1, 2:] - 2 * T[1:-1, 1:-1] + T[1:-1, :-2]) / dy**2
+    )
+    return T_new
+
+# Time-stepping loop
+for n in range(nt):
+    T = update_temperature(T, alpha, dx, dy, dt)
+
+    # Plot the final temperature field
+    plt.figure(figsize=(8, 6))
+    plt.imshow(T, extent=[0, nx*dx, 0, ny*dy], origin='lower', cmap='hot')
+    plt.colorbar(label='Temperature')
+    plt.title('Temperature Field after Diffusion')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.show()
+    sleep(1)
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-Input [0;32mIn [1][0m, in [0;36m<cell line: 2>[0;34m()[0m
-[1;32m      1[0m [38;5;28;01mimport[39;00m [38;5;21;01mfunctools[39;00m
-[0;32m----> 2[0m [38;5;28;01mimport[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpyplot[39;00m [38;5;28;01mas[39;00m [38;5;21;01mplt[39;00m
-[1;32m      3[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
-[1;32m      4[0m [38;5;28;01mimport[39;00m [38;5;21;01mtorch[39;00m
+Input [0;32mIn [1][0m, in [0;36m<cell line: 1>[0;34m()[0m
+[0;32m----> 1[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
+[1;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpyplot[39;00m [38;5;28;01mas[39;00m [38;5;21;01mplt[39;00m
+[1;32m      4[0m [38;5;66;03m# Parameters[39;00m
 
-[0;31mModuleNotFoundError[0m: No module named 'matplotlib'
-ModuleNotFoundError: No module named 'matplotlib'
+[0;31mModuleNotFoundError[0m: No module named 'numpy'
+ModuleNotFoundError: No module named 'numpy'
 

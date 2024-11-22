@@ -1,0 +1,1327 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>4.1 Neural Networks &#8212; ML Geo Curriculum</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.2 Multi Layer Perceptrons" href="mlgeo_4.2_MLP.html" />
+    <link rel="prev" title="4.0 The Perceptron" href="mlgeo_4.0_perceptrons.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/GeoSMART_logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ML Geo Curriculum</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../about_this_book/about_this_book.html">
+                    Machine Learning in the Geosciences
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About this Book
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://geo-smart.github.io/index.html">
+   Geosmart website
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/acknowledgements.html">
+   Acknowlegments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../about_this_book/0_mlgeo_project.html">
+   Primer
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 1 - Open Source Ecosystem with Python
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/readme.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.1_open_reproducible_science.html">
+   1.1 Open Reproducible Science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.2_jupyter_environment.html">
+   1.3 Jupyter Environment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.3_python_environment.html">
+   1.3 Python Ecosystem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.4_computational_environments.html">
+   1.4 Computing Environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.5_version_control_git.html">
+   1.5 Version Control &amp; GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter1-GettingStarted/1.6_data_gallery.html">
+   1.6 Data Gallery
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 2 - Data Manipulation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.1_Data_Definitions.html">
+   2.1 Data Definitions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.2_data_formats_rendered.html">
+   2.2 Data Formats
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.3_pandas_rendered.html">
+   2.3 Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.4_dataframes_prep.html">
+   2.4 DataFrame Exploration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.5_Arrays.html">
+   2.5 Data Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.6_resampling.html">
+   2.6 Resampling Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.7_statistical_considerations.html">
+   2.7 Statistical Considerations for geoscientific Data and Noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.8_data_spectral_transforms.html">
+   2.8 Spectral Transforms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.9_filtering_data.html">
+   2.9 Filtering Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.10_synthetic_noise.html">
+   2.10 Synthetic noise
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.11_feature_engineering.html">
+   2.11 Feature Engineering
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.12_dimensionality_reduction.html">
+   2.12 Dimensionality Reduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.13_MLready_data.html">
+   2.13 ML-ready data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/2.20_Final_Project_Assignement.html">
+   Assignment:
+   <strong>
+    Preparing AI-Ready Data for The Final Project
+   </strong>
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 3 - Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.1_concepts_supervision.html">
+   3.1 Concepts in training supervision
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.2_classification_regression.html">
+   3.2 Classification and Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.3_clustering.html">
+   3.3 Clustering: Unsupervied Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.4_binary_classification.html">
+   3.4 Binary classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.5_multiclass_classification.html">
+   3.5 Multiclass Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.6_logistic_regression.html">
+   3.6 Logistic regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.7_randomForest_regression.html">
+   3.7 Random Forests
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.8_robust_training.html">
+   3.8 Robust Training
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.9_ensemble_learning.html">
+   3.9 Ensemble learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.10_autoML.html">
+   3.10 AutoML
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/3.20_final_project_cml.html">
+   3.20 Final Project - Classic Machine Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/Homework_CML.html">
+   Homework Classic Machine Learning (50 points)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 4 - Deep Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.0_perceptrons.html">
+   4.0 The Perceptron
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   4.1 Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.2_MLP.html">
+   4.2 Multi Layer Perceptrons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.3_CNN.html">
+   4.3 Convolutional Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.4_RNN.html">
+   4.4  Recurrent Neural Networks: Processing sequences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.5_ModelTraining.html">
+   4.5 Model Training
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.6_AutoEncoder.html">
+   4.6 Auto-encoders
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.7_PINN.html">
+   4.7 Physics-Informed Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.8_NAS.html">
+   4.8 NAS: Network Architecture Search
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 5 - Workflow Management and Reproducibility
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter5-ModelWorkflows/readme.html">
+   This chapter focuces on model workflow and ML reproducibility
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 6- Introduction to Cloud Computing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/cloudmaven">
+   Browser Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/Denolle-Lab/azure">
+   Terraform Access to Cloud Instances
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://tljh.jupyter.org/en/latest/">
+   Cloud Provider ML Jupyterhubs
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/glossary.html">
+   Glossaries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference/bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/geo-smart/mlgeo-book/main?urlpath=lab/tree/book/Chapter4-DeepLearning/mlgeo_4.1_NN.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/issues/new?title=Issue%20on%20page%20%2FChapter4-DeepLearning/mlgeo_4.1_NN.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/geo-smart/mlgeo-book/edit/main/book/Chapter4-DeepLearning/mlgeo_4.1_NN.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/Chapter4-DeepLearning/mlgeo_4.1_NN.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dataset-in-pytorch">
+   1.  Dataset in Pytorch
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-arrays">
+     1.1 Load arrays
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-custom-dataset-class">
+     1.2 Create a custom dataset class
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#random-split-training-and-testing">
+     1.3 Random split training and testing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-dataloader">
+     1.4 Create a DataLoader
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#design-model">
+   2. Design Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#loss-function">
+   3. Loss Function
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimization">
+   4. Optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training">
+   5. Training
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>4.1 Neural Networks</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dataset-in-pytorch">
+   1.  Dataset in Pytorch
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-arrays">
+     1.1 Load arrays
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-custom-dataset-class">
+     1.2 Create a custom dataset class
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#random-split-training-and-testing">
+     1.3 Random split training and testing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-dataloader">
+     1.4 Create a DataLoader
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#design-model">
+   2. Design Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#loss-function">
+   3. Loss Function
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimization">
+   4. Optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training">
+   5. Training
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="neural-networks">
+<h1>4.1 Neural Networks<a class="headerlink" href="#neural-networks" title="Permalink to this headline">#</a></h1>
+<p>A linear regression is a single, fully connected neuron.</p>
+<p><img alt="Single Neuron" src="../_images/TLU.png" />
+Figure: Extracted from “Hands on Maching Learning using Keras and Tensorflow”</p>
+<p>The simplest neural network is a logistic regression</p>
+<p><span class="math notranslate nohighlight">\(y = f( \sum_{i=1}^3  (w_i x_i + b_i))\)</span>,</p>
+<p>where <span class="math notranslate nohighlight">\(y\)</span> is the output, <span class="math notranslate nohighlight">\(w_i\)</span>, are the weights, <span class="math notranslate nohighlight">\(b_i\)</span> are the biases in the neuron, and <span class="math notranslate nohighlight">\(f\)</span> is an activation function (e.g., sigmoid, ReLu, etc)</p>
+<p>For classification problem, it is called a <strong>Threshold Logic Unit</strong> TLU because it outputs a linear combination of the inputs, and if the result exceeds a threshold, it outputs the positive class.</p>
+<p>A perceptron is a single layer of TLUs, which each TLU connected to all the inputs.</p>
+<p><strong>Logistic regression: It is just a one layer neural network classifier</strong></p>
+<p>We will explore the classification problem with NN.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span> 
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="dataset-in-pytorch">
+<h2>1.  Dataset in Pytorch<a class="headerlink" href="#dataset-in-pytorch" title="Permalink to this headline">#</a></h2>
+<p>We will read a dataset and convert into a format readable by PyTorch.</p>
+<p>We have a dataset of images of digits (0 to 9). Each image is made of 8 * 8 pixels in grey scale. We start from the familiar <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> digits data set, which provides images as arrays and labels as integers.</p>
+<p>The data is first cast as an array and we will prepare it as a PyTorch ready data.</p>
+<section id="load-arrays">
+<h3>1.1 Load arrays<a class="headerlink" href="#load-arrays" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load data set in memory</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
+<span class="n">digits</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span> <span class="c1"># load data set</span>
+<span class="n">data</span><span class="p">,</span><span class="n">labels</span> <span class="o">=</span> <span class="n">digits</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span><span class="n">digits</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># copy data and target</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span> <span class="c1"># reshape data on 8x8 grid</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1797, 8, 8) (1797,)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The data set has 1797  8 x 8 images.</p>
+<p>Now that we have data and labels, we have to prepare the data sets so that it can be used in PyTorch. The main steps are:</p>
+<ul class="simple">
+<li><p>Wrap these into a Pytorch <code class="docutils literal notranslate"><span class="pre">DataSet</span></code>, which will also convert the arrays into <code class="docutils literal notranslate"><span class="pre">tensors</span></code>.</p></li>
+<li><p>Split between training and testing data using <code class="docutils literal notranslate"><span class="pre">random_split</span></code> pytorch function</p></li>
+<li><p>Then load the datasets with <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code></p></li>
+</ul>
+</section>
+<section id="create-a-custom-dataset-class">
+<h3>1.2 Create a custom dataset class<a class="headerlink" href="#create-a-custom-dataset-class" title="Permalink to this headline">#</a></h3>
+<p>PyTorch provides the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> class that you can use to create a custom dataset. You need to implement the <strong>len</strong> and <strong>getitem</strong> methods.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
+
+<span class="k">class</span> <span class="nc">CustomDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span> <span class="c1"># create custom dataset</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span><span class="n">labels</span><span class="p">):</span> <span class="c1"># initialize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span> 
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">sample_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">sample_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">sample_data</span><span class="p">),(</span><span class="n">sample_labels</span><span class="p">)</span> <span class="c1"># return data as a tensor</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">custom_dataset</span> <span class="o">=</span> <span class="n">CustomDataset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+<span class="c1"># Example iteration through the training DataLoader</span>
+<span class="k">for</span> <span class="n">batch_data</span><span class="p">,</span> <span class="n">batch_labels</span> <span class="ow">in</span> <span class="n">custom_dataset</span><span class="p">:</span>
+    <span class="c1"># Your training loop here</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Train Batch Data:&quot;</span><span class="p">,</span> <span class="n">batch_data</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Train Batch Labels:&quot;</span><span class="p">,</span> <span class="n">batch_labels</span><span class="p">)</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train Batch Data: tensor([[ 0.,  0.,  5., 13.,  9.,  1.,  0.,  0.],
+        [ 0.,  0., 13., 15., 10., 15.,  5.,  0.],
+        [ 0.,  3., 15.,  2.,  0., 11.,  8.,  0.],
+        [ 0.,  4., 12.,  0.,  0.,  8.,  8.,  0.],
+        [ 0.,  5.,  8.,  0.,  0.,  9.,  8.,  0.],
+        [ 0.,  4., 11.,  0.,  1., 12.,  7.,  0.],
+        [ 0.,  2., 14.,  5., 10., 12.,  0.,  0.],
+        [ 0.,  0.,  6., 13., 10.,  0.,  0.,  0.]])
+Train Batch Labels: 0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="random-split-training-and-testing">
+<h3>1.3 Random split training and testing<a class="headerlink" href="#random-split-training-and-testing" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">random_split</span>
+
+<span class="c1"># Determine the size of the training set</span>
+<span class="n">train_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">custom_dataset</span><span class="p">))</span> <span class="c1"># 80% of the data set</span>
+<span class="n">test_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">custom_dataset</span><span class="p">)</span> <span class="o">-</span> <span class="n">train_size</span> <span class="c1"># 20% of the data set</span>
+
+<span class="c1"># Use random_split to create training and testing subsets</span>
+<span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">random_split</span><span class="p">(</span><span class="n">custom_dataset</span><span class="p">,</span> <span class="p">[</span><span class="n">train_size</span><span class="p">,</span> <span class="n">test_size</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-a-dataloader">
+<h3>1.4 Create a DataLoader<a class="headerlink" href="#create-a-dataloader" title="Permalink to this headline">#</a></h3>
+<p>Once you have your custom dataset, you can use a DataLoader to handle batching, shuffling, and other data loading functionalities.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+
+
+<span class="c1"># Create a DataLoader</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>  <span class="c1"># Adjust according to your needs</span>
+<span class="n">shuffle</span> <span class="o">=</span> <span class="kc">True</span>   <span class="c1"># Set to True if you want to shuffle the data</span>
+<span class="n">data_loader_train</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span><span class="p">)</span>
+<span class="n">data_loader_test</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span><span class="p">)</span>
+
+<span class="c1"># Example iteration through the testing DataLoader</span>
+<span class="k">for</span> <span class="n">batch_data</span><span class="p">,</span> <span class="n">batch_labels</span> <span class="ow">in</span> <span class="n">data_loader_test</span><span class="p">:</span>
+    <span class="c1"># Your testing loop here</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test Batch Data:&quot;</span><span class="p">,</span> <span class="n">batch_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test Batch Labels:&quot;</span><span class="p">,</span> <span class="n">batch_labels</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test Batch Data: torch.Size([32, 8, 8])
+Test Batch Labels: torch.Size([32])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="design-model">
+<h2>2. Design Model<a class="headerlink" href="#design-model" title="Permalink to this headline">#</a></h2>
+<p>The first neural networks we will create is a single neuron that takes the images as input and output the probability in each of the 10 classes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We create a subclass of neural networks: </span>
+<span class="c1"># #This one will just have one layer</span>
+
+<span class="k">class</span> <span class="nc">NN1</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span> <span class="c1"># NN1 inherits from nn.Module</span>
+
+
+    <span class="c1"># this defines the arcitecture of the NN</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size_img</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
+        <span class="c1"># Here we define all the functions that we will use during the forward part (data -&gt; prediction)</span>
+        
+        <span class="c1"># super means that the model will inherit all of the methods</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NN1</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">flatten</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">()</span> <span class="c1"># go from a 8*8 tensor to a 64*1 tensor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size_img</span> <span class="o">=</span> <span class="n">size_img</span> <span class="c1"># number of pixels in an image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">size_img</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span> <span class="c1"># y = wx + b with w = 10*64 (10 digits * 256 pixels)</span>
+
+
+    <span class="c1"># this defines how the data passes through the layers</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>    <span class="c1"># go from a 8*8 tensor to a 64*1 tensor</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># y = wx + b with w = 10*64 (10 digits * 256 pixels)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span> <span class="c1"># apply sigmoid function to the output of the layer to get a probability</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now create a model of the class NN1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">NN1</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NN1(
+  (flatten): Flatten(start_dim=1, end_dim=-1)
+  (layer1): Linear(in_features=64, out_features=10, bias=True)
+)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="loss-function">
+<h2>3. Loss Function<a class="headerlink" href="#loss-function" title="Permalink to this headline">#</a></h2>
+<p>For the binary classification, we had defined the logistic function or <em>sigmoid</em> function as,</p>
+<p><span class="math notranslate nohighlight">\(\hat{y} = \frac{1}{1 + e^{-z}}\)</span>,</p>
+<p>as the probability function for a binary classifier.</p>
+<p>The log loss function to minimize is:</p>
+<p><span class="math notranslate nohighlight">\(\mathcal{L} =  - (y \log \hat{y} + (1 - y) \log (1 - \hat{y})\)</span> with <span class="math notranslate nohighlight">\(\hat{y} = \frac{1}{1 + e^{-z}}\)</span>.</p>
+<p>We wanted to find all of the weights <span class="math notranslate nohighlight">\(w\)</span> and biases <span class="math notranslate nohighlight">\(b\)</span> such that <span class="math notranslate nohighlight">\(P(Y = y)\)</span> is maximum, which is equivalent to minimizing the loss <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>.</p>
+<p>For a multi-class classification, <span class="math notranslate nohighlight">\(k\)</span> being the class and <span class="math notranslate nohighlight">\(K\)</span> the number of classes, the sigmoid function is extended to a <em>softmax function</em>,</p>
+<p><span class="math notranslate nohighlight">\(P(Y = k) = \frac{\exp(w_k x + b_k)}{\sum_{j = 1}^K \exp(w_j x + b_j)}\)</span></p>
+<p>Once we have found the values of the <span class="math notranslate nohighlight">\(w_k\)</span> and <span class="math notranslate nohighlight">\(b_k\)</span> for <span class="math notranslate nohighlight">\(k = 1 , \cdots , K\)</span>, we can compute the values of the <span class="math notranslate nohighlight">\(P(Y = k)\)</span>. We then look for which value of <span class="math notranslate nohighlight">\(k\)</span> <span class="math notranslate nohighlight">\(P(Y = k)\)</span> is maximal and we classify this sample as class <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>Similarly, we define the loss with <span class="math notranslate nohighlight">\(K\)</span> classes:</p>
+<p><span class="math notranslate nohighlight">\(\mathcal{L} = - \sum_{k = 1}^K y_k \log \frac{\exp(w_k x + b_k)}{\sum_{j = 1}^K \exp(w_j x + b_j)}\)</span>. We have <span class="math notranslate nohighlight">\(y_k = 1\)</span> if the true label associated with the sample <span class="math notranslate nohighlight">\(x\)</span> is <span class="math notranslate nohighlight">\(k\)</span>, otherwise <span class="math notranslate nohighlight">\(y_k = 0\)</span>.</p>
+<p>This is called the <em>cross-entropy loss</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CrossEntropyLoss()
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optimization">
+<h2>4. Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">#</a></h2>
+<p><em>Gradient descent</em> uses the entire data set to compute the gradient and find the optimal (minimum loss) solution. Effectively, the batch size is the entire data set.</p>
+<p><em>Mini batch gradient descent</em> uses batches of data to compute the gradient, find a solution, and moves to the next set of training data. The batch size is determined. The prediction on the training set is calculated for each sample in the batch, then averaged. Then the gradient is calculated.</p>
+<p><em>Stochastic gradient descent</em> uses one data sample to calculate the gradient, finds a solution, then take another training sample to go down the gradient. Effectively, the batch size is 1.</p>
+<p>In this example, we will use stochastic gradient descent SGD.</p>
+<p>Parameters to choose are:</p>
+<ul class="simple">
+<li><p>optimizer (gradient descent or others)</p></li>
+<li><p>learning rate (scale to jump with the gradient)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training">
+<h2>5. Training<a class="headerlink" href="#training" title="Permalink to this headline">#</a></h2>
+<p>Parameters to choose are:</p>
+<ul class="simple">
+<li><p><strong>batch size</strong>: this is the size of an individual training set used to estimate an average model prediction loss, after which a gradient will be calculated, and the model weights updated.</p></li>
+<li><p><strong>number of epochs</strong>: this is the number of times the training goes over the <em>entire</em> data sets. If the training set is split into batches of size <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>, then at each <strong>epoch</strong>, the training will be performed over all batches. Models tend to be trained over multiple-to-many epochs (10,100,1000).</p></li>
+</ul>
+<p>Let us now define how to train the model. We will create a function for that.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">trainloader</span><span class="p">,</span> <span class="n">testloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span> <span class="p">):</span>
+
+    <span class="c1"># Define loss and optimization method</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+    
+    <span class="c1"># # Save loss and error for plotting</span>
+    <span class="n">loss_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">)</span>
+    <span class="n">accuracy_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">)</span>
+
+    <span class="c1"># Loop on number of epochs</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+        <span class="c1"># Initialize the loss</span>
+        <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Loop on samples in train set</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">trainloader</span><span class="p">:</span>
+            <span class="c1"># Get the sample and modify the format for PyTorch</span>
+            <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+            <span class="c1"># Set the parameter gradients to zero</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+            <span class="c1"># Propagate the loss backward</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="c1"># Update the gradients</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="c1"># Add the value of the loss for this sample</span>
+            <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="c1"># Save loss at the end of each epoch</span>
+        <span class="n">loss_time</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">=</span> <span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="p">)</span>
+
+        <span class="c1"># After each epoch, evaluate the performance on the test set</span>
+        <span class="k">if</span> <span class="n">testloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1"># We evaluate the model, so we do not need the gradient</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span> <span class="c1"># Context-manager that disabled gradient calculation.</span>
+                <span class="c1"># Loop on samples in test set</span>
+                <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">testloader</span><span class="p">:</span>
+                    <span class="c1"># Get the sample and modify the format for PyTorch</span>
+                    <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> 
+                    <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+                    <span class="c1"># Use model for sample in the test set</span>
+                    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+                    <span class="c1"># Compare predicted label and true label</span>
+                    <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="c1"># Save error at the end of each epochs</span>
+            <span class="n">accuracy_time</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+    
+        <span class="c1"># Print intermediate results on screen</span>
+        <span class="k">if</span> <span class="n">testloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[Epoch </span><span class="si">%d</span><span class="s1">] loss: </span><span class="si">%.3f</span><span class="s1"> - accuracy: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span>
+              <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="p">),</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[Epoch </span><span class="si">%d</span><span class="s1">] loss: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span>
+              <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">running_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">trainloader</span><span class="p">)))</span>
+
+    <span class="c1"># Save history of loss and test error</span>
+    <span class="k">if</span> <span class="n">testloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">loss_time</span><span class="p">,</span> <span class="n">accuracy_time</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">loss_time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># (loss, error) = train(model, 10,trainloader, testloader, learning_rate)</span>
+<span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="n">data_loader_train</span><span class="p">,</span> <span class="n">data_loader_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 1] loss: 2.332 - accuracy: 18.333
+[Epoch 2] loss: 2.302 - accuracy: 19.444
+[Epoch 3] loss: 2.273 - accuracy: 19.167
+[Epoch 4] loss: 2.245 - accuracy: 19.722
+[Epoch 5] loss: 2.214 - accuracy: 17.500
+[Epoch 6] loss: 2.182 - accuracy: 16.944
+[Epoch 7] loss: 2.153 - accuracy: 19.167
+[Epoch 8] loss: 2.126 - accuracy: 21.944
+[Epoch 9] loss: 2.102 - accuracy: 23.611
+[Epoch 10] loss: 2.080 - accuracy: 25.278
+[Epoch 11] loss: 2.059 - accuracy: 30.000
+[Epoch 12] loss: 2.039 - accuracy: 33.056
+[Epoch 13] loss: 2.021 - accuracy: 36.667
+[Epoch 14] loss: 2.004 - accuracy: 40.000
+[Epoch 15] loss: 1.988 - accuracy: 42.222
+[Epoch 16] loss: 1.973 - accuracy: 45.278
+[Epoch 17] loss: 1.959 - accuracy: 47.778
+[Epoch 18] loss: 1.946 - accuracy: 50.000
+[Epoch 19] loss: 1.934 - accuracy: 53.056
+[Epoch 20] loss: 1.923 - accuracy: 55.556
+[Epoch 21] loss: 1.912 - accuracy: 57.778
+[Epoch 22] loss: 1.903 - accuracy: 59.722
+[Epoch 23] loss: 1.894 - accuracy: 62.222
+[Epoch 24] loss: 1.886 - accuracy: 63.333
+[Epoch 25] loss: 1.878 - accuracy: 64.722
+[Epoch 26] loss: 1.871 - accuracy: 65.278
+[Epoch 27] loss: 1.864 - accuracy: 66.111
+[Epoch 28] loss: 1.857 - accuracy: 66.667
+[Epoch 29] loss: 1.851 - accuracy: 67.500
+[Epoch 30] loss: 1.846 - accuracy: 68.333
+[Epoch 31] loss: 1.841 - accuracy: 68.889
+[Epoch 32] loss: 1.836 - accuracy: 69.167
+[Epoch 33] loss: 1.831 - accuracy: 70.000
+[Epoch 34] loss: 1.827 - accuracy: 70.278
+[Epoch 35] loss: 1.823 - accuracy: 70.833
+[Epoch 36] loss: 1.819 - accuracy: 70.833
+[Epoch 37] loss: 1.815 - accuracy: 70.833
+[Epoch 38] loss: 1.812 - accuracy: 70.833
+[Epoch 39] loss: 1.808 - accuracy: 70.833
+[Epoch 40] loss: 1.805 - accuracy: 70.833
+[Epoch 41] loss: 1.802 - accuracy: 71.111
+[Epoch 42] loss: 1.799 - accuracy: 71.389
+[Epoch 43] loss: 1.796 - accuracy: 71.944
+[Epoch 44] loss: 1.794 - accuracy: 72.778
+[Epoch 45] loss: 1.791 - accuracy: 72.778
+[Epoch 46] loss: 1.789 - accuracy: 72.778
+[Epoch 47] loss: 1.787 - accuracy: 72.778
+[Epoch 48] loss: 1.784 - accuracy: 72.778
+[Epoch 49] loss: 1.782 - accuracy: 72.778
+[Epoch 50] loss: 1.780 - accuracy: 72.778
+[Epoch 51] loss: 1.778 - accuracy: 73.056
+[Epoch 52] loss: 1.776 - accuracy: 73.056
+[Epoch 53] loss: 1.774 - accuracy: 73.333
+[Epoch 54] loss: 1.773 - accuracy: 73.333
+[Epoch 55] loss: 1.771 - accuracy: 73.611
+[Epoch 56] loss: 1.769 - accuracy: 73.889
+[Epoch 57] loss: 1.768 - accuracy: 74.167
+[Epoch 58] loss: 1.766 - accuracy: 74.444
+[Epoch 59] loss: 1.765 - accuracy: 74.722
+[Epoch 60] loss: 1.763 - accuracy: 74.722
+[Epoch 61] loss: 1.762 - accuracy: 75.000
+[Epoch 62] loss: 1.761 - accuracy: 75.278
+[Epoch 63] loss: 1.759 - accuracy: 75.556
+[Epoch 64] loss: 1.758 - accuracy: 75.833
+[Epoch 65] loss: 1.757 - accuracy: 76.111
+[Epoch 66] loss: 1.755 - accuracy: 76.667
+[Epoch 67] loss: 1.754 - accuracy: 76.389
+[Epoch 68] loss: 1.753 - accuracy: 76.667
+[Epoch 69] loss: 1.752 - accuracy: 76.667
+[Epoch 70] loss: 1.751 - accuracy: 76.944
+[Epoch 71] loss: 1.750 - accuracy: 77.222
+[Epoch 72] loss: 1.749 - accuracy: 77.222
+[Epoch 73] loss: 1.748 - accuracy: 77.222
+[Epoch 74] loss: 1.747 - accuracy: 77.222
+[Epoch 75] loss: 1.746 - accuracy: 77.222
+[Epoch 76] loss: 1.745 - accuracy: 77.222
+[Epoch 77] loss: 1.744 - accuracy: 77.222
+[Epoch 78] loss: 1.744 - accuracy: 77.222
+[Epoch 79] loss: 1.743 - accuracy: 77.222
+[Epoch 80] loss: 1.741 - accuracy: 77.222
+[Epoch 81] loss: 1.741 - accuracy: 76.944
+[Epoch 82] loss: 1.740 - accuracy: 76.944
+[Epoch 83] loss: 1.739 - accuracy: 76.944
+[Epoch 84] loss: 1.738 - accuracy: 76.944
+[Epoch 85] loss: 1.738 - accuracy: 76.944
+[Epoch 86] loss: 1.737 - accuracy: 76.944
+[Epoch 87] loss: 1.736 - accuracy: 76.944
+[Epoch 88] loss: 1.735 - accuracy: 76.944
+[Epoch 89] loss: 1.735 - accuracy: 76.944
+[Epoch 90] loss: 1.734 - accuracy: 76.944
+[Epoch 91] loss: 1.733 - accuracy: 76.944
+[Epoch 92] loss: 1.733 - accuracy: 76.944
+[Epoch 93] loss: 1.732 - accuracy: 76.944
+[Epoch 94] loss: 1.732 - accuracy: 76.944
+[Epoch 95] loss: 1.731 - accuracy: 77.222
+[Epoch 96] loss: 1.730 - accuracy: 77.222
+[Epoch 97] loss: 1.730 - accuracy: 77.222
+[Epoch 98] loss: 1.729 - accuracy: 77.222
+[Epoch 99] loss: 1.729 - accuracy: 77.222
+[Epoch 100] loss: 1.728 - accuracy: 77.222
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let us now plot the evolution of the loss and the percentage of correct predictions with time:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;tab:red&#39;</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">101</span><span class="p">),</span> <span class="n">loss</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+
+<span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;tab:blue&#39;</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Correct predictions&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">101</span><span class="p">),</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mlgeo_4.1_NN_26_0.png" src="../_images/mlgeo_4.1_NN_26_0.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Chapter4-DeepLearning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="mlgeo_4.0_perceptrons.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">4.0 The Perceptron</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="mlgeo_4.2_MLP.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4.2 Multi Layer Perceptrons</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By eScience Institute, University of Washington<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

@@ -340,23 +340,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.1_neural_networks.html">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.1_NN.html">
    4.1 Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.2_MultiLayerPerceptron.html">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.2_MLP.html">
    4.2 Multi Layer Perceptrons
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_ModelTraining.html">
-   4.3 Model Training
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.3_PINN.html">
-   4.2 Physics-Informed Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
@@ -365,18 +355,28 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.5_RNN.html">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.4_RNN.html">
    4.4  Recurrent Neural Networks: Processing sequences
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.html">
-   4.5 Auto-encoders
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.5_ModelTraining.html">
+   4.5 Model Training
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_NAS.html">
-   4.6 NAS: Network Architecture Search
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.html">
+   4.6 Auto-encoders
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.7_PINN.html">
+   4.7 Physics-Informed Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter4-DeepLearning/mlgeo_4.8_NAS.html">
+   4.8 NAS: Network Architecture Search
   </a>
  </li>
 </ul>
@@ -784,6 +784,7 @@ title="Print to PDF"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
 <span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
 <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="c1"># fit the model for data normalization</span>
 <span class="n">newdata</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="c1"># transform the data. watch that data was converted to a numpy array</span>
@@ -817,23 +818,32 @@ From “Hands on Machine Learning With Sci-kit Learn, Keras, and Tensorflow” (
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
 
 
-<span class="n">svc_clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span> <span class="c1"># model design</span>
+<span class="n">svc_clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span> <span class="c1"># model design</span>
 <span class="n">nb_clf</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
-<span class="n">rf_clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
-
-
-<span class="n">voting_clf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span>
+<span class="n">rf_clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">voting_clf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span>
     <span class="n">estimators</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="s1">&#39;nb&#39;</span><span class="p">,</span><span class="n">nb_clf</span><span class="p">)</span> <span class="p">,</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span><span class="n">rf_clf</span><span class="p">),(</span><span class="s1">&#39;svc&#39;</span><span class="p">,</span><span class="n">svc_clf</span><span class="p">)],</span>
     <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">)</span>
-
-<span class="n">voting_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span> <span class="c1"># learn</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">voting_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span> <span class="c1"># learn</span>
 <span class="n">y_pred</span><span class="o">=</span><span class="n">voting_clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_pred</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.925
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9166666666666666
 </pre></div>
 </div>
 </div>
@@ -849,9 +859,9 @@ From “Hands on Machine Learning With Sci-kit Learn, Keras, and Tensorflow” (
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GaussianNB 0.8263632119514472
-RandomForestClassifier 0.9615219421101775
+RandomForestClassifier 0.9582119514472455
 SVC 0.9793790849673202
-VotingClassifier 0.9687815126050421
+VotingClassifier 0.9648786181139123
 </pre></div>
 </div>
 </div>
@@ -869,7 +879,7 @@ VotingClassifier 0.9687815126050421
 <span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
 
 <span class="n">bag_clf</span> <span class="o">=</span> <span class="n">BaggingClassifier</span><span class="p">(</span>
-    <span class="n">base_estimator</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(),</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>  <span class="c1"># n_estimator is the number of models to train</span>
+    <span class="n">estimator</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(),</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>  <span class="c1"># n_estimator is the number of models to train</span>
     <span class="n">max_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">bootstrap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># bootstrap is for bagging vs pasting</span>
     <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="c1">#number of CPU cores independently used for training and prediction. Use -1 for all available score</span>
     <span class="p">)</span>
@@ -879,21 +889,7 @@ VotingClassifier 0.9687815126050421
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/ensemble/_base.py:156: FutureWarning: `base_estimator` was renamed to `estimator` in version 1.2 and will be removed in 1.4.
-  warnings.warn(
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/ensemble/_base.py:156: FutureWarning: `base_estimator` was renamed to `estimator` in version 1.2 and will be removed in 1.4.
-  warnings.warn(
-/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/ensemble/_base.py:156: FutureWarning: `base_estimator` was renamed to `estimator` in version 1.2 and will be removed in 1.4.
-  warnings.warn(
-/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/ensemble/_base.py:156: FutureWarning: `base_estimator` was renamed to `estimator` in version 1.2 and will be removed in 1.4.
-  warnings.warn(
-/Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages/sklearn/ensemble/_base.py:156: FutureWarning: `base_estimator` was renamed to `estimator` in version 1.2 and will be removed in 1.4.
-  warnings.warn(
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean accuracy 0.9599473847106159
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean accuracy 0.9588362735995049
 </pre></div>
 </div>
 </div>
@@ -949,7 +945,7 @@ VotingClassifier 0.9687815126050421
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8055555555555556
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7805555555555556
 </pre></div>
 </div>
 </div>
@@ -975,13 +971,12 @@ VotingClassifier 0.9687815126050421
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting xgboost
-  Downloading xgboost-2.0.2-py3-none-macosx_12_0_arm64.whl (1.9 MB)
-     |████████████████████████████████| 1.9 MB 1.2 MB/s eta 0:00:01
-?25hRequirement already satisfied: scipy in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from xgboost) (1.11.3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: xgboost in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (2.0.2)
 Requirement already satisfied: numpy in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from xgboost) (1.26.0)
-Installing collected packages: xgboost
-Successfully installed xgboost-2.0.2
+Requirement already satisfied: scipy in /Users/marinedenolle/opt/miniconda3/envs/mlgeo/lib/python3.9/site-packages (from xgboost) (1.11.3)
+
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> A new release of pip is available: <span class=" -Color -Color-Red">23.3.1</span> -&gt; <span class=" -Color -Color-Green">24.3.1</span>
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> To update, run: <span class=" -Color -Color-Green">pip install --upgrade pip</span>
 </pre></div>
 </div>
 </div>
