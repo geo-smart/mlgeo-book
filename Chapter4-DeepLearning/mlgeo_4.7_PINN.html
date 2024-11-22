@@ -686,6 +686,60 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#pinn">
    PINN
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#darcy-flow-example">
+     <strong>
+      Darcy Flow Example
+     </strong>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d-simplified-problem">
+     <strong>
+      1D Simplified Problem
+     </strong>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pinn-implementation-for-darcy-flow">
+     <strong>
+      PINN Implementation for Darcy Flow
+     </strong>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#steps">
+       <strong>
+        Steps
+       </strong>
+       :
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#python-code-for-pinn-implementation">
+       <strong>
+        Python Code for PINN Implementation
+       </strong>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-discussion-points">
+     <strong>
+      Key Discussion Points
+     </strong>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#extensions-for-students">
+     <strong>
+      Extensions for Students
+     </strong>
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -739,6 +793,60 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#pinn">
    PINN
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#darcy-flow-example">
+     <strong>
+      Darcy Flow Example
+     </strong>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d-simplified-problem">
+     <strong>
+      1D Simplified Problem
+     </strong>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pinn-implementation-for-darcy-flow">
+     <strong>
+      PINN Implementation for Darcy Flow
+     </strong>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#steps">
+       <strong>
+        Steps
+       </strong>
+       :
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#python-code-for-pinn-implementation">
+       <strong>
+        Python Code for PINN Implementation
+       </strong>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-discussion-points">
+     <strong>
+      Key Discussion Points
+     </strong>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#extensions-for-students">
+     <strong>
+      Extensions for Students
+     </strong>
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -821,61 +929,6 @@ title="Print to PDF"
 <p>where <span class="math notranslate nohighlight">\(T(x,t)\)</span> is temperature, <span class="math notranslate nohighlight">\(\alpha\)</span> is the thermal diffusivity.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
-<span class="c1"># Parameters</span>
-<span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span>  <span class="c1"># Number of grid points in x and y directions</span>
-<span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>  <span class="c1"># Grid spacing in x and y directions</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># Thermal diffusivity</span>
-<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># Time step</span>
-<span class="n">nt</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Number of time steps</span>
-
-<span class="c1"># Initial temperature field</span>
-<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">))</span>
-<span class="n">T</span><span class="p">[</span><span class="n">nx</span><span class="o">//</span><span class="mi">4</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="n">nx</span><span class="o">//</span><span class="mi">4</span><span class="p">,</span> <span class="n">ny</span><span class="o">//</span><span class="mi">4</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="n">ny</span><span class="o">//</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Initial heat source in the center</span>
-
-<span class="c1"># Function to update the temperature field</span>
-<span class="k">def</span> <span class="nf">update_temperature</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-    <span class="n">T_new</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">T_new</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span>
-        <span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">T</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">dx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
-        <span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">dy</span><span class="o">**</span><span class="mi">2</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">T_new</span>
-
-<span class="c1"># Time-stepping loop</span>
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">update_temperature</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
-
-    <span class="c1"># Plot the final temperature field</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">nx</span><span class="o">*</span><span class="n">dx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ny</span><span class="o">*</span><span class="n">dy</span><span class="p">],</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;hot&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Temperature&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Temperature Field after Diffusion&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/mlgeo_4.7_PINN_1_0.png" src="../_images/mlgeo_4.7_PINN_1_0.png" />
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">line</span> <span class="mi">36</span>
-<span class="g g-Whitespace">     </span><span class="mi">34</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">35</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="ne">---&gt; </span><span class="mi">36</span> <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;sleep&#39; is not defined
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -893,7 +946,7 @@ title="Print to PDF"
 <section id="create-synthetic-data">
 <h2>Create Synthetic Data<a class="headerlink" href="#create-synthetic-data" title="Permalink to this headline">#</a></h2>
 <p>A solution to this problem, given initial and boundary conditions at <span class="math notranslate nohighlight">\(T(x=0,t=0)T_0\)</span>,</p>
-<p><span class="math notranslate nohighlight">\( T(x,t) = T_0 \exp () \)</span></p>
+<p><span class="math notranslate nohighlight">\( T(x,t) = T_0 \exp (-Rt) \)</span></p>
 <p>First, we create synthetic, toy, noisy data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -929,7 +982,7 @@ title="Print to PDF"
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.7_PINN_6_1.png" src="../_images/mlgeo_4.7_PINN_6_1.png" />
+<img alt="../_images/mlgeo_4.7_PINN_5_1.png" src="../_images/mlgeo_4.7_PINN_5_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1069,7 +1122,7 @@ Epoch 16000/20000, loss: 0.34
 Epoch 18000/20000, loss: 0.33
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.7_PINN_8_1.png" src="../_images/mlgeo_4.7_PINN_8_1.png" />
+<img alt="../_images/mlgeo_4.7_PINN_7_1.png" src="../_images/mlgeo_4.7_PINN_7_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1105,7 +1158,7 @@ Epoch 16000/20000, loss: 783.72
 Epoch 18000/20000, loss: 719.29
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.7_PINN_10_1.png" src="../_images/mlgeo_4.7_PINN_10_1.png" />
+<img alt="../_images/mlgeo_4.7_PINN_9_1.png" src="../_images/mlgeo_4.7_PINN_9_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1128,7 +1181,7 @@ Epoch 18000/20000, loss: 719.29
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.7_PINN_11_1.png" src="../_images/mlgeo_4.7_PINN_11_1.png" />
+<img alt="../_images/mlgeo_4.7_PINN_10_1.png" src="../_images/mlgeo_4.7_PINN_10_1.png" />
 </div>
 </div>
 </section>
@@ -1169,7 +1222,7 @@ Epoch 24000/30000, loss: 1.33
 Epoch 27000/30000, loss: 1.33
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.7_PINN_14_1.png" src="../_images/mlgeo_4.7_PINN_14_1.png" />
+<img alt="../_images/mlgeo_4.7_PINN_13_1.png" src="../_images/mlgeo_4.7_PINN_13_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1189,9 +1242,165 @@ Epoch 27000/30000, loss: 1.33
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.7_PINN_15_1.png" src="../_images/mlgeo_4.7_PINN_15_1.png" />
+<img alt="../_images/mlgeo_4.7_PINN_14_1.png" src="../_images/mlgeo_4.7_PINN_14_1.png" />
 </div>
 </div>
+<p>Yes, <strong>Darcy flow</strong> is an excellent alternative example for introducing physics-informed neural networks (PINNs) in geosciences. Darcy’s law governs the flow of fluid through porous media, which is fundamental in hydrogeology, groundwater modeling, and petroleum reservoir engineering. Here’s how it can be framed for the class.</p>
+<hr class="docutils" />
+<section id="darcy-flow-example">
+<h3><strong>Darcy Flow Example</strong><a class="headerlink" href="#darcy-flow-example" title="Permalink to this headline">#</a></h3>
+<p><strong>Problem Statement:</strong>
+Consider a steady-state 1D flow in a porous medium governed by <strong>Darcy’s law</strong> and the continuity equation:
+[
+q = -K \frac{dh}{dx}, \quad \frac{d}{dx}(q) = 0.
+]</p>
+<p>Here:</p>
+<ul class="simple">
+<li><p>( q(x) ): volumetric flow rate per unit area,</p></li>
+<li><p>( K ): hydraulic conductivity (a constant or spatially varying property),</p></li>
+<li><p>( h(x) ): hydraulic head (height of the water table).</p></li>
+</ul>
+<p>Substituting ( q = -K \frac{dh}{dx} ) into the continuity equation gives:
+[
+\frac{d}{dx}\left(K \frac{dh}{dx}\right) = 0.
+]</p>
+<p>This is the governing PDE for the hydraulic head.</p>
+</section>
+<hr class="docutils" />
+<section id="d-simplified-problem">
+<h3><strong>1D Simplified Problem</strong><a class="headerlink" href="#d-simplified-problem" title="Permalink to this headline">#</a></h3>
+<p>For constant ( K ), the PDE reduces to:
+[
+\frac{d^2h}{dx^2} = 0, \quad x \in [0, L],
+]
+with boundary conditions:
+[
+h(0) = h_0, \quad h(L) = h_L.
+]</p>
+<p>The analytical solution is:
+[
+h(x) = h_0 + \frac{h_L - h_0}{L}x.
+]</p>
+</section>
+<hr class="docutils" />
+<section id="pinn-implementation-for-darcy-flow">
+<h3><strong>PINN Implementation for Darcy Flow</strong><a class="headerlink" href="#pinn-implementation-for-darcy-flow" title="Permalink to this headline">#</a></h3>
+<section id="steps">
+<h4><strong>Steps</strong>:<a class="headerlink" href="#steps" title="Permalink to this headline">#</a></h4>
+<ol class="simple">
+<li><p>Define the domain ( x \in [0, L] ).</p></li>
+<li><p>Use a neural network to approximate ( h(x) ), the hydraulic head.</p></li>
+<li><p>Encode the PDE ( \frac{d^2h}{dx^2} = 0 ) and boundary conditions ( h(0) = h_0 ), ( h(L) = h_L ) in the loss function.</p></li>
+<li><p>Train the neural network to minimize the combined loss.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="python-code-for-pinn-implementation">
+<h4><strong>Python Code for PINN Implementation</strong><a class="headerlink" href="#python-code-for-pinn-implementation" title="Permalink to this headline">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="c1"># Define the PINN model</span>
+<span class="k">class</span> <span class="nc">PINN_Darcy</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PINN_Darcy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Output is h(x)</span>
+        <span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Define the PDE loss</span>
+<span class="k">def</span> <span class="nf">pde_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">h_x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">grad_outputs</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">create_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">h_xx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">h_x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">grad_outputs</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">h_x</span><span class="p">),</span> <span class="n">create_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">h_xx</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Loss for the PDE</span>
+
+<span class="c1"># Define the boundary loss</span>
+<span class="k">def</span> <span class="nf">boundary_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xL</span><span class="p">,</span> <span class="n">hL</span><span class="p">):</span>
+    <span class="n">loss_0</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span> <span class="o">-</span> <span class="n">h0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">loss_L</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">xL</span><span class="p">)</span> <span class="o">-</span> <span class="n">hL</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">loss_0</span> <span class="o">+</span> <span class="n">loss_L</span>
+
+<span class="c1"># Training the PINN</span>
+<span class="k">def</span> <span class="nf">train_pinn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">x_interior</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xL</span><span class="p">,</span> <span class="n">hL</span><span class="p">,</span> <span class="n">epochs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss_pde</span> <span class="o">=</span> <span class="n">pde_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_interior</span><span class="p">)</span>
+        <span class="n">loss_bc</span> <span class="o">=</span> <span class="n">boundary_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xL</span><span class="p">,</span> <span class="n">hL</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_pde</span> <span class="o">+</span> <span class="n">loss_bc</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">, Loss: </span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Setup example</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">h0</span> <span class="o">=</span> <span class="mf">10.0</span>  <span class="c1"># Hydraulic head at x=0</span>
+<span class="n">hL</span> <span class="o">=</span> <span class="mf">5.0</span>   <span class="c1"># Hydraulic head at x=L</span>
+
+<span class="n">x_interior</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">L</span>  <span class="c1"># Random points in the domain</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">]])</span>
+<span class="n">xL</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="n">L</span><span class="p">]])</span>
+<span class="n">h0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="n">h0</span><span class="p">]])</span>
+<span class="n">hL</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="n">hL</span><span class="p">]])</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">PINN_Darcy</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+
+<span class="n">train_pinn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">x_interior</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">xL</span><span class="p">,</span> <span class="n">hL</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Visualize the result</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">h_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_test</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">h_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;PINN Solution&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_test</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">h0</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="n">hL</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="o">-</span> <span class="n">h0</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span> <span class="o">*</span> <span class="n">x_test</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="o">/</span> <span class="n">L</span><span class="p">,</span> 
+         <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Analytical Solution&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Hydraulic Head (h)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="key-discussion-points">
+<h3><strong>Key Discussion Points</strong><a class="headerlink" href="#key-discussion-points" title="Permalink to this headline">#</a></h3>
+<ol class="simple">
+<li><p><strong>Advantages of PINNs in Darcy Flow:</strong></p>
+<ul class="simple">
+<li><p>No need for discretization of the spatial domain (e.g., grids or meshes).</p></li>
+<li><p>The model adapts to non-constant ( K(x) ) (e.g., heterogeneous conductivity).</p></li>
+</ul>
+</li>
+<li><p><strong>Challenges:</strong></p>
+<ul class="simple">
+<li><p>Handling sharp contrasts in ( K(x) ) (e.g., multi-layered media).</p></li>
+<li><p>Computational cost when solving 3D or transient problems.</p></li>
+<li><p>Generalization in real-world scenarios with noise or missing data.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="extensions-for-students">
+<h3><strong>Extensions for Students</strong><a class="headerlink" href="#extensions-for-students" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p><strong>Add Spatially Varying Conductivity:</strong> Modify the PDE to ( \frac{d}{dx}(K(x) \frac{dh}{dx}) = 0 ) and simulate heterogeneous ( K(x) ).</p></li>
+<li><p><strong>Include Transient Flow:</strong> Introduce time-dependence ( \frac{\partial h}{\partial t} = \frac{\partial}{\partial x}\left(K \frac{\partial h}{\partial x}\right) ).</p></li>
+<li><p><strong>Expand to 2D:</strong> Solve ( \nabla \cdot (K \nabla h) = 0 ) for a rectangular domain.</p></li>
+</ul>
+<p>This example balances simplicity with geoscientific relevance, making it an ideal addition to the course.</p>
+</section>
 </section>
 </section>
 
