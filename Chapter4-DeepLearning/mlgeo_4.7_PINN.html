@@ -1100,29 +1100,49 @@ title="Print to PDF"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
 
 <span class="n">losses</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="c1"># plt.yscale(&#39;log&#39;)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 4713.87
-Epoch 2000/20000, loss: 2509.96
-Epoch 4000/20000, loss: 2140.79
-Epoch 6000/20000, loss: 724.98
-Epoch 8000/20000, loss: 87.96
-Epoch 10000/20000, loss: 1.94
-Epoch 12000/20000, loss: 0.40
-Epoch 14000/20000, loss: 0.35
-Epoch 16000/20000, loss: 0.34
-Epoch 18000/20000, loss: 0.33
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/2000, loss: 4816.01
+Epoch 200/2000, loss: 2511.37
+Epoch 400/2000, loss: 2074.74
+Epoch 600/2000, loss: 613.42
+Epoch 800/2000, loss: 95.27
+Epoch 1000/2000, loss: 25.84
+Epoch 1200/2000, loss: 8.47
+Epoch 1400/2000, loss: 3.51
+Epoch 1600/2000, loss: 2.66
+Epoch 1800/2000, loss: 2.31
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.7_PINN_7_1.png" src="../_images/mlgeo_4.7_PINN_7_1.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x16a576310&gt;]
+</pre></div>
+</div>
+<img alt="../_images/mlgeo_4.7_PINN_7_2.png" src="../_images/mlgeo_4.7_PINN_7_2.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prediction_temp_baseline</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">prediction_temp_baseline</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Prediction&#39;</span><span class="p">,</span> <span class="s1">&#39;Training data&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x16a5cf580&gt;
+</pre></div>
+</div>
+<img alt="../_images/mlgeo_4.7_PINN_8_1.png" src="../_images/mlgeo_4.7_PINN_8_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1146,32 +1166,32 @@ Epoch 18000/20000, loss: 0.33
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 11220.99
-Epoch 2000/20000, loss: 3922.64
-Epoch 4000/20000, loss: 2426.29
-Epoch 6000/20000, loss: 1615.85
-Epoch 8000/20000, loss: 1198.53
-Epoch 10000/20000, loss: 1020.56
-Epoch 12000/20000, loss: 923.80
-Epoch 14000/20000, loss: 848.24
-Epoch 16000/20000, loss: 783.72
-Epoch 18000/20000, loss: 719.29
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/20000, loss: 11694.52
+Epoch 2000/20000, loss: 4116.99
+Epoch 4000/20000, loss: 2410.78
+Epoch 6000/20000, loss: 1415.76
+Epoch 8000/20000, loss: 904.16
+Epoch 10000/20000, loss: 697.12
+Epoch 12000/20000, loss: 616.28
+Epoch 14000/20000, loss: 566.81
+Epoch 16000/20000, loss: 523.32
+Epoch 18000/20000, loss: 484.77
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.7_PINN_9_1.png" src="../_images/mlgeo_4.7_PINN_9_1.png" />
+<img alt="../_images/mlgeo_4.7_PINN_10_1.png" src="../_images/mlgeo_4.7_PINN_10_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predsreg</span> <span class="o">=</span> <span class="n">netreg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
 
-<span class="n">preds</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<span class="n">prediction_temp_regularized</span> <span class="o">=</span> <span class="n">netreg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">temps</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">predsreg</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">prediction_temp_regularized</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">prediction_temp_baseline</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Equation&#39;</span><span class="p">,</span><span class="s1">&#39;Training data&#39;</span><span class="p">,</span> <span class="s1">&#39;Network&#39;</span><span class="p">,</span> <span class="s1">&#39;L2 Network&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Equation&#39;</span><span class="p">,</span><span class="s1">&#39;Training data&#39;</span><span class="p">,</span> <span class="s1">&#39;Regularized&#39;</span><span class="p">,</span> <span class="s1">&#39;Baseline&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature (C)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
 </pre></div>
@@ -1181,7 +1201,7 @@ Epoch 18000/20000, loss: 719.29
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.7_PINN_10_1.png" src="../_images/mlgeo_4.7_PINN_10_1.png" />
+<img alt="../_images/mlgeo_4.7_PINN_11_1.png" src="../_images/mlgeo_4.7_PINN_11_1.png" />
 </div>
 </div>
 </section>
@@ -1201,28 +1221,28 @@ Epoch 18000/20000, loss: 719.29
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="n">physics_loss</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">30000</span><span class="p">,</span> <span class="n">loss2_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net_PINN</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">loss2</span><span class="o">=</span><span class="n">physics_loss</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">loss2_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">DEVICE</span><span class="p">)</span>
 
-<span class="n">losses</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="n">losses</span> <span class="o">=</span> <span class="n">net_PINN</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/30000, loss: 4776.84
-Epoch 3000/30000, loss: 2437.13
-Epoch 6000/30000, loss: 556.53
-Epoch 9000/30000, loss: 2.05
-Epoch 12000/30000, loss: 1.41
-Epoch 15000/30000, loss: 1.39
-Epoch 18000/30000, loss: 1.36
-Epoch 21000/30000, loss: 1.36
-Epoch 24000/30000, loss: 1.33
-Epoch 27000/30000, loss: 1.33
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0/30000, loss: 4392.25
+Epoch 3000/30000, loss: 1.61
+Epoch 6000/30000, loss: 2.39
+Epoch 9000/30000, loss: 1.37
+Epoch 12000/30000, loss: 4.35
+Epoch 15000/30000, loss: 1.74
+Epoch 18000/30000, loss: 1.40
+Epoch 21000/30000, loss: 2.01
+Epoch 24000/30000, loss: 1.89
+Epoch 27000/30000, loss: 1.84
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.7_PINN_13_1.png" src="../_images/mlgeo_4.7_PINN_13_1.png" />
+<img alt="../_images/mlgeo_4.7_PINN_14_1.png" src="../_images/mlgeo_4.7_PINN_14_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1242,7 +1262,7 @@ Epoch 27000/30000, loss: 1.33
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Time (s)&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.7_PINN_14_1.png" src="../_images/mlgeo_4.7_PINN_14_1.png" />
+<img alt="../_images/mlgeo_4.7_PINN_15_1.png" src="../_images/mlgeo_4.7_PINN_15_1.png" />
 </div>
 </div>
 <p>Yes, <strong>Darcy flow</strong> is an excellent alternative example for introducing physics-informed neural networks (PINNs) in geosciences. Darcy’s law governs the flow of fluid through porous media, which is fundamental in hydrogeology, groundwater modeling, and petroleum reservoir engineering. Here’s how it can be framed for the class.</p>

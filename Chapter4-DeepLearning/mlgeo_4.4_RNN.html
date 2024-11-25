@@ -652,6 +652,11 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#design-a-vanilla-rnn">
+   Design a vanilla RNN
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#forecast-of-several-steps-ahead-how-far-can-you-predict-the-future">
    Forecast of several steps ahead: how far can you predict the future?
   </a>
@@ -688,6 +693,11 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#design-a-vanilla-rnn">
+   Design a vanilla RNN
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#forecast-of-several-steps-ahead-how-far-can-you-predict-the-future">
    Forecast of several steps ahead: how far can you predict the future?
   </a>
@@ -716,8 +726,8 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="recurrent-neural-networks-processing-sequences">
 <h1>4.4  Recurrent Neural Networks: Processing sequences<a class="headerlink" href="#recurrent-neural-networks-processing-sequences" title="Permalink to this headline">#</a></h1>
-<p>They are used for time series predictions. Regular dense networks can also do it, and CNNs can also work for very long time series.
-A recurrent neuron  receives an input <em>and</em> the output from the neuron at the previous time step. Because each neuron learns from the previous time step, it has <em>memory</em>; but these simple cells have relatively short memory (10 cells about).
+<p>They are used for time series <em><strong>forecast</strong></em>. Regular dense networks can also do it, and CNNs can also work for very long time series.</p>
+<p>A recurrent neuron  receives an input <em>and</em> the output from the neuron at the previous time step. Because each neuron learns from the previous time step, it has <em>memory</em>; but these simple cells have relatively short memory (10 cells about).
 RNNs take in a sequence and output a sequence.</p>
 <p><img alt="RNN" src="../_images/rnn.svg" /></p>
 <p>From D2DL: example of an RNN with a hidden state.
@@ -727,14 +737,18 @@ The RNN takes the multiplication of the weights and the data plus other weights 
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
+<span class="kn">import</span> <span class="nn">torch</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>In time series forecasting, the goal is to predict future values based on historical data. Two important concepts in this process are context data and prediction length.</p>
+<ol class="simple">
+<li><p><strong>Context Data</strong> refers to the historical data used by the forecasting model to make predictions. This data provides the context or background information needed to understand the patterns, trends, and seasonality in the time series. The length of the context data is often referred to as the look-back window or input window.</p></li>
+<li><p><strong>Prediction length</strong> refers to the number of future time steps the model aims to predict. This is also known as the <em><strong>forecast horizon</strong></em>. The number of future time steps the model predicts. For example, if the forecast horizon is 5, the model predicts the next 5 time steps.</p></li>
+</ol>
 <p><strong>Synthetic data</strong></p>
-<p>Let’s create a synthetic time series</p>
+<p>Let’s create a synthetic time series. We will overlap 2 frequencies with noise.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_time_series</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span><span class="n">n_steps</span><span class="p">):</span>
@@ -743,112 +757,244 @@ The RNN takes the multiplication of the weights and the data plus other weights 
     <span class="n">y</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">off1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">f1</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="mi">10</span><span class="p">)</span> <span class="p">)</span> <span class="c1"># first wave</span>
     <span class="n">y</span> <span class="o">+=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">off2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">f2</span><span class="o">*</span><span class="mi">20</span><span class="o">+</span><span class="mi">20</span><span class="p">)</span> <span class="p">)</span> <span class="c1"># second wave</span>
     <span class="n">y</span> <span class="o">+=</span> <span class="mf">0.3</span><span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span><span class="n">n_steps</span><span class="p">)</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># noise</span>
-    <span class="k">return</span> <span class="n">y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> 
-<span class="c1"># here we added a dimension to the output time series because most ML algorithms can be multidimensional, but here we are just doing a single time series.</span>
+    <span class="k">return</span> <span class="n">y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we generate 10k time series of context+prediction_horizon points.</span>
+<span class="n">context</span><span class="o">=</span><span class="mi">50</span>
+<span class="n">prediction_horizon</span><span class="o">=</span><span class="mi">10</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">generate_time_series</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span><span class="n">context</span><span class="o">+</span><span class="n">prediction_horizon</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot some of the time series in a 2x3 grid</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># plot context data</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">context</span><span class="p">),</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,:</span><span class="n">context</span><span class="p">],</span><span class="s1">&#39;b-&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;context&#39;</span><span class="p">)</span>
+    <span class="c1"># plot prediction horizon</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">context</span><span class="p">,</span><span class="n">context</span><span class="o">+</span><span class="n">prediction_horizon</span><span class="p">),</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">context</span><span class="p">:],</span><span class="s1">&#39;r-&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="design-a-vanilla-rnn">
+<h2>Design a vanilla RNN<a class="headerlink" href="#design-a-vanilla-rnn" title="Permalink to this headline">#</a></h2>
+<p>The RNN will take context</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">VanillaRNN</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">VanillaRNN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">RNN</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># RNN layer, batch_size is the first dimension</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span> <span class="c1"># Fully connected layer</span>
+    
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># out: tensor of shape (batch_size, seq_length, hidden_size)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">out</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span> <span class="c1"># out: tensor of shape (batch_size, output_size)</span>
+        <span class="k">return</span> <span class="n">out</span>
 
-<span class="c1"># we generate 10k time series of 51 points.</span>
-<span class="n">n_steps</span><span class="o">=</span><span class="mi">50</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">generate_time_series</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span><span class="n">n_steps</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">create_rnn_and_data</span><span class="p">(</span><span class="n">time_series</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">prediction_horizon</span><span class="p">):</span>
+    <span class="n">input_size</span> <span class="o">=</span> <span class="n">time_series</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">hidden_size</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># You can adjust this value</span>
+    <span class="n">output_size</span> <span class="o">=</span> <span class="n">prediction_horizon</span>
+    
+    <span class="n">model</span> <span class="o">=</span> <span class="n">VanillaRNN</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span>
+    
+    <span class="c1"># Prepare the input and target data</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">time_series</span><span class="p">[:,</span> <span class="p">:</span><span class="n">context</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span> <span class="p">]</span> <span class="c1"># Add a dummy dimension for the input size</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">time_series</span><span class="p">[:,</span> <span class="n">context</span><span class="p">:</span><span class="n">context</span> <span class="o">+</span> <span class="n">prediction_horizon</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">5000</span><span class="p">,:]);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">create_rnn_and_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">prediction_horizon</span><span class="p">)</span>
+
+<span class="c1"># Print model summary</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p><strong>train-validation-test split</strong></p>
-<p>In forecasting problem, we do not want to shuffle the training and test set since we want to make sure test is a prediction from the past (training).</p>
-<p>The training data are time series of 50 points, the “label” or “model output” is the <strong>last value</strong> of the time series.</p>
+<p>Now prepare the training function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_train</span><span class="p">,</span><span class="n">y_train</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:</span><span class="mi">7000</span><span class="p">,:</span><span class="n">n_steps</span><span class="p">],</span><span class="n">y</span><span class="p">[:</span><span class="mi">7000</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
-<span class="n">x_val</span><span class="p">,</span><span class="n">y_val</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">7000</span><span class="p">:</span><span class="mi">9000</span><span class="p">,:</span><span class="n">n_steps</span><span class="p">],</span><span class="n">y</span><span class="p">[</span><span class="mi">7000</span><span class="p">:</span><span class="mi">9000</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
-<span class="n">x_test</span><span class="p">,</span><span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">9000</span><span class="p">:,:</span><span class="n">n_steps</span><span class="p">],</span><span class="n">y</span><span class="p">[</span><span class="mi">9000</span><span class="p">:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
+
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Function to train the model.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    model: torch.nn.Module</span>
+<span class="sd">        The model to train</span>
+<span class="sd">    x_train: np.ndarray</span>
+<span class="sd">        The input data for training (context)</span>
+<span class="sd">    y_train: np.ndarray</span>
+<span class="sd">        The target data for training (prediction horizon)</span>
+<span class="sd">    x_val: np.ndarray</span>
+<span class="sd">        The input data for validation (context)</span>
+<span class="sd">    y_val: np.ndarray</span>
+<span class="sd">        The target data for validation (prediction horizon)</span>
+<span class="sd">    n_epochs: int</span>
+<span class="sd">        The number of epochs</span>
+<span class="sd">    lr: float</span>
+<span class="sd">        The learning rate</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    train_losses: list</span>
+<span class="sd">        The training losses for each epoch</span>
+<span class="sd">    val_losses: list</span>
+<span class="sd">        The validation losses for each epoch    </span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+    <span class="n">loss_fn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+    <span class="n">train_losses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">val_losses</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of outputs: </span><span class="si">{</span><span class="n">y_pred</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of y_train: </span><span class="si">{</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+        <span class="n">train_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="n">y_val_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of val_outputs: </span><span class="si">{</span><span class="n">y_val_pred</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of y_val: </span><span class="si">{</span><span class="n">y_val</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+  
+                <span class="n">val_loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">y_val_pred</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">y_val</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+                <span class="n">val_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s1">, Loss </span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">, Val loss </span><span class="si">{</span><span class="n">val_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">train_losses</span><span class="p">,</span> <span class="n">val_losses</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Train the VanillaRNN by first splitting the data between training and validation data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_steps</span><span class="p">),</span><span class="n">x_train</span><span class="p">[</span><span class="mi">5000</span><span class="p">,:],</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">51</span><span class="p">,</span><span class="n">y_train</span><span class="p">[</span><span class="mi">5000</span><span class="p">],</span><span class="s1">&#39;r+&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prediction_horizon</span><span class="p">,</span> <span class="n">context</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># split y into training and validation sets</span>
+<span class="n">n_train</span> <span class="o">=</span> <span class="mi">7000</span>
+<span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="n">n_train</span><span class="p">,</span> <span class="p">:</span><span class="n">context</span><span class="p">],</span> <span class="n">data</span><span class="p">[:</span><span class="n">n_train</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span><span class="n">context</span> <span class="o">+</span> <span class="n">prediction_horizon</span><span class="p">]</span>
+<span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">n_train</span><span class="p">:,</span> <span class="p">:</span><span class="n">context</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">n_train</span><span class="p">:,</span> <span class="n">context</span><span class="p">:</span><span class="n">context</span> <span class="o">+</span> <span class="n">prediction_horizon</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">x_val</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y_val</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># remove the last dimnsion of y_train and y_val</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">y_train</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">y_val</span> <span class="o">=</span> <span class="n">y_val</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_losses</span><span class="p">,</span> <span class="n">val_losses</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the loss curves</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train_losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">val_losses</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;val&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We can use the past values to predict the state, called <em>naive forecasting</em>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y_pred</span><span class="o">=</span><span class="n">x_val</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Or we can use a fully connected network and predict the value as a MLP regression:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span>
-                              <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
-</pre></div>
-</div>
-<p>They don’t do too bad in this problem. The simple block is a <code class="docutils literal notranslate"><span class="pre">simpleRNN</span></code>. The simplest recurrent neuron is a <code class="docutils literal notranslate"><span class="pre">SimpleRNN(1,input_shape=[None,1])</span></code> that takes any input scalar since it can process any number of time steps. The default activation function is <code class="docutils literal notranslate"><span class="pre">tanh</span></code>. To return a time series, and not its final output, you need to set <code class="docutils literal notranslate"><span class="pre">return_sequences=True</span></code>. It turns out that the simplest and single recurrent neuron won’t work. So we stack several simpleRNNs.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="p">])</span>
-<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span><span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mse&#39;</span><span class="p">])</span>
-<span class="n">history</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span><span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span><span class="n">y_val</span><span class="p">),</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_val</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;epochs&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># now show examples on the validation set with the ground truth and the prediction</span>
+<span class="c1"># add a dimension to x_val</span>
+<span class="c1"># x_val = x_val[...,np.newaxis]</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">y_val_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">())</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="c1"># plot some of the time series in a 2x3 grid</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">x_val</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">y_val</span><span class="p">[</span><span class="n">i</span><span class="p">]]),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;GT&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">x_val</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">y_val_pred</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Prediction&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
-    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="p">])</span>
-<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span><span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mse&#39;</span><span class="p">])</span>
-<span class="n">history</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span><span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span><span class="n">y_val</span><span class="p">),</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;epochs&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
+</section>
 <section id="forecast-of-several-steps-ahead-how-far-can-you-predict-the-future">
 <h2>Forecast of several steps ahead: how far can you predict the future?<a class="headerlink" href="#forecast-of-several-steps-ahead-how-far-can-you-predict-the-future" title="Permalink to this headline">#</a></h2>
 <p>We will try and predict 10 steps ahead. The early part of the forecast will be a lot better than the later part of the forecast as uncertainties increase.</p>
