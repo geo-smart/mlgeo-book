@@ -1,0 +1,159 @@
+### Lecture Plan: **Physics-Informed Neural Networks (PINNs) in Geosciences**
+
+---
+
+#### **Target Audience:**
+Graduate students in a course on Machine Learning in Geosciences
+
+---
+
+### **I. Introduction to Physics-Informed Neural Networks (PINNs)**
+#### **What are PINNs?**
+- PINNs integrate physical laws (represented as partial differential equations, PDEs) into neural network training.
+- Instead of purely data-driven models, PINNs enforce physical consistency by embedding governing equations as loss functions.
+
+#### **Why PINNs in Geosciences?**
+- Many geoscientific processes are governed by well-known PDEs (e.g., Navier-Stokes equations, heat diffusion equations).
+- Combining sparse field data with known physical laws helps PINNs solve problems like seismic imaging, weather prediction, and subsurface modeling.
+
+---
+
+### **II. Mathematical Framework of PINNs**
+1. **Components of a PINN:**
+   - Neural Network (NN): Approximates the solution \( u(x,t) \) or similar dependent variables.
+   - PDE: The governing equation \( \mathcal{L}(u, x, t) = 0 \), where \( \mathcal{L} \) is the differential operator.
+   - Loss Function:
+     \[
+     \text{Loss} = \text{Data Loss} + \text{Physics Loss},
+     \]
+     where
+     - Data Loss enforces agreement with observations.
+     - Physics Loss ensures the NN respects the governing equations.
+
+2. **Optimization:**
+   - Solve for NN parameters \( \theta \) by minimizing the combined loss using gradient-based optimizers.
+
+---
+
+### **III. Geoscientific Context: Recent Literature**
+#### **Example Applications in Literature:**
+1. **Temperature Diffusion in Earth's Crust:**
+   - Application in modeling geothermal energy potential.
+   - Reference: Study on thermal conductivity prediction using sparse borehole data and PINNs.
+
+2. **Seismic Wave Propagation:**
+   - Real-time simulation of earthquake waves through heterogeneous media.
+   - Reference: PINNs for solving elastic wave equations in complex geological domains.
+
+3. **Groundwater Flow Dynamics:**
+   - Modeling aquifer responses to pumping and recharge events.
+
+---
+
+### **IV. Python Example: Solving the Heat Equation with PyTorch**
+We will solve the **1D Heat Equation**:
+\[
+\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2},
+\]
+where \( u(x,t) \) is temperature, \( \alpha \) is the thermal diffusivity.
+
+#### **1. Import Necessary Libraries**
+```python
+import torch
+import torch.nn as nn
+import numpy as np
+```
+
+#### **2. Define the Neural Network**
+```python
+class PINN(nn.Module):
+    def __init__(self):
+        super(PINN, self).__init__()
+        self.layers = nn.Sequential(
+            nn.Linear(2, 64),
+            nn.Tanh(),
+            nn.Linear(64, 64),
+            nn.Tanh(),
+            nn.Linear(64, 1)
+        )
+
+    def forward(self, x):
+        return self.layers(x)
+```
+
+#### **3. Define the PDE Loss**
+```python
+def pde_loss(model, x, t, alpha):
+    # Require gradients for PINN computations
+    inputs = torch.cat((x, t), dim=1).requires_grad_(True)
+    u = model(inputs)
+
+    # Calculate first and second derivatives
+    u_t = torch.autograd.grad(u.sum(), t, create_graph=True)[0]
+    u_x = torch.autograd.grad(u.sum(), x, create_graph=True)[0]
+    u_xx = torch.autograd.grad(u_x.sum(), x, create_graph=True)[0]
+
+    # Heat equation residual
+    residual = u_t - alpha * u_xx
+    return torch.mean(residual**2)
+```
+
+#### **4. Train the PINN**
+```python
+# Define model, optimizer, and parameters
+model = PINN()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+alpha = 0.01
+
+# Generate training data
+x = torch.rand((100, 1), requires_grad=True)
+t = torch.rand((100, 1), requires_grad=True)
+
+# Training loop
+for epoch in range(1000):
+    optimizer.zero_grad()
+    loss = pde_loss(model, x, t, alpha)
+    loss.backward()
+    optimizer.step()
+
+    if epoch % 100 == 0:
+        print(f"Epoch {epoch}, Loss: {loss.item()}")
+```
+
+---
+
+### **V. Challenges in Using PINNs for Geosciences**
+#### **1. Computational Complexity:**
+- High-dimensional problems (e.g., 3D seismic simulations) demand significant computational resources.
+- Solutions: Exploit domain decomposition and multi-GPU setups.
+
+#### **2. Boundary Condition Enforcement:**
+- Incorporating complex boundary conditions (e.g., irregular geological interfaces) can be challenging.
+
+#### **3. Generalization:**
+- PINNs can overfit to specific problem settings, limiting applicability to generalized scenarios.
+
+#### **4. Data Sparsity:**
+- In geosciences, sparse data increases reliance on accurate physics-based loss, which may not always suffice.
+
+#### **5. Optimization Issues:**
+- Balancing data and physics loss components can lead to optimization challenges.
+
+---
+
+### **VI. Concluding Remarks**
+- PINNs represent a promising synergy of physics and machine learning, particularly suited to solving PDE-governed problems in geosciences.
+- Future work could focus on improving scalability and addressing domain-specific challenges.
+
+---
+
+**References:**
+1. Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving PDEs. *Journal of Computational Physics*.
+2. Zhang, J., et al. (2021). Application of PINNs in subsurface flow modeling. *Geophysical Research Letters*.
+
+---
+
+***Handling multiple papers?***
+
+Speed up your research with Sider! Our AI-powered sidebar features 10+ one-click tools including a more advanced Search Agent, ChatPDF, context-aware utilities and more to help you work smarter and faster.
+ [Level up your research game here](https://bit.ly/4aSnMXa)
