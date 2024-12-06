@@ -13,10 +13,10 @@ This project is supported by the GeoSMART team (Stefan Todoran, Nicoleta Cristea
 # Overview
 The course is intended to introduce Machine Learning in Geosciences, the basics of computing, and methodologies in applied machine learning. The course focuses on canonical and topical data sets in seismology, oceanography, cryosphere, planetary sciences, geology, and geodesy. The methods taught include unsupervised clustering, logistic regression, random forest, support vector machine, and deep learning.
 
-# Student version
+<!-- # Student version
 Some chapters will include code sections which students should attempt to write on their own first before viewing the solution. The student version of this book automatically clears sections marked by the instructor as student response, and can be accessed via the link below. 
 
-[![Student Version](../img/student_version_badge.svg)](https://geo-smart.github.io/mlgeo-book/)
+[![Student Version](../img/student_version_badge.svg)](https://geo-smart.github.io/mlgeo-book/) -->
 
 # Learning objectives 
 By the end of the quarter, the students should be able to:
@@ -28,9 +28,11 @@ By the end of the quarter, the students should be able to:
 - Describe the canonical examples in a breadth of disciplines in geoscience.
 - Understand at least qualitatively how some of the advanced techniques (Fourier and wavelet transform, principal component analysis,…) manipulate and transform the data to interpret the output.
 
+The UW MLGEO course ESS469/569, we follow a [syllabus](about_this_book/MLGeo_2024.pdf)
 
+<!-- 
 # Tiered learning
-Because students do not need to be experts on all materials covered in this course, we divide each topic into three levels: **Beginner (Level 1)**, **Intermediate (Level 2)**, and **Advanced (Level 3)**. We tag these levels throughout the book. 
+Because students do not need to be experts on all materials covered in this course, we divide each topic into three levels: **Beginner (Level 1)**, **Intermediate (Level 2)**, and **Advanced (Level 3)**. We tag these levels throughout the book.  -->
 
 Note that we introduce and incoroporate data visualization concepts throughout the book.
 
