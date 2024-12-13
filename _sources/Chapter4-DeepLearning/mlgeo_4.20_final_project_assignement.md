@@ -1,4 +1,4 @@
-###  Deep Learning Exploration with AI-Ready Datasets
+###  **Deep Learning Exploration with AI-Ready Datasets**
 
 **Objective**: Evaluate students' ability to explore and implement deep learning models for their AI-ready datasets, benchmark these models against classical machine learning methods, deliver high-quality software, and analyze results critically.
 

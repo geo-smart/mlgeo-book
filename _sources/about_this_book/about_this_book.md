@@ -10,7 +10,7 @@ Instructors:
 
 This project is supported by the GeoSMART team (Stefan Todoran, Nicoleta Cristea, Anthony Arendt, Scott Henderson, Ziheng Sun, Yiyu Ni, Akash Kharita).
 
-# Overview
+## Overview
 The course is intended to introduce Machine Learning in Geosciences, the basics of computing, and methodologies in applied machine learning. The course focuses on canonical and topical data sets in seismology, oceanography, cryosphere, planetary sciences, geology, and geodesy. The methods taught include unsupervised clustering, logistic regression, random forest, support vector machine, and deep learning.
 
 <!-- # Student version
@@ -39,14 +39,12 @@ Note that we introduce and incoroporate data visualization concepts throughout t
 # Prerequisites
 **Prerequisites**: MATH 207 and MATH 208, or MATH 307 or 308, or AMATH 351 or 352, CS160 or CS163, or permission from the instructor.
 
-**Recommended skills**: Knowledge in Matlab or python, AMATH301, 100- or 200-level courses in the Earth Sciences. We will provide refreshers on computing as part of the course.
+**Recommended skills**: Knowledge in Python, AMATH301, 100- or 200-level courses in the Earth Sciences. We will provide refreshers on computing as part of the course.
 
 # Syllabus
-- Module 1 (weeks 1 and 2): Intro on ML in the Geo and basic tool building for Open Sciences 
-- Module 2 (weeks 3 and 4): Creating Machine-Learning Ready Data Sets
-- Module 3 (weeks 5 and 6): Feature extraction and clustering
-- Module 5 (weeks 7 and 8): Machine Learning
-- Module 6 (weeks 9 and 10): Deep Learning
+- **Part I: AI-ready GeoData**: This part will focus on geoscientific data, their modalities and dimensions, their basic characteristics, how to extract features, dimensionality reduction, and how to format AI-ready data set from geoscientific data
+- **Part II: Classic Machine Learning**: This part will focus on developing machine learning skills for model training, evaluation, assessment for generalization, good practice for robust model training for classic machine learning after feature engineering (e.g., K-means, random foreast, knn, etc)
+- **Part II: Deep Learning**: This part will overview foundamental concepts in deep learning, such as fully connected layers, convolutional neural networks, sequence-to-sequence learning with RNNs, and canonical architectures such as large DNN, ResNets, U-Nets, strategies for training neural networks such as data augmentation, regularization, loss definition that incorporate physics constrains, and modern topics such as foundational models and large language models for geoscience.
 
 # Technical skills building
 Throughout the course, the students will build skills in shell, version control using git and GitHub, Python programming, high-performance computing strategies, and simple data visualization using Python. 
