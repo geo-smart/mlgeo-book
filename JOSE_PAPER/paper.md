@@ -128,17 +128,36 @@ The Book contains about 50 hours of instructional hours.
 
 ## JupyterBook (Jupyter notebooks)
 
-## Homework (Jupyter notebooks)
+## Homework
+
+The "Classic Machine Learning" [homework](https://geo-smart.github.io/mlgeo-book/Chapter3-MachineLearning/Homework_CML.html) assignment is designed to reinforce students' understanding of key machine learning concepts introduced in Chapter 3 of the course. The primary objective is to provide hands-on experience in data preparation, unsupervised clustering, and the application of various supervised learning algorithms.
+
+In the initial phase, students engage in data preparation, which includes reading, cleaning, exploring, and reducing the dimensionality of a dataset. This process ensures that students can effectively handle real-world geoscientific data, making it suitable for machine learning applications. Subsequently, students apply unsupervised clustering techniques, specifically K-Means, to identify inherent patterns within the data. This step emphasizes the importance of selecting optimal cluster numbers and evaluating clustering performance.
+
+The assignment culminates with the implementation of various supervised learning models, such as K-Nearest Neighbors, Naive Bayes, Random Forest, Support Vector Machine, and Multi-Layer Perceptron. Students are tasked with feature scaling, splitting data into training and testing sets, designing models, and evaluating their performance using metrics like confusion matrices and cross-validation. This comprehensive approach ensures that students gain practical skills in model selection, training, and evaluation, directly applying the theoretical concepts covered in Chapter 3.
+
+## Technology Integration  
+
+The course emphasizes building a robust technological foundation for students to succeed in applying machine learning to geosciences. In the first week, students are introduced to generative AI tools for coding, such as GitHub Copilot, to accelerate their ability to draft and refine code efficiently. A significant focus is placed on ensuring students have access to appropriate software platforms, including setting up VSCode, creating GitHub accounts, and installing either a pre-configured Docker image or a Conda environment tailored for the course. Students are guided step-by-step to establish a well-organized workspace, integrating VSCode with Copilot for seamless AI-assisted coding. These sessions also cover best practices for managing environments, troubleshooting installations, and maintaining reproducibility in their workflows. By mastering these tools early in the course, students are empowered to tackle coding challenges with confidence and efficiency, leveraging cutting-edge AI technologies to enhance their productivity and technical skills.
+
+Some of the notebooks presented in the JupyterBook were also supported by GenAI in order to craft new geoscientifically inspired toy synthetic data sets for in-class exercises. We found that GenAI was helpful in smoothing over notebooks, crafting new interesting exercises, expanding the instructor's perspective on interndisciplinary research.
 
 
 # Content Delivery
 
+The course is structured to provide a balanced and engaging learning experience, with each week designed to focus on three key components: 1/3 conceptual understanding, 1/3 application through toy problems, and 1/3 hands-on student-led exercises. This structure ensures that students not only grasp the theoretical aspects of machine learning but also apply them in practical scenarios and take an active role in the learning process.  
+
+Weekly student participation includes presenting summaries of scientific papers or webinars, with an emphasis on selecting five presentations per week to encourage peer learning and collaborative discussions. The overall course is organized into three major pillars: 1/3 on data curation, 1/3 on classic machine learning methods, and 1/3 on deep learning techniques. Assignments, mostly tackled in groups, align with these pillars and culminate in a final group project that integrates all learned components. Additionally, an extra homework assignment helps assess individual learning outcomes, ensuring that students achieve a comprehensive understanding of the material.  
+
+Students are provided ample opportunities to practice during class, fostering collaborative problem-solving and real-time feedback. The course is well-suited for remote delivery with its reliance on digital tools like Jupyter notebooks, GitHub, and cloud computing platforms. However, successful remote implementation requires additional teaching assistants (TAs) and breakout room support to address diverse student needs effectively. This interactive and flexible approach ensures that students are well-prepared to tackle complex geoscientific problems using modern machine learning techniques.
 
 # Teaching experience
 
+The course is designed for an instructor and a teaching assistant. Instructors tend to be among a single subdiscipline of geosciences and the student attending the course have been largely coming from geophysics, atmospheric sciences.
 
 # Acknowledgments
 
+We acknowledge the UW eScience institute support provided through office hours and support to the GeoSMART project. Part of this project was supported by the College of the Environment, and NSF GEOSMART award number OAC-2117834.
 
 
 # References
