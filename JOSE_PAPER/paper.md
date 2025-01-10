@@ -28,6 +28,9 @@ authors:
   - name: Ziheng Sun
     affiliation: "2"
     orcid: 0000-0001-9810-0023
+  - name: Stefan Todoran
+    affiliation: "1"
+    orcid: 0009-0001-4711-5126
 
     
 affiliations:
