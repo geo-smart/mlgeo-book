@@ -69,28 +69,13 @@ The MLGEO course arose from merging a development course "Data Sciences in the E
 
 
 **Course Structure:**
+The course has three pillars:
 
 1. **AI-ready GeoData:** Focuses on geoscientific data modalities, characteristics, feature extraction, dimensionality reduction, and preparing datasets for AI applications.
 
 2. **Classic Machine Learning:** Covers model training, evaluation, and robust training practices for algorithms such as K-means, random forests, and k-nearest neighbors.
 
 3. **Deep Learning:** Explores foundational concepts including fully connected layers, convolutional neural networks, sequence-to-sequence learning with recurrent neural networks, and modern topics like physics-informed neural networks and network architecture search.
-
-**Learning Objectives:**
-
-By the end of the course, students are expected to:
-
-- Demonstrate proficiency in Python programming, Jupyter notebooks, Git version control, and deploying scripts on various computing platforms.
-
-- Develop and apply standard ML workflows, including data preparation, model design, training, validation, and evaluation.
-
-- Implement data manipulation strategies pertinent to geosciences, such as handling time series and geospatial data, data visualization, dimensionality reduction, and feature engineering.
-
-- Understand and apply open science principles, ensuring reproducibility and adherence to digital scholarship standards.
-
-- Gain familiarity with canonical examples across various geoscience disciplines.
-
-- Comprehend advanced techniques like Fourier and wavelet transforms, principal component analysis, and their applications in data interpretation.
 
 **Technical Skills Development:**
 
@@ -100,32 +85,53 @@ The course emphasizes building competencies in:
 
 - **Version control with Git and GitHub**
 
-- **Python programming**, utilizing packages such as NumPy, (Geo)Pandas, scikit-learn, Keras, and PyTorch
+- **Generative AI**, integrating GenAI for software development and literature synthesis.
 
-- **Data visualization** using Matplotlib and Plotly
+- **Python programming**, utilizing packages such as NumPy, Pandas, scikit-learn, PyTorch
 
-- **High-performance computing** strategies
+- **Data visualization** using Matplotlib, seaborn, Plotly
+
+- **High-performance computing** strategies for cloud, HPC and 
 
 **Prerequisites:**
 
-Students should have completed courses in mathematics (MATH 207 and MATH 208, or equivalents) and possess some programming experience (e.g., CS160 or CS163). While prior knowledge of Python is recommended, the course provides refreshers on computing as needed.
+Students should have completed courses in mathematics, applied mathematics, statistics. and possess some programming experience (e.g., CS160 or CS163). While prior knowledge of Python is recommended, the course provides refreshers on computing as needed.
 
 For more detailed information, including access to tutorials and homework assignments, the course utilizes a dedicated GitHub repository:  
 
-
-For learning modules, describe the learning objectives, content, instructional design, and experience of use in teaching and learning situations.
-
 # Learning objectives
 
+By the end of the course, students are expected to:
+
+- Demonstrate proficiency in Python programming, Jupyter notebooks, Git version control, integration of GenAI in coding practices (e.g., copilot), conda environments, containers, and deploying software on new platforms.
+
+- Construct a standard ML workflow that follows community best practices, including data preparation, model design, training, validation, and evaluation.
+
+- Implement data manipulation strategies pertinent to geosciences, such as handling time series and geospatial data, data visualization, dimensionality reduction, and feature engineering.
+
+- Understand and apply open science principles, ensuring reproducibility and adherence to digital scholarship standards.
+
+- Gain familiarity with canonical examples of ML across various geoscience disciplines and identify strategies for using ML in geoscience when given a context for data richness, physical models, and problem set up.
+
+- Evaluate the robustness of the machine learning pipeline utilized in scientific literature
 
 
 The Book contains about 50 hours of instructional hours.
+
+
 # Teaching materials
+
+The class alternates between notebooks, slides, and student lef presentations.
 
 ## Detailed syllabus
 
 
 ## Slides
+
+The majority of the class goes through the notebooks in the [Jbook](https://geo-smart.github.io/mlgeo-book/about_this_book/about_this_book.html), but several slidedecks are added for the convenience of the instructor. The GitHub repository contains raw materials for future instructors to adapt.
+
+* [Introduction class](../book/slides/MLGeo_Introduction_generic.pptx): overview of ML in the geosciences, scientific concepts, course logistics.
+* 
 
 ## Docker Base Container
 
