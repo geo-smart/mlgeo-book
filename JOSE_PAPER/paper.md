@@ -121,7 +121,7 @@ The Book contains about 50 hours of instructional hours.
 
 # Teaching materials
 
-The class alternates between notebooks, slides, and student lef presentations.
+The class alternates between notebooks, slides, and student led presentations.
 
 ## Detailed syllabus
 
@@ -133,9 +133,27 @@ The majority of the class goes through the notebooks in the [Jbook](https://geo-
 * [Introduction class](../book/slides/MLGeo_Introduction_generic.pptx): overview of ML in the geosciences, scientific concepts, course logistics.
 * 
 
+
+## Small Geoscientific DataSets
+
+We collected a small data sets of geoscientific data that are used in the book, in class, or suggested by students participating in the class. The GitHub repository MLGEO-data (https://github.com/UW-MLGEO/MLGeo-dataset) sets contains a collection of notebooks (``./scripts/``)that demosntrates how to manipulate or download open-source data sets, and small data sets (typically CSV under ``./data/``) that are small enough to be used in the classroom.
+```
+git clone https://github.com/UW-MLGEO/MLGeo-dataset
+```
+
 ## Docker Base Container
+We created a minimal docker image to run the notebooks in class, automatically build with GitHub action from this repository: https://github.com/UW-MLGEO/MLGeo-image.
+
+The image can be pulled with Docker:
+```
+docker pull uwessds/mlgeo-image:latest
+```
 
 ## JupyterBook (Jupyter notebooks)
+
+The MLGEO book is presented as a collection of Jupyter notebooks, organized into a Jupyter Book. This format allows for an interactive learning experience, where students can run code cells, visualize data, and experiment with different machine learning models directly within the notebooks.
+
+The Jupyter Book is hosted online and can be accessed through the following link: [MLGEO Jupyter Book](https://geo-smart.github.io/mlgeo-book/). Each chapter is divided into multiple sections, with detailed explanations, code examples, and exercises to reinforce the concepts covered.
 
 ## Homework
 
@@ -144,6 +162,21 @@ The "Classic Machine Learning" [homework](https://geo-smart.github.io/mlgeo-book
 In the initial phase, students engage in data preparation, which includes reading, cleaning, exploring, and reducing the dimensionality of a dataset. This process ensures that students can effectively handle real-world geoscientific data, making it suitable for machine learning applications. Subsequently, students apply unsupervised clustering techniques, specifically K-Means, to identify inherent patterns within the data. This step emphasizes the importance of selecting optimal cluster numbers and evaluating clustering performance.
 
 The assignment culminates with the implementation of various supervised learning models, such as K-Nearest Neighbors, Naive Bayes, Random Forest, Support Vector Machine, and Multi-Layer Perceptron. Students are tasked with feature scaling, splitting data into training and testing sets, designing models, and evaluating their performance using metrics like confusion matrices and cross-validation. This comprehensive approach ensures that students gain practical skills in model selection, training, and evaluation, directly applying the theoretical concepts covered in Chapter 3.
+
+
+## Final Project
+
+The final project a group-based, complete machine learning project with 4 pillars:
+1. Design a scientifically sound machine learning project, and justify the need and benefit of using ML. Establish the best non-ML approach to solving the problem and the baselines to beat.
+2. AI-ready data set: 
+    - explore data and its dimensionality
+    - ML data pipelines
+    - curated and explored data sets
+3. Classic Machine Learning: develop baseline models using simple CML models, performa auto-ML to find optimal CML model
+4. Deep Learning: explore deep learning models and their architectures, and if it improves upon the CML performance, develop comprehensive comparison of CML, DL, and argue for benefit of one or all approach with computational considerations.
+The final proejct is described in the book: https://geo-smart.github.io/mlgeo-book/Chapter1-GettingStarted/1.20_MLGEO_Final_Project.html.
+
+
 
 ## Technology Integration  
 
@@ -162,7 +195,20 @@ Students are provided ample opportunities to practice during class, fostering co
 
 # Teaching experience
 
-The course is designed for an instructor and a teaching assistant. Instructors tend to be among a single subdiscipline of geosciences and the student attending the course have been largely coming from geophysics, atmospheric sciences.
+The course is designed for an instructor and a teaching assistant. Instructors tend to be among a single subdiscipline of geosciences and the student attending the course have been largely coming from geophysics, atmospheric sciences, oceanography, forestry, etc. Students have typically be 50% from undergraduate (senior level) and 50% from graduate students.
+
+Classes were taught with 90 minutes class time three times a week, student spend several hours per week on their final project, paper reviews, and homework.
+
+Instructors have provisioned jupyterhub for the class, with the mlgeo-image as base image. In the 2024 course offering, we made the students install their environment locally with Visual Studio Code, a student license for GitHub education that included a free license to GitHub CoPilot, and integrated this to the instructional time. Students downloaded the Jbook's notebook on their local Mac, Linux, and PC laptops, and ran the notebooks locally. It tooks a full week to have all 35 students fully ready to run the notebooks. 
+
+The integration of GenAI in the 2024 course offering was transformative: the instructor spent less time debugging in class, more time discussing ML concepts, the students spent less time stuck on software engineering and formating, more time discussing their data. This acceleration enable students's final project to complete the 3 milestones of the class: AI-ready data, CML, and DL.
+
+
+## Conclusion and Outlook
+
+Overall, the enhanced teaching experience fostered a more interactive and productive classroom environment, ultimately leading to a more comprehensive understanding of machine learning principles and their practical applications.
+
+The Jbook is designed to be a dynamic document that the community is invited to contribute to. There is a lot to improve on bringing geoscientific data sets relevant exercises, improving on the concepts, and the ever evolving literature.
 
 # Acknowledgments
 
