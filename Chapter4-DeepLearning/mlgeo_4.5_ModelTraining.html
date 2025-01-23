@@ -129,19 +129,19 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../about_this_book/acknowledgements.html">
-   Acknowlegments
+  <a class="reference internal" href="../about_this_book/0_mlgeo_project.html">
+   ML Project Overview
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../about_this_book/0_mlgeo_project.html">
-   Primer
+  <a class="reference internal" href="../about_this_book/acknowledgements.html">
+   Acknowlegments
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Chapter 1 - Open Source Ecosystem with Python
+  Chapter 1 - Open Source Ecosystem
  </span>
 </p>
 <ul class="nav bd-sidenav">
@@ -192,6 +192,11 @@ const thebe_selector_output = ".output, .cell_output"
  </span>
 </p>
 <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter2-DataManipulation/readme.html">
+   Chapter Overview
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter2-DataManipulation/2.1_Data_Definitions.html">
    2.1 Data Definitions
@@ -273,6 +278,11 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="../Chapter3-MachineLearning/readme.html">
+   Chapter Overview
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.1_concepts_supervision.html">
    3.1 Concepts in training supervision
   </a>
@@ -284,7 +294,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../Chapter3-MachineLearning/3.3_clustering.html">
-   3.3 Clustering: Unsupervied Classification
+   3.3 Clustering: Unsupervised Classification
   </a>
  </li>
  <li class="toctree-l1">
@@ -342,6 +352,11 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="readme.html">
+   Chapter Overview
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mlgeo_4.0_perceptrons.html">
    4.0 The Perceptron
   </a>
@@ -387,6 +402,11 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="mlgeo_4.10_timeseriesforecast.html">
+   4.10 Time Series Forecast
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mlgeo_4.20_final_project_assignement.html">
    <strong>
     Deep Learning Exploration with AI-Ready Datasets
@@ -422,9 +442,16 @@ const thebe_selector_output = ".output, .cell_output"
    Terraform Access to Cloud Instances
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Chapter 7 - Use Chapter1-GettingStarted/1.1_open_reproducible_science
+ </span>
+</p>
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="https://tljh.jupyter.org/en/latest/">
-   Cloud Provider ML Jupyterhubs
+  <a class="reference internal" href="../Chapter7-UseCases/readme.html">
+   Use Cases in MLGEO
   </a>
  </li>
 </ul>
@@ -673,8 +700,13 @@ title="Print to PDF"
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#preparing-data-for-training-and-evaluating">
+     1. Preparing Data for training and evaluating
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#standard-loss-functions">
-     1. Standard Loss functions
+     2. Standard Loss functions
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h3 nav-item toc-entry">
@@ -807,8 +839,13 @@ title="Print to PDF"
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#preparing-data-for-training-and-evaluating">
+     1. Preparing Data for training and evaluating
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#standard-loss-functions">
-     1. Standard Loss functions
+     2. Standard Loss functions
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h3 nav-item toc-entry">
@@ -947,8 +984,17 @@ title="Print to PDF"
 </div>
 </div>
 </div>
+<section id="preparing-data-for-training-and-evaluating">
+<h2>1. Preparing Data for training and evaluating<a class="headerlink" href="#preparing-data-for-training-and-evaluating" title="Permalink to this headline">#</a></h2>
+<p>When training a deep learning model, it is crucial to prepare separate datasets for training, validation (both training and validating are used for training purpose), and testing to ensure the model’s performance is accurately assessed and generalized. The goal is to create a robust model that performs well on new, unseen data.</p>
+<ul class="simple">
+<li><p><strong>Training Set</strong>: The training set is used to fit the model, allowing it to learn patterns and relationships within the data. This dataset should be the largest portion of your data to provide the model with enough examples to learn effectively. Typically, 60-80% of the total data is allocated to the training set. The training data should be diverse and as balance as possible for the model to learn representation in the data. Training data can also be engineered make the model resilient against noise: a strategy is to select the most noise-free data samples and add synthetic or realistic noise to the signals to artifically vary noise levels. This is a form of <strong>data augmentation</strong> and used as a way to regularize the model.</p></li>
+<li><p><strong>Validation Set</strong>: The validation set is used during training to tune hyperparameters and prevent overfitting by providing an unbiased evaluation of the model’s performance on unseen data. This set helps in making decisions about model architecture and hyperparameter settings. Usually, 10-20% of the total data is allocated to the validation set.</p></li>
+<li><p><strong>Test Set</strong>: The test set is used to assess the model’s generalization capabilities and robustness. It should be kept <em><strong>completely separate</strong></em> from the training and validation sets to avoid data leakage. This ensures that no information from the test set influences the training process, providing a final, unbiased evaluation of the model’s performance on new, unseen data. Typically, 10-20% of the total data is allocated to the test set.</p></li>
+</ul>
+</section>
 <section id="standard-loss-functions">
-<h2>1. Standard Loss functions<a class="headerlink" href="#standard-loss-functions" title="Permalink to this headline">#</a></h2>
+<h2>2. Standard Loss functions<a class="headerlink" href="#standard-loss-functions" title="Permalink to this headline">#</a></h2>
 <p>A loss function measures how well a model’s predictions align with the ground truth. It provides a numerical value that quantifies the “error” or “misfit,” which the optimization algorithm minimizes during training.</p>
 <p>Purpose: Drives the neural network’s learning by guiding updates to the model’s parameters via backpropagation.</p>
 <p>In geoscience, data often involve</p>
@@ -1221,7 +1267,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.0, 30.0)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.5_ModelTraining_10_2.png" src="../_images/mlgeo_4.5_ModelTraining_10_2.png" />
+<img alt="../_images/mlgeo_4.5_ModelTraining_11_2.png" src="../_images/mlgeo_4.5_ModelTraining_11_2.png" />
 </div>
 </div>
 <p>We see that there needs to be at least 10 samples in the training set for the models to generalize reasonably well. We also  see that all of the regularization mechanisms yield seemingly similar behavior at the training. After a sufficient number of samples, validation loss goes below training loss.</p>
@@ -1240,7 +1286,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/mlgeo_4.5_ModelTraining_12_0.png" src="../_images/mlgeo_4.5_ModelTraining_12_0.png" />
+<img alt="../_images/mlgeo_4.5_ModelTraining_13_0.png" src="../_images/mlgeo_4.5_ModelTraining_13_0.png" />
 </div>
 </div>
 <p>The data looks complex, with the superposition of a linear trend and oscillatory signals. Let’s fit a general polynomial form. We will start with a simple model.</p>
@@ -1271,7 +1317,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x16b4d22e0&gt;]
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.5_ModelTraining_14_2.png" src="../_images/mlgeo_4.5_ModelTraining_14_2.png" />
+<img alt="../_images/mlgeo_4.5_ModelTraining_15_2.png" src="../_images/mlgeo_4.5_ModelTraining_15_2.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1284,7 +1330,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.0, 100.0)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.5_ModelTraining_15_1.png" src="../_images/mlgeo_4.5_ModelTraining_15_1.png" />
+<img alt="../_images/mlgeo_4.5_ModelTraining_16_1.png" src="../_images/mlgeo_4.5_ModelTraining_16_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1315,7 +1361,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2.0, 4.0)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.5_ModelTraining_16_1.png" src="../_images/mlgeo_4.5_ModelTraining_16_1.png" />
+<img alt="../_images/mlgeo_4.5_ModelTraining_17_1.png" src="../_images/mlgeo_4.5_ModelTraining_17_1.png" />
 </div>
 </div>
 </section>
@@ -3402,7 +3448,7 @@ Ridge Regression is sensitive to data scale, so do not forget to scale input dat
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.0, 30.0)
 </pre></div>
 </div>
-<img alt="../_images/mlgeo_4.5_ModelTraining_19_2.png" src="../_images/mlgeo_4.5_ModelTraining_19_2.png" />
+<img alt="../_images/mlgeo_4.5_ModelTraining_20_2.png" src="../_images/mlgeo_4.5_ModelTraining_20_2.png" />
 </div>
 </div>
 <p>You may also consider the parameter <code class="docutils literal notranslate"><span class="pre">early_stopping=True</span></code> in SGD to automatically implement early stopping and deal with overfitting.</p>
