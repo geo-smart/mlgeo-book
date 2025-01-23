@@ -15,15 +15,29 @@ runs:
         key:
           ${{ runner.os }}-conda-packages-${{ env.CACHE_NUMBER }}-${{ hashFiles('conda/conda-lock.yml') }}
 
-    - name: Setup Mambaforge
+    - name: Setup Miniforge
       uses: conda-incubator/setup-miniconda@v2
       with:
-        miniforge-version: latest
-        miniforge-variant: Mambaforge
+        miniforge-variant: Miniforge3
+        miniforge-version: "23.11.0-0"
+        installer-url: https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
         use-mamba: true
         auto-update-conda: false
         activate-environment: geosmart
-        use-only-tar-bz2: true # IMPORTANT: This needs to be set for conda package cache to work properly!
+        channel-priority: strict
+        channels: conda-forge
+        python-version: "3.10"
+        use-only-tar-bz2: true
+
+    # - name: Setup Mambaforge
+    #   uses: conda-incubator/setup-miniconda@v2
+    #   with:
+    #     miniforge-version: latest
+    #     miniforge-variant: Mambaforge
+    #     use-mamba: true
+    #     auto-update-conda: false
+    #     activate-environment: geosmart
+    #     use-only-tar-bz2: true # IMPORTANT: This needs to be set for conda package cache to work properly!
 
     - name: Cache Entire Conda Environment
       id: cache-env
