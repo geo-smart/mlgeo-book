@@ -24,6 +24,7 @@ This chapter focuses on Deep Learning, a subset of machine learning that has rev
 
 3. **Training Deep Neural Networks**
    - Data preprocessing and augmentation
+   - Data preparation for training, validatin, and testing.
    - Loss functions and optimization techniques
    - Regularization methods: dropout, batch normalization, and weight decay
    - Hyperparameter tuning and model evaluation
