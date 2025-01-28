@@ -825,7 +825,7 @@ title="Print to PDF"
 <span class="n">clf</span> <span class="o">=</span> <span class="n">LinearDiscriminantAnalysis</span><span class="p">()</span> 
 
 <span class="c1"># normalize data.</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1"># normalize data</span>
 
 <span class="c1"># split data between train and test set.</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
@@ -856,7 +856,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x30255e640&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f231279bb20&gt;
 </pre></div>
 </div>
 <img alt="../_images/3.4_binary_classification_8_1.png" src="../_images/3.4_binary_classification_8_1.png" />
@@ -867,7 +867,7 @@ title="Print to PDF"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define ML</span>
-<span class="n">K</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">clf</span><span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
 
 <span class="c1"># normalize data.</span>
@@ -886,7 +886,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean accuracy on the given test and labels is 0.975000
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean accuracy on the given test and labels is 0.925000
 </pre></div>
 </div>
 </div>
@@ -901,7 +901,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x3026064f0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f231069ceb0&gt;
 </pre></div>
 </div>
 <img alt="../_images/3.4_binary_classification_11_1.png" src="../_images/3.4_binary_classification_11_1.png" />
@@ -945,7 +945,7 @@ title="Print to PDF"
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean accuracy on the given test and labels is 0.975000
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x3025fbfa0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f230e48a620&gt;
 </pre></div>
 </div>
 <img alt="../_images/3.4_binary_classification_14_2.png" src="../_images/3.4_binary_classification_14_2.png" />
@@ -1026,10 +1026,10 @@ Model peformance can be assessed with the following:</p>
 
 <span class="c1"># Okay, set how many true and false values are in the original dataset</span>
 
-<span class="n">actualTrueValues</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="n">actualFalseValues</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">actualTrueValues</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">actualFalseValues</span> <span class="o">=</span> <span class="mi">10</span>
 
-<span class="n">sumValues</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">sumValues</span> <span class="o">=</span> <span class="n">actualTrueValues</span> <span class="o">+</span> <span class="n">actualFalseValues</span>
 
 <span class="n">precisionRecallCollector</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -1098,12 +1098,25 @@ Model peformance can be assessed with the following:</p>
 precison, recall
 0.9545454545454546 1.0
 F1 score
-0.9767441860465117
+0.9767441860465116
 </pre></div>
 </div>
 </div>
 </div>
 <p>A complete well-formatted report of the performance can be called using the function <code class="docutils literal notranslate"><span class="pre">classification_report</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_test</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1,
+       0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0])
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
@@ -1137,11 +1150,82 @@ The ROC curve is visual, but we can quantify the classifier performance using th
 <p>[source: <a class="reference external" href="https://commons.wikimedia.org/wiki/File:Roc-draft-xkcd-style.svg">https://commons.wikimedia.org/wiki/File:Roc-draft-xkcd-style.svg</a>]</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_scores</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y_scores</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1.  0. ]
+ [0.2 0.8]
+ [0.  1. ]
+ [0.4 0.6]
+ [0.  1. ]
+ [1.  0. ]
+ [1.  0. ]
+ [0.8 0.2]
+ [0.  1. ]
+ [1.  0. ]
+ [0.8 0.2]
+ [0.2 0.8]
+ [1.  0. ]
+ [0.2 0.8]
+ [0.2 0.8]
+ [0.  1. ]
+ [1.  0. ]
+ [0.  1. ]
+ [1.  0. ]
+ [0.  1. ]
+ [1.  0. ]
+ [1.  0. ]
+ [0.6 0.4]
+ [1.  0. ]
+ [0.  1. ]
+ [0.  1. ]
+ [1.  0. ]
+ [1.  0. ]
+ [0.8 0.2]
+ [0.  1. ]
+ [0.  1. ]
+ [0.  1. ]
+ [1.  0. ]
+ [1.  0. ]
+ [1.  0. ]
+ [0.2 0.8]
+ [0.  1. ]
+ [0.  1. ]
+ [0.8 0.2]
+ [0.2 0.8]
+ [0.  1. ]
+ [0.8 0.2]
+ [0.2 0.8]
+ [0.  1. ]
+ [0.  1. ]
+ [1.  0. ]
+ [0.  1. ]
+ [0.6 0.4]
+ [0.  1. ]
+ [1.  0. ]
+ [1.  0. ]
+ [0.  1. ]
+ [0.  1. ]
+ [0.  1. ]
+ [1.  0. ]
+ [1.  0. ]
+ [1.  0. ]
+ [1.  0. ]
+ [1.  0. ]
+ [0.4 0.6]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
 
 
-<span class="n">y_scores</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
 <span class="n">fpr</span><span class="p">,</span><span class="n">tpr</span><span class="p">,</span><span class="n">thresholds</span><span class="o">=</span><span class="n">roc_curve</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span><span class="n">y_scores</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span><span class="n">tpr</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;False Positive Rate&#39;</span><span class="p">)</span>
@@ -1151,10 +1235,10 @@ The ROC curve is visual, but we can quantify the classifier performance using th
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x303b96b20&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f231069c670&gt;]
 </pre></div>
 </div>
-<img alt="../_images/3.4_binary_classification_26_1.png" src="../_images/3.4_binary_classification_26_1.png" />
+<img alt="../_images/3.4_binary_classification_28_1.png" src="../_images/3.4_binary_classification_28_1.png" />
 </div>
 </div>
 <p>We now explore the different classifiers packaged in scikit learn. We can systematically test their performance and save the precision, recall,</p>
@@ -1174,7 +1258,7 @@ The ROC curve is visual, but we can quantify the classifier performance using th
 <span class="p">]</span>
 
 <span class="n">classifiers</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+    <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span>
     <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">0.025</span><span class="p">),</span>
     <span class="n">SVC</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
     <span class="n">GaussianProcessClassifier</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">RBF</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)),</span>
@@ -1203,6 +1287,7 @@ The ROC curve is visual, but we can quantify the classifier performance using th
 <span class="n">pre</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">classifiers</span><span class="p">))</span>
 <span class="n">rec</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">classifiers</span><span class="p">))</span>
 <span class="n">f1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">classifiers</span><span class="p">))</span>
+
 <span class="k">for</span> <span class="n">ii</span><span class="p">,</span><span class="n">iclass</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">classifiers</span><span class="p">):</span>
     <span class="n">iclass</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
     <span class="n">y_test_pred</span><span class="o">=</span><span class="n">iclass</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
@@ -1217,15 +1302,19 @@ The ROC curve is visual, but we can quantify the classifier performance using th
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            CLF name  precision    recall  f1_score
-0  Nearest Neighbors   0.913043  1.000000  0.954545
+0  Nearest Neighbors   0.954545  1.000000  0.976744
 1         Linear SVM   0.944444  0.809524  0.871795
 2            RBF SVM   0.666667  0.095238  0.166667
 3   Gaussian Process   0.952381  0.952381  0.952381
 4      Decision Tree   0.913043  1.000000  0.954545
-5      Random Forest   0.952381  0.952381  0.952381
+5      Random Forest   0.947368  0.857143  0.900000
 6           AdaBoost   0.950000  0.904762  0.926829
 7        Naive Bayes   0.900000  0.857143  0.878049
 8                QDA   0.857143  0.857143  0.857143
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/sklearn/ensemble/_weight_boosting.py:519: FutureWarning: The SAMME.R algorithm (the default) is deprecated and will be removed in 1.6. Use the SAMME algorithm to circumvent this warning.
+  warnings.warn(
 </pre></div>
 </div>
 </div>

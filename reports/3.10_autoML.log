@@ -17,21 +17,87 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-# Pandas is used for data manipulation
-import pandas as pd
-# Read in data and display first 5 rows
-features = pd.read_csv('temps.csv')
-features.columns
+interpret_model(best)
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-Input [0;32mIn [3][0m, in [0;36m<cell line: 2>[0;34m()[0m
-[1;32m      1[0m [38;5;66;03m# Pandas is used for data manipulation[39;00m
-[0;32m----> 2[0m [38;5;28;01mimport[39;00m [38;5;21;01mpandas[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpd[39;00m
-[1;32m      3[0m [38;5;66;03m# Read in data and display first 5 rows[39;00m
-[1;32m      4[0m features [38;5;241m=[39m pd[38;5;241m.[39mread_csv([38;5;124m'[39m[38;5;124mtemps.csv[39m[38;5;124m'[39m)
+Input [0;32mIn [12][0m, in [0;36m<cell line: 1>[0;34m()[0m
+[0;32m----> 1[0m [43minterpret_model[49m[43m([49m[43mbest[49m[43m)[49m
 
-[0;31mModuleNotFoundError[0m: No module named 'pandas'
-ModuleNotFoundError: No module named 'pandas'
+File [0;32m/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/pycaret/utils/generic.py:964[0m, in [0;36mcheck_if_global_is_not_none.<locals>.decorator.<locals>.wrapper[0;34m(*args, **kwargs)[0m
+[1;32m    962[0m     [38;5;28;01mif[39;00m globals_d[name] [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    963[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(message)
+[0;32m--> 964[0m [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+
+File [0;32m/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/pycaret/regression/functional.py:1824[0m, in [0;36minterpret_model[0;34m(estimator, plot, feature, observation, use_train_data, X_new_sample, y_new_sample, save, **kwargs)[0m
+[1;32m   1727[0m [38;5;129m@check_if_global_is_not_none[39m([38;5;28mglobals[39m(), _CURRENT_EXPERIMENT_DECORATOR_DICT)
+[1;32m   1728[0m [38;5;28;01mdef[39;00m [38;5;21minterpret_model[39m(
+[1;32m   1729[0m     estimator,
+[0;32m   (...)[0m
+[1;32m   1737[0m     [38;5;241m*[39m[38;5;241m*[39mkwargs,
+[1;32m   1738[0m ):
+[1;32m   1739[0m     [38;5;124;03m"""[39;00m
+[1;32m   1740[0m [38;5;124;03m    This function takes a trained model object and returns an interpretation plot[39;00m
+[1;32m   1741[0m [38;5;124;03m    based on the test / hold-out set.[39;00m
+[0;32m   (...)[0m
+[1;32m   1821[0m 
+[1;32m   1822[0m [38;5;124;03m    """[39;00m
+[0;32m-> 1824[0m     [38;5;28;01mreturn[39;00m [43m_CURRENT_EXPERIMENT[49m[38;5;241;43m.[39;49m[43minterpret_model[49m[43m([49m
+[1;32m   1825[0m [43m        [49m[43mestimator[49m[38;5;241;43m=[39;49m[43mestimator[49m[43m,[49m
+[1;32m   1826[0m [43m        [49m[43mplot[49m[38;5;241;43m=[39;49m[43mplot[49m[43m,[49m
+[1;32m   1827[0m [43m        [49m[43mfeature[49m[38;5;241;43m=[39;49m[43mfeature[49m[43m,[49m
+[1;32m   1828[0m [43m        [49m[43mobservation[49m[38;5;241;43m=[39;49m[43mobservation[49m[43m,[49m
+[1;32m   1829[0m [43m        [49m[43muse_train_data[49m[38;5;241;43m=[39;49m[43muse_train_data[49m[43m,[49m
+[1;32m   1830[0m [43m        [49m[43mX_new_sample[49m[38;5;241;43m=[39;49m[43mX_new_sample[49m[43m,[49m
+[1;32m   1831[0m [43m        [49m[43my_new_sample[49m[38;5;241;43m=[39;49m[43my_new_sample[49m[43m,[49m
+[1;32m   1832[0m [43m        [49m[43msave[49m[38;5;241;43m=[39;49m[43msave[49m[43m,[49m
+[1;32m   1833[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
+[1;32m   1834[0m [43m    [49m[43m)[49m
+
+File [0;32m/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/pycaret/regression/oop.py:2122[0m, in [0;36mRegressionExperiment.interpret_model[0;34m(self, estimator, plot, feature, observation, use_train_data, X_new_sample, y_new_sample, save, **kwargs)[0m
+[1;32m   2025[0m [38;5;28;01mdef[39;00m [38;5;21minterpret_model[39m(
+[1;32m   2026[0m     [38;5;28mself[39m,
+[1;32m   2027[0m     estimator,
+[0;32m   (...)[0m
+[1;32m   2035[0m     [38;5;241m*[39m[38;5;241m*[39mkwargs,
+[1;32m   2036[0m ):
+[1;32m   2037[0m     [38;5;124;03m"""[39;00m
+[1;32m   2038[0m [38;5;124;03m    This function takes a trained model object and returns an interpretation plot[39;00m
+[1;32m   2039[0m [38;5;124;03m    based on the test / hold-out set.[39;00m
+[0;32m   (...)[0m
+[1;32m   2119[0m 
+[1;32m   2120[0m [38;5;124;03m    """[39;00m
+[0;32m-> 2122[0m     [38;5;28;01mreturn[39;00m [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[43minterpret_model[49m[43m([49m
+[1;32m   2123[0m [43m        [49m[43mestimator[49m[38;5;241;43m=[39;49m[43mestimator[49m[43m,[49m
+[1;32m   2124[0m [43m        [49m[43mplot[49m[38;5;241;43m=[39;49m[43mplot[49m[43m,[49m
+[1;32m   2125[0m [43m        [49m[43mfeature[49m[38;5;241;43m=[39;49m[43mfeature[49m[43m,[49m
+[1;32m   2126[0m [43m        [49m[43mobservation[49m[38;5;241;43m=[39;49m[43mobservation[49m[43m,[49m
+[1;32m   2127[0m [43m        [49m[43muse_train_data[49m[38;5;241;43m=[39;49m[43muse_train_data[49m[43m,[49m
+[1;32m   2128[0m [43m        [49m[43mX_new_sample[49m[38;5;241;43m=[39;49m[43mX_new_sample[49m[43m,[49m
+[1;32m   2129[0m [43m        [49m[43my_new_sample[49m[38;5;241;43m=[39;49m[43my_new_sample[49m[43m,[49m
+[1;32m   2130[0m [43m        [49m[43msave[49m[38;5;241;43m=[39;49m[43msave[49m[43m,[49m
+[1;32m   2131[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
+[1;32m   2132[0m [43m    [49m[43m)[49m
+
+File [0;32m/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/pycaret/internal/pycaret_experiment/supervised_experiment.py:4051[0m, in [0;36m_SupervisedExperiment.interpret_model[0;34m(self, estimator, plot, feature, observation, use_train_data, X_new_sample, y_new_sample, save, **kwargs)[0m
+[1;32m   4049[0m [38;5;66;03m# checking if shap available[39;00m
+[1;32m   4050[0m [38;5;28;01mif[39;00m plot [38;5;129;01min[39;00m [[38;5;124m"[39m[38;5;124msummary[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mcorrelation[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mreason[39m[38;5;124m"[39m]:
+[0;32m-> 4051[0m     [43m_check_soft_dependencies[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mshap[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mextra[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43manalysis[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mseverity[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43merror[39;49m[38;5;124;43m"[39;49m[43m)[49m
+[1;32m   4052[0m     [38;5;28;01mimport[39;00m [38;5;21;01mshap[39;00m
+[1;32m   4054[0m [38;5;66;03m# checking if pdpbox is available[39;00m
+
+File [0;32m/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/pycaret/utils/_dependencies.py:152[0m, in [0;36m_check_soft_dependencies[0;34m(package, severity, extra, install_name)[0m
+[1;32m    150[0m [38;5;28;01mif[39;00m severity [38;5;241m==[39m [38;5;124m"[39m[38;5;124merror[39m[38;5;124m"[39m:
+[1;32m    151[0m     logger[38;5;241m.[39mexception([38;5;124mf[39m[38;5;124m"[39m[38;5;132;01m{[39;00mmsg[38;5;132;01m}[39;00m[38;5;124m"[39m)
+[0;32m--> 152[0m     [38;5;28;01mraise[39;00m [38;5;167;01mModuleNotFoundError[39;00m(msg)
+[1;32m    153[0m [38;5;28;01melif[39;00m severity [38;5;241m==[39m [38;5;124m"[39m[38;5;124mwarning[39m[38;5;124m"[39m:
+[1;32m    154[0m     logger[38;5;241m.[39mwarning([38;5;124mf[39m[38;5;124m"[39m[38;5;132;01m{[39;00mmsg[38;5;132;01m}[39;00m[38;5;124m"[39m)
+
+[0;31mModuleNotFoundError[0m: 
+'shap' is a soft dependency and not included in the pycaret installation. Please run: `pip install shap` to install.
+Alternately, you can install this by running `pip install pycaret[analysis]`
+ModuleNotFoundError: 
+'shap' is a soft dependency and not included in the pycaret installation. Please run: `pip install shap` to install.
+Alternately, you can install this by running `pip install pycaret[analysis]`
 

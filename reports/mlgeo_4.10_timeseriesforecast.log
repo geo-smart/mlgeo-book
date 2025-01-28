@@ -17,38 +17,43 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import numpy as np
-import pandas as pd
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader, Dataset
 
-# Generate time series
-np.random.seed(42)
-time = pd.date_range(start='1990-01-01', end='2019-12-31', freq='M')
-n = len(time)
+# Custom dataset for PyTorch
+class TimeSeriesDataset(Dataset):
+    def __init__(self, data, context_window, horizon_window):
+        self.X = [data[i:i + context_window] for i in range(len(data) - (context_window+horizon_window))]
+        self.y = [data[i+context_window:i+context_window+horizon_window] for i in range(len(data) - (context_window+horizon_window))]
+    
+    def __len__(self):
+        return len(self.y)
+    
+    def __getitem__(self, idx):
+        return torch.tensor(self.X[idx], dtype=torch.float32), torch.tensor(self.y[idx], dtype=torch.float32)
 
-# Components
-trend = np.linspace(0, 2, n)  # Linear trend
-seasonality = 2 * np.sin(2 * np.pi * (np.arange(n) % 12) / 12)  # Annual cycle
-noise = np.random.normal(0, 0.5, n)  # Random noise
-anomalies = np.zeros(n)
-anomalies[np.random.choice(n, 5, replace=False)] = np.random.uniform(-5, 5, 5)  # Sudden anomalies
+# RNN Model
+class RNNModel(nn.Module):
+    def __init__(self, input_size, hidden_size, num_layers, output_size):
+        super(RNNModel, self).__init__()
+        self.rnn = nn.RNN(input_size, hidden_size, num_layers, batch_first=True)
+        self.fc = nn.Linear(hidden_size, output_size)
+    
+    def forward(self, x):
+        _, h_n = self.rnn(x)
+        out = self.fc(h_n[-1])
+        return out
 
-# Final series
-temperature_anomalies = trend + seasonality + noise + anomalies
-
-# Create DataFrame
-data = pd.DataFrame({'Date': time, 'Temperature_Anomaly': temperature_anomalies})
-data.set_index('Date', inplace=True)
-data.to_csv('geoscientific_time_series.csv')
-data.head()
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-Input [0;32mIn [1][0m, in [0;36m<cell line: 1>[0;34m()[0m
-[0;32m----> 1[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
-[1;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01mpandas[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpd[39;00m
-[1;32m      4[0m [38;5;66;03m# Generate time series[39;00m
+Input [0;32mIn [8][0m, in [0;36m<cell line: 1>[0;34m()[0m
+[0;32m----> 1[0m [38;5;28;01mimport[39;00m [38;5;21;01mtorch[39;00m
+[1;32m      2[0m [38;5;28;01mimport[39;00m [38;5;21;01mtorch[39;00m[38;5;21;01m.[39;00m[38;5;21;01mnn[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnn[39;00m
+[1;32m      3[0m [38;5;28;01mfrom[39;00m [38;5;21;01mtorch[39;00m[38;5;21;01m.[39;00m[38;5;21;01mutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdata[39;00m [38;5;28;01mimport[39;00m DataLoader, Dataset
 
-[0;31mModuleNotFoundError[0m: No module named 'numpy'
-ModuleNotFoundError: No module named 'numpy'
+[0;31mModuleNotFoundError[0m: No module named 'torch'
+ModuleNotFoundError: No module named 'torch'
 
