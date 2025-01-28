@@ -64,7 +64,7 @@ By offering hands-on, practical experience with ML techniques using geoscientifi
 
 In summary, ESS 469/569  addresses a growing need in higher education by filling a critical gap in geoscientific training. It equips students with ML expertise, fosters interdisciplinary innovation, and ensures geoscientific programs remain at the forefront of scientific discovery in the era of AI.
 
-## The Story
+## How this course was developed
 
 The course arose from merging a development course "Data Sciences in the Earth and Planetary Sciences" (2021) with an NSF funded project Geosmart [@Cristea2024]. The result was a senior undergraduate and graduate level course designed for students at the University of Washington who are primarily enrolled in the departments of Earth and Space Sciences, Atmospheric and Climate Sciences, Oceanography, Forestry, Fisheries, Civil Environmental Engineering. Each of the target programs focuses on domain-specific science, which typically involves vast amounts of data and therefore require a practicum in ML.  In 2023, the course was reviewed by colleagues in the Departments of Applied Mathematics and Computer Sciences at the University of Washington to differentiate between "applied machine learning" and "fundamental machine learning." The course is now offered yearly and enrolls 35-40 students.
 
