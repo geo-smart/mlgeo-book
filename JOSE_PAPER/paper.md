@@ -134,7 +134,7 @@ The majority of the class goes through the notebooks in the [Jbook](https://geo-
 
 ## Small Geoscientific DataSets
 
-We collected a small data sets of geoscientific data that are used in the book, in class, or suggested by students participating in the class. The GitHub repository MLGEO-data (https://github.com/UW-MLGEO/MLGeo-dataset) sets contains a collection of notebooks (``./scripts/``)that demosntrates how to manipulate or download open-source data sets, and small data sets (typically CSV under ``./data/``) that are small enough to be used in the classroom.
+We collected small (total size of approximately 300 MB) data sets of geoscientific data that are used in the book, in class, or suggested by students participating in the class. The GitHub repository MLGEO-data (https://github.com/UW-MLGEO/MLGeo-dataset) sets contains a collection of notebooks (``./scripts/``)that demosntrates how to manipulate or download open-source data sets, and small data sets (typically CSV under ``./data/``) that are small enough to be used in the classroom.
 ```
 git clone https://github.com/UW-MLGEO/MLGeo-dataset
 ```
