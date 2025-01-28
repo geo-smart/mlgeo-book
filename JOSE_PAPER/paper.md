@@ -95,7 +95,7 @@ The course emphasizes building competencies in:
 
 **Prerequisites:**
 
-Students are expected to have completed courses in mathematics, applied mathematics, and statistics. Additionally, students should possess some programming experience (e.g., via CS160 or CS163 at the University of Washington). While prior knowledge of Python is recommended, the course provides refreshers on computing as needed.
+Students are expected to have completed courses in mathematics, applied mathematics, and statistics. Additionally, students should have completed intermediate-level programming coursework. While prior knowledge of Python is recommended, the course provides refreshers on computing as needed.
 
 # Learning objectives
 
