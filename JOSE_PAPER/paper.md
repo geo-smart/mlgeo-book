@@ -34,8 +34,8 @@ authors:
   - name: Scott Henderson
     affiliation: "1"
     orcid: 0000-0003-0624-4965
+ 
 
-    
 affiliations:
  - name: University of Washington, Seattle, USA
    index: 1
@@ -52,21 +52,23 @@ bibliography: paper.bib
 
 The "Machine Learning in the Geosciences" course—which has been offered as ESS 469/569 at the University of Washington since 2023— introduces undergraduate and graduate students to the use of machine learning (ML) techniques within a geoscientific context.
 
-# Statement of need 
+# Statement of need
 
-Machine learning (ML) has rapidly emerged as a transformative tool in the analysis of big data and scientific discovery across disciplines, especially since 2010. Geosciences, with its inherently large, complex, and multidimensional datasets, is particularly poised to benefit from ML's capabilities [@karpatne2018machine, @bergen2019, @dramsch202070,@sun2022review,@mousavi2022deep]. Yet, despite the explosion of ML applications in geoscientific research, there is no established curriculum in higher education that focuses on equipping students with practical ML skills tailored to the unique needs of geosciences. Most textbooks are dedicated to statistical learning [@petrelli2021introduction,wang2023data] and courses dedicated to data sciences (e.g., Colorado University- Boulder Earth Data Science Program or the University of California - Santa Barbara Master's in Environmental Data Science).
+Machine learning (ML) has rapidly emerged as a transformative tool in the analysis of big data and scientific discovery across disciplines, especially since 2010. Geosciences, with its inherently large, complex, and multidimensional datasets, is particularly poised to benefit from ML's capabilities [@karpatne2018machine, @bergen2019, @dramsch202070,@sun2022review,@mousavi2022deep]. Yet, despite the explosion of ML applications in geoscientific research, there is no established curriculum in higher education that focuses on equipping students with practical ML skills tailored to the unique needs of geosciences. Many textbooks are dedicated to statistical learning without geoscience applications[@petrelli2021introduction,wang2023data].
 
-Generalized data science courses lack the domain-specific emphasis critical for addressing the challenges of geoscientific datasets, such as handling spatiotemporal structures, working with geospatial data formats optimized for cloud systems, addressing variable data quality, and integrating physical constraints into ML models. A course explicitly dedicated to ML in geosciences can bridge this gap, ensuring students and researchers gain the expertise required to tackle pressing environmental and Earth system challenges through ML-driven approaches. ESS 469/569 (Machine Learning in the Geosciences) is such a course.    
+ New programs are dedicated to data sciences. The Colorado University- Boulder [Earth Data Science](https://www.earthdatascience.org/) Program provides a suite of free online tutorials for data science, especially targetting Python programming, time series data with low sampling rates typically stored in ``datetime`` objects, geospatial data typical to remote sensing.the University of California - Santa Barbara Master's in Environmental Data Science focuses on data science skills, python skills, and geospatial statistical methods.
 
-The **JupyterBook** created for ESS 469/569  is particularly timely. Geoscience programs across institutions increasingly recognize the critical importance of Artificial Intelligence (AI)  and ML research. However, these programs often lack the resources or infrastructure to independently develop practical, cutting-edge ML curricula. Our  JupyterBook provides an accessible, open-source, and modular framework that can easily be integrated into academic programs, accelerating the adoption of AI technologies within geoscientific education and research.  
+Generalized data science courses lack the domain-specific emphasis critical for addressing the challenges of geoscientific datasets, such as handling spatiotemporal structures, working with geospatial data formats optimized for cloud systems, addressing variable data quality, and integrating physical constraints into ML models. A course explicitly dedicated to ML in geosciences can bridge this gap, ensuring students and researchers gain the expertise required to tackle pressing environmental and Earth system challenges through ML-driven approaches. ESS 469/569 (Machine Learning in the Geosciences) is such a course.   
 
-By offering hands-on, practical experience with ML techniques using geoscientific examples, our course ensures that students not only understand ML concepts but can also directly apply them to real-world problems. This foundational training is vital for preparing the next generation of geoscientists to leverage AI for critical discoveries, from climate change mitigation to natural hazard forecasting to resource exploration.   
+The **JupyterBook** created for ESS 469/569  is particularly timely. Geoscience programs across institutions increasingly recognize the critical importance of Artificial Intelligence (AI)  and ML research. However, these programs often lack the resources or infrastructure to independently develop practical, cutting-edge ML curricula. Our  JupyterBook provides an accessible, open-source, and modular framework that can easily be integrated into academic programs, accelerating the adoption of AI technologies within geoscientific education and research.
+
+By offering hands-on, practical experience with ML techniques using geoscientific examples, our course ensures that students not only understand ML concepts but can also directly apply them to real-world problems. This foundational training is vital for preparing the next generation of geoscientists to leverage AI for critical discoveries, from climate change mitigation to natural hazard forecasting to resource exploration.
 
 In summary, ESS 469/569  addresses a growing need in higher education by filling a critical gap in geoscientific training. It equips students with ML expertise, fosters interdisciplinary innovation, and ensures geoscientific programs remain at the forefront of scientific discovery in the era of AI.
 
-## The Story
+## How this course was developed
 
-The course arose from merging an in-development course, "Data Sciences in the Earth and Planetary Sciences" (2021), with an NSF-funded project, Geosmart [@Cristea2024]. The result was a senior undergraduate and graduate level course designed for students at the University of Washington who are primarily enrolled in the departments of Earth and Space Sciences, Atmospheric and Climate Sciences, Oceanography, Forestry, Fisheries, Civil Environmental Engineering. Each of the target programs focuses on domain-specific science, which typically involves vast amounts of data and, therefore, requires a practicum in ML.  In 2023, the course was reviewed by colleagues in the Departments of Applied Mathematics and Computer Sciences at the University of Washington to differentiate between "applied machine learning" and "fundamental machine learning." The course is now offered yearly and enrolls 35-40 students.
+The course arose from merging an in-development course, "Data Sciences in the Earth and Planetary Sciences" (2021), with an NSF-funded project, Geosmart [@Cristea2024]. The result was a senior undergraduate and graduate level course designed for students at the University of Washington who are primarily enrolled in the departments of Earth and Space Sciences, Atmospheric and Climate Sciences, Oceanography, Forestry, Fisheries, Civil Environmental Engineering. Students in these departments are increasingly interested in applying ML-methods to large, complex datasets (for example, climate model outputs that do not fit within available RAM or hard drive space of personal computers). In 2023, the course was reviewed by colleagues in the Departments of Applied Mathematics and Computer Sciences at the University of Washington to differentiate between "applied machine learning" and "fundamental machine learning." The course is now offered yearly and enrolls 35-40 students.
 
 **Course Structure:**
 ESS 469/569 has three pillars:
@@ -85,7 +87,7 @@ The course emphasizes building competencies in:
 
 - **Version control with Git and GitHub**
 
-- **Generative AI**, integrating GenAI for software development and literature synthesis.
+- **Generative AI (GenAI)**, integrating GenAI for software development and literature synthesis.
 
 - **Python programming**, utilizing packages such as NumPy, Pandas, scikit-learn, PyTorch
 
@@ -95,117 +97,152 @@ The course emphasizes building competencies in:
 
 **Prerequisites:**
 
-Students are expected to have completed courses in mathematics, applied mathematics, and statistics. Additionally, students should possess some programming experience (e.g., via CS160 or CS163 at the University of Washington). While prior knowledge of Python is recommended, the course provides refreshers on computing as needed.
+Students are expected to have completed courses in mathematics, applied mathematics, and statistics. Additionally, students should have completed an intermediate-level programming coursework. While prior knowledge of Python is recommended, the course provides refreshers on computing as needed.
 
 # Learning objectives
 
-By the end of the course, students are expected to:
+By the end of the course, students can:
 
-- Demonstrate proficiency in Python programming, Jupyter notebooks, Git version control, integration of GenAI in coding practices (e.g., GitHub copilot), conda environments, containers, and deploying software on new platforms.
+- Demonstrate proficiency in Python programming, Jupyter notebooks, Git version control, integration of GenAI in coding practices (e.g., GitHub Copilot), Conda environments, containerization, and deploying software on new platforms.
 
-- Construct a standard ML workflow that follows community best practices, including data preparation, model design, training, validation, and evaluation.
+- Construct a standard ML workflow that follows community best practices for data preparation, model design, training, validation, and evaluation.
 
-- Implement data manipulation strategies pertinent to geosciences, such as handling time series and geospatial data, data visualization, dimensionality reduction, and feature engineering.
+- Implement data manipulation strategies pertinent to geosciences, such as handling time series and spatial information, visualization, dimensionality reduction, and feature engineering.
 
 - Understand and apply open science principles, ensuring reproducibility and adherence to digital scholarship standards.
 
-- Gain familiarity with canonical examples of ML across various geoscience disciplines and identify strategies for using ML in geoscience when given a context for data richness, physical models, and problem setup.
+- Gain familiarity with canonical examples of ML across various geoscience disciplines and identify strategies for using ML in geoscience in the context of data richness, physical models, and problem setup.
 
-- Evaluate the robustness of the machine learning pipeline utilized in the scientific literature
+- Evaluate the robustness of the ML pipelines utilized in the scientific literature
 
-
-The Book contains about 50 hours of instructional hours.
+An instructor can cover the material in the course [book](https://geo-smart.github.io/mlgeo-book/about_this_book/about_this_book.html) (see below) over approximately 50 hours of instructional hours.
 
 
 # Teaching materials
 
-The class alternates between notebooks, slides, and student-led presentations.
+The class alternates between Jupyter notebooks, slides, and student-led presentations.
 
 ## Detailed syllabus
 
 
 ## Slides
 
-The majority of the class goes through the notebooks in the [Jbook](https://geo-smart.github.io/mlgeo-book/about_this_book/about_this_book.html), but several slidedecks are added for the convenience of the instructor. The GitHub repository contains raw materials for future instructors to adapt.
+The majority of the class can be taught by going through notebooks in the [book](https://geo-smart.github.io/mlgeo-book/about_this_book/about_this_book.html). Additionally, we have built several slide decks for the convenience of the instructor. Like all public repositories, the course GitHub contains raw materials for future instructors to adapt.
 
 * [Introduction class](../book/slides/MLGeo_Introduction_generic.pptx): overview of ML in the geosciences, scientific concepts, course logistics.
 * 
 
 
-## Small Geoscientific DataSets
+## Small Geoscientific Datasets
 
-We collected small data sets of geoscientific data that are used in the book, in class, or suggested by students participating in the class. The GitHub repository MLGEO-data (https://github.com/UW-MLGEO/MLGeo-dataset) contains a collection of notebooks (``./scripts/``)that demonstrate how to manipulate or download open-source data sets and small data sets (typically CSV under ``./data/``) that are small enough to be used in the classroom.
+We have assembled a small collection of geosciences datasets (total size of approximately 300 MB) for use in both the book and in instruction. These datasets can be found in the GitHub repository MLGEO-data (https://github.com/UW-MLGEO/MLGeo-dataset), which contains notebooks (``./scripts/``) that demonstrate how to source  and/or manipulate data.
 ```
 git clone https://github.com/UW-MLGEO/MLGeo-dataset
 ```
 
 ## Docker Base Container
-We created a minimal docker image to run the notebooks in class, automatically built with GitHub action from this repository: https://github.com/UW-MLGEO/MLGeo-image.
+We have created a minimal Docker image to run the notebooks in class. This image is automatically built using a  GitHub action from this repository (https://github.com/UW-MLGEO/MLGeo-image).
 
 The image can be pulled with Docker:
 ```
 docker pull uwessds/mlgeo-image:latest
 ```
 
-## JupyterBook (Jupyter notebooks)
+## Technology Integration  
+
+Our course emphasizes building a robust technological foundation for students to succeed in applying machine learning to geosciences. In the first week, students are introduced to generative AI (genAI) tools for coding, such as GitHub Copilot, to accelerate their ability to draft and refine code efficiently. A significant focus is placed on ensuring students have access to appropriate software platforms, including setting up VSCode, creating GitHub accounts, and installing either a pre-configured Docker image or a Conda environment tailored for the course. We guide students to help them establish a well-organized workspace, integrating VSCode with Copilot for seamless AI-assisted coding. These "setup" sessions also cover best practices for managing environments, troubleshooting installations, and maintaining reproducibility in their workflows. By mastering such tools early in the course, students are empowered to tackle coding challenges with confidence and efficiency, leveraging cutting-edge AI technologies to enhance their productivity and technical skills.
+
+Students were allowed and encourage to use CoPilot for their own homework and projects, and asked to use chatGPT for self-evaluation and improvements, and demonstrates the outcome of interacting with genAI for evaluation (which highlighted the benefits and flaws of the systems). The integration of genAI overall gives students literacy and awareness of positive and pitfalls of genAI.
+
+We have also started to use genAI to craft novel geosciences-inspired synthetic data sets for in-class exercises.
+
+
+
+## JupyterBook
 
 The MLGEO book is presented as a collection of Jupyter notebooks organized into a Jupyter Book. This format allows for an interactive learning experience, where students can run code cells, visualize data, and experiment with different machine learning models directly within the notebooks.
 
 The Jupyter Book is hosted online and can be accessed through the following link: [MLGEO Jupyter Book](https://geo-smart.github.io/mlgeo-book/). Each chapter is divided into multiple sections, with detailed explanations, code examples, and exercises to reinforce the concepts covered.
 
+The outline of the book is
+* Chapter 1: Getting Started
+* Chapter 2: Data Manipulation
+  * Data definition, modalidies, data structure (data frames, arrays)
+  * Statistical analysis for uni-variate or multivariate data
+  * Data transforms and filtering
+  * Feature engineering
+  * Synthetic Noise
+  * AI/ML-ready data sets
+* Chapter 3: Machine Learning
+  * Foundamentals of ML: modes of supervisions, classification vs regression, data prep (train, val, test), robustness and generalization
+  * Clustering (unsupervised and supervised)
+  * Classifications
+  * Regression
+  * AutoML
+* Chapter 4: Deep Learning
+  * Introduction to DL
+  * Training Neural Networks
+  * Classification, Regression, Time series forecast
+  * Popular Model architectures (NN, MLP, CNN, RNN, auto-encoder)
+  * Frontier topics: Neural Architecture Search, PINNS, Large Language Models
+* Chapter 5: Model Workflows
+  * Discussion about ML full stack reproducibility and Geoweaver
+* Chapter 6: Cloud Computing
+  * pointers to cloud computing tutorials, with a terraform example and a AWS example
+* Chapter 7: Use Cases
+  * Collection of projects from the previous course offerings
+
+
+# Content Delivery
+
+The course is structured to provide a balanced and engaging learning experience, with each week designed to focus on three key components: 1/3 conceptual understanding, 1/3 application through toy problems, and 1/3 hands-on student-led exercises. This structure ensures that students not only grasp the theoretical aspects of machine learning but also apply them in practical scenarios and take an active role in the learning process.
+
+Weekly student participation includes presenting summaries of scientific papers or webinars to encourage peer learning and collaborative discussions. We have built assignments that can be tackled in groups to align with an equal split between data curation, CML, and deep learning techniques. Homework assignments help instructors assess individual learning outcomes, ensuring students comprehensively understand the materials.
+
+Students are provided at least 20 minutes to practice during class, fostering collaborative problem-solving skills through real-time feedback between students. With its reliance on digital tools like Jupyter notebooks, GitHub, and cloud computing platforms, the course is well suited for remote delivery. However, successful remote implementation requires additional teaching assistants (TAs) and breakout room support to address diverse student needs effectively. 
+
 ## Homework
 
-The "Classic Machine Learning" [homework](https://geo-smart.github.io/mlgeo-book/Chapter3-MachineLearning/Homework_CML.html) assignment is designed to reinforce students' understanding of key machine learning concepts introduced in Chapter 3 of the course. The primary objective is to provide hands-on experience in data preparation, unsupervised clustering, and the application of various supervised learning algorithms.
+To reinforce concepts that we discuss in class, we have designed several assignments for students.
 
-In the initial phase, students engage in data preparation, which includes reading, cleaning, exploring, and reducing the dimensionality of a dataset. This process ensures that students can effectively handle real-world geoscientific data, making it suitable for machine learning applications. Subsequently, students apply unsupervised clustering techniques, specifically K-Means, to identify inherent patterns within the data. This step emphasizes the importance of selecting optimal cluster numbers and evaluating clustering performance.
+The "Classic Machine Learning" [homework](https://geo-smart.github.io/mlgeo-book/Chapter3-MachineLearning/Homework_CML.html) (CML) assignment, for example, is designed to reinforce students' understanding of key machine learning concepts introduced in Chapter 3 of the course. The primary objective of the homework is to provide hands-on experience in data preparation, unsupervised clustering, and the application of various supervised learning algorithms.
+
+In the initial phase of the assignment, students engage in data preparation, which includes reading, cleaning, exploring, and reducing the dimensionality of a dataset. This process ensures that students can effectively handle real-world geoscientific data, making it suitable for machine learning applications. Subsequently, students apply unsupervised clustering techniques, (specifically K-means), to identify patterns within the data. This step emphasizes the importance of selecting optimal cluster numbers and evaluating clustering performance.
 
 The assignment culminates with the implementation of various supervised learning models, such as K-Nearest Neighbors, Naive Bayes, Random Forest, Support Vector Machine, and Multi-Layer Perceptron. Students are tasked with feature scaling, splitting data into training and testing sets, designing models, and evaluating their performance using metrics like confusion matrices and cross-validation. This comprehensive approach ensures that students gain practical skills in model selection, training, and evaluation, directly applying the theoretical concepts covered in Chapter 3.
 
 
 ## Final Project
 
-The final project is a group-based, complete machine learning project with four pillars:
-1. Design a scientifically sound machine learning project and justify the need and benefit of using ML. Establish the best non-ML approach to solving the problem and the baselines to beat.
-2. AI-ready data set: 
-    - explore data and its dimensionality
-    - ML data pipelines
-    - curated and explored data sets
-3. Classic Machine Learning: develop baseline models using simple CML models, perform auto-ML to find optimal CML model
-4. Deep Learning: explore deep learning models and their architectures, and if it improves upon the CML performance, develop a comprehensive comparison of CML and DL, and argue for the benefit of one or all approaches with computational considerations.
-The final project is described in the book: https://geo-smart.github.io/mlgeo-book/Chapter1-GettingStarted/1.20_MLGEO_Final_Project.html.
+The final project, which is group-based (2-4 students), has  4 pillars:
 
+1. Students should **design** a scientifically-sound ML approach =, which includes a justification for the use of ML. Students should also determine the best non-ML approach to solving the problem and use that as a baseline for evaluation.
+2. Students should **develop an AI/ML-ready dataset**. To do so, students must:
+    - Explore the data (e.g., its dimensionality).
+    - Establish a data pipeline.
+    - Curate a dataset for ML ingestion. 
+3. Students begin by creating a **baseline ML using CML** techniques. Students are encouraged to leverage auto-ML to find an optimal model solution. 
+4. Students should then explore **DL models** and their architectures. If a DL approach improves upon the CML outcomes, then students should set up a comprehensive comparison and argue for the adoption of one approach over the other.
 
-
-## Technology Integration  
-
-The course emphasizes building a robust technological foundation for students to succeed in applying machine learning to geosciences. In the first week, students are introduced to generative AI tools for coding, such as GitHub Copilot, to accelerate their ability to draft and refine code efficiently. A significant focus is placed on ensuring students have access to appropriate software platforms, including setting up VSCode, creating GitHub accounts, and installing either a pre-configured Docker image or a Conda environment tailored for the course. Students are guided step-by-step to establish a well-organized workspace, integrating VSCode with Copilot for seamless AI-assisted coding. These sessions also cover best practices for managing environments, troubleshooting installations, and maintaining reproducibility in their workflows. By mastering these tools early in the course, students are empowered to tackle coding challenges confidently and efficiently, leveraging cutting-edge AI technologies to enhance their productivity and technical skills. 
-
-Some of the notebooks presented in the JupyterBook were also supported by GenAI in order to craft new geoscientifically inspired toy synthetic data sets for in-class exercises. We found that GenAI helped smooth over notebooks, crafting new engaging exercises and expanding the instructor's perspective on interdisciplinary research.
-
-# Content Delivery
-
-The course is structured to provide a balanced and engaging learning experience, with each week designed to focus on three key components: 1/3 conceptual understanding, 1/3 application through toy problems, and 1/3 hands-on student-led exercises. This structure ensures that students not only grasp the theoretical aspects of machine learning but also apply them in practical scenarios and take an active role in the learning process.  
-
-Weekly student participation includes presenting summaries of scientific papers or webinars, emphasizing selecting five presentations per week to encourage peer learning and collaborative discussions. The overall course is organized into three major pillars: 1/3 on data curation, 1/3 on classic machine learning methods, and 1/3 on deep learning techniques. Assignments, mostly tackled in groups, align with these pillars and culminate in a final group project that integrates all learned components. Additionally, an extra homework assignment helps assess individual learning outcomes, ensuring students comprehensively understand the materials.  
-
-Students are given ample practice opportunities during class, fostering collaborative problem-solving and real-time feedback. The course is well-suited for remote delivery with its reliance on digital tools like Jupyter notebooks, GitHub, and cloud computing platforms. However, successful remote implementation requires additional teaching assistants (TAs) and breakout room support to address diverse student needs effectively. This interactive, flexible approach ensures students are well-prepared to tackle complex geoscientific problems using modern machine learning techniques.
+Details about the final project can be found in the [course book](https://geo-smart.github.io/mlgeo-book/Chapter1-GettingStarted/1.20_MLGEO_Final_Project.html). Example of such a project is shown in Ch
 
 # Teaching experience
+The course is designed for one instructor and one TA. While instructors may come from a single subdiscipline of the geosciences, the students in the course do not. To date, we have taught students geology, geophysics, atmospheric sciences, oceanography, forestry, civil environmental engineering, and biology. The typical split between undergraduates and graduates has been 50/50.
 
-The course is designed for an instructor and a teaching assistant. Instructors tend to be among a single subdiscipline of geosciences, and the students attending the course have come mainly from geophysics, atmospheric sciences, oceanography, forestry, etc. Typically, Students are 50% from undergraduate (senior level) and 50% from graduate students.
+During a quarter, the course involves meeting three times a week for 90 minutes. Outside of instruction, students spend several hours (~ 5) per week on assignments, including paper reviews, homework, and their final project.
 
-Classes were taught with 90 minutes class time three times a week, student spend several hours per week on their final project, paper reviews, and homework.
+Instructors and students have access to a Jupyter Hub provisioned by University of Washington for the class, which uses the `uwessds/mlgeo-image` Docker Image for a common computing environment. In the 2024 course offering, we made the students install their environment locally with Visual Studio Code, a student license for GitHub education that included a free license to GitHub CoPilot, and integrated this to the instructional time. Students cloned the Jupyter Book repository on their local Mac, Linux, and PC laptops, and ran the notebooks locally. It took a full week to have all 35 students fully ready to run the notebooks.
 
-Instructors have provisioned jupyterhub for the class, with the mlgeo-image as base image. In the 2024 course offering, we made the students install their environment locally with Visual Studio Code, a student license for GitHub education that included a free license to GitHub CoPilot, and integrated this to the instructional time. Students downloaded the Jbook's notebook on their local Mac, Linux, and PC laptops, and ran the notebooks locally. It took a full week to have all 35 students fully ready to run the notebooks. 
-
-The integration of GenAI in the 2024 course offering was transformative: the instructor spent less time debugging in class and more time discussing ML concepts, and the students spent less time stuck on software engineering and formatting and more time discussing their data. This acceleration enables students's final project to complete the three milestones of the class: AI-ready data, CML, and DL. However, it should still be emphasized that integrating GenAI required background knowledge in the scientific domain and programming skills to understand when genAI was correct and useful and when it failed.
+The integration of genAI in the 2024 course offering was transformative: the instructor spent less time debugging in class and more time discussing ML concepts, while the students spent less time stuck on software engineering and formatting and more time discussing their data. Additionally, unlike previous course iterations, this acceleration enabled students to complete all four pillars of the final project.
 
 
 ## Conclusion and Outlook
 
-Overall, MLGEO is a senior graduate or graduate-level curriculum for Machine Learning in Geoscience that ultimately leads to a more comprehensive understanding of machine learning principles, and their practical applications in geosciences and establishes best practices for the machine learning pipeline.
+Overall, the enhanced teaching experience fostered a more interactive and productive classroom environment, ultimately leading to a more comprehensive understanding of machine learning principles and their practical applications.
 
-The Jbook is designed to be a dynamic document that the community is invited to contribute to. There is a lot to improve on bringing geoscientific data sets relevant exercises, improving on the concepts, and the ever evolving literature.
+The Jbook is designed to be a dynamic document to which the community is invited to contribute. There is much that instructors can do to bring new geoscientific data sets, produce more relevant exercises for students, improve the teaching of concepts, and keep up with ever-evolving literature.
+
+Future improvements should include more geoscientific toy data sets, refinements of statistical learning betwen uni and multi-variate data, development of student-led exercise and additional homeworks.
 
 # Acknowledgments
 
