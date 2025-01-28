@@ -85,7 +85,7 @@ The course emphasizes building competencies in:
 
 - **Version control with Git and GitHub**
 
-- **Generative AI**, integrating GenAI for software development and literature synthesis.
+- **Generative AI (GenAI) **, integrating GenAI for software development and literature synthesis.
 
 - **Python programming**, utilizing packages such as NumPy, Pandas, scikit-learn, PyTorch
 
