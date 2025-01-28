@@ -149,7 +149,7 @@ docker pull uwessds/mlgeo-image:latest
 
 ## Jupyter Book
 
-The MLGEO book is presented as a collection of Jupyter notebooks, organized into a Jupyter Book. This format allows for an interactive learning experience, where students can run code cells, visualize data, and experiment with different machine learning models directly within the notebooks.
+The MLGEO book is presented as a collection of Jupyter notebooks, organized into a Jupyter Book. This format allows for an interactive learning experience, where students can either review rendered notebooks on a searchable website, or run code interactively locally or on a Jupyter Hub.
 
 The Jupyter Book is hosted online and can be accessed through the following link: [MLGEO Jupyter Book](https://geo-smart.github.io/mlgeo-book/). Each chapter is divided into multiple sections, with detailed explanations, code examples, and exercises to reinforce the concepts covered.
 
