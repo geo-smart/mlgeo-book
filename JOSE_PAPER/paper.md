@@ -147,7 +147,7 @@ The image can be pulled with Docker:
 docker pull uwessds/mlgeo-image:latest
 ```
 
-## JupyterBook (Jupyter notebooks)
+## Jupyter Book
 
 The MLGEO book is presented as a collection of Jupyter notebooks, organized into a Jupyter Book. This format allows for an interactive learning experience, where students can run code cells, visualize data, and experiment with different machine learning models directly within the notebooks.
 
