@@ -109,7 +109,7 @@ By the end of the course, students are expected to:
 
 - Understand and apply open science principles, ensuring reproducibility and adherence to digital scholarship standards.
 
-- Gain familiarity with canonical examples of ML across various geoscience disciplines and identify strategies for using ML in geoscience when given a context for data richness, physical models, and problem set up.
+- Gain familiarity with canonical examples of ML across various geoscience disciplines (e.g. TODO: add references?) and identify strategies for using ML in geoscience when given a context for data richness, physical models, and problem set up.
 
 - Evaluate the robustness of the machine learning pipeline utilized in scientific literature
 
