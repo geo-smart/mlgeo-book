@@ -34,6 +34,9 @@ authors:
   - name: Scott Henderson
     affiliation: "1"
     orcid: 0000-0003-0624-4965
+  - name: Claire Jensen
+    affiliation: "1"
+    orcid: 0009-0008-7625-7749
  
 
 affiliations:
@@ -129,9 +132,12 @@ The class alternates between Jupyter notebooks, slides, and student-led presenta
 
 The majority of the class can be taught by going through notebooks in the [book](https://geo-smart.github.io/mlgeo-book/about_this_book/about_this_book.html). Additionally, we have built several slide decks for the convenience of the instructor. Like all public repositories, the course GitHub contains raw materials for future instructors to adapt.
 
-* [Introduction class](../book/slides/MLGeo_Introduction_generic.pptx): overview of ML in the geosciences, scientific concepts, course logistics.
-* 
-
+* [Introduction class](../book/slides/MLGeo_Introduction_generic.pptx): overview of ML in the geosciences, scientific concepts, course logistics. Slides are provided in PPTX format given the dynamic content of introductions for ML in the field.
+* [Computing Platform](../book/slides/MLGEO_Lecture2_2024.pdf) a slide deck to support a introduction to the course with resources for literature review, cyberinfrastructure including cloud computing, and brief motivation for  to introduce version control.
+* [Data Definition](../book/slides/MLGEO_Lecture_DataDefinitonsAndFormats.pdf): an overview of data definition and formats for geosciences to support Chapter 2.1 and 2.2.
+* [Visualization](../book/slides/MLGEO_Lecture_Visualizations.pdf): an overview of best practices for data and model visualization to supplement the early lectures of Chapter 2.
+* [AI-ready Dataset](../book/slides/MLReadyDatasets.pdf) are review of what constitutes an AI-ready data set to give at the end of Chapter 2.
+* [Classification and Regression](../book/slides/classificationAndRegression.pdf) a slide deck to introduce classificaiton and regression to give at the beginning of Chapter 3.
 
 ## Small Geoscientific Datasets
 
@@ -224,7 +230,7 @@ The final project, which is group-based (2-4 students), has  4 pillars:
 3. Students begin by creating a **baseline ML using CML** techniques. Students are encouraged to leverage auto-ML to find an optimal model solution. 
 4. Students should then explore **DL models** and their architectures. If a DL approach improves upon the CML outcomes, then students should set up a comprehensive comparison and argue for the adoption of one approach over the other.
 
-Details about the final project can be found in the [course book](https://geo-smart.github.io/mlgeo-book/Chapter1-GettingStarted/1.20_MLGEO_Final_Project.html). Example of such a project is shown in Ch
+Details about the final project can be found in the [course book](https://geo-smart.github.io/mlgeo-book/Chapter1-GettingStarted/1.20_MLGEO_Final_Project.html). Example of such a project is shown in [Chapter 7](https://geo-smart.github.io/mlgeo-book/Chapter7-UseCases/readme.html).
 
 # Teaching experience
 The course is designed for one instructor and one TA. While instructors may come from a single subdiscipline of the geosciences, the students in the course do not. To date, we have taught students geology, geophysics, atmospheric sciences, oceanography, forestry, civil environmental engineering, and biology. The typical split between undergraduates and graduates has been 50/50.
@@ -234,6 +240,8 @@ During a quarter, the course involves meeting three times a week for 90 minutes.
 Instructors and students have access to a Jupyter Hub provisioned by University of Washington for the class, which uses the `uwessds/mlgeo-image` Docker Image for a common computing environment. In the 2024 course offering, we made the students install their environment locally with Visual Studio Code, a student license for GitHub education that included a free license to GitHub CoPilot, and integrated this to the instructional time. Students cloned the Jupyter Book repository on their local Mac, Linux, and PC laptops, and ran the notebooks locally. It took a full week to have all 35 students fully ready to run the notebooks.
 
 The integration of genAI in the 2024 course offering was transformative: the instructor spent less time debugging in class and more time discussing ML concepts, while the students spent less time stuck on software engineering and formatting and more time discussing their data. Additionally, unlike previous course iterations, this acceleration enabled students to complete all four pillars of the final project.
+
+Examples of final projects are shown in Chapter 7 
 
 
 ## Conclusion and Outlook
