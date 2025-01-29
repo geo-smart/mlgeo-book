@@ -22,22 +22,10 @@ network = 'UW'
 station = 'RATT'
 channel = 'HHZ'# this channel gives a low frequency, 1Hz signal.
 Tstart = UTCDateTime(2021,7,29,6,15)
-Tend = Tstart+7200# UTCDateTime(year=2022, month=10, day=8)
 fdsn_client = fdsn.Client('IRIS') # client to query the IRIS DMC server
-
-# call to download the specific data: earthquake waveforms
-Z = fdsn_client.get_waveforms(network=network, station=station, location='--', channel=channel, starttime=Tstart, \
-    endtime=Tend, attach_response=True)
-# basic pre-processing: merge all data if there is gaps, detrend, taper,
-#  remove the seismic instrumental response to go from the digitizer units to ground motion (velocity) units.
-Z.merge(); Z.detrend(type='linear'); Z[0].taper(max_percentage=0.05)
-
-
 # call to download the specific data: noise waveforms
 N = fdsn_client.get_waveforms(network=network, station=station, location='--', channel=channel, starttime=Tstart-7200, \
     endtime=Tstart, attach_response=True)
-# basic pre-processing: merge all data if there is gaps, detrend, taper,
-#  remove the seismic instrumental response to go from the digitizer units to ground motion (velocity) units.
 N.merge(); N.detrend(type='linear');N[0].taper(max_percentage=0.05)
 ------------------
 
@@ -98,14 +86,12 @@ File [0;32m/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/obs
 During handling of the above exception, another exception occurred:
 
 [0;31mTypeError[0m                                 Traceback (most recent call last)
-Input [0;32mIn [4][0m, in [0;36m<cell line: 10>[0;34m()[0m
-[1;32m      7[0m fdsn_client [38;5;241m=[39m fdsn[38;5;241m.[39mClient([38;5;124m'[39m[38;5;124mIRIS[39m[38;5;124m'[39m) [38;5;66;03m# client to query the IRIS DMC server[39;00m
-[1;32m      9[0m [38;5;66;03m# call to download the specific data: earthquake waveforms[39;00m
-[0;32m---> 10[0m Z [38;5;241m=[39m [43mfdsn_client[49m[38;5;241;43m.[39;49m[43mget_waveforms[49m[43m([49m[43mnetwork[49m[38;5;241;43m=[39;49m[43mnetwork[49m[43m,[49m[43m [49m[43mstation[49m[38;5;241;43m=[39;49m[43mstation[49m[43m,[49m[43m [49m[43mlocation[49m[38;5;241;43m=[39;49m[38;5;124;43m'[39;49m[38;5;124;43m--[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[43mchannel[49m[38;5;241;43m=[39;49m[43mchannel[49m[43m,[49m[43m [49m[43mstarttime[49m[38;5;241;43m=[39;49m[43mTstart[49m[43m,[49m[43m [49m[43m\[49m
-[1;32m     11[0m [43m    [49m[43mendtime[49m[38;5;241;43m=[39;49m[43mTend[49m[43m,[49m[43m [49m[43mattach_response[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m)[49m
-[1;32m     12[0m [38;5;66;03m# basic pre-processing: merge all data if there is gaps, detrend, taper,[39;00m
-[1;32m     13[0m [38;5;66;03m#  remove the seismic instrumental response to go from the digitizer units to ground motion (velocity) units.[39;00m
-[1;32m     14[0m Z[38;5;241m.[39mmerge(); Z[38;5;241m.[39mdetrend([38;5;28mtype[39m[38;5;241m=[39m[38;5;124m'[39m[38;5;124mlinear[39m[38;5;124m'[39m); Z[[38;5;241m0[39m][38;5;241m.[39mtaper(max_percentage[38;5;241m=[39m[38;5;241m0.05[39m)
+Input [0;32mIn [23][0m, in [0;36m<cell line: 8>[0;34m()[0m
+[1;32m      6[0m fdsn_client [38;5;241m=[39m fdsn[38;5;241m.[39mClient([38;5;124m'[39m[38;5;124mIRIS[39m[38;5;124m'[39m) [38;5;66;03m# client to query the IRIS DMC server[39;00m
+[1;32m      7[0m [38;5;66;03m# call to download the specific data: noise waveforms[39;00m
+[0;32m----> 8[0m N [38;5;241m=[39m [43mfdsn_client[49m[38;5;241;43m.[39;49m[43mget_waveforms[49m[43m([49m[43mnetwork[49m[38;5;241;43m=[39;49m[43mnetwork[49m[43m,[49m[43m [49m[43mstation[49m[38;5;241;43m=[39;49m[43mstation[49m[43m,[49m[43m [49m[43mlocation[49m[38;5;241;43m=[39;49m[38;5;124;43m'[39;49m[38;5;124;43m--[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[43mchannel[49m[38;5;241;43m=[39;49m[43mchannel[49m[43m,[49m[43m [49m[43mstarttime[49m[38;5;241;43m=[39;49m[43mTstart[49m[38;5;241;43m-[39;49m[38;5;241;43m7200[39;49m[43m,[49m[43m [49m[43m\[49m
+[1;32m      9[0m [43m    [49m[43mendtime[49m[38;5;241;43m=[39;49m[43mTstart[49m[43m,[49m[43m [49m[43mattach_response[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m)[49m
+[1;32m     10[0m N[38;5;241m.[39mmerge(); N[38;5;241m.[39mdetrend([38;5;28mtype[39m[38;5;241m=[39m[38;5;124m'[39m[38;5;124mlinear[39m[38;5;124m'[39m);N[[38;5;241m0[39m][38;5;241m.[39mtaper(max_percentage[38;5;241m=[39m[38;5;241m0.05[39m)
 
 File [0;32m/usr/share/miniconda3/envs/geosmart/lib/python3.10/site-packages/obspy/clients/fdsn/client.py:878[0m, in [0;36mClient.get_waveforms[0;34m(self, network, station, location, channel, starttime, endtime, quality, minimumlength, longestonly, filename, attach_response, **kwargs)[0m
 [1;32m    876[0m     data_stream[38;5;241m.[39mclose()
