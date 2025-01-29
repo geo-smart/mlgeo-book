@@ -1,4 +1,4 @@
-# This chapter focuces on model workflow and ML reproducibility
+# ML reproducibility
 
 
 Reproducibility using [Make](http://swcarpentry.github.io/make-novice/)

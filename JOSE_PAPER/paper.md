@@ -111,7 +111,7 @@ By the end of the course, students can:
 
 - Understand and apply open science principles, ensuring reproducibility and adherence to digital scholarship standards.
 
-- Gain familiarity with canonical examples of ML across various geoscience disciplines and identify strategies for using ML in geoscience in the context of data richness, physical models, and problem setup.
+- Gain familiarity with canonical examples of ML across various geoscience disciplines (e.g., automating data analysis pipelines in seismology to detect earthquakes, multi-variate regressions to predict climate and oceanographic variables) and identify strategies for using ML in geoscience in the context of data richness, physical models, and problem setup.
 
 - Evaluate the robustness of the ML pipelines utilized in the scientific literature
 
