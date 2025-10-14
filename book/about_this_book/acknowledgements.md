@@ -12,8 +12,8 @@ Many researchers interested in machine learning in the geosciences, and beyond, 
 
 The book tremendously benefited from other resources such as
 
-- [The Turing Way](https://the-turing-way.netlify.app/welcome){cite:p}`the_turing_way_community_2022_6909298`
+- [The Turing Way](https://book.the-turing-way.org/){cite:p}`the_turing_way_community_2022_6909298`
 - [Software Carpentries](http://software-carpentry.org/lessons/) 
-- [EarthDataScience](https://www.earthdatascience.org) course at CU Boulder: Lessons adapted from materials developed by Earth Lab
+- [EarthDataScience](https://earthdatascience.org/courses/) course at CU Boulder: Lessons adapted from materials developed by Earth Lab
 - The [geohackweek](https://geohackweek.github.io/)
 - Some of the tutorials were aided by ChatGPT

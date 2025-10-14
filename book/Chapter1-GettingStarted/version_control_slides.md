@@ -19,7 +19,7 @@ Versions of a research paper. File nameing and tracked changes can become messy.
 ```
 ---
 
-It keeps track of the changes and who made the changes. See further discussion on [The Turing Way](https://the-turing-way.netlify.app/reproducible-research/vcs/vcs-workflow.html) {cite:p}`the_turing_way_community_2022_6909298`. Here are the main points.
+It keeps track of the changes and who made the changes. See further discussion on [The Turing Way](https://book.the-turing-way.org/reproducible-research/vcs/vcs-workflow.html) {cite:p}`the_turing_way_community_2022_6909298`. Here are the main points.
 
 
 ```{figure} TW_main-branch.png
@@ -155,7 +155,7 @@ Good repository content are:
         ```
     * License: a short description, or automatically generated license. See below.
  
-- **License**: Critical: without a license no one can reuse and modify the software. Find a detailed description of the various software vs data license in the [Turing Way](https://the-turing-way.netlify.app/reproducible-research/licensing/licensing-software.html). [Choosealicense](https://choosealicense.com/) is a nice guide to help you find the appropriate license.
+- **License**: Critical: without a license no one can reuse and modify the software. Find a detailed description of the various software vs data license in the [Turing Way](https://book.the-turing-way.org/reproducible-research/licensing/licensing-software.html). [Choosealicense](https://choosealicense.com/) is a nice guide to help you find the appropriate license.
 
 - Fix the virtual environment for users to be able to re-use the software. Add an environment file environment.yml or requirements.txt
 
@@ -250,7 +250,7 @@ The main branch should remain the clean, official version for the public.
 name: GitHub project management, From: Earth Lab
 alt: GitHub project management, From: Earth Lab
 ---
-Pull requests using GitHub: Found in [EarthDataScience](https://www.earthdatascience.org/courses/intro-to-earth-data-science/git-github/github-collaboration/). Source: Earth Lab, Alana Faller
+Pull requests using GitHub: Found in [EarthDataScience](https://earthdatascience.org/courses/intro-to-earth-data-science/git-github/github-collaboration/). Source: Earth Lab, Alana Faller
 ```
 
 * Use **GitHub Issues** to post bugs or performance issues, so that the contributors can keep track and address them. There are templates to posting issues, and online [discussions](https://medium.com/nyc-planning-digital/writing-a-proper-github-issue-97427d62a20f) about it. The main takeways are:

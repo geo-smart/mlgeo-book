@@ -1,7 +1,7 @@
 # Machine Learning in the Geosciences
 The **GeoS**cience **MA**chine Learning **R**esources and **T**raining (GeoSMART) framework provides an educational pathway and a foundation in open source scientific ecosystems and progresses through general ML theory, toolkits, and deployment on Cloud computing.
 
-This book is used in the course offered at the University of Washington: Machine Learning in the Geoscienes (AUTMN 2023 - ESS 469/569). The corresponding GitHub repository with notebooks for the tutorials and homeworks is [MLGeo](https://github.com/UW-ESS-DS/MLGeo-2023). Find the Docker image for the corresponding jupyter hub [MLGeo Image](https://github.com/UW-ESS-DS/MLGeo-image).
+This book is used in the course offered at the University of Washington: Machine Learning in the Geoscienes (ESS 469/569). The corresponding GitHub repository with additional notebooks for the tutorials and homeworks is [MLGeo](https://github.com/UW-ESS-DS/MLGeo-2023). Find the Docker image for the corresponding jupyter hub [MLGeo Image](https://github.com/UW-ESS-DS/MLGeo-image).
 
 Instructors:
 
