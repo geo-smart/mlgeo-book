@@ -34,4 +34,4 @@ Exercises marked for student response keep their solution in place, wrapped in a
 
 ## Contributing
 
-Open a pull request against `main`. CI must pass (full book build + link check) before merge.
+Open a pull request against `main`. CI must pass before merge: the full book build, which executes every notebook. A link check also runs and reports in the job log, but external links flake often enough that it is advisory rather than blocking.

@@ -16,7 +16,7 @@ See https://github.com/UW-ESS-DS/Glossary for definitions, which we will eventua
 
 [BinderHub](https://binderhub.readthedocs.io)
 : The underlying technology of mybinder.org, BinderHub is an open source tool
-  that utilizes a JupyterHub`= in order to provide live, reproducible
+  that utilizes a JupyterHub in order to provide live, reproducible
   interactive computing environments that users define on GitHub.
 
 [Conda](https://docs.conda.io)

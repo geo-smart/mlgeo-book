@@ -33,8 +33,12 @@ def canonical_classification_truth():
     import pooch
 
     frames = []
-    for fname, url in CONFIG["classification"]["files"].items():
-        path = pooch.retrieve(url, known_hash=None, fname=fname,
+    # Insertion order in config.json defines the canonical concatenation order;
+    # iterate a fixed list rather than trusting dict semantics implicitly.
+    for fname in list(CONFIG["classification"]["files"]):
+        entry = CONFIG["classification"]["files"][fname]
+        url, known_hash = entry["url"], entry.get("known_hash")
+        path = pooch.retrieve(url, known_hash=known_hash, fname=fname,
                               path=pooch.os_cache("mlgeo"))
         frames.append(pd.read_csv(path, index_col=0))
     df = pd.concat(frames, ignore_index=True).dropna(axis=1)
@@ -48,6 +52,8 @@ def canonical_classification_truth():
 
 def mase(y_true, y_pred, y_train):
     naive = np.mean(np.abs(np.diff(y_train)))
+    if not np.isfinite(naive) or naive == 0:
+        raise ValueError("naive baseline has zero variation; MASE undefined")
     return np.mean(np.abs(np.asarray(y_true) - np.asarray(y_pred))) / naive
 
 
