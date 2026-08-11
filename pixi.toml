@@ -6,10 +6,10 @@ channels = ["conda-forge"]
 platforms = ["osx-arm64", "linux-64"]
 
 [tasks]
-build = "myst build --execute --html"
-serve = "myst start --execute"
-check-links = "myst build --check-links"
-test-synth = "pytest book/mlgeo_synth/tests -q"
+build = { cmd = "myst build --execute --html", cwd = "book" }
+serve = { cmd = "myst start --execute", cwd = "book" }
+check-links = { cmd = "myst build --check-links", cwd = "book" }
+test-synth = { cmd = "pytest book/mlgeo_synth/tests -q" }
 
 [dependencies]
 python = "3.12.*"
