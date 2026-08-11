@@ -10,7 +10,7 @@ Perform literature review of the scientific outstanding questions and solutions 
 
 * What is the state of the data?
 
-Is there a lot of data, and labeled data? Is there human expertise available? Will this be a supervised or unsupervised learning problem? Can the data be accessed from open-access archives that meet FAIR guidelines? what would be its DOI?
+Is there a lot of data, and labeled data? Is there human expertise available? Will this be a supervised or unsupervised learning problem? Can the data be accessed from open-access archives that meet the FAIR guidelines (findable, accessible, interoperable, reusable)? If the data involves Indigenous peoples, lands, or knowledge, do the CARE principles for Indigenous data governance apply? What would be its DOI?
 
 
 ## 2. Organize the project - Chapter 1
@@ -57,7 +57,7 @@ Write functions for all data transformation so that they can be automatically ca
 **Clean data**: fix or remove outliers, fill missing values (zero, mean median) or drop data (when too many data gaps for instance).
 Save the clean copy of the data in a different file.
 
-Avoid using toy, simple synthetic data. Try and use dataset that are collected from the real-world. The behavior of the algorithm may be completely different.
+Be careful with synthetic data. Toy random data (noise drawn from a generator, with no physics behind it) tells you little: an algorithm that works on it may behave completely differently on real observations, so avoid it for anything beyond a smoke test. Physically motivated synthetic data with documented ground truth is a different matter. Because you know the true answer, it is admissible for method development, benchmarking, and hidden test sets. Chapter 2.10 and the book's `mlgeo_synth` package generate this kind of data. For the science itself, prefer data collected from the real world.
 
 * **Feature preparation - Chapter 2**
 
@@ -92,7 +92,7 @@ Document the data transformation with notebooks. Reassign data attributes/labels
 
 Find the ***baseline*** model that the ML project is supposed to beat. At the lease, your ML algorithm has to beat the *random* baseline or there are issues in the model design or in the input data.
 
-Try several model algorithms. *No free lunch theorem* (Worlpert 1995), there is not such thing as the best learning algorithm. Instead, there is a data set where it is very accurate.
+Try several model algorithms. The *no free lunch theorem* (Wolpert 1995): there is no such thing as the best learning algorithm overall, only an algorithm that is very accurate on a given data set.
 
 The model should have the **minimum complexity** that is required to **minimize the model expected error**.
 
