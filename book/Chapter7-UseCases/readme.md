@@ -1,15 +1,19 @@
-# Use Cases in MLGEO
+# Chapter 7: Communicating and Situating Your Science
 
+For decades the advice was: write one "Plain Language Summary" and you have done your outreach. That advice is now obsolete for a mechanical reason — a language model can draft a version of your abstract for any audience, in any register, in seconds. If drafting were the skill, it would be worthless.
 
-GEO-SMART project created a collection of JupyterBooks for [use cases](https://geo-smart.github.io/scm_geosmart_use_case/intro.html).
+What the model cannot do, and what this chapter teaches, is the part that was always the actual work:
 
-We also list below examples of final projects in the class.
+- **decide what each audience needs** — which of your findings matters to a civil engineer, which to an emergency manager, and which to neither;
+- **verify that your claims survive simplification** — most translation errors are not wrong words but silently broadened claims;
+- **own the message** — you, not the drafting tool, answer for what the funder or the newspaper takes away.
 
-* **Seasonal Ice Velocity Prediction** from Claire Jensen (UW):
-    * Time series forecasting of surface ice velocity values on Zachariæ Isstrøm, Northeast Greenland. Ice velocity data are satellite-derived estimates collected through the [Greenland Ice Sheet Mapping Project (GrIMP)](https://nsidc.org/grimp). Three time series were aggregated from different points on the glacier and were trained and tested separately, finding different optimal parameters and models for each point. Various classic and deep learning models were explored, including LightGBM, RandomForest, LSTM, CNN, and transformers (Moirai).
-    * GitHub [repository](https://github.com/cjense/seasonal-icevelocity-prediction)
-    * [Report](https://github.com/cjense/seasonal-icevelocity-prediction/blob/main/report%20and%20presentation/ESS_569_Final_Report.pdf) (version tag 1cc81dd)
-    * [Presentation](https://github.com/cjense/seasonal-icevelocity-prediction/blob/main/report%20and%20presentation/ESS-569%20Final%20Presenation.pdf) (version tag 1cc81dd)
+The same logic applies to impact. "This could help save lives" is boilerplate any model will happily generate. The chain from *your specific result* to *a specific decision by a specific actor*, with an honest account of what happens when the model is wrong — that requires knowing your work, and it is graded.
 
-![Glacier Velocity Time Series](./jensen.png)
-**Figure** The 12-month rolling average of the 6-day frequency velocity predictions from the CNN (train in purple, test in yellow) and LSTM (train in red, test in green) and the ground truth (blue).
+## Chapter arc
+
+1. **[7.1 Audience translation](7.1_audience_translation.md)** — One result, N audiences. A working method for translating claims (not just vocabulary), a worked example translated four ways, a protocol for talking to adjacent geoscience subfields, and the AI-assisted translation exercise with its verification pass.
+2. **[7.2 Downstream impact](7.2_downstream_impact.md)** — The five-question impact inquiry, two worked examples, and the format and rubric for the final project's downstream-impact statement.
+3. **[7.3 Use-case gallery](7.3_use_case_gallery.md)** — Real projects from this course and the GeoSMART community, read through the questions of 7.1 and 7.2: who was the audience, what was the impact path. With an invitation to add yours.
+
+Both graded deliverables in this chapter — the audience-translation exercise and the downstream-impact statement — feed directly into the final project ([rubric, section 1.10](../about_this_book/1.10_MLGEO_FinalProject.md)).
