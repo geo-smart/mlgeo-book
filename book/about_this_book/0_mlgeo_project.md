@@ -10,7 +10,7 @@ Perform literature review of the scientific outstanding questions and solutions 
 
 * What is the state of the data?
 
-Is there a lot of data, and labeled data? Is there human expertise available? Will this be a supervised or unsupervised learning problem? Can the data be accessed from open-access archives that meet the FAIR guidelines (findable, accessible, interoperable, reusable)? If the data involves Indigenous peoples, lands, or knowledge, do the CARE principles for Indigenous data governance apply? What would be its DOI?
+Is there a lot of data, and labeled data? Is there human expertise available? Will this be a supervised or unsupervised learning problem? Can the data be accessed from open-access archives that meet the FAIR guidelines (findable, accessible, interoperable, reusable)? What would be its DOI? Are there local regulations or collection agreements that constrain how the data can be shared?
 
 
 ## 2. Organize the project - Chapter 1
