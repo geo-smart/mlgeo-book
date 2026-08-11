@@ -1,59 +1,41 @@
 # Chapter Overview
 
-## Chapter 2: Data Manipulation
+## Chapter 2: AI-Ready Geoscience Data
 
-This chapter covers the essential skills for manipulating geoscientific data in machine learning. It covers a wide range of topics, from data definition, modalities, formats (including cloud optimized), best standard for preparing AI-ready data sets. The chapter also covers basic skills for data manpilulation, such as stastical assessments, data transforms (Fourier, wavelets), creating synthetic signals, feature engineering, and the foundamental concept of data dimensions.
+This chapter is the AI-ready-data pillar of the course. Machine learning projects in the geosciences succeed or fail on the quality of their data, and most of the work is upstream of any model: understanding what the data are, reading and writing standard formats, cleaning tables, reshaping arrays, resampling, characterizing distributions, transforming and filtering signals, generating honest synthetic data, engineering features, and reducing dimensionality. The chapter ends with a capstone lesson that defines AI-ready data operationally — provenance, metadata, tidy shapes, benchmark splits, and leakage controls — and that definition is graded in the final project.
 
-### Topics Covered
+### The Arc of the Chapter
 
-1. **Data Definition and Modalities in Geoscience**
-   - Understanding different types of data in geoscience
-   - Data modalities and their characteristics
-   - Common data formats relevant to geoscience, and computational consideration for cloud storage
+The lessons build in order:
 
-2. **Basic Skills for Manipulating Tabular Data**
-   - Introduction to Pandas
-     - DataFrames and Series
-     - Datetime objects
-     - Basic operations: filtering, grouping, and aggregating
-   - Handling missing data and data cleaning
-   - Building data pipelines
+1. **2.1 Data Definitions** — data modalities in geoscience; arrays vs data frames; common and cloud-optimized formats.
+2. **2.2 Data Formats** — hands-on reading and writing of CSV, GeoJSON, GeoTIFF, netCDF, HDF5, Parquet, and Zarr; comparing file sizes on disk.
+3. **2.3 Pandas DataFrames** — series and data frames, datetime handling, filtering, grouping, aggregating, and mapping station metadata.
+4. **2.4 Preparing DataFrames** — cleaning a whole-rock geochemistry table: missing data, sentinel values, correlations, and per-class distributions.
+5. **2.5 Arrays** — NumPy and Xarray arrays, indexing and reshaping, labeled dimensions, and a first look at PyTorch tensors.
+6. **2.6 Resampling** — downsampling, interpolation, and the bootstrap, applied to synthetic and real GNSS time series.
+7. **2.7 Statistical Considerations** — moments, distributions, and the Gutenberg-Richter law, on synthetic and real geochemical data.
+8. **2.8 Spectral Transforms** — Fourier and wavelet transforms of seismograms and 2D fields.
+9. **2.9 Filtering** — low-, high-, and band-pass filtering; zero-phase vs causal filters; separating trend, seasonal cycle, and noise.
+10. **2.10 Synthetic Data** — building synthetic seismograms and spectrum-matched noise; when synthetic data is admissible in science.
+11. **2.11 Feature Engineering** — hand-built and automated features for time series, with a real seismic waveform benchmark.
+12. **2.12 Dimensionality Reduction** — PCA, EOFs on climate fields, ICA, and t-SNE.
+13. **2.13 AI-Ready Data (Capstone)** — the operational checklist: data cards, benchmark splits, leakage-by-preprocessing, and correct splits for autocorrelated data.
 
-3. **Manipulating Array Data**
-   - Introduction to NumPy
-     - Arrays and their operations
-     - Indexing, slicing, and reshaping arrays
-   - Working with multi-dimensional arrays
-
-4. **Statistical Distributions and Field Transforms**
-   - Understanding statistical distributions
-   - Field transforms
-     - Fourier Transform
-     - Wavelet Transform
-   - Creating synthetic noise for data augmentation
-
-5. **Dimensionality Reduction and Feature Engineering**
-   - Techniques for dimensionality reduction
-     - Principal Component Analysis (PCA)
-     - t-Distributed Stochastic Neighbor Embedding (t-SNE)
-   - Feature engineering
-     - Creating new features from existing data
-     - Selecting the most relevant features
-
-6. **Best Practices for AI-Ready Curated GeoDatasets**
-   - Ensuring data quality and consistency
-   - Techniques for data normalization and standardization
-   - Strategies for splitting data into training, validation, and test sets
+The chapter closes with the **final project assignment for this pillar (2.20)**: build an AI-ready dataset for your own project, with a data card and benchmark splits, following the 2.13 checklist.
 
 ### Learning Outcomes
 
 By the end of this chapter, you will:
-- Gain a solid understanding of different data types, modalities, and formats relevant to geosciences.
-- Develop basic skills for manipulating tabular and array data using Pandas, NumPy, and PyTorch.
-- Learn how to apply statistical distributions and field transforms to your data.
-- Master techniques for dimensionality reduction and feature engineering.
-- Understand best practices for preparing AI-ready and ML-ready curated datasets.
+
+- Recognize the data types, modalities, and formats common in the geosciences, including cloud-optimized formats.
+- Manipulate tabular data with Pandas and array data with NumPy and Xarray.
+- Characterize data with statistical moments, distributions, and resampling methods.
+- Apply Fourier and wavelet transforms and design digital filters.
+- Generate synthetic data responsibly and disclose its use.
+- Engineer features and reduce dimensionality for downstream ML tasks.
+- Assemble an AI-ready dataset with documented provenance, a data card, and leakage-safe benchmark splits.
 
 ### Assignments
 
-- **Final Assignment**: The final assignment for this chapter is to build an AI-ready dataset for your final project. This will involve applying the skills and techniques learned throughout the chapter to curate a high-quality dataset that can be used for machine learning or AI applications.
+- **Final Assignment (2.20)**: Build an AI-ready dataset for your final project. Apply the 2.13 checklist: document provenance and licensing, write a data card, define benchmark splits, and demonstrate that your preprocessing does not leak information across splits.
