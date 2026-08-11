@@ -1,43 +1,37 @@
-# GeoSMART Curriculum Jupyter Book (ESS 469/569)
+# MLGeo: Machine Learning in the Geosciences (ESS 469/569)
 
-[![Deploy](https://github.com/geo-smart/mlgeo-instructor/actions/workflows/deploy.yaml/badge.svg)](https://github.com/geo-smart/mlgeo-instructor/actions/workflows/deploy.yaml)
-[![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://geo-smart.github.io/mlgeo-instructor)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/geo-smart/mlgeo-instructor/HEAD?urlpath=lab)
+[![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://geo-smart.github.io/mlgeo-book)
 [![GeoSMART Library Badge](book/img/curricula_badge.svg)](https://geo-smart.github.io/curriculum)
-[![Student Version](book/img/student_version_badge.svg)](https://geo-smart.github.io/mlgeo-book/)
 
 ## Repository Overview
 
-This repository stores configuration for GeoSMART curriculum content, specifically the teacher version of the book. Only this version of the book should ever be edited, as the student version is automatically generated on push by github actions.
+This repository is the single source of truth for the MLGeo curriculum book (2026 edition). It is edited directly: there is no separate instructor/student repository pair anymore, and the former auto-generation pipeline from `geo-smart/mlgeo-instructor` is retired. Solutions to exercises live in this repo and are rendered as collapsible/hidden cells in the published book rather than being stripped into a second repository.
+
+The 2024 edition of the book is preserved at the [v1.0-2024-edition release](https://github.com/geo-smart/mlgeo-book/releases/tag/v1.0-2024-edition).
 
 ## Making Changes
 
-Edit the book content by modifying the `_config.yml`, `_toc.yml` and `*.ipynb` files in the `book` directory. The book is hosted on Github Pages and will be automatically updated on push, and the student book will also be created automatically on push.
-
-Making changes requires that you set up a conda environment and build locally before making sure that it will build with github actions. We accepted rendered notebooks, but some oddities, such as kernels different than python, will make it crash. So we recommend that contributors first build the book with the added notebooks.
+Book content lives in `book/`. Edit the markdown pages and notebooks there, then build locally before pushing. The book is built with [Jupyter Book 2 / MyST](https://next.jupyterbook.org); configuration and table of contents live in `myst.yml`.
 
 ```sh
-    conda env create -f ./conda/environment.yml
-    conda activate curriculum_book
-
+pixi install        # install the pinned environment (see pixi.toml)
+pixi run build      # build the book (executes notebooks)
+pixi run serve      # live-preview server (myst start)
 ```
 
-To modify the exact differences between this book and the student book, edit `.github/workflows/clean_book.py`. When you push, a github action will clone the repo and run this python file which modifies certain parts of `*.ipynb` file contents, then pushes to the student repo. To edit the student repo's README, edit `STUDENT_README.md`. The Github Actions workflow also automatically replaces `README.md` with `STUDENT_README.md` in the student repo.
+Notebooks are executed at build time; a page with a failing cell fails the build. CI runs the same build on every pull request.
 
-### `Student Response Sections`
+### Student response sections
 
-One modifications made by the `clean_book.py` workflow is to clear sections marked for student response. Code cells marked for student response may contain code in the teacher version of the book, but will have their code removed and replaced with a TODO comment in the student version.
-
-To mark a code cell to be cleared, insert a markdown cell directly preceding it with the following content:
+Exercises marked for student response keep their solution in place, wrapped in a dropdown admonition so readers attempt the exercise before revealing the answer:
 
 ````markdown
-```{admonition} Student response section
-This section is left for the student to complete.
-```
+:::{admonition} Solution
+:class: dropdown
+...solution here...
+:::
 ````
 
-## Serving Locally
+## Contributing
 
-Activate the `curriculum_book` conda environment (or any conda environment that has the necessary jupyter book dependencies). Navigate to the root folder of the curriculum book repository in anaconda prompt, then run `python server.py`.
-
-On startup, the server will run `jb build book` to build all changes to the notebook and create the compiled HTML. The server code can take a `--no-build` flag (or `--nb` shorthand) if you don't want to build any changes you've made to the notebooks. In the case that you don't want to build changes made to the notebooks, you can just run `python serer.py --nb` from any terminal with python installed.
+Open a pull request against `main`. CI must pass before merge: the full book build, which executes every notebook. A link check also runs and reports in the job log, but external links flake often enough that it is advisory rather than blocking.

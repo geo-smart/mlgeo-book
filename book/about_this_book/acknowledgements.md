@@ -16,4 +16,7 @@ The book tremendously benefited from other resources such as
 - [Software Carpentries](http://software-carpentry.org/lessons/) 
 - [EarthDataScience](https://earthdatascience.org/courses/) course at CU Boulder: Lessons adapted from materials developed by Earth Lab
 - The [geohackweek](https://geohackweek.github.io/)
-- Some of the tutorials were aided by ChatGPT
+
+## AI assistance
+
+Some tutorial drafts in the 2024 edition drew on ChatGPT. The 2026 edition was revised with the help of an agentic AI assistant (Claude), with all content reviewed by the instructors. Datasets and code are attributed where they appear in the book.

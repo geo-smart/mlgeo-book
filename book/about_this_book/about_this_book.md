@@ -1,7 +1,8 @@
 # Machine Learning in the Geosciences
-The **GeoS**cience **MA**chine Learning **R**esources and **T**raining (GeoSMART) framework provides an educational pathway and a foundation in open source scientific ecosystems and progresses through general ML theory, toolkits, and deployment on Cloud computing.
 
-This book is used in the course offered at the University of Washington: Machine Learning in the Geoscienes (ESS 469/569). The corresponding GitHub repository with additional notebooks for the tutorials and homeworks is [MLGeo](https://github.com/UW-ESS-DS/MLGeo-2023). Find the Docker image for the corresponding jupyter hub [MLGeo Image](https://github.com/UW-ESS-DS/MLGeo-image).
+The **GeoS**cience **MA**chine Learning **R**esources and **T**raining (GeoSMART) framework provides an educational pathway in open source scientific computing, general ML theory, toolkits, and deployment.
+
+This book supports the course Machine Learning in the Geosciences (ESS 469/569) at the University of Washington. The book, tutorials, and homeworks live in this single repository; students run the notebooks locally or on a cloud service of their choice.
 
 Instructors:
 
@@ -11,57 +12,69 @@ Instructors:
 This project is supported by the GeoSMART team (Stefan Todoran, Nicoleta Cristea, Anthony Arendt, Scott Henderson, Ziheng Sun, Yiyu Ni, Akash Kharita).
 
 ## Overview
-The course is intended to introduce Machine Learning in Geosciences, the basics of computing, and methodologies in applied machine learning. The course focuses on canonical and topical data sets in seismology, oceanography, cryosphere, planetary sciences, geology, and geodesy. The methods taught include unsupervised clustering, logistic regression, random forest, support vector machine, and deep learning.
 
-<!-- # Student version
-Some chapters will include code sections which students should attempt to write on their own first before viewing the solution. The student version of this book automatically clears sections marked by the instructor as student response, and can be accessed via the link below. 
+The course introduces machine learning in the geosciences, the basics of computing, and applied ML methodology. It works with canonical and topical data sets in seismology, oceanography, cryosphere, planetary sciences, geology, and geodesy. The methods taught include unsupervised clustering, logistic regression, random forest, support vector machines, and deep learning with PyTorch.
 
-[![Student Version](../img/student_version_badge.svg)](https://geo-smart.github.io/mlgeo-book/) -->
+The course rests on three pillars, plus a fourth layer that runs through everything in the 2026 edition:
 
-# Learning objectives 
-By the end of the quarter, the students should be able to:
+1. **AI-ready data**: turning raw geoscientific observations into data sets a model can learn from.
+2. **Classic machine learning**: feature-based methods, trained and evaluated honestly.
+3. **Deep learning**: neural networks in PyTorch, from perceptrons to modern architectures.
+4. **Working with agentic AI**: students in 2026 write code alongside AI assistants that read repositories, run code, and propose changes. The course treats this as a skill to be taught, not a shortcut to be policed. Critical evaluation of AI output, translation of results for different audiences, and articulation of downstream impact are graded skills, on the same footing as model accuracy.
 
-- Demonstrate computing skills in python, jupyter notebooks, Git version control, and deploy scripts on local computers, cloud-hosted hubs, or cloud instances.
-- Develop and apply standard machine-learning workflows: 1) Data preparation, 2) Model design, 3) Model training, validation, and evaluation.
-- Apply standard data manipulation strategies in the Geosciences: data types (time series and geospatial), data formats, data visualization, dimensionality reduction, and feature engineering.
-- Describe and demonstrate the adoption of open science principles, science reproducibility, and digital scholarship.
-- Describe the canonical examples in a breadth of disciplines in geoscience.
-- Understand at least qualitatively how some of the advanced techniques (Fourier and wavelet transform, principal component analysis,…) manipulate and transform the data to interpret the output.
+# Learning objectives
 
-The UW MLGEO course ESS469/569, we follow a [syllabus](about_this_book/MLGeo_2024.pdf)
+By the end of the quarter, students should be able to:
 
-<!-- 
-# Tiered learning
-Because students do not need to be experts on all materials covered in this course, we divide each topic into three levels: **Beginner (Level 1)**, **Intermediate (Level 2)**, and **Advanced (Level 3)**. We tag these levels throughout the book.  -->
+- Demonstrate computing skills in Python, Jupyter notebooks, and Git version control, and deploy scripts on local computers or cloud instances.
+- Develop and apply standard machine learning workflows: data preparation; model design; model training, validation, and evaluation.
+- Apply standard data manipulation strategies in the geosciences: data types (time series and geospatial), data formats, data visualization, dimensionality reduction, and feature engineering.
+- Describe and practice open science principles, reproducibility, and digital scholarship.
+- Describe canonical ML examples across geoscience disciplines.
+- Understand at least qualitatively how techniques such as the Fourier and wavelet transforms or principal component analysis manipulate data, and interpret their output.
+- Use an agentic AI assistant productively and critically: direct it, verify its output, and document its role in the work.
+- Communicate the same scientific result to different audiences, and state the societal, environmental, or economic relevance of a project.
 
-Note that we introduce and incoroporate data visualization concepts throughout the book.
+[Detailed syllabus (PDF)](MLGeo_2024.pdf)
+
+Data visualization concepts are introduced and used throughout the book.
 
 # Prerequisites
+
 **Prerequisites**: MATH 207 and MATH 208, or MATH 307 or 308, or AMATH 351 or 352, CS160 or CS163, or permission from the instructor.
 
-**Recommended skills**: Knowledge in Python, AMATH301, 100- or 200-level courses in the Earth Sciences. We will provide refreshers on computing as part of the course.
+**Recommended skills**: Knowledge of Python, AMATH301, 100- or 200-level courses in the Earth sciences. We provide refreshers on computing as part of the course.
 
 # Syllabus
-- **Part I: AI-ready GeoData**: This part will focus on geoscientific data, their modalities and dimensions, their basic characteristics, how to extract features, dimensionality reduction, and how to format AI-ready data set from geoscientific data
-- **Part II: Classic Machine Learning**: This part will focus on developing machine learning skills for model training, evaluation, assessment for generalization, good practice for robust model training for classic machine learning after feature engineering (e.g., K-means, random foreast, knn, etc)
-- **Part II: Deep Learning**: This part will overview foundamental concepts in deep learning, such as fully connected layers, convolutional neural networks, sequence-to-sequence learning with RNNs, and canonical architectures such as large DNN, ResNets, U-Nets, strategies for training neural networks such as data augmentation, regularization, loss definition that incorporate physics constrains, and modern topics such as foundational models and large language models for geoscience.
+
+- **Part I: AI-ready GeoData**: geoscientific data, their modalities and dimensions, basic characteristics, feature extraction, dimensionality reduction, and how to format an AI-ready data set from geoscientific data.
+- **Part II: Classic Machine Learning**: model training, evaluation, assessment of generalization, and good practice for reliable training of classic algorithms after feature engineering (e.g., K-means, random forest, k-NN).
+- **Part III: Deep Learning**: fundamental concepts in deep learning — fully connected layers, convolutional neural networks, sequence-to-sequence learning, canonical architectures (deep networks, ResNets, U-Nets) — training strategies such as data augmentation, regularization, and physics-informed losses, and modern topics such as foundation models and large language models for geoscience.
+
+Later chapters extend the pillars: reproducible workflows in the agent era (Chapter 5), building and evaluating AI agents (Chapter 6), and use cases, audience translation, and downstream impact (Chapter 7).
 
 # Technical skills building
-Throughout the course, the students will build skills in shell, version control using git and GitHub, Python programming, high-performance computing strategies, and simple data visualization using Python. 
-- _Shell_: introduced early in the course, and manipulated if needed
-- _Version Control_: introduced early in the course and used at every lecture
-- _Python Programming_: progressively introduced. Specifically, we detail the use of the following packages: numpy, (geo)pandas, sklearn, keras, pytorch.
-- _Visualization in Python_: introduced early as Matplolib and Plotly, and used in every Python lecture.
-- _High performance computing_: used in the second half of the course and during development of the final project.
+
+Throughout the course, students build skills in shell, version control with git and GitHub, Python programming, high performance computing, and data visualization in Python.
+
+- _Shell_: introduced early in the course, used as needed.
+- _Version control_: introduced early and used at every lecture.
+- _Python programming_: progressively introduced. We detail the use of numpy, (geo)pandas, and scikit-learn, with PyTorch as the deep learning framework.
+- _Visualization in Python_: introduced early with Matplotlib and Plotly, used in every Python lecture.
+- _High performance computing_: used in the second half of the course and during the final project.
+- _Agentic AI assistants_: introduced in Chapter 1 (see the [course AI-use policy](../Chapter1-GettingStarted/1.8_ai_in_your_workflow.md)) and used, with disclosure, throughout.
 
 # Readings and webinars
-Each week, students will write a short report about either a paper or a webinar. Use the template on canvas and answer the questions when appropriate. Submissions of the report PDF are due Wednesdays at 11:59 pm PDT on canvas. The instructor will spend 15 minutes Monday morning summarizing the reading and webinar reports. Papers can be found and/or uploaded on a shared private course Google Drive [here](https://drive.google.com/drive/folders/1dyxfslCLzFFTYtX_vbjudlzaXvOxkepe?usp=sharing) (only accessible with a UW email address).
 
-# Github with tutorials and homeworks --- Course specific
-This book contains all tutorials and homeworks, you can click-download each notebook and run it in a jupyter hub.
+Each week, students write a short report about a paper or a webinar. Use the template on Canvas and answer the questions when appropriate. Report PDFs are due Wednesdays at 11:59 pm PT on Canvas. The instructor spends 15 minutes Monday morning summarizing the reading and webinar reports. Papers can be found and uploaded on a shared private course Google Drive [here](https://drive.google.com/drive/folders/1dyxfslCLzFFTYtX_vbjudlzaXvOxkepe?usp=sharing) (accessible with a UW email address).
 
-The conda environment to create it is available to download and install.
+# Course infrastructure
 
+This book contains all tutorials and homeworks. Students work in VS Code or JupyterLab with an agentic AI assistant, keep their work on GitHub, and manage software environments with [pixi](https://pixi.sh). To build the book locally:
 
-``
-Make your own repository (MLGEO2023_UWNETID). Copy the environment.yml file and the tutorials into your own reposistory to run and modify them.
+```
+pixi install
+pixi run build
+```
+
+Each student creates a personal course repository named `MLGEO2026_UWNETID`, copies the environment files from this book into it, and keeps homeworks and project work there under version control.
