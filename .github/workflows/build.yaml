@@ -33,6 +33,8 @@ jobs:
       - name: Build book from executed notebooks
         run: pixi run myst build --html
         working-directory: book
+        env:
+          BASE_URL: /mlgeo-book
 
       - name: Redirect stubs for old (2024 edition) URLs
         run: pixi run python tools/make_redirects.py
