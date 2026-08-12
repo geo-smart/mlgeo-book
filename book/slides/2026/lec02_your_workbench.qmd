@@ -1,0 +1,117 @@
+---
+title: "Your workbench"
+subtitle: "Session 2 · Fri Oct 2 · Book sections 1.2–1.5, 1.9"
+title-slide-attributes:
+  data-background-color: "#faf7f2"
+---
+
+## {background-color="#faf7f2"}
+
+[🧰]{.lecture-icon}
+
+### Today's question
+
+**If your laptop died tonight, could tomorrow-you rerun today's analysis and get today's numbers?**
+
+::: {.dim}
+Readings: [1.2](https://geo-smart.github.io/mlgeo-book/jupyter-environment)–[1.5](https://geo-smart.github.io/mlgeo-book/version-control-git) · Lab: [1.9 workbench setup](https://geo-smart.github.io/mlgeo-book/workbench-setup-hw1)
+:::
+
+::: {.notes}
+Lab session: ten minutes of deck, then the room works. Frame the question physically — a dead laptop, a returning reviewer two years after submission, a teammate on a different OS. All three are the same problem: is the analysis a thing on one machine, or a recipe any machine can follow? Today builds the recipe: a pinned environment and a version-controlled repository. Practical note before starting: everyone should kick off the course-book `pixi install` at the top of the lab — it downloads gigabytes — and do the git steps while it runs.
+:::
+
+## This lecture in the literature
+
+{{< include refs/lec02_refs.qmd >}}
+
+::: {.takeaway}
+The reproducibility problem is measured, not hypothetical. The fix is mechanical, and today you install it.
+:::
+
+::: {.notes}
+One minute each. Baker's Nature survey: of 1,576 researchers, about 70% had failed to reproduce another scientist's experiment, and over half had failed to reproduce one of their own — the "their own" number is the one to emphasize, because tonight's laptop-death question is exactly that scenario. The Turing Way is the reference handbook this chapter leans on — environments, version control, licensing — free, open, community-written; it is where to go deeper than the book takes you.
+:::
+
+## The environment is part of the result
+
+::: {.big-number}
+1 lockfile [every package, exact version, hashed — rebuilt identically anywhere]{.unit}
+:::
+
+::: {.big-number}
+3 machines [laptop, Hyak, cloud instance — same environment, same numbers]{.unit}
+:::
+
+::: {.dim}
+Unpinned environments drift: this book runs numpy 2.5 and pandas 3.0; last year's defaults do not. Same script, different numbers, no error message.
+:::
+
+::: {.takeaway}
+A result is code + data + environment. pixi pins the third, and `pixi run` uses it — nothing to activate, nothing to forget.
+:::
+
+::: {.notes}
+The argument, not the tool, comes first: your GNSS trend from Wednesday depends on which numpy computed it. Environment drift produces silently different numbers — the worst failure class, because nothing crashes. A lockfile turns "install roughly these packages" into "install exactly these builds, verified by hash," which is what lets the same workflow run on a laptop, the Hyak cluster, or a cloud instance (learning outcome #2). In this course the environment files travel inside every repository — HW1 has students copy `pixi.toml` and `pixi.lock` into their own repo, so their work is reproducible from day one. Tool spellings live in 1.9, which they are about to follow.
+:::
+
+## git is the lab notebook of code
+
+- Every commit: a dated, attributed entry — what changed, and why
+- The history answers "which version made this figure?"
+- Committed work is recoverable; uncommitted work is not
+- HW1 is graded from your commit history — it is the evidence
+
+::: {.takeaway}
+Field notebooks are sacred in this department. This one is for code, and it syncs to GitHub.
+:::
+
+::: {.notes}
+The lab-notebook analogy carries the rules: entries are dated and signed (commits), you never tear out a page (history is append-only; a bad commit is recoverable, an overwritten uncommitted file is not — 1.5's warning about restore/reset), and the notebook leaves the building (push to GitHub = off-site copy; the dead-laptop answer). Define the loop in words: edit, review the change, commit with a message, push. git is the local tool; GitHub is the hosted copy plus collaboration — forks, issues, pull requests. The pull request gets its own slide next, because it is where AI enters.
+:::
+
+## AI writes code; you sign the history
+
+- **Review every AI diff before committing** — nothing enters the history unread
+- **Disclose** substantial AI drafts in the commit message
+- Team work flows through **pull requests**: an AI can open one; only a person merges one
+
+::: {.takeaway}
+If you cannot explain a line, it does not get committed under your name.
+:::
+
+::: {.notes}
+This is the 2026 section of 1.5, and it is course law. By now much of the code in a student repository was first drafted by an assistant, sometimes as a whole agent-opened pull request. Version control is where you stay in charge: the diff view exists precisely so nothing lands unread — for a multi-file agent change, read all of it. Disclosure in the commit message ("initial draft by Copilot, reviewed and tested by me") mirrors the course-wide policy in 1.8, Monday's session. And in team settings, protect the main branch so changes arrive by pull request with at least one human review — reviewing a teammate's AI-assisted PR means checking what the code does, not trusting that the AI "usually gets it right." Today's dry run rehearses exactly this: they will review their own diff in the Files-changed view before merging.
+:::
+
+## The workbench, in one table
+
+| Habit | What it prevents | Example |
+|---|---|---|
+| pinned environment | "works on my machine" | the same GNSS trend on laptop, Hyak, or cloud |
+| small commits, real messages | mystery figures | the figure in your paper regenerates next year |
+| review + disclose AI diffs | unread code in your name | an agent-drafted data loader, read line by line |
+| pull request before merge | unreviewed changes on main | leaderboard entries arrive as PRs |
+
+::: {.takeaway}
+Four habits, installed today, graded all quarter.
+:::
+
+::: {.notes}
+Leave this up during the transition to the lab. Each row maps to a graded artifact: the environment and the commit history are HW1 (due Mon Oct 12); disclosure practice is every homework and the project; the pull-request workflow is how the Chapter 3 classification leaderboard accepts submissions, so the dry run today is not ceremonial. Then hand the room to 1.9.
+:::
+
+## The lab: build your workbench — open 1.9
+
+1. Follow [1.9](https://geo-smart.github.io/mlgeo-book/workbench-setup-hw1) steps 1–6: pixi → git + GitHub → your `MLGEO2026_UWNETID` repo → book environment (`pixi install`) → smoke-test a notebook → push a commit
+2. Then the **pull-request dry run** at the end of [1.5](https://geo-smart.github.io/mlgeo-book/version-control-git): branch, edit, `gh pr create`, review your own diff, merge
+3. Verify each step — every 1.9 step has a "success looks like" line
+4. Stuck ten minutes? Raise a hand. The install clinic continues in office hours
+
+::: {.dim}
+HW1 due Mon Oct 12 · Ch 1 quiz opens Tue Oct 6 · Windows: WSL2 or Codespaces — top of 1.9
+:::
+
+::: {.notes}
+Timing for the 80-minute block (10:00–11:20), lab-shaped and no pulse talks yet: this deck ~10 min, lab ~60, wrap ~10. First move: everyone starts `pixi install` (multi-gigabyte download), then does the git and GitHub steps while it runs. Circulate; the common failure points are PATH after the pixi install (restart the terminal), gh auth in the browser, and Windows students who have not set up WSL2 — route them to the note at the top of 1.9 (WSL2 primary, Codespaces fallback). Students who finish early: point them at the 1.7 GNSS notebook as the smoke test, then at Monday's reading (1.8 + 6.1). Wrap by collecting two or three "what did the verify step catch?" stories — the habit of checking state before moving on is the same verification habit the AI policy needs on Monday.
+:::

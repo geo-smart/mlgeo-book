@@ -1,0 +1,135 @@
+---
+title: "Verify, then trust:<br>interrogating AI output"
+subtitle: "Session 11 · Fri Oct 23 · Book section 6.2"
+title-slide-attributes:
+  data-background-color: "#faf7f2"
+---
+
+## {background-color="#faf7f2"}
+
+[🔍]{.lecture-icon}
+
+### Today's question
+
+An AI hands you a fluent, confident analysis of your data.
+
+**What exactly do you check — and against what?**
+
+::: {.dim}
+Reading: [6.2 Critical evaluation](https://geo-smart.github.io/mlgeo-book/critical-evaluation) — Chapter 2's capstone: three weeks of data skills, turned on an AI's claims.
+:::
+
+::: {.notes}
+Short deck today — about 12 minutes, then the lab carries the session. Frame the arc: for three weeks you learned to load, clean, fit, and audit geoscience data. Today those skills get their first adversary — an AI's confident description of a dataset. The habit being installed: verify against the data, not against plausibility. Fluency and correctness are uncorrelated in this setting; plausibility is exactly what a language model optimizes. Connect backward: Wednesday you submitted the stage-1 citation-verification log; today is the same duty, drilled on numbers, citations, and reviews. Everything in the lab runs offline on recorded agent outputs, so every student sees identical artifacts.
+:::
+
+## This lecture in the literature
+
+{{< include refs/lec11_refs.qmd >}}
+
+::: {.takeaway}
+Both results are measurements of the tools we now work with — not opinions about them.
+:::
+
+::: {.notes}
+Two minutes. Sharma et al.: RLHF-tuned assistants systematically defer to user pushback — challenged with "are you sure?", they apologize and flip answers, including correct ones, in both directions. So re-asking the model is not a check; recomputing is. Zheng et al. built MT-Bench to measure model-as-judge behavior: judges prefer longer answers and whichever answer is presented first, and agree with humans less when those biases are in play. Today's part (c) makes each student feel both biases from the inside. The refs file updates as the field moves — students are invited to propose the missing geoscience ✓ entry.
+:::
+
+## Three claims, one confident paragraph
+
+*A recorded agent describes a daily GNSS displacement series:*
+
+| Agent's claim | Your estimate from the raw data | Verdict |
+|---|---|---|
+| Record spans 3,652 days | 3,652 | **pass** |
+| Secular velocity ~15 mm/yr | **12.6 mm/yr** | **fail** |
+| Coseismic offset ~25 mm | 23.1 mm | pass |
+
+::: {.takeaway}
+The prose around the wrong number was accurate — correct context launders incorrect figures.
+:::
+
+::: {.notes}
+Walk the table. The agent's paragraph is excellent prose: right vocabulary (secular velocity, coseismic offset, hydrologic loading), right physical story, specific numbers. Two of three numbers survive; the velocity is off by 25% — the truth is 12 mm/yr (synthetic series, so we planted it). Nothing in the text flags which number is wrong; the plausible ones and the false one read identically. The estimate comes from the students' own Chapter 2/3 toolkit: least-squares fit of trend + annual and semi-annual sinusoids + a step at the event day — a physical model, not a black box. That is the point of scheduling this lab now: three weeks ago the class could not have run this check.
+:::
+
+## The three habits
+
+- **Recompute every number yourself** — agents are routinely 80% right; find the 20% now, not at the poster session
+- **State the tolerance before you check** — "close enough," decided after seeing the numbers, is motivated reasoning
+- **Verify against the data, not against plausibility** — "are you sure?" makes models change *correct* answers
+
+::: {.takeaway}
+A check you design after seeing the answer is not a check.
+:::
+
+::: {.notes}
+Habit 1: check independence — students verify one number, feel reassured, and stop; the failure lives in the unchecked ones. Habit 2 is the pre-registration idea in miniature, and it returns as the tolerance clause of the eval-set spec in 6.3 (week 7). The colored noise in real GNSS data means your estimate never equals truth exactly — the question is whether the discrepancy exceeds a tolerance you wrote down first. Habit 3 is the Sharma result from the literature slide: interrogating the model is theater; interrogating the data is verification. Ask the room: who has already caught an AI confidently wrong this quarter? Collect one example.
+:::
+
+## Citations: the fabrication is the one you want most
+
+*Four formatted references in an AI-drafted related-work paragraph. One is fabricated.*
+
+- Cheapest checks first: **resolve the DOI** → **search the quoted title** → **does the venue exist?** → **does the paper say what it is cited for?**
+- Fabrications cluster exactly where a supporting citation *should* exist
+
+::: {.takeaway}
+Same procedure as your stage-1 verification log — today you drill it on a planted case.
+:::
+
+::: {.notes}
+Part (b) of the lab, done on paper, deliberately without network calls: students design the procedure, then reason it against four references. The plant: a real-sounding paper in a journal that does not exist, carrying an AGU-prefix DOI (10.1029) with a made-up acronym — a domain reader can flag it before any lookup. The other three are real and worth knowing (Bock & Melgar 2016; Heflin et al. 2020; Segall 2010). Step 4 is the subtle one: a real paper cited for a claim it does not make is a human failure mode that AI drafting amplifies — DOI resolution never catches it, reading does. Tie to the arc: the stage-1 log they submitted Wednesday recorded verified / misattributed / fabricated / unverifiable verdicts — this lab is that skill, now with ground truth so they learn what catching a fabrication feels like. Budget framing: minutes per citation is the honest price of AI-drafted related work.
+:::
+
+## Two reviews of the same flawed analysis
+
+::: {.big-number}
+1/10 [review A — 148 warm, confident words]{.unit}
+:::
+
+::: {.big-number}
+10/10 [review B — 113 words, both planted flaws found]{.unit}
+:::
+
+::: {.dim}
+Scored on a fixed rubric: flaws found · actionable fixes · specific to this analysis · calibrated praise.
+:::
+
+::: {.takeaway}
+Skimmed, A *feels* better — longer, warmer, listed first. That feeling is the bias you are calibrating away.
+:::
+
+::: {.notes}
+Part (c). The analysis under review has two planted flaws: a scaler fit on the full dataset before the split (leakage), and a minority-class threshold tuned on the test split then reported on it. Review A praises the work at length — and praises one of the flaws ("threshold tuning is a nice touch"); its suggestions fit any analysis ever written. Review B finds both flaws, gives a concrete fix for each, and adds the seed-variance point. In the lab, students score BOTH reviews against the rubric BEFORE opening the discussion cell — the order matters, because A is listed first (position bias) and is longer (verbosity bias), the two judge biases from Zheng et al. You will use an AI review on your own final project; today teaches you to hand it a rubric, not an impression.
+:::
+
+## Partner swap: your scores are data
+
+1. Score both reviews **alone** — four criteria each, eight numbers
+2. Swap with a partner; count matching criteria out of 8 → **percent agreement**
+3. **Keep both score vectors** — 6.3 turns them into Cohen's kappa, agreement corrected for chance
+4. Every disagreement marks a rubric criterion that needs rewording
+
+::: {.takeaway}
+A rubric two humans cannot apply consistently is not ready to be handed to an AI judge.
+:::
+
+::: {.notes}
+This is the seed of the two-rater-agreement thread. In week 7 (6.3, "Scoring without computable truth") this exact data — two raters, eight binary-ish criterion scores — becomes the worked kappa example, and in the reading arc's stage 4 the same measurement validates the rubric behind each student's review agent. So insist: keep the vectors, physically (notebook cell or paper). Frame disagreement as information about the rubric's wording, not about who is right — that reframing is what makes the swap feel safe. If time is short in the lab, this step still cannot be skipped; it is the one piece of today that later sessions consume.
+:::
+
+## Now run it yourself — open 6.2
+
+1. `pixi run jupyter lab` → `6.2_critical_evaluation.ipynb`
+2. **Part (a):** verify the three claims with your own fit — state tolerances first
+3. **Part (b):** write your citation procedure; find the fabrication, name the step that catches it
+4. **Part (c):** score both reviews alone, then partner-swap; record agreement out of 8, keep both vectors
+
+::: {.dim}
+Arc stage 2 opens now (due Wed Nov 4) · Ch 2 quiz Mon–Wed · project proposals due Fri Oct 30
+:::
+
+::: {.notes}
+Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, this deck ~12 min, lab ~50 min, synthesis ~8 min. During the lab, circulate on part (a) tolerances — most students want to decide "close enough" after seeing the estimate; make them write the tolerance down first. Part (b) is discussion-friendly: pairs are fine. Part (c) plus the swap needs the last 20 minutes protected; the score vectors feed 6.3 in week 7, so collect a show of hands that everyone saved them. Synthesis question: which of the three fronts (numbers, citations, reviews) would have fooled you yesterday? Closing sentence for the room: the AI drafts, the human verifies, both steps go on the record — that record is the disclosure table of 6.4, and it is how every submission in this course works from here on.
+:::

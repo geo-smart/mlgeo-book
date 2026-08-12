@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+<script src="lec23_networks_with_memory_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lec23_networks_with_memory_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lec23_networks_with_memory_files/libs/quarto-html/popper.min.js"></script>
+<script src="lec23_networks_with_memory_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lec23_networks_with_memory_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lec23_networks_with_memory_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="lec23_networks_with_memory_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
+
+  <meta name="author" content="">
+  <title>Networks with memory: recurrence, gates, and attention</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="lec23_networks_with_memory_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lec23_networks_with_memory_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="lec23_networks_with_memory_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link href="lec23_networks_with_memory_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lec23_networks_with_memory_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lec23_networks_with_memory_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lec23_networks_with_memory_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
+  <h1 class="title">Networks with memory:<br>recurrence, gates, and attention</h1>
+  <p class="subtitle">Session 23 · Mon Nov 23 · Book section 4.4</p>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="section" class="slide level2" data-background-color="#faf7f2">
+<h2></h2>
+<p><span class="lecture-icon">🔁</span></p>
+<h3 id="todays-question">Today’s question</h3>
+<p>A forecast reads the past to write the future.</p>
+<p><strong>How does a network carry information across 90 days — and does it beat “tomorrow equals today”?</strong></p>
+<div class="dim">
+<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-4-rnn">4.4 Sequence models</a> · HW-DL assigned today</p>
+</div>
+<aside class="notes">
+<p>Frame the session: Friday’s convolution slides one pattern across time; today’s architectures <em>carry state</em> across time — memory. We build four of them on one forecasting task and end at a table where the winner is a baseline question, not an architecture question. Announce: HW-DL is assigned today, due Fri Dec 4 — it uses everything from 4.1 through today. Also: the classification leaderboard closes tomorrow. Ask the room: who can define “forecast horizon” from their own field (weather, hydrology, aftershocks)?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="this-lecture-in-the-literature" class="slide level2">
+<h2>This lecture in the literature</h2>
+<!-- Literature anchors for lecture 23. Edit THIS file to update the papers;
+     the deck includes it verbatim. Keep 2-4 entries: at least one where the
+     concept was applied well (✓), one where its absence misled a field (✗).
+     Format: verdict + bold message on one line; full citation on its own
+     line below (blank line between them — they must be separate paragraphs). -->
+<div class="ref-item">
+<p><span class="ref-verdict note">📖</span> <span class="ref-msg">The gated memory cell that let gradients survive long sequences — 1997, still everywhere.</span></p>
+<p><span class="ref-cite">Hochreiter, S., &amp; Schmidhuber, J. (1997). Long short-term memory. <em>Neural Computation</em>, 9(8), 1735–1780.</span></p>
+</div>
+<div class="ref-item">
+<p><span class="ref-verdict note">📖</span> <span class="ref-msg">Attention entered as an add-on to recurrent translation models; three years later the Transformer removed the recurrence entirely.</span></p>
+<p><span class="ref-cite">Bahdanau, D., Cho, K., &amp; Bengio, Y. (2015). Neural machine translation by jointly learning to align and translate. <em>ICLR 2015</em> (arXiv:1409.0473). — Vaswani, A., et al.&nbsp;(2017). Attention is all you need. <em>Advances in Neural Information Processing Systems</em>, 30.</span></p>
+</div>
+<div class="ref-item">
+<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">A field’s ML forecasters, finally raced against simple statistical baselines — and losing. Years of skipped baselines, recalibrated.</span></p>
+<p><span class="ref-cite">Makridakis, S., Spiliotis, E., &amp; Assimakopoulos, V. (2018). Statistical and machine learning forecasting methods: Concerns and ways forward. <em>PLOS ONE</em>, 13(3), e0194889.</span></p>
+</div>
+<div class="ref-item">
+<p><span class="ref-verdict good">✓</span> <span class="ref-msg">Attention at planetary scale: a 3-D transformer forecaster judged head-to-head against the operational weather baseline — and winning honestly.</span></p>
+<p><span class="ref-cite">Bi, K., et al.&nbsp;(2023). Accurate medium-range global weather forecasting with 3D neural networks. <em>Nature</em>, 619, 533–538.</span></p>
+</div>
+<div class="takeaway">
+<p>Memory (1997) → attention (2014) → attention only (2017) → the weather (2023). One thread, and today we build each link.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Hochreiter &amp; Schmidhuber: the LSTM predates most of the room; it solved a specific measured pathology (vanishing gradients — slide 5) with gates, and ran everything from speech recognition to flood forecasting for two decades. Bahdanau: attention entered as a <em>fix bolted onto</em> recurrent translation models — the attribution the book is careful about, because popular history starts at 2017; Vaswani et al.&nbsp;then showed the recurrence could be dropped entirely. Makridakis: the M-competition finding that fashionable ML forecasters lost to simple statistical methods across thousands of series — the field had skipped its baselines; today’s persistence row is that discipline in miniature. Bi et al.: Pangu-Weather, a 3-D transformer that beat the operational ECMWF forecast on its own headline metrics — attention applied at planetary scale <em>and</em> judged against the right baseline. The arc: mechanism first, honest scoreboard always.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-task-90-days-in-30-days-out" class="slide level2">
+<h2>The task: 90 days in, 30 days out</h2>
+<img data-src="figs/mlgeo_4.4_RNN/gnss_forecast_task_slide.png" class="r-stretch">
+<div class="takeaway">
+<p>Context window = what the model reads; forecast horizon = what it must write. Temporal split, no window crossing the boundary — lecture 18’s rule, unchanged.</p>
+</div>
+<aside class="notes">
+<p>Define the two terms of the day: context window (the stretch of past the model reads — 90 days here) and forecast horizon (how far it must predict — 30 days). The record: 10 years of daily synthetic GNSS displacement with known components — ~12 mm/yr tectonic trend, seasonal loading, an earthquake step with postseismic relaxation, noise. We know the components because we built them; that is what lets us diagnose the models later. Data design: standardize using training-portion statistics only; slide a window to build (90-in, 30-out) pairs; first 8 years train, last 2 validate, no window straddles the boundary — a random split would let a validation window overlap two training windows almost entirely. One subtlety worth saying aloud: each window is <em>anchored</em> — the model forecasts change relative to its last observed day — because the trend puts validation windows at absolute levels training never saw; without anchoring every model would extrapolate outside its range and the saturating activations would fail. All four models share windows, loss, optimizer, and metric: mean absolute error over the 30-day horizon, in millimeters.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-the-plain-recurrent-network-forgets" class="slide level2">
+<h2>Why the plain recurrent network forgets</h2>
+<img data-src="figs/mlgeo_4.4_RNN/vanishing_gradient_slide.png" class="r-stretch">
+<div class="takeaway">
+<p>Training pushes the gradient back through all 90 steps — a product of ~90 factors. Slightly under one → vanishes; slightly over → explodes. Simple recurrent memory tops out at tens of steps.</p>
+</div>
+<aside class="notes">
+<p>First the mechanism: a recurrent neuron receives the current input <em>and</em> its own previous output — the hidden state is the memory, updated each day as h_t = tanh(Wx·x_t + Wh·h_(t-1) + b). Training unrolls the network over the 90 steps and backpropagates through time: the gradient reaching day 1 is a product of roughly 90 Jacobians, one per step. The figure is just powers of a single number, and that is the entire argument: 0.95^90 ≈ 0.01, 1.05^90 ≈ 80. When the product shrinks (the common case with tanh), early steps receive no training signal — the network cannot learn that something 80 days back matters, because the lesson never travels that far. Exploding is controlled by gradient clipping; there is no equally simple fix for vanishing. That asymmetry motivated both fixes on the next slide. Our vanilla RNN still forecasts respectably here (2,110 parameters, 1.83 mm) — because this series needs mostly recent context; the pathology bites when long memory is genuinely required.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="two-escapes-gates-or-drop-the-recurrence" class="slide level2">
+<h2>Two escapes: gates, or drop the recurrence</h2>
+<ul>
+<li><strong>LSTM (1997)</strong>: a cell state updated by <em>addition</em>, guarded by learned forget / input / output gates — gradients cross long sequences without shrinking</li>
+<li><strong>Attention (2014)</strong>: every day looks directly at every other day — each position asks a <strong>query</strong>, offers a <strong>key</strong>, passes a <strong>value</strong>; softmax-weighted average, no 90-step product anywhere</li>
+<li><strong>Transformer (2017)</strong>: attention only, stacked, plus positional encodings — because attention alone is blind to order</li>
+</ul>
+<div class="takeaway">
+<p>One attention head is ~15 lines of code — and you will write them, from scratch, today.</p>
+</div>
+<aside class="notes">
+<p>LSTM in one breath: alongside the hidden state runs a cell state modified additively — the forget gate decides what to keep, the input gate what to write, the output gate what to expose; addition, not repeated multiplication, is why gradients survive. Cost: ~4× the parameters of a plain cell. Attention in one breath: give every position three learned views of itself — query (“what am I looking for?”), key (“what do I contain?”), value (“what do I pass on”) — score every query against every key (a 90×90 matrix), softmax each row into weights, average the values. Day 5 and day 85 connect at identical cost. The attribution, per the book: Bahdanau et al.&nbsp;introduced this as an add-on to recurrent sequence-to-sequence models; the Transformer (Vaswani et al.) removed the recurrence entirely. The catch students must articulate: pure attention is permutation-blind — shuffle the 90 days and the mean-pooled output is unchanged — so Transformers add positional encodings (fixed sinusoids per position) to restore order. The notebook builds the ~15-line head first, then uses PyTorch’s encoder block.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-shootout-baselines-first" class="slide level2">
+<h2>The shootout — baselines first</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Parameters</th>
+<th>Val MAE, 30-day horizon</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Persistence</strong> (tomorrow = today)</td>
+<td>0</td>
+<td><strong>2.10 mm</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Seasonal naive</strong> (value 365 d ago)</td>
+<td>0</td>
+<td>15.53 mm</td>
+</tr>
+<tr class="odd">
+<td>Vanilla RNN</td>
+<td>2,110</td>
+<td>1.83 mm</td>
+</tr>
+<tr class="even">
+<td>LSTM</td>
+<td>5,470</td>
+<td>1.86 mm</td>
+</tr>
+<tr class="odd">
+<td>Attention (from scratch)</td>
+<td>4,126</td>
+<td>1.87 mm</td>
+</tr>
+<tr class="even">
+<td>Transformer encoder</td>
+<td>18,142</td>
+<td>1.84 mm</td>
+</tr>
+</tbody>
+</table>
+<div class="dim">
+<p>Same windows, same loss, same optimizer, same metric — MAE in millimeters over the 30-day horizon, so the numbers are directly comparable.</p>
+</div>
+<div class="takeaway">
+<p>The learned models beat persistence by ~13% — real but modest. Seasonal naive fails because the 12 mm/yr trend makes last year systematically low: a baseline informs only when it matches the structure it targets.</p>
+</div>
+<aside class="notes">
+<p>Read the baseline rows first — always. Persistence: every forecast day equals the last observed day; zero parameters, 2.10 mm, and any learned forecaster that loses to it has learned nothing. The four architectures land at 1.83–1.87 mm: about 13% better, the correct headline for a series dominated by smooth trend and seasonality that a 90-day context largely pins down. Seasonal naive is the teaching failure: 15.53 mm, worse than doing nothing fancy — because on a 12 mm/yr trend, the value 365 days earlier is systematically ~12 mm low. It is the right baseline for a purely seasonal series and the wrong one here; a baseline is a hypothesis about structure, and it informs only when the hypothesis matches. Then the architecture rows: the four scores sit within noise of each other — rerun with a different seed and the ranking shuffles. Say it plainly: <strong>the ranking is not the lesson; the mechanics are</strong> — how each model moves information across time and what that costs in parameters, training time (4.5 s to 24 s here), and gradient behavior. Echo Makridakis from the literature slide: entire fields have skipped this table’s first row.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="same-discipline-three-lectures" class="slide level2">
+<h2>Same discipline, three lectures</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Session</th>
+<th>Learned model</th>
+<th>The baseline it faced</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Wed — MLP</td>
+<td>PNW source classifier</td>
+<td>Chapter 3 random forest</td>
+<td>tie on tabular features</td>
+</tr>
+<tr class="even">
+<td>Fri — CNN</td>
+<td>earthquake detector</td>
+<td>STA/LTA at matched false alarms</td>
+<td>wins half a decade of SNR</td>
+</tr>
+<tr class="odd">
+<td>Today — sequence</td>
+<td>GNSS forecasters</td>
+<td>persistence, 0 parameters</td>
+<td>+13%, all four architectures</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>Architecture follows data structure: dense for tables, convolution for patterns that move, memory or attention for sequences. The baseline row decides whether any of it mattered.</p>
+</div>
+<aside class="notes">
+<p>The week in one screen — leave it up for questions. The pattern students should carry to projects: pick the block that mirrors the data’s structure (unordered features → dense; translation structure → convolution; order and long-range dependence → recurrence or attention), then earn the complexity against the strongest zero- or few-parameter baseline you can write. Also worth saying: attention is the block behind the pretrained weather and time-series forecasters now entering the geosciences (Pangu on the literature slide) — the mechanics built today are the reading skills for that literature. Wednesday continues into the model-training lab (4.5, data curation and label quality); the forecasting rematch on real data is 4.10 in week 10, where the persistence row returns with a leaderboard attached.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="now-race-them-yourself-open-4.4" class="slide level2">
+<h2>Now race them yourself — open 4.4</h2>
+<ol type="1">
+<li><code>pixi run jupyter lab</code> → <code>mlgeo_4.4_RNN.ipynb</code>: build the windows, check no pair crosses the 8-year boundary</li>
+<li>Train all four models; reproduce the comparison table <em>with its baseline rows</em></li>
+<li>Double the horizon to 60 days, retrain: which errors grow, and why?</li>
+<li><strong>HW-DL assigned today</strong> (due Fri Dec 4): the full pipeline on new data — start this week</li>
+</ol>
+<div class="dim">
+<p>PyTorch names live here: <code>nn.RNN</code>, <code>nn.LSTM</code>, <code>nn.TransformerEncoderLayer</code>, <code>register_buffer</code> for positional encodings · classification leaderboard closes Tue · Wed: training lab I (4.5)</p>
+</div>
+<aside class="notes">
+<p>Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, this deck ~20 min, guided notebook work ~40 min, synthesis ~10 min. The models are tiny and train on CPU in seconds to half a minute (the notebook deliberately pins CPU — recurrent layers launch one small op per step, so accelerator overhead dominates); nobody needs a GPU today. Circulate during task 3: the per-lead-day error growth (day 60 much worse than day 31) is where forecast-horizon intuition forms. Implementation spellings: <code>nn.RNN</code>/<code>nn.LSTM</code> are one-line swaps in the same module; the from-scratch attention head uses plain <code>nn.Linear</code> maps for Q, K, V; <code>nn.TransformerEncoderLayer</code> wraps attention + feed-forward + residuals + layer norm. HW-DL guidance to say aloud: it chains 4.1→4.4 skills; teams should budget the Thanksgiving-short week — Wednesday’s lab is the last new scaffolding before it. Synthesis question to collect: what is the persistence forecast in your project’s domain, and what would seasonal-naive’s failure mode be on your data?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>ESS 469/569 · Machine Learning in the Geosciences · Autumn 2026</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="lec23_networks_with_memory_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="lec23_networks_with_memory_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lec23_networks_with_memory_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lec23_networks_with_memory_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lec23_networks_with_memory_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lec23_networks_with_memory_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="lec23_networks_with_memory_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lec23_networks_with_memory_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lec23_networks_with_memory_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lec23_networks_with_memory_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 4.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

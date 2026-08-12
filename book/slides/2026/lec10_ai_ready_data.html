@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+<script src="lec10_ai_ready_data_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lec10_ai_ready_data_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lec10_ai_ready_data_files/libs/quarto-html/popper.min.js"></script>
+<script src="lec10_ai_ready_data_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lec10_ai_ready_data_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lec10_ai_ready_data_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="lec10_ai_ready_data_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
+
+  <meta name="author" content="">
+  <title>AI-ready data</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="lec10_ai_ready_data_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lec10_ai_ready_data_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="lec10_ai_ready_data_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link href="lec10_ai_ready_data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lec10_ai_ready_data_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lec10_ai_ready_data_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lec10_ai_ready_data_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
+  <h1 class="title">AI-ready data</h1>
+  <p class="subtitle">Session 10 · Wed Oct 21 · Book sections 2.12–2.13</p>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="section" class="slide level2" data-background-color="#faf7f2">
+<h2></h2>
+<p><span class="lecture-icon">✅</span></p>
+<h3 id="todays-question">Today’s question</h3>
+<p>“AI-ready” is not a feeling.</p>
+<p><strong>Can your dataset prove it?</strong></p>
+<div class="dim">
+<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/dimensionality-reduction">2.12 Dimensionality reduction</a> · <a href="https://geo-smart.github.io/mlgeo-book/mlready-data">2.13 AI-ready data</a></p>
+</div>
+<aside class="notes">
+<p>Frame the session: the capstone of the data pillar. Two weeks of skills — formats, statistics, spectra, repairs, synthetics, features — converge on one operational question: when is a dataset ready to hand to a model, or to another scientist? The answer is a checklist, and the checklist is graded (it is the project’s first milestone deliverable). First a short stop in dimensionality reduction — Monday’s 156 features are too many and too redundant — then the checklist, and the two ways we break it on purpose to see the damage in the metrics. Ask the room: what would you need to know before training on a stranger’s dataset?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="this-lecture-in-the-literature" class="slide level2">
+<h2>This lecture in the literature</h2>
+<!-- Literature anchors for lecture 10. Edit THIS file to update the papers;
+     the deck includes it verbatim. Keep 2-4 entries: at least one where the
+     concept was applied well (✓), one where its absence misled a field (✗).
+     Format: verdict + bold message on one line; full citation on its own
+     line below (blank line between them — they must be separate paragraphs). -->
+<div class="ref-item">
+<p><span class="ref-verdict good">✓</span> <span class="ref-msg">The data card’s ancestor: every dataset ships with its provenance, composition, and intended use.</span></p>
+<p><span class="ref-cite">Gebru, T., et al.&nbsp;(2021). Datasheets for datasets. <em>Communications of the ACM</em>, 64(12), 86–92.</span></p>
+</div>
+<div class="ref-item">
+<p><span class="ref-verdict note">📖</span> <span class="ref-msg">The playbook: findable, accessible, interoperable, reusable — where “AI-ready” starts.</span></p>
+<p><span class="ref-cite">Wilkinson, M. D., et al.&nbsp;(2016). The FAIR Guiding Principles for scientific data management and stewardship. <em>Scientific Data</em>, 3, 160018.</span></p>
+</div>
+<div class="ref-item">
+<p><span class="ref-verdict note">📖</span> <span class="ref-msg">Leakage formalized: how information from outside the training data sneaks into the model.</span></p>
+<p><span class="ref-cite">Kaufman, S., Rosset, S., Perlich, C. &amp; Stitelman, O. (2012). Leakage in data mining: Formulation, detection, and avoidance. <em>ACM Transactions on Knowledge Discovery from Data</em>, 6(4), 15.</span></p>
+</div>
+<div class="ref-item">
+<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">Leakage found in hundreds of published ML-for-science papers across 17 fields — inflated claims, then corrections.</span></p>
+<p><span class="ref-cite">Kapoor, S. &amp; Narayanan, A. (2023). Leakage and the reproducibility crisis in machine-learning-based science. <em>Patterns</em>, 4(9), 100804.</span></p>
+</div>
+<div class="takeaway">
+<p>Data documentation and leakage are now a literature of their own — including a documented reproducibility crisis.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Gebru: “datasheets for datasets” imported the electronics datasheet into ML — provenance, composition, collection process, intended use; our data card is its geoscience-sized descendant. Wilkinson: the FAIR principles are the data-stewardship frame funders now expect — the checklist operationalizes them for ML. Kaufman: the paper that formalized leakage, a decade before it was fashionable. Kapoor &amp; Narayanan is the ✗: a systematic survey finding leakage in hundreds of published ML-for-science papers across 17 fields — civil war prediction, medicine, bioinformatics — each with inflated claims later walked back. Chapter 3.8 (week 7) is this course’s full treatment; today installs the audit habit. Refs update monthly; bring candidates.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="first-shrink-the-feature-space" class="slide level2">
+<h2>First, shrink the feature space</h2>
+<img data-src="figs/2.12_dimensionality_reduction/fig_09.png" class="r-stretch">
+<div class="takeaway">
+<p>A 30-year gridded temperature field, synthetic (mlgeo_synth) with planted patterns: the first mode carries 95.5% of the variance and matches the planted seasonal pattern with correlation 1.00.</p>
+</div>
+<aside class="notes">
+<p>Monday ended with 156 features, many near-duplicates. Dimensionality reduction finds the few directions that carry the variance. Two demonstrations in 2.12, both synthetic with planted truth. One: PCA on a geochemical table — the first component carries 78.2% of nine variables’ variance and is the igneous differentiation index, a physical axis the generator planted. Two, this figure: a gridded monthly temperature field decomposed into spatial patterns (EOFs — the geoscience name for principal components of a space-time field) and their time series. EOF1: 95.5% of variance, pattern correlation 1.00 with the planted seasonal mode; EOF2 recovers the zonal mode at −1.00 (sign is arbitrary — always check both signs). Caveats the notebook states: modes are forced orthogonal, real physics is not; trends dominate if you do not remove them; this is description, not causation. Wednesday’s point for today: a PCA basis is a preprocessing statistic — remember that phrase when we hit leakage.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-dataset-is-ai-ready-when-it-passes-this-checklist" class="slide level2">
+<h2>A dataset is AI-ready when it passes this checklist</h2>
+<ol type="1">
+<li>Documented provenance, license, citation</li>
+<li>Machine-readable metadata — <strong>a data card</strong></li>
+<li>Tidy shapes</li>
+<li>Explicit units</li>
+<li>A missing-data policy</li>
+<li>Benchmark splits shipped with the data</li>
+<li><strong>Leakage controls</strong></li>
+<li>A class and event inventory</li>
+</ol>
+<div class="takeaway">
+<p>The plan for today: build a dataset that passes, then break rules 6 and 7 on purpose and watch the metrics lie.</p>
+</div>
+<aside class="notes">
+<p>Read the list slowly — it is the graded artifact. Item 2: a README written for humans is not enough; the card must be parseable (YAML), because scripts consume it. Item 6: splits ship WITH the data as a column, so every user evaluates on the same held-out samples — that is what makes a benchmark a benchmark. Item 7 has two halves: the split design respects the correlation structure (time, location, event membership), and every preprocessing statistic comes from the training split only. Item 8: rare-event problems look nothing like balanced ones, and users must know before they train. The demo dataset: ten years of synthetic daily river discharge with injected floods — 3,652 days, 312 flood days (8.5%), 33 distinct flood events, disclosed synthetic (item 1) with generator and seed in the card. Chronological splits: train 2015–2021, validation 2022, test 2023–2024. The card is written to disk next to the CSV and read back with a YAML parser to prove machine-readability.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="break-rule-7-watch-the-metric-lie" class="slide level2">
+<h2>Break rule 7, watch the metric lie</h2>
+<div class="big-number">
+<p>1.000 <span class="unit">average precision — rare-class oversampling <em>before</em> the split</span></p>
+</div>
+<div class="big-number">
+<p>0.848 <span class="unit">average precision — oversampling the training split only</span></p>
+</div>
+<div class="dim">
+<p>Average precision summarizes rare-event skill (1 = perfect). Same model, same flood data — duplicated flood days landed on both sides of the split.</p>
+</div>
+<div class="takeaway">
+<p>The perfect score is pure fiction. Leakage does not make models better — it makes evaluations wrong.</p>
+</div>
+<aside class="notes">
+<p>Walk the mechanism: floods are 8.5% of days, so we oversample the rare class — standard practice. Done before the split, duplicated copies of the same flood day land in both train and test; the model recognizes its own training samples and scores a perfect 1.000. Done after — training split only — the honest 0.848. Also run in the notebook, quieter: scaler fit on all data vs train only, 0.722 vs 0.722 — no visible gap here, and the notebook says do not take comfort: the gap grows when data are short, the test period drifts, or preprocessing is richer than a scaler — PCA bases (this morning!), imputation models, feature selection all leak far more than a mean. And the split-design ladder: random KFold 0.839 vs time-respecting 0.704 vs grouped-by-event 0.734 — random splitting flatters by ~0.1 because consecutive correlated days straddle the split. The audit question, verbatim from the book: could a test sample be trivially reconstructed from training samples? If yes, the split is wrong. That is the “what do my samples share?” audit — full treatment in 3.8, week 7.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-join-every-project-needs-raster-station" class="slide level2">
+<h2>The join every project needs: raster → station</h2>
+<img data-src="figs/2.13_MLready_data/fig_03.png" class="r-stretch">
+<div class="takeaway">
+<p>A gridded product and a gauge (star) that sits between cell centers, synthetic (mlgeo_synth). Extract at the location, then merge in time <em>without touching the future</em>.</p>
+</div>
+<aside class="notes">
+<p>The most requested workflow in project office hours: my measurements live at stations, my covariate lives on a grid — reanalysis precipitation onto a gauge, SST onto a buoy, soil moisture onto a borehole. Three steps. Space: the gauge is not at a cell center — nearest-cell snapping vs bilinear interpolation differ by 0.037 °C RMS here; bilinear for smooth fields, nearest is the only correct choice for categorical rasters (averaging “granite” and “basalt” is nonsense). The classic bug: longitude conventions — this grid runs 0–360, the gauge longitude 122.4 W must become 237.6 E; check the grid coordinates first. Time: monthly values joined to daily samples — linear interpolation between month centers uses the NEXT month, which is future information; the causal join takes the most recent available value and nothing from the future. Each choice — source grid, extraction method, join rule — becomes provenance in the data card (items 1 and 2). Real-data extras the synthetic spared us: CRS reprojection, grid cells being area averages not points, and timestamp semantics (does “2015-01” stamp the start or the end of the averaging interval?).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="an-honest-pipeline-may-return-no" class="slide level2">
+<h2>An honest pipeline may return “no”</h2>
+<div class="big-number">
+<p>0.722 <span class="unit">average precision — discharge features only</span></p>
+</div>
+<div class="big-number">
+<p>0.710 <span class="unit">average precision — plus the joined temperature covariate</span></p>
+</div>
+<div class="takeaway">
+<p>The covariate carried no information about the floods, and the honest pipeline said so. The deliverable was never the score — it is the leakage-safe, unit-labeled, reproducible join.</p>
+</div>
+<aside class="notes">
+<p>The result students least expect to see celebrated. The joined temperature field is synthetic with no causal connection to the injected floods — so a correctly joined, leakage-free covariate should not move the metric, and it does not (0.722 → 0.710, noise-level difference). This is the success case: the pipeline was honest enough to return a null. Contrast with the leaky world: had the join leaked future information, the score would have risen — a lie that later collapses in deployment. On real projects the same six lines of join code often DO carry skill (precipitation onto a gauge predicts floods). Message for their proposals, due Fri Oct 30: a well-audited “this covariate did not help” is a publishable, reusable finding; a leaky +0.05 is a retraction waiting to happen. This mindset returns Friday when they audit an AI’s claims in the 6.2 lab.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-checklist-is-the-capstone" class="slide level2">
+<h2>The checklist is the capstone</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Checklist item</th>
+<th>The question it answers</th>
+<th>Today’s evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Data card (1–5)</td>
+<td>can a stranger — or a script — use this safely?</td>
+<td>YAML card written, read back, parsed</td>
+</tr>
+<tr class="even">
+<td>Shipped splits (6)</td>
+<td>is everyone graded on the same held-out data?</td>
+<td>split column: 2015–21 / 2022 / 2023–24</td>
+</tr>
+<tr class="odd">
+<td>Leakage controls (7)</td>
+<td>do my samples share time, location, or an event?</td>
+<td>1.000 vs 0.848; shuffled 0.839 vs temporal 0.704</td>
+</tr>
+<tr class="even">
+<td>Class inventory (8)</td>
+<td>is my problem rare-event or balanced?</td>
+<td>312 flood days of 3,652 (8.5%), 33 events</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>“The split and the preprocessing are part of the dataset, not an afterthought of the model.”</p>
+</div>
+<aside class="notes">
+<p>The takeaway line is the book’s closing sentence for the chapter, verbatim, and it is the single sentence to remember from the data pillar. Leave the table up for questions. Point at row 3 and forward-reference: week 7’s robust-training lecture (3.8) rebuilds that row into a full validation ladder on GNSS and spatial data — today’s audit habit is the seed. The checklist is graded twice: in the chapter assignment and at project check-in #1 (Nov 16), where each team presents their data against it, with their baseline and split design.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="now-run-it-yourself-open-2.13-and-skim-2.12" class="slide level2">
+<h2>Now run it yourself — open 2.13 (and skim 2.12)</h2>
+<ol type="1">
+<li><code>pixi run jupyter lab</code> → <code>2.13_MLready_data.ipynb</code></li>
+<li>Write the data card, read it back with the YAML parser — item by item, what would a stranger still not know?</li>
+<li>Break rule 7 yourself: oversample before the split and reproduce AP = 1.000</li>
+<li>Run the three split designs; explain the 0.839 → 0.704 drop in one sentence</li>
+<li>Your team’s dataset against the eight items: which fail today? (Bring the list to check-in #1, Nov 16.)</li>
+</ol>
+<div class="dim">
+<p>Friday: the critical-evaluation lab (6.2) — Chapter 2’s capstone, your data skills vs an AI’s claims · Reading-arc stage 1 due today · Ch 2 quiz opens Mon</p>
+</div>
+<aside class="notes">
+<p>Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, deck ~20 min, notebook ~40 min, synthesis ~10 min on task 5 — a quick round-robin of failing items; most teams fail 2, 6, and 7 on day one, and hearing that normalizes fixing it rather than hiding it. Implementation names for the notebook, not slides: sklearn PCA / FastICA / TSNE for 2.12; xarray .sel(method=“nearest”) vs .interp(), pandas merge_asof(direction=“backward”), yaml.safe_load, sklearn KFold / TimeSeriesSplit / GroupKFold, make_pipeline(StandardScaler(), …) so preprocessing stays inside the training fold. Task-4 target sentence: “random folds let the model validate on days adjacent to its training days, so the score measures interpolation, not forecasting.” The 2.12 skim: scree plot, loadings, and the EOF verification cell are the three things to look at.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>ESS 469/569 · Machine Learning in the Geosciences · Autumn 2026</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="lec10_ai_ready_data_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="lec10_ai_ready_data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lec10_ai_ready_data_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lec10_ai_ready_data_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lec10_ai_ready_data_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lec10_ai_ready_data_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="lec10_ai_ready_data_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lec10_ai_ready_data_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lec10_ai_ready_data_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lec10_ai_ready_data_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 4.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
