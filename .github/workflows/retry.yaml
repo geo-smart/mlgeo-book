@@ -1,0 +1,29 @@
+# Auto-retry transient CI failures once.
+#
+# The build workflow occasionally dies in its first minute when the runner
+# fails to download the pixi binary ("socket hang up") — an infrastructure
+# flake, not a content failure. Real failures (notebook errors, myst build
+# errors) happen minutes later and will fail again on retry, so one automatic
+# re-run costs little and keeps main deploying without a human pressing
+# "Re-run failed jobs".
+name: retry
+
+on:
+  workflow_run:
+    workflows: [build]
+    types: [completed]
+
+permissions:
+  actions: write
+
+jobs:
+  rerun-once:
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.run_attempt < 2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Re-run failed jobs (attempt 2)
+        run: gh run rerun ${{ github.event.workflow_run.id }} --failed --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ github.token }}

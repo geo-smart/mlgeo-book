@@ -39,6 +39,12 @@ jobs:
       - name: Redirect stubs for old (2024 edition) URLs
         run: pixi run python tools/make_redirects.py
 
+      - name: Publish lecture decks into the site under /slides/
+        run: |
+          mkdir -p book/_build/html/slides
+          cp -R book/slides/2026 book/_build/html/slides/2026
+          cp book/slides/*.pdf book/_build/html/slides/ 2>/dev/null || true
+
       - name: Link check
         run: pixi run myst build --check-links
         working-directory: book
