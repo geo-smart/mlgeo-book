@@ -28,7 +28,9 @@ jobs:
           post-cleanup: false
 
       - name: Build book (executes all notebooks)
-        run: pixi run myst build --execute --html
+        # A dying kernel session occasionally aborts myst mid-build; the retry
+        # reuses the execution cache, so it only re-executes what didn't finish.
+        run: pixi run myst build --execute --html || pixi run myst build --execute --html
         working-directory: book
 
       - name: Redirect stubs for old (2024 edition) URLs
