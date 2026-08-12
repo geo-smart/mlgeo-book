@@ -11,15 +11,19 @@ All generators accept a ``seed`` argument and are deterministic given it.
 Instructors regenerate hidden test sets each year from a private seed.
 """
 
-from .gnss import gnss_series
+from .gnss import gnss_series, degrade_series
 from .seismic import synthetic_seismogram, seismogram_dataset, spectrum_matched_noise
 from .features import detector_features
 from .geochem import geochem_table
 from .climate import climate_field, gutenberg_richter_magnitudes
 from .events import inject_rare_events
+from .spatial import multisite_table, event_station_table
+from .hydro import well_table
+from .tides import tide_gauge_series
 
 __all__ = [
     "gnss_series",
+    "degrade_series",
     "synthetic_seismogram",
     "seismogram_dataset",
     "spectrum_matched_noise",
@@ -28,4 +32,8 @@ __all__ = [
     "climate_field",
     "gutenberg_richter_magnitudes",
     "inject_rare_events",
+    "multisite_table",
+    "event_station_table",
+    "well_table",
+    "tide_gauge_series",
 ]

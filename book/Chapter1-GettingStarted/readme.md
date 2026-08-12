@@ -9,6 +9,8 @@
 * Set up an agentic AI coding assistant in your editor or terminal, and use it with judgment: you direct it, you verify its output, and you disclose its role
 * State the course AI-use policy and what it requires of you (see [1.8 AI in your workflow](1.8_ai_in_your_workflow.md))
 
+The chapter ends with [1.9 Workbench setup (HW1)](1.9_workbench_setup_hw1.md), a numbered walkthrough that takes you from a bare machine to a verified working environment and your own course repository. It is the first graded assignment; every step states what success looks like, and Windows users get a sanctioned path through WSL2 or GitHub Codespaces.
+
 ## Starting from Zero
 
 It is possible! The resources below are helpful to get started. It is expected in MLGeo at UW that students can demonstrate their abilities on most of the course content in the Software Carpentries:

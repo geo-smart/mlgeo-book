@@ -36,7 +36,7 @@ Everything required below is taught with working code in this chapter. When a re
 - **Quantitative evaluation (6%)**: Metrics for all models: accuracy, precision, recall, F1, RMSE, or domain-specific measures. Multi-class problems report per-class precision and recall. State optimizer, learning rate, and batch size for every trained model.
 - **Generalization and out-of-distribution testing (7%)**: Evaluate on unseen or out-of-distribution data and discuss overfitting or underfitting.
 - **Chosen experiment (4%)** — pick ONE:
-  - *Fine-tuning vs from scratch*: pretrain an encoder on your data without labels (autoencoder or masked reconstruction, notebook 4.6 pattern), then fine-tune with a small labeled fraction and compare against training from scratch on the same fraction.
+  - *Pretraining vs from scratch*: pretrain an encoder on your data without labels (autoencoder or masked reconstruction, notebook 4.6 pattern), then train a linear probe on the frozen encoder — or fine-tune the whole encoder — with a small labeled fraction, and compare against training from scratch on the same fraction. Say which of the two you did; a probe keeps the encoder weights fixed, fine-tuning updates them.
   - *Deep-ensemble uncertainty*: train your best model from 5 random seeds, report ensemble-mean performance and per-sample prediction variance, and show which samples the ensemble disagrees on (notebook 4.5 pattern).
 - **Visualization of results (3%)**: Confusion matrices, loss-vs-epoch plots, error maps, or equivalents.
 

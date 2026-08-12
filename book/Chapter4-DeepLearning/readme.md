@@ -21,33 +21,38 @@ This chapter teaches deep learning by building it up one piece at a time, in PyT
    - Saving, checkpointing, and restoring models
    - PyTorch compared with scikit-learn's MLPClassifier
 
-4. **The three pillars of model development** (4.5)
-   - Pillar 1: training-data curation — label noise, class imbalance, sensor noise
-   - Pillar 2: architecture — width, depth, baselines, and deep ensembles for uncertainty
+4. **Convolutional neural networks** (4.3)
+   - Convolution and kernels on images
+   - LeNet on MNIST, briefly
+   - A 2-D CNN regressing warming trends from a synthetic climate field, read against least-squares baselines
+   - A 1-D CNN earthquake detector and its detection floor, head-to-head with the classical STA/LTA trigger on the same traces
+   - A reality check on real miniPNW waveforms: the synthetic-to-real gap measured, not tuned away
+   - Reading and recoding a published network
+
+5. **Sequence models** (4.4)
+   - Context windows and forecast horizons
+   - Vanilla RNNs and why gradients vanish
+   - LSTMs, self-attention from scratch, and a small transformer encoder
+   - All compared on the same forecasting task, against persistence and seasonal-naive baselines
+
+6. **The three pillars of model development** (4.5)
+   - Pillar 1: training-data curation — label noise, structured label disagreement, class imbalance, sensor noise, heteroscedastic quality
+   - Pillar 2: architecture — width, depth, baselines, deep ensembles and MC dropout for uncertainty, calibration vs discrimination, out-of-range behavior
    - Pillar 3: training strategies — learning rate, batch size, early stopping, schedulers
    - Diagnosing broken training runs from their loss curves
    - Hyperparameter search with Optuna
 
-5. **Convolutional neural networks** (4.3)
-   - Convolution and kernels on images
-   - LeNet on MNIST, briefly
-   - A 1-D CNN earthquake detector and its detection floor as a function of signal-to-noise ratio
-   - Reading and recoding a published network
-
-6. **Sequence models** (4.4)
-   - Context windows and forecast horizons
-   - Vanilla RNNs and why gradients vanish
-   - LSTMs, self-attention from scratch, and a small transformer encoder
-   - All compared on the same forecasting task
-
 7. **Autoencoders and self-supervision** (4.6)
    - Dense, convolutional, and denoising autoencoders on seismic spectrograms
-   - Masked-autoencoder pretraining
+   - Masked-autoencoder pretraining, ported to a second domain (gridded climate fields)
    - Reusing a pretrained encoder when labels are scarce
+   - A miniPNW transfer probe: features cross the synthetic-to-real gap, decision boundaries do not
 
 8. **Physics-informed learning** (4.7)
    - Physics constraints as loss terms
    - A cooling-law ablation and a 1-D heat-diffusion PINN
+   - A finite-difference baseline that beats the PINN on the forward problem (~750x faster, 100x more accurate)
+   - An inverse PINN recovering diffusivity from 40 noisy samples, and a break-the-PINN loss-imbalance exercise
    - Where PINNs stand in 2026, and neural operators as successors
 
 9. **Time-series forecasting shootout** (4.10)
@@ -58,7 +63,7 @@ This chapter teaches deep learning by building it up one piece at a time, in PyT
 10. **Final-project milestone** (4.20)
     - Architecture exploration, evaluation, and diagnostics requirements for the deep-learning milestone
 
-Transfer learning appears where it is used: notebook 4.6 closes with fine-tuning a pretrained encoder, which is transfer learning in miniature. Large language models and AI agents are covered in Chapter 6.
+Transfer learning appears where it is used: notebook 4.6 closes with a linear probe on a frozen pretrained encoder, which is transfer learning in miniature. Large language models and AI agents are covered in Chapter 6.
 
 ### Learning outcomes
 

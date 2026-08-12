@@ -22,8 +22,17 @@
   },
   "forecast": {
     "truth_file": "leaderboard/co2_holdout.csv",
+    "train_file": "leaderboard/co2_train_tail.csv",
     "key": "date",
     "value": "co2_ppm",
-    "note": "Held-out tail of the CO2 series; file added once Chapter 4.10 defines the horizon. Hidden continuation stays with the instructor."
+    "note": "DIAGNOSTIC track: the holdout is public NOAA data, so this score carries no grading weight. MASE is scaled by the naive one-step MAE of the pre-holdout training tail in train_file (textbook MASE), not by the holdout's own naive error."
+  },
+  "forecast_hidden": {
+    "truth_file": "leaderboard/private/synth_forecast_truth.csv",
+    "history_file": "leaderboard/synth_forecast_history.csv",
+    "key": "date",
+    "value": "disp_mm",
+    "horizon": 90,
+    "note": "GRADED track: synthetic daily series regenerated yearly from a private seed (see leaderboard/INSTRUCTOR.md). truth_file lives in the gitignored leaderboard/private/ and exists only on the instructor's machine; public CI runs render the section as pending. MASE scaled by history_file's naive one-step MAE."
   }
 }
