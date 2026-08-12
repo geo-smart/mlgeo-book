@@ -31,6 +31,9 @@ jobs:
         run: pixi run myst build --execute --html
         working-directory: book
 
+      - name: Redirect stubs for old (2024 edition) URLs
+        run: pixi run python tools/make_redirects.py
+
       - name: Link check
         run: pixi run myst build --check-links
         working-directory: book
