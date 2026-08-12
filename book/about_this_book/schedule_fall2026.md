@@ -6,6 +6,8 @@ This page is the course-delivery layer on top of the book: which sessions cover 
 
 Two design choices shape the quarter. First, **the agent thread runs through the whole course** rather than waiting for the end: what agents are and how we use them (week 2), turning your data skills on an AI's claims (week 4), and building eval sets for agents (week 7) — so the course's distinctive material is taught early and applied often, and the capstone gets a month of runway. Second, **December contains no new core material**: only application, clinics, one deliberate buffer session, and presentations, so nothing important is lost if a week slips.
 
+**The paper-pulse rhythm.** From week 3 through week 10, most sessions open with two 4-minute student talks — one paper from the speaker's [reading-arc](../Chapter6-AgenticAI/6.5_reading_arc.md) literature review, dissected against the class's rubric-in-progress. Every student presents once (sign-ups open Mon Oct 5 on Canvas) and everyone in the room scores every talk through the standing peer-feedback survey: five rubric ratings plus one strength and one improvement, anonymized to the presenter, completion counted as participation. Pulse talks skip the two 4.5 lab days and check-in #1; the same survey instrument returns for the final presentations.
+
 ## Graded-work calendar at a glance
 
 | Item | Opens | Due / window |
@@ -40,7 +42,7 @@ Chapter 7 has no quiz: its outcomes (audience translation, downstream impact) ar
 - Fri Oct 2 — Workbench lab: version control and environments ([1.2](../Chapter1-GettingStarted/1.2_jupyter_environment.md)–[1.5](../Chapter1-GettingStarted/1.5_version_control_git.md), with [1.9](../Chapter1-GettingStarted/1.9_workbench_setup_hw1.md) as the self-serve walkthrough); the pull-request dry run.
 
 **Week 2 — Agents, then data** (Ch 1 quiz Tue–Thu)
-- Mon Oct 5 — **Working with agents: policy and mechanism** ([1.8](../Chapter1-GettingStarted/1.8_ai_in_your_workflow.md) + [6.1](../Chapter6-AgenticAI/6.1_llms_to_agents.md)): what an agent is, where errors enter the loop, the badge system, disclosure. Reading arc stage 1 assigned.
+- Mon Oct 5 — **Working with agents: policy and mechanism** ([1.8](../Chapter1-GettingStarted/1.8_ai_in_your_workflow.md) + [6.1](../Chapter6-AgenticAI/6.1_llms_to_agents.md)): what an agent is, where errors enter the loop, the badge system, disclosure. Reading arc stage 1 assigned (topic: opportunities and challenges of AI in your subfield, with the two anchor readings); paper-pulse sign-ups open.
 - Wed Oct 7 — Meet the data: definitions and formats ([2.1](../Chapter2-DataManipulation/2.1_Data_Definitions.md)–[2.2](../Chapter2-DataManipulation/2.2_data_formats_rendered.ipynb)), the data gallery, and a first real dataset ([1.6](../Chapter1-GettingStarted/1.6_data_gallery.md)–[1.7](../Chapter1-GettingStarted/1.7_get_geodetic_gnss.ipynb)).
 - Fri Oct 9 — Tables: pandas and dataframe preparation ([2.3](../Chapter2-DataManipulation/2.3_pandas_rendered.ipynb)–[2.4](../Chapter2-DataManipulation/2.4_dataframes_prep.ipynb)).
 
@@ -84,7 +86,7 @@ Chapter 7 has no quiz: its outcomes (audience translation, downstream impact) ar
 
 **Week 11 — Clinics, buffer, presentations** (Ch 4 quiz closes Mon; forecasting leaderboard closes Wed; arc stage 4 due Thu)
 - Mon Dec 7 — **Project check-in #2: presentation dry-runs + review-agent clinic.** Rehearse; run your stage-4 agent on another team's draft.
-- Wed Dec 9 — **Buffer session.** Absorbs any slippage from the quarter; if nothing slipped, a deep dive chosen by class vote (live agent-eval demo, PINNs, or data-at-scale).
+- Wed Dec 9 — **Buffer session.** Absorbs any slippage from the quarter; if nothing slipped, a synthesis discussion of the quarter's question — opportunities and challenges of AI for geoscience, argued from the class's own measurements (agent evals, peer-score agreement statistics) — or a deep dive by class vote (live agent-eval demo, PINNs, data-at-scale).
 - Fri Dec 11 — **Final presentations, session I.**
 
 **Finals week** — Presentations session II in the registrar-assigned exam slot (check the Time Schedule); **final report and repository due Wednesday December 16**.
