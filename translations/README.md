@@ -35,6 +35,21 @@ community — especially native-speaker geoscientists — to help fine-tune both
   and the toc↔manifest coverage; `tools/gen_manifest.py` pins each page to its
   English source commit; `tools/copy_translation_assets.py` mirrors figures
   into each language tree.
+- **Linguistic QA understands notebooks.** Never run an ordinary spellchecker
+  over `.ipynb` JSON — base64 images, executed model reports, station codes and
+  identifiers all read as misspellings. `tools/extract_channels.py` splits a
+  page into five channels that need different rules: **prose** (general
+  language rules apply), **comments** (light rules, jargon expected),
+  **strings** (translate only in a deliberately localized, re-executed
+  notebook), **identifiers** (drift is an error), and **outputs** (never
+  linted, never translated). `tools/lint_terminology.py` then checks *meaning*,
+  not word choice: `accuracy` rendered as précision/precisión, a Git repository
+  called an archive, Spain-only forms in the pan-regional Spanish, and the
+  first use of *fuite*/*fuga* on a page being unqualified when data leakage and
+  spectral leakage are different phenomena. It deliberately does **not** flag
+  *machine learning*, workflow, pipeline, notebook, cloud, cluster, baseline or
+  benchmark — researchers write those, and a linter that fought them would be
+  fighting the language it serves. Both run in CI.
 
 ## How to help
 

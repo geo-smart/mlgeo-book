@@ -13,7 +13,7 @@ Este proyecto cuenta con el apoyo del equipo GeoSMART (Stefan Todoran, Nicoleta 
 
 ## Panorama
 
-El curso introduce el *machine learning* (aprendizaje automático) en las geociencias, las bases del cómputo y la metodología aplicada de ML. Trabaja con conjuntos de datos canónicos y de actualidad en sismología, oceanografía, criósfera, ciencias planetarias, geología y geodesia. Los métodos enseñados incluyen agrupamiento no supervisado, regresión logística, bosque aleatorio (*random forest*), máquinas de vectores de soporte y aprendizaje profundo (*deep learning*) con PyTorch.
+El curso introduce el aprendizaje automático (*machine learning*, **ML**) en las geociencias, las bases del cómputo y la metodología aplicada de ML. Esta edición escribe «aprendizaje automático» en la prosa explicativa y **ML** en la prosa técnica compacta, en tablas y en diagramas; la sigla se enseña de forma explícita porque es la que aparece en el código, en las diapositivas y en los artículos. Trabaja con conjuntos de datos canónicos y de actualidad en sismología, oceanografía, criósfera, ciencias planetarias, geología y geodesia. Los métodos enseñados incluyen agrupamiento no supervisado, regresión logística, bosque aleatorio (*random forest*), máquinas de vectores de soporte y aprendizaje profundo (*deep learning*) con PyTorch.
 
 El curso descansa sobre tres pilares, más una cuarta capa que atraviesa todo en la edición 2026:
 

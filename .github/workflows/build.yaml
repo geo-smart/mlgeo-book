@@ -34,6 +34,12 @@ jobs:
       - name: Check translation integrity
         run: pixi run python tools/check_translations.py
 
+      # Semantic terminology only — errors of meaning, not word choice.
+      # Researchers write *machine learning*, workflow, pipeline and notebook
+      # in French and Spanish prose; this must never fight that.
+      - name: Lint translation terminology
+        run: pixi run python tools/lint_terminology.py
+
       - name: Execute all notebooks (sequential — myst's concurrent kernels OOM the runner)
         run: pixi run python tools/execute_notebooks.py
 

@@ -1,6 +1,6 @@
 # Agradecimientos de quienes contribuyeron
 
-Muchas personas dedicadas a la investigación en *machine learning* en las geociencias, y más allá, han contribuido a este libro.
+Muchas personas dedicadas a la investigación en aprendizaje automático (*machine learning*) en las geociencias, y más allá, han contribuido a este libro.
 
 - Marine Denolle (UW, [GitHub](https://github.com/mdenolle))
 - Akshay Mehra (UW)
