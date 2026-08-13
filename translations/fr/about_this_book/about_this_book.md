@@ -4,8 +4,6 @@ Le cadre **GeoS**cience **MA**chine Learning **R**esources and **T**raining (Geo
 
 Ce livre accompagne le cours *Machine Learning in the Geosciences* (ESS 469/569) de l'Université de Washington. Le livre, les tutoriels et les devoirs vivent dans ce dépôt unique ; les étudiants exécutent les carnets (*notebooks*) localement ou sur le service cloud de leur choix.
 
-**Autrices et auteurs :** Marine Denolle, Nicoleta Cristea, Akshay Mehra, Ariane Ducellier, Ziheng Sun, Stefan Todoran, Scott Henderson et Claire Jensen. Toutes les autres personnes ayant contribué sont créditées dans les [Remerciements](acknowledgements.md), et les métadonnées de citation figurent dans [`CITATION.cff`](https://github.com/geo-smart/mlgeo-book/blob/main/CITATION.cff).
-
 **Enseignants** du cours ESS 469/569 : Marine Denolle (mdenolle@uw.edu) et Akshay Mehra (akmehra@uw.edu).
 
 Le projet est soutenu par l'équipe GeoSMART.
@@ -104,3 +102,9 @@ Chaque étudiant crée un dépôt de cours personnel nommé `MLGEO2026_UWNETID`,
 # Licences
 
 Le texte et les figures de ce livre sont sous licence [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) (CC-BY-4.0). Le code, y compris le code source des carnets, est sous [licence MIT](https://opensource.org/license/mit). Vous pouvez réutiliser et adapter les deux, avec attribution.
+
+# Autrices et auteurs
+
+Marine Denolle, Nicoleta Cristea, Akshay Mehra, Ariane Ducellier, Ziheng Sun, Stefan Todoran, Scott Henderson et Claire Jensen.
+
+Toutes les autres personnes ayant contribué — l'équipe GeoSMART, les contributrices et contributeurs du dépôt, l'équipe enseignante et les étudiants, les relectrices et relecteurs des traductions — sont créditées dans les [Remerciements](acknowledgements.md), où les autrices et auteurs figurent aussi avec leurs ORCID et affiliations. Les métadonnées de citation se trouvent dans [`CITATION.cff`](https://github.com/geo-smart/mlgeo-book/blob/main/CITATION.cff) ; [comment citer ce livre](https://github.com/geo-smart/mlgeo-book/blob/main/docs/CITATION_AND_DOI.md) explique où en est le DOI.

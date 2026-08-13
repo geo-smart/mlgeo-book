@@ -4,8 +4,6 @@ El marco **GeoS**cience **MA**chine Learning **R**esources and **T**raining (Geo
 
 Este libro acompaña el curso Machine Learning in the Geosciences (ESS 469/569) de la Universidad de Washington. El libro, los tutoriales y las tareas viven en este único repositorio; los estudiantes ejecutan los cuadernos localmente o en el servicio de nube de su elección.
 
-**Autoría:** Marine Denolle, Nicoleta Cristea, Akshay Mehra, Ariane Ducellier, Ziheng Sun, Stefan Todoran, Scott Henderson y Claire Jensen. Todas las demás personas que contribuyeron están acreditadas en [Agradecimientos](acknowledgements.md), y los metadatos de citación están en [`CITATION.cff`](https://github.com/geo-smart/mlgeo-book/blob/main/CITATION.cff).
-
 **Instructores** del curso ESS 469/569: Marine Denolle (mdenolle@uw.edu) y Akshay Mehra (akmehra@uw.edu).
 
 El proyecto cuenta con el apoyo del equipo GeoSMART.
@@ -104,3 +102,9 @@ Cada estudiante crea un repositorio personal del curso llamado `MLGEO2026_UWNETI
 # Licencias
 
 El texto y las figuras de este libro están bajo licencia [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) (CC-BY-4.0). El código, incluido el código fuente de los cuadernos, está bajo la [licencia MIT](https://opensource.org/license/mit). Puede reutilizar y adaptar ambos con atribución.
+
+# Autoría
+
+Marine Denolle, Nicoleta Cristea, Akshay Mehra, Ariane Ducellier, Ziheng Sun, Stefan Todoran, Scott Henderson y Claire Jensen.
+
+Todas las demás personas que contribuyeron — el equipo GeoSMART, quienes contribuyeron al repositorio, el equipo docente y el estudiantado, y quienes revisaron las traducciones — están acreditadas en [Agradecimientos](acknowledgements.md), donde la autoría figura además con sus ORCID y afiliaciones. Los metadatos de citación están en [`CITATION.cff`](https://github.com/geo-smart/mlgeo-book/blob/main/CITATION.cff); [cómo citar este libro](https://github.com/geo-smart/mlgeo-book/blob/main/docs/CITATION_AND_DOI.md) explica en qué estado está el DOI.

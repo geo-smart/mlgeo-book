@@ -66,7 +66,7 @@ The plan for today: build a dataset that passes, then break rules 6 and 7 on pur
 Read the list slowly — it is the graded artifact. Item 2: a README written for humans is not enough; the card must be parseable (YAML), because scripts consume it. Item 6: splits ship WITH the data as a column, so every user evaluates on the same held-out samples — that is what makes a benchmark a benchmark. Item 7 has two halves: the split design respects the correlation structure (time, location, event membership), and every preprocessing statistic comes from the training split only. Item 8: rare-event problems look nothing like balanced ones, and users must know before they train. The demo dataset: ten years of synthetic daily river discharge with injected floods — 3,652 days, 312 flood days (8.5%), 33 distinct flood events, disclosed synthetic (item 1) with generator and seed in the card. Chronological splits: train 2015–2021, validation 2022, test 2023–2024. The card is written to disk next to the CSV and read back with a YAML parser to prove machine-readability.
 :::
 
-## Break rule 7, watch the metric lie
+## Break rule 7, watch the metric lie {.smaller}
 
 ::: {.big-number}
 1.000 [average precision — rare-class oversampling *before* the split]{.unit}
@@ -100,7 +100,7 @@ A gridded product and a gauge (star) that sits between cell centers, synthetic (
 The most requested workflow in project office hours: my measurements live at stations, my covariate lives on a grid — reanalysis precipitation onto a gauge, SST onto a buoy, soil moisture onto a borehole. Three steps. Space: the gauge is not at a cell center — nearest-cell snapping vs bilinear interpolation differ by 0.037 °C RMS here; bilinear for smooth fields, nearest is the only correct choice for categorical rasters (averaging "granite" and "basalt" is nonsense). The classic bug: longitude conventions — this grid runs 0–360, the gauge longitude 122.4 W must become 237.6 E; check the grid coordinates first. Time: monthly values joined to daily samples — linear interpolation between month centers uses the NEXT month, which is future information; the causal join takes the most recent available value and nothing from the future. Each choice — source grid, extraction method, join rule — becomes provenance in the data card (items 1 and 2). Real-data extras the synthetic spared us: CRS reprojection, grid cells being area averages not points, and timestamp semantics (does "2015-01" stamp the start or the end of the averaging interval?).
 :::
 
-## An honest pipeline may return "no"
+## An honest pipeline may return "no" {.smaller}
 
 ::: {.big-number}
 0.722 [average precision — discharge features only]{.unit}
