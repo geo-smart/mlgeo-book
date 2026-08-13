@@ -108,4 +108,4 @@ permits with attribution). Three nuances, for the record:
 | Chapter 1 pilot, French | in progress |
 | Chapter 1 pilot, Spanish | in progress |
 | Remaining chapters | after pilot review |
-| Translated site at `/fr/`, `/es/` | after pilot review |
+| Translated site at `/fr/`, `/es/` | wired: CI builds both pilots into the main site; flag links (🇺🇸/🇫🇷/🇪🇸) in every edition's header switch languages |

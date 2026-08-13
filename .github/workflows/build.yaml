@@ -39,6 +39,24 @@ jobs:
       - name: Redirect stubs for old (2024 edition) URLs
         run: pixi run python tools/make_redirects.py
 
+      # Pilot translations (Chapter 1 + front matter). Notebooks ship with
+      # committed outputs (1.7 is data-localized and pre-executed), so no
+      # notebook execution here — build only, then graft under /fr/ and /es/.
+      - name: Build French pilot edition
+        run: pixi run myst build --html
+        working-directory: translations/fr
+        env:
+          BASE_URL: /mlgeo-book/fr
+      - name: Build Spanish pilot edition
+        run: pixi run myst build --html
+        working-directory: translations/es
+        env:
+          BASE_URL: /mlgeo-book/es
+      - name: Graft translated editions into the site
+        run: |
+          cp -R translations/fr/_build/html book/_build/html/fr
+          cp -R translations/es/_build/html book/_build/html/es
+
       - name: Publish lecture decks into the site under /slides/
         run: |
           mkdir -p book/_build/html/slides
