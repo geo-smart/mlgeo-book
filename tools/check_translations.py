@@ -42,10 +42,17 @@ def check_ipynb(src: Path, dst: Path, localized: bool, errors: list) -> None:
     for i, (ca, cb) in enumerate(zip(a, b)):
         if ca["cell_type"] != "code":
             continue
-        if ca["source"] != cb["source"]:
-            errors.append(f"{dst}: code cell {i} source differs from English")
-        if ca.get("outputs", []) != cb.get("outputs", []):
-            errors.append(f"{dst}: code cell {i} outputs differ from English")
+        # Compare the whole cell, not just source and outputs: execution_count,
+        # id, and metadata (tags, scrolled, kernel hints) all affect how the
+        # cell builds and executes, so drift there breaks the invariant just as
+        # surely as changed code would.
+        if ca != cb:
+            differing = sorted(
+                k for k in set(ca) | set(cb) if ca.get(k) != cb.get(k)
+            )
+            errors.append(
+                f"{dst}: code cell {i} differs from English in {', '.join(differing)}"
+            )
 
 
 def plain_fences(text: str) -> list:

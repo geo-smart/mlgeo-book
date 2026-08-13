@@ -4,7 +4,7 @@ De nombreux chercheurs qui s'intéressent à l'apprentissage automatique en géo
 
 - Marine Denolle (UW, [GitHub](https://github.com/mdenolle))
 - Akshay Mehra (UW)
-- Ziheng Sun (George Madison University)
+- Ziheng Sun (George Mason University)
 - Ariane Ducellier (ancienne doctorante de l'UW, [GitHub](https://github.com/ArianeDucellier))
 - Stefan Todoran (UW, [GitHub](https://github.com/StefanTodoran))
 - Nicoleta Cristea (UW, [GitHub](https://github.com/NCristea))

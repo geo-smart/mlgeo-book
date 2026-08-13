@@ -54,23 +54,37 @@ def referenced_images(path: Path) -> set:
     return out
 
 
+def within(path: Path, parent: Path) -> bool:
+    return path == parent or parent in path.parents
+
+
 def copy_for_language(lang: str, dry_run: bool) -> int:
-    lang_dir = TRANSLATIONS / lang
+    lang_dir = (TRANSLATIONS / lang).resolve()
+    book_dir = BOOK.resolve()
     copied = missing = 0
     for page in sorted(lang_dir.rglob("*")):
         if page.suffix not in (".md", ".ipynb") or "_build" in page.parts:
             continue
         rel_dir = page.parent.relative_to(lang_dir)
         for ref in referenced_images(page):
+            if Path(ref).is_absolute():
+                print(f"  SKIP absolute path {ref} (in {page.relative_to(ROOT)})")
+                continue
             dst = (page.parent / ref).resolve()
+            src = (book_dir / rel_dir / ref).resolve()
+            # A page could reference ../../.. out of its tree; never read outside
+            # the English book or write outside this language's directory.
+            if not within(dst, lang_dir) or not within(src, book_dir):
+                print(f"  SKIP out-of-tree {ref} (in {page.relative_to(ROOT)})")
+                continue
             if dst.exists():
                 continue
-            src = (BOOK / rel_dir / ref).resolve()
             if not src.exists():
                 print(f"  MISSING {ref} (referenced by {page.relative_to(ROOT)})")
                 missing += 1
                 continue
-            print(f"  {'would copy' if dry_run else 'copy'} {src.relative_to(ROOT)} -> {dst.relative_to(ROOT)}")
+            verb = "would copy" if dry_run else "copy"
+            print(f"  {verb} {src.relative_to(ROOT)} -> {dst.relative_to(ROOT)}")
             if not dry_run:
                 dst.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(src, dst)

@@ -27,6 +27,13 @@ jobs:
           cache: true
           post-cleanup: false
 
+      # Fails the build if a translated page drifts from its English source:
+      # code cells (source, outputs, metadata), plain code fences, and
+      # toc<->MANIFEST coverage must all match. Runs before the expensive
+      # notebook execution so a drift fails fast.
+      - name: Check translation integrity
+        run: pixi run python tools/check_translations.py
+
       - name: Execute all notebooks (sequential — myst's concurrent kernels OOM the runner)
         run: pixi run python tools/execute_notebooks.py
 
