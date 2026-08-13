@@ -42,10 +42,13 @@ community — especially native-speaker geoscientists — to help fine-tune both
    are these readers real? What did we get wrong about your country's academic
    register, your field's vocabulary, your students' English? Open a GitHub
    issue titled `[translation] persona: …` or a PR.
-2. **Fight about the glossary** ([`GLOSSARY_fr.md`](GLOSSARY_fr.md),
-   [`GLOSSARY_es.md`](GLOSSARY_es.md)): terminology is where translations live
-   or die. Every row is contestable, especially the *keep-in-English* column.
-   Issues titled `[translation] term: …`.
+2. **Fight about the glossary** ([`GLOSSARY.md`](GLOSSARY.md) trilingual,
+   [`GLOSSARY_fr.md`](GLOSSARY_fr.md), [`GLOSSARY_es.md`](GLOSSARY_es.md)):
+   terminology is where translations live or die. Every row is contestable,
+   especially the *keep-in-English* column and the context rows that split one
+   English word across several senses. A short list of **hard invariants** at
+   the foot of the trilingual table is the exception — those are errors of
+   meaning, not preferences. Issues titled `[translation] term: …`.
 3. **Review the pilot** (`fr/Chapter1-GettingStarted/`,
    `es/Chapter1-GettingStarted/` once merged): read one page as the reader you
    are, and tell us where the register breaks, where a term jars, where an
@@ -61,11 +64,34 @@ community — especially native-speaker geoscientists — to help fine-tune both
 - Spanish targets neutral pan-regional Spanish (no voseo, no
   country-specific idiom in instructional prose); the multi-country personas
   exist precisely to catch regionalisms.
-- French follows current French academic usage in quantitative science:
-  established French terms where they are genuinely standard
-  (*apprentissage automatique*, *surapprentissage*), the English term where
-  French usage keeps it (*machine learning* in running text is acceptable on
-  first mention with the French gloss; *dropout*, *transformer*).
+- **The glossaries are usage guides, not authorities over the chapters.** They
+  report what francophone and hispanophone researchers write, context by
+  context. Where a chapter and a glossary row disagree, the chapter is usually
+  the one reporting real usage — fix the row, open an issue, do not quietly
+  rewrite the prose. Several English words carry two or three concepts here
+  (*workflow*, *pipeline*, *repository*, *cluster*, *notebook*, *build*), and
+  each sense gets its own row rather than one blanket translation.
+- French follows current French academic usage in quantitative science, and
+  that usage is genuinely **mixed register**. The book writes *machine
+  learning* (**ML**) for the field and for research practice, glossed
+  « apprentissage automatique » at the first substantive occurrence of each
+  chapter, and keeps the French « apprentissage… » family for the named
+  paradigms — *apprentissage supervisé, non supervisé, auto-supervisé, par
+  renforcement, profond*. This is a register decision, not a claim that
+  « apprentissage automatique » is wrong; CNRS course titles, Paris-Saclay
+  program pages, Inria research pages and Collège de France chair biographies
+  all mix the two. Elsewhere the same principle applies: established French
+  terms where they are genuinely standard (*surapprentissage*, « fuite de
+  données », « exactitude »), the English term where French usage keeps it
+  (*workflow*, *pipeline*, *notebook*, *cloud*, *dropout*, *transformer*),
+  glossed once per chapter and then consistent within that chapter.
+- **Spanish decides the same question differently, on purpose.** It writes
+  «aprendizaje automático» as its prose default — first occurrence
+  «aprendizaje automático (*machine learning*, ML)» — and uses **ML** in
+  compact technical prose. Spanish does not need the English field name to
+  sound like research, but it must teach the acronym students will meet in
+  code and papers. Two editions, two registers; that divergence is reported,
+  not an inconsistency to normalize away.
 - The instructional register is the impersonal/2nd-person-formal standard of
   each language's textbooks (French *vous*; Spanish *usted*-neutral
   imperative), matching the English edition's direct-but-professional voice.
@@ -116,7 +142,7 @@ permits with attribution). Three nuances, for the record:
 | Piece | State |
 |---|---|
 | Personas (8 FR, 5 ES) | published, labeled synthetic — critique welcome |
-| Glossaries (starter, ~50 terms each) | published — contested rows marked; new terms from the full-book pass pending merge |
+| Glossaries ([trilingual](GLOSSARY.md), [FR](GLOSSARY_fr.md), [ES](GLOSSARY_es.md)) | published — rewritten in 2026-08 from one-to-one tables into context-sensitive usage guides; contested rows marked, hard invariants listed separately |
 | French edition, full book | translated, AI-reviewed against synthetic personas — **no human community review yet** |
 | Spanish edition, full book | translated, AI-reviewed against synthetic personas — **no human community review yet** |
 | Human review record | [`docs/REVIEW_RECORD.md`](../docs/REVIEW_RECORD.md) — empty; volunteers wanted |

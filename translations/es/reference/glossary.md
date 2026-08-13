@@ -83,6 +83,9 @@ Leakage (spatial and temporal) (fuga espacial y temporal)
 Linear probe (sonda lineal)
 : Un clasificador formado por un codificador preentrenado congelado más una pequeña cabeza lineal entrenada. Mide lo que las características preentrenadas cargan por sí solas; el *fine-tuning* (ajuste fino), en cambio, también actualiza los pesos del codificador. El cuaderno 4.6 compara una sonda lineal contra el entrenamiento desde cero.
 
+Machine learning (ML) (aprendizaje automático)
+: El campo del que trata este libro: métodos que aprenden una relación a partir de datos en lugar de recibirla como reglas escritas a mano. La edición en español escribe «aprendizaje automático (*machine learning*, ML)» en su primera aparición y luego «aprendizaje automático» en la prosa explicativa y **ML** en la prosa técnica compacta, en diagramas y en tablas. La sigla se enseña de forma explícita: es la que aparece en el código, en las diapositivas y en los artículos, y quien estudia la necesita para llegar a la literatura.
+
 MASE
 : Error absoluto medio escalado (*mean absolute scaled error*): el error absoluto medio de un pronóstico dividido entre el de un modelo de referencia ingenuo (persistencia o ingenuo estacional) sobre la misma serie. Un MASE menor que 1 supera al modelo de referencia; mayor que 1, el modelo pierde frente a él (cuaderno 4.10).
 
