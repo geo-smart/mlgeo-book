@@ -1,5 +1,12 @@
 # Glossaire FR — terminologie de l'édition française
 
+> **Tableau trilingue :** [`GLOSSARY.md`](GLOSSARY.md) donne, pour chaque
+> terme anglais, le terme français *et* le terme espagnol côte à côte, avec
+> l'indication des mots que chaque communauté conserve en anglais. C'est le
+> tableau à consulter pour lire d'une langue à l'autre. La présente page reste
+> la référence du traducteur francophone : elle porte le détail d'usage et
+> l'historique des lignes contestées.
+
 Règle : le terme de ce tableau est LE terme, employé identiquement dans tous
 les chapitres. « EN conservé » = le terme anglais reste dans la prose
 française (usage établi), glosé en français à la première occurrence de

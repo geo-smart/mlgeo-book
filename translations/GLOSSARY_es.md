@@ -1,5 +1,12 @@
 # Glosario ES — terminología de la edición en español
 
+> **Tabla trilingüe:** [`GLOSSARY.md`](GLOSSARY.md) da, para cada término en
+> inglés, el término francés *y* el término español lado a lado, indicando qué
+> palabras conserva en inglés cada comunidad. Esa es la tabla para leer de un
+> idioma a otro. Esta página sigue siendo la referencia del traductor
+> hispanohablante: contiene el detalle de uso y el historial de las filas en
+> disputa.
+
 Regla: el término de esta tabla es EL término, usado idéntico en todos los
 capítulos. «EN conservado» = el término inglés permanece en la prosa
 (uso establecido), glosado en español en su primera aparición por capítulo.

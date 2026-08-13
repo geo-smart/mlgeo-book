@@ -1,7 +1,7 @@
 # Bien démarrer
 
 ```{note}
-**Convention typographique de l'édition française.** La prose suit l'usage français : virgule décimale (« 3,1 mm/an »), espaces insécables avant « : » et « ; », guillemets français. Le code, les noms de variables, les sorties exécutées et les figures restent en anglais, avec le point décimal (`3.1`) : lire du code scientifique en anglais est une compétence que ce cours cultive, et les carnets traduits gardent la même vérité computationnelle que l'édition anglaise.
+**Convention typographique de l'édition française.** La prose suit l'usage français : virgule décimale (« 3,1 mm/an »), espaces insécables avant « : » et « ; », guillemets français. Le code, les noms de variables, les sorties exécutées et les figures restent en anglais, avec le point décimal (`3.1`) : lire du code scientifique en anglais est une compétence que ce cours cultive, et les carnets traduits gardent la même vérité computationnelle que l'édition anglaise.
 ```
 
 ## Objectifs d'apprentissage

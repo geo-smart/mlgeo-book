@@ -42,7 +42,7 @@ authors:
 affiliations:
  - name: University of Washington, Seattle, USA
    index: 1
- - name: George Mason University, George Mason, USA
+ - name: George Mason University, Fairfax, VA, USA
    index: 2
 date: January 10, 2025
 bibliography: paper.bib

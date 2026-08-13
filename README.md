@@ -3,6 +3,28 @@
 [![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://geo-smart.github.io/mlgeo-book)
 [![GeoSMART Library Badge](book/img/curricula_badge.svg)](https://geo-smart.github.io/curriculum)
 
+**Editions:** [English](https://geo-smart.github.io/mlgeo-book) ·
+[Français](https://geo-smart.github.io/mlgeo-book/fr/) ·
+[Español](https://geo-smart.github.io/mlgeo-book/es/)
+
+## Citing this book
+
+Authors and citation metadata are in [`CITATION.cff`](CITATION.cff). The book
+does not have a DOI yet — the JOSE manuscript in `JOSE_PAPER/` is *in
+preparation* and unreviewed, so it should not be cited as a published article.
+[`docs/CITATION_AND_DOI.md`](docs/CITATION_AND_DOI.md) explains how to mint an
+archival DOI through Zenodo (three steps, and `.zenodo.json` is already
+prepared) and what to cite in the meantime.
+
+## Scope
+
+This material was developed for ESS 469/569 at the University of Washington,
+and its datasets are largely US and Pacific-Northwest. Instructors adopting it
+elsewhere should plan to substitute regional data and institutional context —
+see [adopting this book](book/about_this_book/adopting_this_book.md). The
+French and Spanish editions localize prose (examples, institutions, hazards)
+but, apart from the GNSS notebook 1.7, still run on the English edition's data.
+
 ## Repository Overview
 
 This repository is the single source of truth for the MLGeo curriculum book (2026 edition). It is edited directly: there is no separate instructor/student repository pair anymore, and the former auto-generation pipeline from `geo-smart/mlgeo-instructor` is retired. Solutions to exercises live in this repo and are rendered as collapsible/hidden cells in the published book rather than being stripped into a second repository.

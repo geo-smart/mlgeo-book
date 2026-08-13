@@ -22,6 +22,12 @@ The course rests on three pillars, plus a fourth layer that runs through everyth
 3. **Deep learning**: neural networks in PyTorch, from perceptrons to modern architectures.
 4. **Working with agentic AI**: students in 2026 write code alongside AI assistants that read repositories, run code, and propose changes. The course treats this as a skill to be taught, not a shortcut to be policed. Critical evaluation of AI output, translation of results for different audiences, and articulation of downstream impact are graded skills, on the same footing as model accuracy.
 
+```{note}
+**Scope and regional context.** This book was written for a specific course at a specific place, and it shows. The schedule, the ten-week quarter, the room, the Canvas quizzes, the leaderboard, and the repository naming convention are the University of Washington's. So is most of the data: the seismology notebooks run on Pacific Northwest waveforms and event catalogs (miniPNW, a Zenodo PNW event set, the UW.RATT station in Puget Sound), the geodesy notebooks on Cascadia GNSS, the forecasting notebooks on Mauna Loa CO2, and several table and grid examples on US station lists and a North American reanalysis field.
+
+None of that is a requirement of the material. The methods, the evaluation discipline, and the failure modes are the same anywhere; the ground is not. If you are teaching or reading this outside the US, plan to substitute regional data and institutional context. [Adopting This Book](adopting_this_book.md) lists what is UW-specific, which notebooks carry US data, and how one dataset swap was actually done.
+```
+
 # Who this book is for
 
 PhD students and senior undergraduates across the geosciences and adjacent engineering and computer science, plus the professors, postdocs, lab scientists, and program staff who train or hire them. A completer can take a raw, messy geoscience data stream to a defensible, reproducible, honestly evaluated model — and can say exactly which parts an AI assistant did.
