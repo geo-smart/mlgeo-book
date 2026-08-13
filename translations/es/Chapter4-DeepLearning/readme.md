@@ -2,7 +2,7 @@
 
 ## Capítulo 4: Aprendizaje profundo
 
-Este capítulo enseña el aprendizaje profundo (*deep learning*) construyéndolo pieza por pieza, en PyTorch, sobre datos de geociencias. Cada arquitectura se implementa, se entrena y se diagnostica en un cuaderno que puede ejecutarse en una laptop. Los modelos son deliberadamente pequeños; las ideas no.
+Este capítulo enseña el aprendizaje profundo (*deep learning*) construyéndolo pieza por pieza, en PyTorch, sobre datos de geociencias. Cada arquitectura se implementa, se entrena y se diagnostica en un cuaderno que puede ejecutarse en una computadora portátil. Los modelos son deliberadamente pequeños; las ideas no.
 
 ### Mapa del capítulo
 
@@ -33,12 +33,12 @@ Este capítulo enseña el aprendizaje profundo (*deep learning*) construyéndolo
    - Ventanas de contexto y horizontes de pronóstico
    - RNN simples y por qué los gradientes se desvanecen
    - LSTM, autoatención desde cero y un codificador *transformer* pequeño
-   - Todos comparados en la misma tarea de pronóstico, contra modelos de referencia de persistencia y estacional-ingenuo
+   - Todos comparados en la misma tarea de pronóstico, contra modelos de referencia de persistencia e ingenuo estacional
 
 6. **Los tres pilares del desarrollo de modelos** (4.5)
    - Pilar 1: curaduría de los datos de entrenamiento — ruido en las etiquetas, desacuerdo estructurado entre etiquetas, desbalance de clases, ruido de sensores, calidad heterocedástica
    - Pilar 2: arquitectura — ancho, profundidad, modelos de referencia, ensambles profundos y *MC dropout* para la incertidumbre, calibración vs. discriminación, comportamiento fuera de rango
-   - Pilar 3: estrategias de entrenamiento — tasa de aprendizaje, tamaño de lote, parada temprana (*early stopping*), programadores de tasa (*schedulers*)
+   - Pilar 3: estrategias de entrenamiento — tasa de aprendizaje, tamaño de lote, parada temprana (*early stopping*), planificadores de tasa (*schedulers*)
    - Diagnóstico de entrenamientos rotos a partir de sus curvas de pérdida
    - Búsqueda de hiperparámetros con Optuna
 

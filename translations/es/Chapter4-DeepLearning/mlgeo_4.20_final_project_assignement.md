@@ -44,7 +44,7 @@ Todo lo que se exige abajo se enseña con código funcional en este capítulo. C
 
 ## 5. Entrega de software y calidad del código (15%)
 
-- **Práctica estándar de entrenamiento (7%)**: Código modular, un cuaderno por sección clara. Aborde: (1) preparación de los datos con la descripción de entrenamiento, validación y prueba, (2) arquitectura y diseño del modelo, (3) estrategia de entrenamiento (tamaño de lote, optimizador, programador) con curvas de aprendizaje, (4) evaluación y generalización.
+- **Práctica estándar de entrenamiento (7%)**: Código modular, un cuaderno por sección clara. Aborde: (1) preparación de los datos con la descripción de entrenamiento, validación y prueba, (2) arquitectura y diseño del modelo, (3) estrategia de entrenamiento (tamaño de lote, optimizador, planificador de la tasa de aprendizaje) con curvas de aprendizaje, (4) evaluación y generalización.
 - **Guardado de resultados (4%)**: Guarde los pesos del modelo, las bitácoras de entrenamiento y las métricas de desempeño en archivos CSV/JSON incluidos en el repositorio.
 - **Calidad del código y documentación (4%)**: Legible, comentado, reproducible. El README del repositorio indica cómo correr los cuadernos y en qué orden.
 
