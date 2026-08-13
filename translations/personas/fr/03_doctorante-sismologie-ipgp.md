@@ -1,5 +1,11 @@
 # Amina Benali — Doctorante en sismologie, IPGP, Paris (elle)
 
+> ⚠️ **Persona fictive.** Ce document décrit un lecteur *synthétique*, écrit
+> pour orienter la traduction. Il ne représente aucune personne réelle et ne
+> constitue **pas** une relecture par la communauté francophone. Voir
+> [`docs/REVIEW_RECORD.md`](../../../docs/REVIEW_RECORD.md) pour les
+> relectures humaines réelles.
+
 *(EN summary: seismology PhD student at IPGP; the technical-accuracy reviewer; demands a French GNSS/seismic station swap via Epos-France/Résif and RENAG, and rigorous ML terminology.)*
 
 ## Identité

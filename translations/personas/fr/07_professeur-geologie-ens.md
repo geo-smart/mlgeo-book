@@ -1,5 +1,11 @@
 # Pr. Hélène Caron — Professeure de géologie, École normale supérieure, Paris (elle)
 
+> ⚠️ **Persona fictive.** Ce document décrit un lecteur *synthétique*, écrit
+> pour orienter la traduction. Il ne représente aucune personne réelle et ne
+> constitue **pas** une relecture par la communauté francophone. Voir
+> [`docs/REVIEW_RECORD.md`](../../../docs/REVIEW_RECORD.md) pour les
+> relectures humaines réelles.
+
 *(EN summary: geology professor at ENS Paris, AI-literate in 2026; reviews for intellectual rigor and elegance of French scientific prose, geology's presence, and European open-data anchoring — EPOS, BRGM, Data Terra.)*
 
 ## Identité

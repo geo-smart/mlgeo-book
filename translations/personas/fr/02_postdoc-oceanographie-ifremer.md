@@ -1,5 +1,11 @@
 # Yann Le Goff — Chercheur postdoctoral en océanographie, Ifremer Brest (il)
 
+> ⚠️ **Persona fictive.** Ce document décrit un lecteur *synthétique*, écrit
+> pour orienter la traduction. Il ne représente aucune personne réelle et ne
+> constitue **pas** une relecture par la communauté francophone. Voir
+> [`docs/REVIEW_RECORD.md`](../../../docs/REVIEW_RECORD.md) pour les
+> relectures humaines réelles.
+
 *(EN summary: oceanography postdoc at Ifremer; fluent in English but reviews for French readers with mixed English levels; Argo and coastal-ocean localization.)*
 
 ## Identité

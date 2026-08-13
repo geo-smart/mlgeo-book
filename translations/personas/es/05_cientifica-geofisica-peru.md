@@ -1,5 +1,11 @@
 # Ing. Karen Quispe — Científica de datos geofísicos, Instituto Geofísico del Perú, Lima (ella)
 
+> ⚠️ **Persona ficticia.** Este documento describe a un lector *sintético*,
+> escrito para orientar la traducción. No representa a ninguna persona real y
+> **no** constituye una revisión por parte de la comunidad hispanohablante.
+> Véase [`docs/REVIEW_RECORD.md`](../../../docs/REVIEW_RECORD.md) para las
+> revisiones humanas reales.
+
 *(EN summary: geophysical data scientist at IGP Peru and community-bridge persona — GeoLatinas-style reviewer thinking about adoption beyond academia and about who the Spanish edition serves.)*
 
 ## Identidad

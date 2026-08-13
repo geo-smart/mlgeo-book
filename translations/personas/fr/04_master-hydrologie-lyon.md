@@ -1,5 +1,11 @@
 # Thomas Perrin — Étudiant en M2 hydrologie, Lyon / INRAE (il)
 
+> ⚠️ **Persona fictive.** Ce document décrit un lecteur *synthétique*, écrit
+> pour orienter la traduction. Il ne représente aucune personne réelle et ne
+> constitue **pas** une relecture par la communauté francophone. Voir
+> [`docs/REVIEW_RECORD.md`](../../../docs/REVIEW_RECORD.md) pour les
+> relectures humaines réelles.
+
 *(EN summary: hydrology master's student with mid-level English; the accessibility reviewer — the translation must carry readers whose English is a real barrier; Rhône/Cévennes flood localization.)*
 
 ## Identité

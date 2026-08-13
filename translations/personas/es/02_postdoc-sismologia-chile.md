@@ -1,5 +1,11 @@
 # Dra. Valentina Rojas — Investigadora postdoctoral en sismología, Universidad de Chile, Santiago (ella)
 
+> ⚠️ **Persona ficticia.** Este documento describe a un lector *sintético*,
+> escrito para orientar la traducción. No representa a ninguna persona real y
+> **no** constituye una revisión por parte de la comunidad hispanohablante.
+> Véase [`docs/REVIEW_RECORD.md`](../../../docs/REVIEW_RECORD.md) para las
+> revisiones humanas reales.
+
 *(EN summary: seismology postdoc in Chile; technical-accuracy reviewer for the Spanish edition; subduction-zone localization and the anglicism-heavy register of Chilean tech culture as a known trap.)*
 
 ## Identidad

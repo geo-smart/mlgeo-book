@@ -1,5 +1,11 @@
 # Andrés Cárdenas — Estudiante de doctorado en hidrología, Universidad Nacional de Colombia, Bogotá (él)
 
+> ⚠️ **Persona ficticia.** Este documento describe a un lector *sintético*,
+> escrito para orientar la traducción. No representa a ninguna persona real y
+> **no** constituye una revisión por parte de la comunidad hispanohablante.
+> Véase [`docs/REVIEW_RECORD.md`](../../../docs/REVIEW_RECORD.md) para las
+> revisiones humanas reales.
+
 *(EN summary: hydrology PhD student in Colombia; the accessibility reviewer — Spanish must carry the full reasoning for readers whose English is a real barrier; ENSO/IDEAM localization.)*
 
 ## Identidad
