@@ -2,6 +2,8 @@
 
 Términos usados a lo largo del libro, desde los dos lados de su público: vocabulario de *machine learning* para estudiantes de geociencias, y vocabulario de geociencias y de procesamiento de señales para estudiantes de cómputo.
 
+El [glosario trilingüe](https://github.com/geo-smart/mlgeo-book/blob/main/translations/GLOSSARY.md) presenta cada término en los tres idiomas lado a lado e indica qué palabras inglesas conserva en su prosa cada comunidad: la francesa y la hispanohablante no conservan las mismas.
+
 Cada entrada conserva el término en inglés — es el que usted encontrará en la literatura, en la documentación de las bibliotecas y en el código — seguido de su forma en español entre paréntesis, siguiendo el [glosario de la edición en español](https://github.com/geo-smart/mlgeo-book/blob/main/translations/GLOSSARY_es.md). Las entradas están en orden alfabético del inglés, para que coincidan con la edición original.
 
 ```{glossary}

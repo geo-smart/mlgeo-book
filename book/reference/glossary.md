@@ -2,6 +2,8 @@
 
 Terms used throughout the book, from both sides of its audience: machine-learning vocabulary for geoscience students, and geoscience/signal-processing vocabulary for computing students. Entries are alphabetical.
 
+Reading in French or Spanish, or translating into another language? The [trilingual glossary](https://github.com/geo-smart/mlgeo-book/blob/main/translations/GLOSSARY.md) gives each term in all three languages side by side, and marks which English words the French and Spanish ML communities keep in prose — the two do not keep the same ones.
+
 ```{glossary}
 
 Ablation

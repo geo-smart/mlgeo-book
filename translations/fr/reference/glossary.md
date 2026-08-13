@@ -2,6 +2,8 @@
 
 Termes employés tout au long du livre, des deux côtés de son public : le vocabulaire de l'apprentissage automatique pour les étudiants de géosciences, et le vocabulaire des géosciences et du traitement du signal pour les étudiants d'informatique. Les entrées sont classées par ordre alphabétique du terme anglais, qui reste affiché en tête de chaque entrée : c'est sous ce terme que vous retrouverez la notion dans la littérature et dans le code.
 
+Le [glossaire trilingue](https://github.com/geo-smart/mlgeo-book/blob/main/translations/GLOSSARY.md) donne chaque terme dans les trois langues côte à côte et indique quels mots anglais chaque communauté conserve dans sa prose : la francophone et l'hispanophone ne gardent pas les mêmes.
+
 ```{glossary}
 
 Ablation — ablation
