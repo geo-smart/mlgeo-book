@@ -19,7 +19,7 @@ Le chapitre se termine par [1.9 Installer votre poste de travail (Devoir 1)](1.9
 
 C'est possible ! Les ressources ci-dessous aident à démarrer. MLGeo attend des étudiants qu'ils maîtrisent l'essentiel du contenu des Software Carpentries :
 
-Consultez les Software Carpentries (leçons en anglais) :
+Leçons à consulter (en anglais) :
 * Toutes les leçons sur [Unix](https://swcarpentry.github.io/shell-novice/)
 * Les leçons sur [Git](https://swcarpentry.github.io/git-novice/), largement reprises en cours
 * [Python](https://swcarpentry.github.io/python-novice-inflammation/) : manipuler les types de variables, dont les tableaux et les listes, les boucles `for`, les instructions `if`, créer des fonctions
