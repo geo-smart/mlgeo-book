@@ -49,7 +49,7 @@ Learn the verbs, not the spellings — your coding agent knows the syntax; you m
 This is 2.3 compressed to one slide; the notebook is a guided tour and much of it is marked for self-study. The catalog is real — EarthScope/IRIS global M≥6 events; describe() instantly shows depth in *meters* (max 685,500), which is why the first transform is unit conversion — a one-line lambda. Show of hands: who has used a spreadsheet for this? Pandas is the spreadsheet you can version-control, test, and rerun. Implementation names for the notebook: read_csv, describe, apply/map with lambdas, groupby, agg, sort_values, plotly for the interactive quake map. The skill the slides train is the next four slides: knowing which values to distrust.
 :::
 
-## Today's table: a rock survey with planted truth
+## Today's table: a rock survey with planted truth {.smaller}
 
 ::: {.big-number}
 10,000 [rock samples — 7 major-element oxides, density, magnetic susceptibility, lithology]{.unit}
@@ -103,7 +103,7 @@ The tempting shortcut is a global zeros-to-missing sweep; walk why it fails per 
 Define censoring aloud: the instrument reports a number, but the number is the *reporting floor*, not the measurement — geochemical analyses write "<0.01" as 0.01, stream gauges floor out at low flow, positioning systems near their resolution. Left panel: the reported series (red) rides the dashed floor whenever the true series (gray) dips below it. Right panel: the fingerprint — a heap of identical values exactly at the limit, the same signature as the sentinel zeros one slide ago, at a value that is plausible instead of impossible. That plausibility is what makes censoring dangerous: nothing looks broken. Data are synthetic (mlgeo_synth) with the uncensored truth returned, so the next slide can measure the damage exactly.
 :::
 
-## What the floor does to the science
+## What the floor does to the science {.smaller}
 
 ::: {.big-number}
 12.44 mm/yr [trend fit on the true, uncensored values]{.unit}
@@ -157,7 +157,7 @@ A column can be numeric in content and non-numeric in dtype. Check dtypes after 
 The notebook's most instructive bug, planted deliberately. The very cleaning that protected density (zeros → missing) changed its storage type; from then on, any select-numeric-columns operation — the correlation matrices, describe — silently excludes the column the cleaning was defending. No error, no warning; the analysis just quietly loses a variable. The fix is one cast back to numeric, but the lesson is the habit: dtype checks are part of every step. This is also the modern-pandas moment: assign results (df = df.replace(...)) rather than inplace mutations — chained inplace on slices errors in pandas 3. Downstream payoff of a clean table: the correlation matrices reveal the planted geochemistry (SiO2 anticorrelates with FeO/MgO/CaO), plus the closure effect — oxides sum to ~100 wt%, building anticorrelation into the table regardless of petrology. That subtlety is exercise question 1.
 :::
 
-## Four pathologies, four fingerprints
+## Four pathologies, four fingerprints {.smaller}
 
 | Pathology | Fingerprint | Geoscience example | Response |
 |---|---|---|---|

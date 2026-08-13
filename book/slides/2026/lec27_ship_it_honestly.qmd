@@ -49,7 +49,7 @@ When you delegate the typing, you must not delegate the verification.
 The three ideas of 5.1 in one slide. Tolerance first: ML training has randomness and floating-point non-determinism, so bit-for-bit is the wrong standard — you state a tolerance and defend it, which is why the checklist says "reported numbers match the rerun within your stated tolerance." Then the trap: exact reproduction of a leaked feature is still a leaked feature; validation on held-out data catches what reproduction cannot. Then the 2026 reason the stakes rose: an agent can generate a fluent, internally consistent, wrong analysis in minutes, and you cannot review at that speed — so the checks become machinery: pixi.lock pins the environment, raw data is immutable with every transform scripted, and CI re-executes everything on every change. This book is its own worked example: every notebook executes in CI at the commit you are reading. Quick poll for the discussion block: who can rerun their own pipeline from a fresh clone today?
 :::
 
-## Chapter 5 in two numbers, part 1
+## Chapter 5 in two numbers, part 1 {.smaller}
 
 ::: {.big-number}
 30 lines [a complete experiment tracker — params, metrics, artifacts, code version]{.unit}
@@ -93,7 +93,7 @@ MUR sea-surface temperature (JPL/NASA PO.DAAC, AWS Open Data): a 106.3 TiB Zarr 
 Movement one's finale — 5.5, the executable version of "read in place." The dataset: MUR SST, daily global sea-surface temperature at ~1 km, 2002–2020, public on AWS. The map on the slide is the notebook's June 2019 monthly mean over the Pacific Northwest coast — computed by streaming, never holding more than a few chunks in memory. The opening move: one small object, the consolidated metadata, describes every array, chunk, and compressor in the store — so xarray + Zarr can open 106.3 TiB lazily off a 10.3 KiB read; no data values cross the network until you ask. Define chunk while the map is up: the store's atomic unit of I/O and compression — every read fetches whole chunks, so your access pattern pays in chunk-sized coins. The arithmetic that kills in-memory habits: one global timestep decodes to 4.8 GiB, three days exhausts a 16 GiB laptop — the fix is never a bigger compute, it is an algorithm that touches fewer chunks.
 :::
 
-## How many bytes actually moved?
+## How many bytes actually moved? {.smaller}
 
 ::: {.big-number}
 60.6 MiB [moved over the network — ten days, Pacific Northwest shelf]{.unit}
@@ -146,7 +146,7 @@ Model errors have a direction, and each direction lands on different people — 
 7.2 — the half-page downstream-impact statement in every final report, graded on specificity (30), honesty about limits (30), cost-benefit vs the cheap baseline (25), feasibility of the next step (15). The flood example carries the failure-direction point: a miss (predicted below flood stage, river floods) lands on unwarned commuters and spends the manager's credibility; a false alarm wastes stored water and, repeated, erodes trust until warnings are ignored — different costs, different people, and often people who never chose to deploy the model. Footprint honestly: the book's example justifies ~2 GPU-hours per basin against a 30% RMSE gain over persistence, and explicitly would NOT justify it for the 4% summer gain — "not worth deploying" is an acceptable, well-supported conclusion. Read the anti-pattern aloud: "this work could help save lives and protect infrastructure…" — names no actor, no decision, no cost, no gap; a language model generates it unprompted, and it reads as what it is. The specific chain is always more modest — not a coincidence: boilerplate inflates because it costs nothing. Every named stakeholder must survive "how do you know?" in the oral.
 :::
 
-## Ship-it checklist
+## Ship-it checklist {.smaller}
 
 | Discipline | The one-liner | Geoscience example |
 |---|---|---|

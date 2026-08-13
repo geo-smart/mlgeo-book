@@ -49,7 +49,7 @@ Units, coordinates, and provenance travel *with* the array — the first require
 2.5 in one slide. NumPy arrays index by position; the moment data are geophysical, position should mean something — a labeled array carries coordinate vectors and units, so selection is by physical value ("nearest 47.6 N") and errors like transposed axes become impossible to write. The example is the notebook's real reanalysis air-temperature dataset (4×-daily NMC reanalysis); the exercise selects Seattle by coordinates — one line — and plots two years of temperature. Note the longitude convention trap: the dataset stores 0–360°E, so Seattle is at 237.7, not −122.3 — coordinate conventions are metadata too. Implementation names for the notebook: NumPy for the mechanics, Xarray DataArray/Dataset for labels (reads netCDF and Zarr from Wednesday's formats lecture), and a first look at PyTorch tensors — same objects, built for gradients, for Chapter 4.
 :::
 
-## Keep one sample a day — and the tide invents a fortnight
+## Keep one sample a day — and the tide invents a fortnight {.smaller}
 
 ::: {.big-number}
 0.59 m [RMS error — keep each midnight reading]{.unit}
@@ -107,7 +107,7 @@ Averaging raw heads jumps by meters whenever a well enters or leaves the record.
 The third stream from lecture 4, finally in action: 2,902 visits across 25 wells, 1981–2019, every well with its own datum offset (meters!), noise level, active period, and visit schedule — operational hydrology as it actually looks. Top panel: the naive quarterly mean of raw heads; its meter-scale jumps are wells with high offsets entering and leaving — the curve is a history of *which wells were visited*, not of the aquifer. Bottom: two moves fix most of it — per-well anomalies (subtract each well's own mean, so offsets cancel; Hansen & Lebedeff's temperature method) and inverse-variance weights (1/σ², so a steel-tape reading cannot dilute a transducer record). Nothing sophisticated: the improvement comes from refusing to average incompatible things. Residual error is mostly each well sampling a different segment of the 40-year decline. Exercise 3 asks which move carries the load — have teams predict before running.
 :::
 
-## Error bars for noise with memory
+## Error bars for noise with memory {.smaller}
 
 ::: {.big-number}
 ±0.019 mm/yr [velocity uncertainty — resample individual days]{.unit}
@@ -129,7 +129,7 @@ The wider error bar is the correct one. The narrow bar was not conservative — 
 Close the loop on the bootstrap thread. Section 2 of the notebook fit a 12 mm/yr synthetic GNSS trend and bootstrapped the slope by resampling (day, displacement) pairs: a beautifully tight histogram — with the true velocity 8.6 standard deviations outside it. Diagnosis: pair resampling treats residuals as independent, but flicker and random-walk noise have memory, and correlated noise is precisely what makes a trend uncertain. Fix (Künsch, literature slide): resample contiguous 100-day blocks of residuals so correlation survives up to the block length — the bar widens by roughly a factor of seven and the truth lands ~1σ from the estimate, which is what honesty looks like. Block length is itself a stated decision (longer than the noise correlation time — exercise 4 probes sensitivity). Sting for the room: on real data there is no planted truth to flag the narrow bar — Mao et al. is a whole field learning this in print. The same caveat applies to the real P395 velocity fit in the notebook.
 :::
 
-## One discipline, four streams
+## One discipline, four streams {.smaller}
 
 | Data situation | The trap | The principle | Graded result |
 |---|---|---|---|

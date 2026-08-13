@@ -87,7 +87,7 @@ Report both. A detector can be excellent on one and useless on the other.
 Build from the confusion matrix on the board: true/false positives and negatives; scikit-learn prints TN, FP / FN, TP with noise = 0, event = 1. Translate every term to the station: FN is a missed earthquake, FP is a false trigger an analyst must review. Recall is also called sensitivity or true-positive rate — same quantity, three names; specificity is the true-negative twin. Drive the dim line's arithmetic home — the harmonic mean punishes imbalance between the two, which is exactly why F1 is the headline number in detection papers. The notebook's simulation scatters 5000 random confusion matrices in precision-recall space to show the two are nearly unconstrained by each other — that plot is why "we report both" is a rule, not a courtesy. On the balanced set our k-NN scores precision 0.97, recall 0.95, F1 0.96 — enjoy it; it is about to fall apart.
 :::
 
-## Make events rare — accuracy dies first
+## Make events rare — accuracy dies first {.smaller}
 
 ::: {.big-number}
 0.980 [accuracy of a detector that **never triggers** — 2% events]{.unit}
@@ -137,7 +137,7 @@ Neither knob is "better" — they slide along one curve. The operating point is 
 Executed numbers: default 0.929/0.650; class_weight="balanced" 0.435/0.925; threshold 0.25 0.784/0.725. Read the middle row as an operations story: recall 0.93 means the detector now catches 93 of 100 events — but precision 0.44 means more than half the trigger list is noise, and someone pays for that in analyst hours. Note F1 ranks the default (0.765) above the balanced row (0.592) — F1 weighs the two errors equally, and nothing says your science does; a regional network hunting for foreshocks will take the recall. No new data was collected for any row — that is the point of the knobs. Implementation names for the notebook: class_weight="balanced", predict_proba plus a chosen cut instead of predict. Closing line of the book section, worth saying verbatim: the choice of metric is a design decision, not an afterthought.
 :::
 
-## Which metric answers which question
+## Which metric answers which question {.smaller}
 
 | Metric | The question it answers | When it misleads | Today's detector |
 |---|---|---|---|

@@ -23,7 +23,7 @@ Reading: [3.1 Concepts in supervision](https://geo-smart.github.io/mlgeo-book/co
 Chapter 3 opens today. Frame the session: before any algorithm, ask what the data can supervise. Two datasets, same instrument-heavy geoscience, opposite situations — one has a label for every sample (the analyst's earthquake/noise verdicts), the other has millions of samples and not one label (the Argo temperature-salinity archive). The whole taxonomy of learning frameworks falls out of that single question. Second half of the deck: once you do have labels, the first end-to-end workflow — and the train/validation/test discipline we will enforce all quarter. Ask the room: for your project dataset, who made the labels? Does it even have any?
 :::
 
-## This lecture in the literature
+## This lecture in the literature {.smaller}
 
 {{< include refs/lec12_refs.qmd >}}
 
@@ -35,7 +35,7 @@ The supervision question is where every ML-in-geoscience paper starts — these 
 Two minutes. Bergen et al. is the review that organized the field: read its examples as answers to today's question — where solid-Earth problems have labels, where they only have structure. PhaseNet is supervision at scale done right: the labels were not made for ML — they are decades of routine analyst picks, millions of them, recycled as training data; the model ends up more consistent than any single analyst. Settles is the classic survey for the label-poor case — the model chooses which samples earn the analyst's hour; the book links it in 3.1. Note to the room: this refs file is a living document — the deck is missing its cautionary ✗ paper, and proposing one from your reading arc counts.
 :::
 
-## Five field problems, five kinds of supervision
+## Five field problems, five kinds of supervision {.smaller}
 
 | The field problem | What the data offers | Framework |
 |---|---|---|
@@ -103,7 +103,7 @@ No baseline, no meaning: 0.80 matters because the trivial predictor gets 0.33.
 Numbers from the executed notebook: majority-class baseline 0.333 on the validation set; validation accuracies range 0.667–0.767 across k, best at k = 9; final test accuracy 0.80. Walk the three-way split aloud — training (60%) fits the model, validation (20%) compares the five candidate k values, test (20%) is touched once at the end. Why not tune on the test set? Because after enough peeks the test set silently becomes a validation set, and the final number becomes advertising. This discipline is the seed of session 18 on robust training. The confusion matrix in the notebook shows where the 20% of errors live: granite–basalt confusions, exactly the overlap on the previous slide — errors have geological structure.
 :::
 
-## Same discipline for a quantity
+## Same discipline for a quantity {.smaller}
 
 ::: {.big-number}
 R² = −0.01 [baseline: predict the training mean everywhere]{.unit}
