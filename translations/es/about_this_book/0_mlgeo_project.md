@@ -117,7 +117,7 @@ Evite escribir su propia biblioteca de código casera. Use fuentes confiables.
 
 Documente bien, sobre todo cuando trabaje en grupo.
 
-Empiece con algo más pequeño que la corrida final. Se sugiere no usar más del 25 % de los recursos disponibles en el primer diseño del modelo.
+Empiece con algo más pequeño que la corrida final. Se sugiere no usar más del 25 % de los recursos disponibles en el primer diseño del modelo.
 
 Elija una medida de desempeño.
 
