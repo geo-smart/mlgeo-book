@@ -175,3 +175,11 @@ book/*/rock_survey.csv
 book/*/*.zarr/
 book/*/checkpoints/
 translations/*/*/data/
+
+# The Python-packaging `dist/` rule above was also swallowing Reveal.js's own
+# dist/ inside the exported Quarto slide decks, so the published slides had no
+# reveal.css or reveal.js and rendered unstyled. Slide assets are site content:
+# track them, minus the source maps, which only serve a debugger (~21 MB).
+!book/slides/**/dist/
+!book/slides/**/dist/**
+book/slides/**/dist/**/*.map
