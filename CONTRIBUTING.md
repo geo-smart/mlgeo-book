@@ -73,6 +73,19 @@ audience persona crossed with the *Southern Cone Spanish* language persona.
    notebook 1.7 in the French and Spanish editions is a worked example: same loader, same
    physics, local stations, notebook re-executed.
 
+### Versioning your personas
+
+Do not give personas their own version number. A git tag pins the whole repository, so
+the book's release is also the personas' release — cite the book version and you have
+cited the personas that produced it. Each persona instead records **provenance** in its
+frontmatter: `written-for` (which edition it was written against) and `last-run` (when
+it last reviewed the book). Run `python tools/persona_status.py` to see which personas
+have fallen behind the current tag; update `last-run` when you re-run one, and
+`written-for` when you revise it for a new edition.
+
+If you fork the book for your own audience, the same applies: tag your edition, and let
+your personas ride that tag.
+
 ### A caution worth repeating
 
 Personas are **fictional**. They are a way to hold a specific reader in mind while

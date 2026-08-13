@@ -1,3 +1,10 @@
+---
+type: audience-persona
+synthetic: true            # a fictional reader, not a real person
+written-for: v2.0-2026-edition
+last-run: 2026-08          # last full review pass as this reader
+---
+
 # Sun-Young Kim — National lab research scientist (she/her)
 
 ## Identity

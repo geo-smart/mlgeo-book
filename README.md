@@ -53,6 +53,10 @@ accepted the result; real human review is recorded separately in
 book produced confident, wrong claims alongside the good ones, so verify
 anything factual against primary sources before shipping it.
 
+Personas have no version number of their own — the book's release tag versions
+them, and each file records which edition it was `written-for` and when it was
+`last-run`. `python tools/persona_status.py` reports which have fallen behind.
+
 [CONTRIBUTING.md](CONTRIBUTING.md) has the full workflow, including how to
 contribute personas, regional datasets, or a whole adapted edition back.
 

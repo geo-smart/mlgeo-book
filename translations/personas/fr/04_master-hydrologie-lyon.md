@@ -1,3 +1,11 @@
+---
+type: language-persona
+language: fr
+synthetic: true            # a fictional reader, not a real person
+written-for: v2.0-2026-edition
+last-run: 2026-08          # last full review pass as this reader
+---
+
 # Thomas Perrin — Étudiant en M2 hydrologie, Lyon / INRAE (il)
 
 > ⚠️ **Persona fictive.** Ce document décrit un lecteur *synthétique*, écrit

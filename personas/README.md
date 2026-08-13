@@ -18,6 +18,34 @@ personas that steer *language and culture* rather than discipline and seniority.
 > reading an invented reader's brief is not review by that community. Real human
 > review is recorded in [`docs/REVIEW_RECORD.md`](../docs/REVIEW_RECORD.md).
 
+## Versioning: the personas share the book's version
+
+There is no separate persona version number, and there should not be. A git tag pins
+the whole tree, so the book's release — currently `v2.0-2026-edition` — *is* the
+version of these personas, and citing the book cites them. A second version line would
+have to be kept in step with the first for no gain.
+
+What each persona does carry is **provenance**, in its frontmatter:
+
+```yaml
+type: audience-persona
+synthetic: true            # a fictional reader, not a real person
+written-for: v2.0-2026-edition
+last-run: 2026-08          # last full review pass as this reader
+```
+
+That answers the question a version number cannot: *has this reader looked at the book
+lately?* A persona written for an older edition, or not re-run while the book moved
+underneath it, produces stale findings even though the file itself has not changed.
+
+```sh
+python tools/persona_status.py            # table: written-for, last-run, drift since the tag
+python tools/persona_status.py --stale    # exit 1 if any persona predates the current edition
+```
+
+When you re-run a persona against a revised book, update `last-run`; when you revise the
+persona itself for a new edition, update `written-for` too.
+
 ## Coverage matrix
 
 | # | Persona | Discipline | Seniority | Deep-dive chapters |

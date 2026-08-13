@@ -1,3 +1,11 @@
+---
+type: language-persona
+language: es
+synthetic: true            # a fictional reader, not a real person
+written-for: v2.0-2026-edition
+last-run: 2026-08          # last full review pass as this reader
+---
+
 # Ing. Karen Quispe — Científica de datos geofísicos, Instituto Geofísico del Perú, Lima (ella)
 
 > ⚠️ **Persona ficticia.** Este documento describe a un lector *sintético*,

@@ -1,3 +1,11 @@
+---
+type: language-persona
+language: es
+synthetic: true            # a fictional reader, not a real person
+written-for: v2.0-2026-edition
+last-run: 2026-08          # last full review pass as this reader
+---
+
 # Lucía Fernández — Estudiante de maestría en ciencias de la atmósfera, Universidad de Buenos Aires (ella)
 
 > ⚠️ **Persona ficticia.** Este documento describe a un lector *sintético*,
