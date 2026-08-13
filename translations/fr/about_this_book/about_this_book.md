@@ -1,4 +1,4 @@
-# L'apprentissage automatique en géosciences
+# Machine Learning en géosciences
 
 Le cadre **GeoS**cience **MA**chine Learning **R**esources and **T**raining (GeoSMART) propose un parcours de formation au calcul scientifique open source, à la théorie du *machine learning* (apprentissage automatique), à ses outils et à son déploiement.
 
