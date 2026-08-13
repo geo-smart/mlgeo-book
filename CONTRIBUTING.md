@@ -21,9 +21,26 @@ The environment is managed with [pixi](https://pixi.sh); there is no conda step.
 ```sh
 git clone https://github.com/geo-smart/mlgeo-book.git
 cd mlgeo-book
-pixi install        # install the pinned environment
-pixi run build      # build the book (executes notebooks)
-pixi run serve      # live preview
+pixi install         # install the pinned environment
+
+pixi run build-fast  # render from committed outputs — seconds
+pixi run serve-fast  # live preview, no execution
+pixi run build       # execute every notebook, then build — minutes
+pixi run serve       # live preview with execution
+```
+
+**Use `build-fast` unless you changed code.** Notebooks ship with their outputs
+committed, and that is what the published site renders, so the fast build shows you
+exactly what readers will see — in about 17 seconds instead of several minutes. Run the
+executing variants when you have edited a code cell, or before publishing.
+
+Translated editions never execute (their notebooks carry the English edition's outputs
+by design):
+
+```sh
+pixi run build-fr    # French edition
+pixi run build-es    # Spanish edition
+pixi run check       # the same gates CI runs
 ```
 
 ## Fixing and improving the book

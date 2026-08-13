@@ -71,10 +71,18 @@ The 2024 edition of the book is preserved at the [v1.0-2024-edition release](htt
 Book content lives in `book/`. Edit the markdown pages and notebooks there, then build locally before pushing. The book is built with [Jupyter Book 2 / MyST](https://next.jupyterbook.org); configuration and table of contents live in `myst.yml`.
 
 ```sh
-pixi install        # install the pinned environment (see pixi.toml)
-pixi run build      # build the book (executes notebooks)
-pixi run serve      # live-preview server (myst start)
+pixi install         # install the pinned environment (see pixi.toml)
+pixi run build-fast  # render from committed outputs — seconds, no execution
+pixi run serve-fast  # live preview, no execution
+pixi run build       # execute every notebook, then build — minutes
+pixi run serve       # live preview with execution
+pixi run check       # the quality gates CI runs
 ```
+
+Use `build-fast` while editing prose, links, or the table of contents: notebooks
+ship with their outputs committed and that is what the site renders, so it shows
+exactly what readers see. Use the executing variants when you changed code.
+`build-fr` and `build-es` build the translated editions, which never execute.
 
 Notebooks are executed at build time; a page with a failing cell fails the build. CI runs the same build on every pull request.
 
