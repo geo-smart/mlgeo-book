@@ -72,6 +72,33 @@ community — especially native-speaker geoscientists — to help fine-tune both
     loader, same physics, local ground. Localized notebooks carry their own
     executed outputs; all other notebooks keep outputs identical to English.
 
+## Licensing across countries
+
+The book's licenses — **MIT** for code and **CC BY 4.0** for content — are
+international instruments and are valid and enforceable in France, Mexico,
+and the rest of the francophone and hispanophone world; no country-specific
+license is needed, and the translated editions carry the same licenses as the
+English original (a translation is an adaptation, which CC BY 4.0 expressly
+permits with attribution). Three nuances, for the record:
+
+- **CC BY 4.0 is "unported" by design** (unlike the old 3.0 jurisdiction
+  ports) and has official license translations: the translated editions link
+  the [French deed](https://creativecommons.org/licenses/by/4.0/deed.fr) and
+  the [Spanish deed](https://creativecommons.org/licenses/by/4.0/deed.es) so
+  readers see the license in their own language.
+- **France**: the CeCILL license family (CEA/CNRS/Inria) exists for authors
+  who want a license drafted under French law, and some French institutions
+  historically preferred it; MIT is nonetheless standard and fully valid in
+  France (CeCILL-B is explicitly MIT/BSD-compatible), so we do not
+  dual-license unless a French institutional partner ever requires it. Note
+  also that French *droit moral* (attribution, integrity) applies regardless
+  of license and is satisfied by CC BY's attribution requirement. French
+  public-sector *data* often ships under the Licence Ouverte/Etalab — that
+  governs some data sources we may cite, not our own licensing.
+- **Mexico**: the Ley Federal del Derecho de Autor recognizes these licenses;
+  MIT and CC BY 4.0 are the norm in Mexican open science. No local
+  alternative is customary.
+
 ## Status
 
 | Piece | State |
