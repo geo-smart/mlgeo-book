@@ -4,12 +4,11 @@ El marco **GeoS**cience **MA**chine Learning **R**esources and **T**raining (Geo
 
 Este libro acompaña el curso Machine Learning in the Geosciences (ESS 469/569) de la Universidad de Washington. El libro, los tutoriales y las tareas viven en este único repositorio; los estudiantes ejecutan los cuadernos localmente o en el servicio de nube de su elección.
 
-Instructores:
+**Autoría:** Marine Denolle, Nicoleta Cristea, Akshay Mehra, Ariane Ducellier, Ziheng Sun, Stefan Todoran, Scott Henderson y Claire Jensen. Todas las demás personas que contribuyeron están acreditadas en [Agradecimientos](acknowledgements.md), y los metadatos de citación están en [`CITATION.cff`](https://github.com/geo-smart/mlgeo-book/blob/main/CITATION.cff).
 
-- Marine Denolle (mdenolle@uw.edu)
-- Akshay Mehra (akmehra@uw.edu)
+**Instructores** del curso ESS 469/569: Marine Denolle (mdenolle@uw.edu) y Akshay Mehra (akmehra@uw.edu).
 
-Este proyecto cuenta con el apoyo del equipo GeoSMART (Stefan Todoran, Nicoleta Cristea, Anthony Arendt, Scott Henderson, Ziheng Sun, Yiyu Ni, Akash Kharita).
+El proyecto cuenta con el apoyo del equipo GeoSMART.
 
 ## Panorama
 
