@@ -20,7 +20,7 @@ El curso descansa sobre tres pilares, más una cuarta capa que atraviesa todo en
 1. **Datos listos para IA**: convertir observaciones geocientíficas crudas en conjuntos de datos de los que un modelo pueda aprender.
 2. **Machine learning clásico**: métodos basados en características, entrenados y evaluados con honestidad.
 3. **Aprendizaje profundo**: redes neuronales en PyTorch, del perceptrón a las arquitecturas modernas.
-4. **Trabajar con IA agéntica**: los estudiantes de 2026 escriben código junto a asistentes de IA que leen repositorios, ejecutan código y proponen cambios. El curso trata esto como una habilidad que se enseña, no como un atajo que se vigila. La evaluación crítica de la salida de la IA, la traducción de resultados para audiencias distintas y la articulación del impacto posterior son habilidades calificadas, al mismo nivel que la exactitud (*accuracy*) del modelo.
+4. **Trabajar con IA agéntica**: los estudiantes de 2026 escriben código junto a asistentes de IA que leen repositorios, ejecutan código y proponen cambios. El curso trata esto como una habilidad que se enseña, no como un atajo que se vigila. La evaluación crítica de la salida de la IA, la traducción de resultados para públicos distintos y la articulación del impacto aguas abajo son habilidades calificadas, al mismo nivel que la exactitud (*accuracy*) del modelo.
 
 # Para quién es este libro
 
@@ -43,7 +43,7 @@ Al final del libro, los estudiantes podrán:
 | 9 | Versionar y rastrear datos, modelos y experimentos de modo que otro científico reejecute el flujo y obtenga los mismos números | Aplicar / Evaluar | capítulo 5 | repositorio del proyecto final (30%) |
 | 10 | Evaluar agentes de IA y salidas de LLM como instrumentos científicos: escribir una especificación de tarea, construir un conjunto de evaluación con verdad de referencia, calificar salidas y analizar modos de falla | Evaluar / Crear | capítulo 6 | ejercicio de conjunto de evaluación 6.3, agente de revisión final |
 | 11 | Integrar la asistencia de IA a la investigación conservando la propiedad intelectual del trabajo: declarar el uso, verificar las salidas y defender cada decisión metodológica sin el asistente | Aplicar / Evaluar | 1.8, 6.4 | declaraciones de uso, presentaciones |
-| 12 | Traducir el mismo resultado para audiencias distintas y valorar los usos y consecuencias posteriores de un modelo desplegado | Crear / Evaluar | capítulo 7 | entregables del proyecto final (7.1, 7.2) |
+| 12 | Traducir el mismo resultado para públicos distintos y valorar los usos y consecuencias aguas abajo de un modelo desplegado | Crear / Evaluar | capítulo 7 | entregables del proyecto final (7.1, 7.2) |
 
 Los conceptos de visualización de datos se introducen y se usan a lo largo del libro.
 
@@ -59,7 +59,7 @@ Los conceptos de visualización de datos se introducen y se usan a lo largo del 
 - **Parte II: Machine Learning clásico**: entrenamiento de modelos, evaluación, valoración de la generalización y buenas prácticas para el entrenamiento confiable de algoritmos clásicos tras la ingeniería de características (por ejemplo, K-means, bosque aleatorio, k-NN).
 - **Parte III: Aprendizaje profundo**: conceptos fundamentales del aprendizaje profundo — perceptrones y redes totalmente conectadas, redes convolucionales y recurrentes, un *transformer* pequeño para pronóstico de secuencias, autocodificadores y redes neuronales informadas por la física — más práctica de entrenamiento: optimización, regularización, diagnóstico de corridas fallidas e incertidumbre en las salidas del modelo.
 
-Los capítulos posteriores extienden los pilares: flujos reproducibles en la era de los agentes (capítulo 5), construcción y evaluación de agentes de IA (capítulo 6), y casos de uso, traducción para audiencias e impacto posterior (capítulo 7).
+Los capítulos posteriores extienden los pilares: flujos reproducibles en la era de los agentes (capítulo 5), construcción y evaluación de agentes de IA (capítulo 6), y casos de uso, traducción para cada público e impacto aguas abajo (capítulo 7).
 
 # Construcción de habilidades técnicas
 

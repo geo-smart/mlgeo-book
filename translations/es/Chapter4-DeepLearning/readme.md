@@ -42,9 +42,9 @@ Este capítulo enseña el aprendizaje profundo (*deep learning*) construyéndolo
    - Diagnóstico de entrenamientos rotos a partir de sus curvas de pérdida
    - Búsqueda de hiperparámetros con Optuna
 
-7. **Autocodificadores y autosupervisión** (4.6)
-   - Autocodificadores densos, convolucionales y de eliminación de ruido sobre espectrogramas sísmicos
-   - Preentrenamiento con autocodificador enmascarado, portado a un segundo dominio (campos climáticos en malla)
+7. ***Autoencoders* (autocodificadores) y autosupervisión** (4.6)
+   - *Autoencoders* densos, convolucionales y de eliminación de ruido sobre espectrogramas sísmicos
+   - Preentrenamiento con *autoencoder* enmascarado, portado a un segundo dominio (campos climáticos en malla)
    - Reutilizar un codificador preentrenado cuando las etiquetas escasean
    - Una prueba de transferencia con miniPNW: las características cruzan la brecha sintético-real, las fronteras de decisión no
 

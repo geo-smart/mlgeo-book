@@ -12,28 +12,28 @@ Dos decisiones de diseño le dan forma al trimestre. Primero, **el hilo de los a
 
 | Elemento | Abre | Entrega / ventana |
 |---|---|---|
-| Tarea 1 — montaje del banco de trabajo ([1.9](../Chapter1-GettingStarted/1.9_workbench_setup_hw1.md)) | Sep 30 | Mon Oct 12 |
-| Cuestionario del cap. 1 (Canvas, cronometrado) | Tue Oct 6 | Thu Oct 8 |
-| Arco de lecturas, etapa 1 — revisión de literatura asistida por IA ([6.5](../Chapter6-AgenticAI/6.5_reading_arc.md)) | Oct 5 | Wed Oct 21 |
-| Cuestionario del cap. 2 | Mon Oct 26 | Wed Oct 28 |
-| Propuesta del proyecto final ([1.10](1.10_MLGEO_FinalProject.md)) | Oct 12 | Fri Oct 30 |
-| Tabla de clasificación de clasificación ([3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb)) | Mon Nov 2 | closes Tue Nov 24 |
-| Arco de lecturas, etapa 2 — anatomía de los buenos artículos | Oct 21 | Wed Nov 4 |
-| Cuestionario del cap. 3 (incluye la lectura invertida de 3.10) | Tue Nov 10 | Thu Nov 12 |
-| Arco de lecturas, etapa 3 — su rúbrica de calidad | Nov 4 | Fri Nov 13 |
-| Avance de proyecto n.º 1 — taller de auditoría de datos | — | Mon Nov 16, en clase |
-| Cuestionario del cap. 6 | Mon Nov 16 | Wed Nov 18 |
-| Tarea de ML clásico ([Homework_CML](../Chapter3-MachineLearning/Homework_CML.ipynb)) | Nov 4 | Fri Nov 20 |
-| Tarea de aprendizaje profundo ([Homework_DL](../Chapter4-DeepLearning/Homework_DL.ipynb)) | Nov 23 | Fri Dec 4 |
-| Cuestionario del cap. 5 (verifica la lectura invertida del cap. 5) | Mon Nov 30 | Thu Dec 3 |
-| Cuestionario del cap. 4 (después de la sesión de pronóstico) | Thu Dec 3 | Mon Dec 7 |
-| Tabla de clasificación de pronóstico ([4.10](../Chapter4-DeepLearning/mlgeo_4.10_timeseriesforecast.ipynb)) | Wed Dec 2 | closes Wed Dec 9 |
-| Avance de proyecto n.º 2 — ensayos + clínica de agentes | — | Mon Dec 7, en clase |
-| Arco de lecturas, etapa 4 — su agente de revisión previa al envío | Nov 13 | Thu Dec 10 |
-| Presentaciones finales | — | Fri Dec 11 en clase + horario asignado de finales |
-| Informe final + repositorio | — | Wed Dec 16 |
+| Tarea 1 — montaje del banco de trabajo ([1.9](../Chapter1-GettingStarted/1.9_workbench_setup_hw1.md)) | 30 sep | lun 12 oct |
+| Cuestionario del cap. 1 (Canvas, cronometrado) | mar 6 oct | jue 8 oct |
+| Arco de lecturas, etapa 1 — revisión de literatura asistida por IA ([6.5](../Chapter6-AgenticAI/6.5_reading_arc.md)) | 5 oct | mié 21 oct |
+| Cuestionario del cap. 2 | lun 26 oct | mié 28 oct |
+| Propuesta del proyecto final ([1.10](1.10_MLGEO_FinalProject.md)) | 12 oct | vie 30 oct |
+| Tabla de clasificación de clasificación ([3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb)) | lun 2 nov | cierra el mar 24 nov |
+| Arco de lecturas, etapa 2 — anatomía de los buenos artículos | 21 oct | mié 4 nov |
+| Cuestionario del cap. 3 (incluye la lectura invertida de 3.10) | mar 10 nov | jue 12 nov |
+| Arco de lecturas, etapa 3 — su rúbrica de calidad | 4 nov | vie 13 nov |
+| Avance de proyecto n.º 1 — taller de auditoría de datos | — | lun 16 nov, en clase |
+| Cuestionario del cap. 6 | lun 16 nov | mié 18 nov |
+| Tarea de ML clásico ([Homework_CML](../Chapter3-MachineLearning/Homework_CML.ipynb)) | 4 nov | vie 20 nov |
+| Tarea de aprendizaje profundo ([Homework_DL](../Chapter4-DeepLearning/Homework_DL.ipynb)) | 23 nov | vie 4 dic |
+| Cuestionario del cap. 5 (verifica la lectura invertida del cap. 5) | lun 30 nov | jue 3 dic |
+| Cuestionario del cap. 4 (después de la sesión de pronóstico) | jue 3 dic | lun 7 dic |
+| Tabla de clasificación de pronóstico ([4.10](../Chapter4-DeepLearning/mlgeo_4.10_timeseriesforecast.ipynb)) | mié 2 dic | cierra el mié 9 dic |
+| Avance de proyecto n.º 2 — ensayos + clínica de agentes | — | lun 7 dic, en clase |
+| Arco de lecturas, etapa 4 — su agente de revisión previa al envío | 13 nov | jue 10 dic |
+| Presentaciones finales | — | vie 11 dic en clase + horario asignado de finales |
+| Informe final + repositorio | — | mié 16 dic |
 
-El capítulo 7 no tiene cuestionario: sus resultados de aprendizaje (traducción para audiencias, impacto posterior) se evalúan directamente con los entregables del proyecto final. Los cuestionarios son cronometrados, se califican automáticamente en Canvas, están abiertos durante la ventana indicada y se extraen de bancos de escenarios — evalúan el juicio sobre situaciones, no la memoria.
+El capítulo 7 no tiene cuestionario: sus resultados de aprendizaje (traducción para cada público, impacto aguas abajo) se evalúan directamente con los entregables del proyecto final. Los cuestionarios son cronometrados, se califican automáticamente en Canvas, están abiertos durante la ventana indicada y se extraen de bancos de escenarios — evalúan el juicio sobre situaciones, no la memoria.
 
 ## Semana a semana
 
@@ -82,7 +82,7 @@ El capítulo 7 no tiene cuestionario: sus resultados de aprendizaje (traducción
 **Semana 10 — Incertidumbre, pronóstico, flujos invertidos** (cuestionario del cap. 5, lun–jue; la tabla de clasificación de clasificación cerró el 24 de noviembre)
 - Lun 30 nov — Laboratorio de entrenamiento de modelos, sesión II: arquitectura, incertidumbre, calibración, comportamiento fuera de rango (4.5, secciones 4–5). Se asigna el capítulo 5 ([5.1](../Chapter5-ModelWorkflows/5.1_reproducibility.md)–[5.5](../Chapter5-ModelWorkflows/5.5_data_at_scale.ipynb)) como lectura invertida. · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec25_three_pillars_lab_II.html)
 - Mié 2 dic — Duelo de pronóstico de series de tiempo, pronósticos probabilísticos, horizontes de habilidad predictiva ([4.10](../Chapter4-DeepLearning/mlgeo_4.10_timeseriesforecast.ipynb)). **Abre la tabla de clasificación de pronóstico.** Autocodificadores y PINN ([4.6](../Chapter4-DeepLearning/mlgeo_4.6_AutoEncoder.ipynb)–[4.7](../Chapter4-DeepLearning/mlgeo_4.7_PINN.ipynb)) como enriquecimiento (obligatorio para 569, opcional para 469). · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec26_forecasting.html)
-- Vie 4 dic — Discusión del capítulo 5 (30 min, a partir de la lectura invertida) + comunicar su ciencia: audiencias e impacto posterior ([7.1](../Chapter7-UseCases/7.1_audience_translation.md)–[7.2](../Chapter7-UseCases/7.2_downstream_impact.md)). **Se entrega la tarea de aprendizaje profundo.** · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec27_ship_it_honestly.html)
+- Vie 4 dic — Discusión del capítulo 5 (30 min, a partir de la lectura invertida) + comunicar su ciencia: públicos e impacto aguas abajo ([7.1](../Chapter7-UseCases/7.1_audience_translation.md)–[7.2](../Chapter7-UseCases/7.2_downstream_impact.md)). **Se entrega la tarea de aprendizaje profundo.** · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec27_ship_it_honestly.html)
 
 **Semana 11 — Clínicas, amortiguamiento, presentaciones** (el cuestionario del cap. 4 cierra el lunes; la tabla de clasificación de pronóstico cierra el miércoles; la etapa 4 del arco se entrega el jueves)
 - Lun 7 dic — **Avance de proyecto n.º 2: ensayos de la presentación + clínica del agente de revisión.** Ensaye; corra su agente de la etapa 4 sobre el borrador de otro equipo.

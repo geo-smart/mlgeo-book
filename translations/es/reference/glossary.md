@@ -97,7 +97,7 @@ Physics-informed neural network (PINN) (red neuronal informada por la física)
 : El gestor de paquetes y entornos usado para instalar la pila de software del curso. Resuelve paquetes del ecosistema conda en un archivo de bloqueo, de modo que cada estudiante y la CI construyen el entorno idéntico.
 
 [pooch](https://www.fatiando.org/pooch/)
-: Una pequeña biblioteca de Python que descarga un archivo de datos desde una URL, lo guarda en caché localmente y verifica su suma de comprobación SHA256, de modo que quede demostrado que el análisis corrió sobre el archivo previsto.
+: Una pequeña biblioteca de Python que descarga un archivo de datos desde una URL, lo guarda en caché localmente y verifica su suma de verificación SHA256, de modo que quede demostrado que el análisis corrió sobre el archivo previsto.
 
 Spectral leakage (fuga espectral)
 : En procesamiento de señales, el desparramo de energía de una frecuencia hacia los intervalos de frecuencia vecinos cuando la ventana analizada no contiene un número entero de ciclos. Aplicar una ventana de suavizado (*tapering*) lo reduce. No tiene relación con *data leakage*.
