@@ -20,9 +20,15 @@ community — especially native-speaker geoscientists — to help fine-tune both
   translation: terminology conventions, register, tolerance for anglicisms,
   and the localization pitfalls of their field and country. AI agents
   translate against these personas and the glossaries; humans review.
-- **Pilot, then fleet.** Chapter 1 is the pilot in both languages. After
-  instructor and community review of the pilot, the remaining chapters are
-  translated with the corrected glossary and style decisions baked in.
+- **Pilot, then fleet.** Chapter 1 was the pilot in both languages; the rest of
+  the book followed once its glossary and style decisions were settled, chapter
+  by chapter, each with a persona review pass afterwards.
+- **Tooling keeps the invariant honest.** `tools/nb_translate.py` moves only
+  notebook markdown cells, so a translated notebook cannot pick up a code or
+  output change by construction; `tools/check_translations.py` verifies that
+  and the toc↔manifest coverage; `tools/gen_manifest.py` pins each page to its
+  English source commit; `tools/copy_translation_assets.py` mirrors figures
+  into each language tree.
 
 ## How to help
 
@@ -103,9 +109,18 @@ permits with attribution). Three nuances, for the record:
 
 | Piece | State |
 |---|---|
-| Personas (5 FR, 5 ES) | published — critique welcome |
-| Glossaries (starter, ~50 terms each) | published — contested rows marked |
-| Chapter 1 pilot, French | in progress |
-| Chapter 1 pilot, Spanish | in progress |
-| Remaining chapters | after pilot review |
-| Translated site at `/fr/`, `/es/` | wired: CI builds both pilots into the main site; flag links (🇺🇸/🇫🇷/🇪🇸) in every edition's header switch languages |
+| Personas (8 FR, 5 ES) | published — critique welcome |
+| Glossaries (starter, ~50 terms each) | published — contested rows marked; new terms from the full-book pass pending merge |
+| French edition, full book | translated and persona-reviewed — **community review open** |
+| Spanish edition, full book | translated and persona-reviewed — **community review open** |
+| Translated sites at `/fr/`, `/es/` | CI builds both editions into the main site; flag links (🇺🇸/🇫🇷/🇪🇸) in every edition's header switch languages |
+| Data localization beyond notebook 1.7 | not started — candidates identified per chapter (a RENAG/Alpine station and a TLALOCNet station are the strongest); each needs notebook re-execution |
+
+Both editions cover the whole book: front matter, chapters 1–7, and the
+glossary — 73 pages each. Every page records the English commit it was
+translated from, and `tools/check_translations.py` enforces the core
+invariant in CI: code cells, executed outputs, and code fences are
+byte-identical to the English edition. Prose is localized (French: Alpine
+and Cévennes examples, Météo-France, Epos-France/RENAG, BRGM, Data Terra,
+GENCI/Jean Zay; Spanish: SSN, SASMEX, CONAGUA, Protección Civil, Grijalva
+basins, LANCAD/SNCAD/NLHPC compute).
