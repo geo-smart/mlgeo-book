@@ -4,6 +4,10 @@
 
 Ce chapitre enseigne l'apprentissage profond (*deep learning*) en le construisant pièce par pièce, en PyTorch, sur des données géoscientifiques. Chaque architecture est implémentée, entraînée et diagnostiquée dans un carnet exécutable sur un ordinateur portable. Les modèles sont délibérément petits ; les idées ne le sont pas.
 
+```{note}
+**Deux mots à ne pas confondre dans ce chapitre.** L'**inférence** désigne la phase où un modèle déjà entraîné est mis en service ; la **prédiction** est l'acte concret, la sortie que le modèle produit pour une entrée donnée. Au sens statistique d'estimation (inférence bayésienne, par exemple en 4.5), le mot est toujours qualifié. Les identifiants PyTorch ne se traduisent pas : `input`, `target`, `DataLoader` et les noms de classes de perte (`CrossEntropyLoss`, `MSELoss`) restent tels quels dans le code comme dans la prose.
+```
+
 ### Plan du chapitre
 
 1. **Le perceptron** (4.0)

@@ -13,22 +13,43 @@ community — especially native-speaker geoscientists — to help fine-tune both
   to the English edition; prose and notebook markdown are translated. Each
   translated file records the English commit it was based on, and CI will flag
   translations that go stale as the English edition evolves.
-- **Personas first.** Ten fictional but realistic readers — five from France,
-  five from Spanish-speaking Latin America — steer the translation the same way
-  twelve personas steered the book's 2026 revision. Each persona file is
-  written in its target language and states what that reader needs from a
-  translation: terminology conventions, register, tolerance for anglicisms,
-  and the localization pitfalls of their field and country. AI agents
-  translate against these personas and the glossaries; humans review.
+- **Synthetic personas as a design aid — not as review.** Thirteen fictional
+  readers (eight from France, five from Spanish-speaking Latin America) steer
+  the translation: each file is written in its target language and states what
+  that reader needs — terminology conventions, register, tolerance for
+  anglicisms, and the localization pitfalls of their field and country. They
+  earned their place by catching real errors, including a wrong eligibility
+  rule for Mexico's LANCAD compute allocations and an ice-cap claim about a
+  volcano whose glaciers are gone. But they are **invented**, and an AI reading
+  an invented reader's brief is not a francophone or hispanophone community
+  accepting the terminology. Every persona file says so at the top, and real
+  human review is recorded separately in
+  [`docs/REVIEW_RECORD.md`](../docs/REVIEW_RECORD.md) — currently empty, which
+  is the honest status.
 - **Pilot, then fleet.** Chapter 1 was the pilot in both languages; the rest of
   the book followed once its glossary and style decisions were settled, chapter
-  by chapter, each with a persona review pass afterwards.
+  by chapter, each with a persona pass afterwards.
 - **Tooling keeps the invariant honest.** `tools/nb_translate.py` moves only
   notebook markdown cells, so a translated notebook cannot pick up a code or
   output change by construction; `tools/check_translations.py` verifies that
   and the toc↔manifest coverage; `tools/gen_manifest.py` pins each page to its
   English source commit; `tools/copy_translation_assets.py` mirrors figures
   into each language tree.
+- **Linguistic QA understands notebooks.** Never run an ordinary spellchecker
+  over `.ipynb` JSON — base64 images, executed model reports, station codes and
+  identifiers all read as misspellings. `tools/extract_channels.py` splits a
+  page into five channels that need different rules: **prose** (general
+  language rules apply), **comments** (light rules, jargon expected),
+  **strings** (translate only in a deliberately localized, re-executed
+  notebook), **identifiers** (drift is an error), and **outputs** (never
+  linted, never translated). `tools/lint_terminology.py` then checks *meaning*,
+  not word choice: `accuracy` rendered as précision/precisión, a Git repository
+  called an archive, Spain-only forms in the pan-regional Spanish, and the
+  first use of *fuite*/*fuga* on a page being unqualified when data leakage and
+  spectral leakage are different phenomena. It deliberately does **not** flag
+  *machine learning*, workflow, pipeline, notebook, cloud, cluster, baseline or
+  benchmark — researchers write those, and a linter that fought them would be
+  fighting the language it serves. Both run in CI.
 
 ## How to help
 
@@ -36,10 +57,13 @@ community — especially native-speaker geoscientists — to help fine-tune both
    are these readers real? What did we get wrong about your country's academic
    register, your field's vocabulary, your students' English? Open a GitHub
    issue titled `[translation] persona: …` or a PR.
-2. **Fight about the glossary** ([`GLOSSARY_fr.md`](GLOSSARY_fr.md),
-   [`GLOSSARY_es.md`](GLOSSARY_es.md)): terminology is where translations live
-   or die. Every row is contestable, especially the *keep-in-English* column.
-   Issues titled `[translation] term: …`.
+2. **Fight about the glossary** ([`GLOSSARY.md`](GLOSSARY.md) trilingual,
+   [`GLOSSARY_fr.md`](GLOSSARY_fr.md), [`GLOSSARY_es.md`](GLOSSARY_es.md)):
+   terminology is where translations live or die. Every row is contestable,
+   especially the *keep-in-English* column and the context rows that split one
+   English word across several senses. A short list of **hard invariants** at
+   the foot of the trilingual table is the exception — those are errors of
+   meaning, not preferences. Issues titled `[translation] term: …`.
 3. **Review the pilot** (`fr/Chapter1-GettingStarted/`,
    `es/Chapter1-GettingStarted/` once merged): read one page as the reader you
    are, and tell us where the register breaks, where a term jars, where an
@@ -55,11 +79,34 @@ community — especially native-speaker geoscientists — to help fine-tune both
 - Spanish targets neutral pan-regional Spanish (no voseo, no
   country-specific idiom in instructional prose); the multi-country personas
   exist precisely to catch regionalisms.
-- French follows current French academic usage in quantitative science:
-  established French terms where they are genuinely standard
-  (*apprentissage automatique*, *surapprentissage*), the English term where
-  French usage keeps it (*machine learning* in running text is acceptable on
-  first mention with the French gloss; *dropout*, *transformer*).
+- **The glossaries are usage guides, not authorities over the chapters.** They
+  report what francophone and hispanophone researchers write, context by
+  context. Where a chapter and a glossary row disagree, the chapter is usually
+  the one reporting real usage — fix the row, open an issue, do not quietly
+  rewrite the prose. Several English words carry two or three concepts here
+  (*workflow*, *pipeline*, *repository*, *cluster*, *notebook*, *build*), and
+  each sense gets its own row rather than one blanket translation.
+- French follows current French academic usage in quantitative science, and
+  that usage is genuinely **mixed register**. The book writes *machine
+  learning* (**ML**) for the field and for research practice, glossed
+  « apprentissage automatique » at the first substantive occurrence of each
+  chapter, and keeps the French « apprentissage… » family for the named
+  paradigms — *apprentissage supervisé, non supervisé, auto-supervisé, par
+  renforcement, profond*. This is a register decision, not a claim that
+  « apprentissage automatique » is wrong; CNRS course titles, Paris-Saclay
+  program pages, Inria research pages and Collège de France chair biographies
+  all mix the two. Elsewhere the same principle applies: established French
+  terms where they are genuinely standard (*surapprentissage*, « fuite de
+  données », « exactitude »), the English term where French usage keeps it
+  (*workflow*, *pipeline*, *notebook*, *cloud*, *dropout*, *transformer*),
+  glossed once per chapter and then consistent within that chapter.
+- **Spanish decides the same question differently, on purpose.** It writes
+  «aprendizaje automático» as its prose default — first occurrence
+  «aprendizaje automático (*machine learning*, ML)» — and uses **ML** in
+  compact technical prose. Spanish does not need the English field name to
+  sound like research, but it must teach the acronym students will meet in
+  code and papers. Two editions, two registers; that divergence is reported,
+  not an inconsistency to normalize away.
 - The instructional register is the impersonal/2nd-person-formal standard of
   each language's textbooks (French *vous*; Spanish *usted*-neutral
   imperative), matching the English edition's direct-but-professional voice.
@@ -109,12 +156,24 @@ permits with attribution). Three nuances, for the record:
 
 | Piece | State |
 |---|---|
-| Personas (8 FR, 5 ES) | published — critique welcome |
-| Glossaries (starter, ~50 terms each) | published — contested rows marked; new terms from the full-book pass pending merge |
-| French edition, full book | translated and persona-reviewed — **community review open** |
-| Spanish edition, full book | translated and persona-reviewed — **community review open** |
+| Personas (8 FR, 5 ES) | published, labeled synthetic — critique welcome |
+| Glossaries ([trilingual](GLOSSARY.md), [FR](GLOSSARY_fr.md), [ES](GLOSSARY_es.md)) | published — rewritten in 2026-08 from one-to-one tables into context-sensitive usage guides; contested rows marked, hard invariants listed separately |
+| French edition, full book | translated, AI-reviewed against synthetic personas — **no human community review yet** |
+| Spanish edition, full book | translated, AI-reviewed against synthetic personas — **no human community review yet** |
+| Human review record | [`docs/REVIEW_RECORD.md`](../docs/REVIEW_RECORD.md) — empty; volunteers wanted |
 | Translated sites at `/fr/`, `/es/` | CI builds both editions into the main site; flag links (🇺🇸/🇫🇷/🇪🇸) in every edition's header switch languages |
 | Data localization beyond notebook 1.7 | not started — candidates identified per chapter (a RENAG/Alpine station and a TLALOCNet station are the strongest); each needs notebook re-execution |
+
+### What is deliberately not translated
+
+"Full book" means the 73 pages in each translated table of contents. Three
+things sit outside it, on purpose rather than by omission:
+
+| Asset | Why | Revisit when |
+|---|---|---|
+| `book/reference/bibliography.md` | A `{bibliography}` directive over `references.bib`. Entries are titles of published works and must stay in their publication language; translating them would misquote the literature. | Never, unless MyST gains localized bibliography styling worth using. |
+| `book/leaderboard_standings.md` | Generated by CI from submitted results. A translated copy would be stale the moment the workflow next runs, and there is no per-language generation step. | If the leaderboard workflow gains language-aware output. |
+| `book/slides/` | Reveal.js decks for the UW course sessions. The badges in every edition link to the English decks; deck content changes each quarter and the translated editions are not tied to a UW teaching calendar. | If a francophone or hispanophone instructor adopts the course and wants decks in their language — see the [adoption guide](../book/about_this_book/adopting_this_book.md). |
 
 Both editions cover the whole book: front matter, chapters 1–7, and the
 glossary — 73 pages each. Every page records the English commit it was

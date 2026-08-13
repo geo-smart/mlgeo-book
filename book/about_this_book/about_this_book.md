@@ -4,12 +4,11 @@ The **GeoS**cience **MA**chine Learning **R**esources and **T**raining (GeoSMART
 
 This book supports the course Machine Learning in the Geosciences (ESS 469/569) at the University of Washington. The book, tutorials, and homeworks live in this single repository; students run the notebooks locally or on a cloud service of their choice.
 
-Instructors:
+**Authors:** Marine Denolle, Nicoleta Cristea, Akshay Mehra, Ariane Ducellier, Ziheng Sun, Stefan Todoran, Scott Henderson, and Claire Jensen. Everyone else who contributed is credited in [Acknowledgements](acknowledgements.md), and citation metadata is in [`CITATION.cff`](https://github.com/geo-smart/mlgeo-book/blob/main/CITATION.cff).
 
-- Marine Denolle (mdenolle@uw.edu)
-- Akshay Mehra (akmehra@uw.edu)
+**Instructors** for ESS 469/569: Marine Denolle (mdenolle@uw.edu) and Akshay Mehra (akmehra@uw.edu).
 
-This project is supported by the GeoSMART team (Stefan Todoran, Nicoleta Cristea, Anthony Arendt, Scott Henderson, Ziheng Sun, Yiyu Ni, Akash Kharita).
+The project is supported by the GeoSMART team.
 
 ## Overview
 

@@ -2,7 +2,7 @@
 
 ## Capítulo 3: Machine learning clásico en las geociencias
 
-Este capítulo cubre el *machine learning* clásico (aprendizaje automático clásico, CML) para las geociencias: modelos que aprenden de tablas de características (variables explicativas) en lugar de formas de onda o imágenes crudas. El aprendizaje automático clásico se construye rápido, cuesta poco ejecutarlo y es fácil de interrogar. Eso lo convierte en el lugar adecuado para adquirir los hábitos que se trasladan al aprendizaje profundo: modelos de referencia, divisiones honestas de los datos y una evaluación acorde a cómo se usará el modelo en realidad.
+Este capítulo cubre el aprendizaje automático clásico (*classical machine learning*, **CML**) para las geociencias: modelos que aprenden de tablas de características (variables explicativas) en lugar de formas de onda o imágenes crudas. El aprendizaje automático clásico se construye rápido, cuesta poco ejecutarlo y es fácil de interrogar. Eso lo convierte en el lugar adecuado para adquirir los hábitos que se trasladan al aprendizaje profundo: modelos de referencia, divisiones honestas de los datos y una evaluación acorde a cómo se usará el modelo en realidad.
 
 ### El arco del capítulo
 

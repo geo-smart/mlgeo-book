@@ -22,7 +22,7 @@ authors:
   - name: Akshay Mehra
     affiliation: "1"
     orcid: 0000-0002-3966-1469
-  - name: Arianne Ducellier
+  - name: Ariane Ducellier
     affiliation: "1"
     orcid: 0000-0003-3668-9455
   - name: Ziheng Sun

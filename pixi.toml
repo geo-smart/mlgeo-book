@@ -6,10 +6,31 @@ channels = ["conda-forge"]
 platforms = ["osx-arm64", "linux-64"]
 
 [tasks]
+# Executing every notebook takes many minutes. Use the -fast variants while
+# editing prose, links, or the toc — they render the outputs already committed
+# in the .ipynb files, which is what the published site shows anyway. Run the
+# executing variants before publishing, or when you changed code.
 build = { cmd = "myst build --execute --html", cwd = "book" }
+build-fast = { cmd = "myst build --html", cwd = "book" }
 serve = { cmd = "myst start --execute", cwd = "book" }
+serve-fast = { cmd = "myst start", cwd = "book" }
 check-links = { cmd = "myst build --check-links", cwd = "book" }
 test-synth = { cmd = "pytest book/mlgeo_synth/tests -q" }
+
+# Translated editions. These never execute: their notebooks carry the English
+# edition's committed outputs (except the data-localized 1.7), and executing
+# them would break that invariant.
+build-fr = { cmd = "myst build --html", cwd = "translations/fr", env = { BASE_URL = "/mlgeo-book/fr" } }
+build-es = { cmd = "myst build --html", cwd = "translations/es", env = { BASE_URL = "/mlgeo-book/es" } }
+serve-fr = { cmd = "myst start", cwd = "translations/fr" }
+serve-es = { cmd = "myst start", cwd = "translations/es" }
+
+# Quality gates, same ones CI runs.
+check = { depends-on = ["check-translations", "lint-terminology", "check-typos"] }
+check-translations = "python tools/check_translations.py"
+lint-terminology = "python tools/lint_terminology.py"
+check-typos = "python tools/check_prose_typos.py"
+persona-status = "python tools/persona_status.py"
 
 [dependencies]
 python = "3.12.*"

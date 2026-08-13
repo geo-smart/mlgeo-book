@@ -1,10 +1,10 @@
 # El proyecto MLGeo
 
-Esta página recorre las etapas del diseño de un proyecto de *machine learning* (aprendizaje automático) en las geociencias, y señala los capítulos que enseñan cada etapa.
+Esta página recorre las etapas del diseño de un proyecto de aprendizaje automático (*machine learning*, **ML**) en las geociencias, y señala los capítulos que enseñan cada etapa.
 
 ## 1. Encuadre el proyecto
 
-* Motive la necesidad del *machine learning* en su proyecto científico.
+* Motive la necesidad del aprendizaje automático en su proyecto científico.
 
 Haga una revisión de la literatura sobre las preguntas científicas abiertas y las soluciones propuestas hasta ahora. ¿Cuáles serían los pasos para resolver el problema a mano? ¿Cuáles son las limitaciones de las soluciones actuales? ¿Un algoritmo de ML nuevo sería lo bastante generalizable como para aplicarse a otros 10 o más problemas de investigación? ¿Cuál es el potencial a 5-10 años de ese problema en particular, dadas las tecnologías nuevas, las nuevas instalaciones de investigación o su relevancia social? ¿Existen problemas comparables en los que las herramientas puedan reutilizarse?
 
@@ -107,7 +107,7 @@ Diseñe la partición antes de preocuparse por sus proporciones. Los datos geoci
 - *Partición espacial*: reserve regiones enteras, con una zona de amortiguamiento, cuando las muestras están autocorrelacionadas espacialmente.
 - *Partición por grupos*: mantenga todas las muestras de un mismo evento, estación o sitio del mismo lado de la partición.
 
-La [sección 2.13](../Chapter2-DataManipulation/2.13_MLready_data.ipynb) convierte las particiones de referencia y los controles de fuga en parte de la definición de un conjunto de datos listo para IA; la [sección 3.8](../Chapter3-MachineLearning/3.8_robust_training.ipynb) enseña la validación cruzada consciente de la fuga de datos, incluidas sus variantes espacial y por grupos. Una vez que el diseño de la partición está a salvo de fugas, las proporciones son secundarias (70/15/15 y 60/20/20 son comunes). La validación cruzada sobre la porción de entrenamiento y validación — con pliegues que respeten la misma estructura temporal, espacial o de grupos — estima el error esperado del algoritmo de aprendizaje y su dispersión.
+La [sección 2.13](../Chapter2-DataManipulation/2.13_MLready_data.ipynb) convierte las particiones de referencia y los controles de fuga de datos en parte de la definición de un conjunto de datos listo para IA; la [sección 3.8](../Chapter3-MachineLearning/3.8_robust_training.ipynb) enseña la validación cruzada consciente de la fuga de datos, incluidas sus variantes espacial y por grupos. Una vez que el diseño de la partición está a salvo de fugas, las proporciones son secundarias (70/15/15 y 60/20/20 son comunes). La validación cruzada sobre la porción de entrenamiento y validación — con pliegues que respeten la misma estructura temporal, espacial o de grupos — estima el error esperado del algoritmo de aprendizaje y su dispersión.
 
 Guarde los resultados intermedios cuando sea posible.
 

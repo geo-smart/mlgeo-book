@@ -1,4 +1,18 @@
+---
+type: language-persona
+language: es
+synthetic: true            # a fictional reader, not a real person
+written-for: v2.0-2026-edition
+last-run: 2026-08          # last full review pass as this reader
+---
+
 # Dr. Rafael Mendoza — Profesor de vulcanología y sismología, UNAM, Ciudad de México (él)
+
+> ⚠️ **Persona ficticia.** Este documento describe a un lector *sintético*,
+> escrito para orientar la traducción. No representa a ninguna persona real y
+> **no** constituye una revisión por parte de la comunidad hispanohablante.
+> Véase [`docs/REVIEW_RECORD.md`](../../../docs/REVIEW_RECORD.md) para las
+> revisiones humanas reales.
 
 *(EN summary: UNAM volcano-seismology professor evaluating the Spanish edition for course adoption; guards neutral pan-regional Spanish and Mexican localization — SSN, Popocatépetl, TLALOCNet.)*
 

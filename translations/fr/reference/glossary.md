@@ -81,6 +81,9 @@ Leakage (spatial and temporal) — fuite de données (spatiale et temporelle)
 Linear probe — sonde linéaire
 : Un classifieur formé d'un encodeur pré-entraîné gelé et d'une petite tête linéaire entraînée. Il mesure ce que portent les caractéristiques pré-entraînées à elles seules ; l'affinage (*fine-tuning*), lui, met aussi à jour les poids de l'encodeur. Le carnet 4.6 confronte une sonde linéaire à un entraînement depuis zéro.
 
+Machine learning (ML) — *machine learning* (ML ; apprentissage automatique)
+: Le champ disciplinaire dont traite ce livre : des méthodes qui apprennent une relation à partir de données plutôt que de la recevoir sous forme de règles écrites à la main. L'édition française écrit « le *machine learning* (ML ; apprentissage automatique) » à la première occurrence substantielle de chaque chapitre, puis **ML** ou *machine learning* pour le champ et la pratique de recherche ; les paradigmes nommés gardent la famille française — apprentissage supervisé, non supervisé, auto-supervisé, par renforcement, profond. C'est un choix de registre, aligné sur l'usage mixte des laboratoires et des formations francophones : « apprentissage automatique » reste parfaitement correct et sert de glose.
+
 MASE
 : *Mean absolute scaled error* — erreur absolue moyenne mise à l'échelle : l'erreur absolue moyenne d'une prévision divisée par celle d'un modèle de référence naïf (persistance ou naïf saisonnier) sur la même série. Un MASE inférieur à 1 bat la référence ; supérieur à 1, le modèle lui est inférieur (carnet 4.10).
 

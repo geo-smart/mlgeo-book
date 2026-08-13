@@ -1,4 +1,18 @@
+---
+type: language-persona
+language: fr
+synthetic: true            # a fictional reader, not a real person
+written-for: v2.0-2026-edition
+last-run: 2026-08          # last full review pass as this reader
+---
+
 # Dr. Julien Payré — Maître de conférences en sismologie, ISTerre, Université Grenoble Alpes (il)
+
+> ⚠️ **Persona fictive.** Ce document décrit un lecteur *synthétique*, écrit
+> pour orienter la traduction. Il ne représente aucune personne réelle et ne
+> constitue **pas** une relecture par la communauté francophone. Voir
+> [`docs/REVIEW_RECORD.md`](../../../docs/REVIEW_RECORD.md) pour les
+> relectures humaines réelles.
 
 *(EN summary: seismology lecturer at ISTerre (UGA), hands-on ML-in-seismology practitioner in 2026; reviews the notebooks as teaching instruments — TP pedagogy, Epos-France data pipelines, station choices, JupyterHub reality.)*
 

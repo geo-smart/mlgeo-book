@@ -1,4 +1,18 @@
+---
+type: language-persona
+language: fr
+synthetic: true            # a fictional reader, not a real person
+written-for: v2.0-2026-edition
+last-run: 2026-08          # last full review pass as this reader
+---
+
 # Pr. Olivier Marchand — Professeur d'informatique (apprentissage automatique), Université Paris-Saclay (il)
+
+> ⚠️ **Persona fictive.** Ce document décrit un lecteur *synthétique*, écrit
+> pour orienter la traduction. Il ne représente aucune personne réelle et ne
+> constitue **pas** une relecture par la communauté francophone. Voir
+> [`docs/REVIEW_RECORD.md`](../../../docs/REVIEW_RECORD.md) pour les
+> relectures humaines réelles.
 
 *(EN summary: ML professor at Paris-Saclay, active in the 2026 AI community; reviews the French edition for ML-scientific correctness and for how the French AI community actually speaks — a counterweight to over-francization.)*
 
