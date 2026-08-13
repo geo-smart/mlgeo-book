@@ -36,10 +36,12 @@ RULES = {
     "fr": [
         ("metric-accuracy",
          r"\bprécision\b(?=[^.]{0,80}\b(accuracy|exactitude globale|bonnes classifications)\b)",
-         "`accuracy` must be « exactitude » — « précision » is reserved for precision = TP/(TP+FP)"),
+         "`accuracy` must be « exactitude » — « précision » is reserved for\n"
+         "precision = TP/(TP+FP)"),
         ("repo-as-archive",
          r"\barchive\s+(git|github)\b",
-         "a Git/GitHub repository is a « dépôt », never an « archive » (archive = preservation, e.g. HAL, Zenodo)"),
+         "a Git/GitHub repository is a « dépôt », never an « archive »\n"
+         "(archive = preservation, e.g. HAL, Zenodo)"),
         ("es-regionalism", r"(?!)", ""),
     ],
     "es": [
@@ -105,10 +107,10 @@ def main() -> None:
     langs = [a for a in sys.argv[1:] if not a.startswith("-")] or ["fr", "es"]
     findings: list = []
     for lang in langs:
+        before = len(findings)
         for page in pages(lang):
             check_page(page, lang, findings)
-        n = sum(1 for f in findings if f[1].parts[-3] == lang or lang in str(f[1]))
-        print(f"{lang}: {n} finding(s)")
+        print(f"{lang}: {len(findings) - before} finding(s)")
     for rule, path, line, message, context in findings:
         print(f"\n  {rule}  {path.relative_to(ROOT)}:{line}")
         print(f"    {message}")

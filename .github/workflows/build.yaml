@@ -40,6 +40,15 @@ jobs:
       - name: Lint translation terminology
         run: pixi run python tools/lint_terminology.py
 
+      # English prose only — codespell's dictionary is English, so it cannot
+      # check the translated editions. Advisory: a surname or new acronym it
+      # does not know should not fail a build.
+      - name: Check English prose for typos
+        run: |
+          pipx install codespell >/dev/null 2>&1 || pip install --quiet codespell
+          pixi run python tools/check_prose_typos.py
+        continue-on-error: true
+
       - name: Execute all notebooks (sequential — myst's concurrent kernels OOM the runner)
         run: pixi run python tools/execute_notebooks.py
 

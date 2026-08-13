@@ -42,6 +42,7 @@ def page_text(path: Path) -> str:
 
 
 FENCE_RE = re.compile(r"^```.*?^```", re.M | re.S)
+DIRECTIVE_FENCE_RE = re.compile(r"^```\{[^}]+\}", re.M)
 INDENTED_RE = re.compile(r"^(?: {4,}|\t).*$", re.M)
 INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
 
@@ -52,8 +53,21 @@ def strip_code(text: str) -> str:
     Pages teach markdown by showing its syntax, so `<img src="glass.png">`
     inside an indented code block is an example, not a picture. Scanning it
     raw reports a broken image that does not exist.
+
+    Directive fences are kept: ```{figure} path/to.png is a real image
+    reference, not an example, and dropping it would silently stop that asset
+    from being mirrored into the translated trees.
     """
-    text = FENCE_RE.sub("", text)
+    kept = []
+    pos = 0
+    for m in FENCE_RE.finditer(text):
+        kept.append(text[pos : m.start()])
+        block = m.group(0)
+        if DIRECTIVE_FENCE_RE.match(block):
+            kept.append(block)
+        pos = m.end()
+    kept.append(text[pos:])
+    text = "".join(kept)
     text = INDENTED_RE.sub("", text)
     return INLINE_CODE_RE.sub("", text)
 
