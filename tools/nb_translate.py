@@ -8,10 +8,18 @@ that guarantee structural: translators never touch the notebook JSON.
              python tools/nb_translate.py extract book/ChapterX/foo.ipynb /tmp/foo.md.json
   inject   — copy the English notebook and replace markdown cell sources with
              the translated ones, writing the translated notebook:
-             python tools/nb_translate.py inject book/ChapterX/foo.ipynb /tmp/foo.md.json translations/fr/ChapterX/foo.ipynb
+             python tools/nb_translate.py inject \
+                 book/ChapterX/foo.ipynb /tmp/foo.md.json \
+                 translations/fr/ChapterX/foo.ipynb
 
 The JSON file is a list of {"i": <cell index>, "source": <markdown text>}.
 Inject refuses to run if indices or cell counts do not match the source.
+
+Data-localized notebooks (1.7 in both editions) intentionally carry different
+code and outputs from the English source. Injecting those from the English
+base would revert the localization, so inject refuses when it detects one.
+Pass --base-dst to rebuild from the existing translation instead, which is
+what you want when editing a localized notebook's prose.
 """
 
 import json
@@ -30,9 +38,27 @@ def extract(src: Path, out: Path) -> None:
     print(f"{src}: {len(cells)} markdown cells -> {out}")
 
 
-def inject(src: Path, translated: Path, dst: Path) -> None:
-    nb = json.loads(src.read_text())
+def inject(src: Path, translated: Path, dst: Path, base_dst: bool = False) -> None:
     cells = json.loads(translated.read_text())
+    # Guard against silently un-localizing a data-localized notebook (1.7 in
+    # both editions): if dst already exists and its code differs from the
+    # English source, dst is the localized truth and rebuilding from src would
+    # revert the localization. check_translations.py cannot catch this — it
+    # skips code comparison precisely for localized entries.
+    if dst.exists() and not base_dst:
+        old = json.loads(dst.read_text())
+        old_code = [c for c in old.get("cells", []) if c["cell_type"] == "code"]
+        src_code = [
+            c for c in json.loads(src.read_text())["cells"] if c["cell_type"] == "code"
+        ]
+        if old_code != src_code:
+            sys.exit(
+                f"refusing to inject: {dst} has code/outputs that differ from "
+                f"{src} — it looks data-localized, and rebuilding from the "
+                f"English source would revert that. Re-run with --base-dst to "
+                f"use the existing translation as the structural base."
+            )
+    nb = json.loads((dst if base_dst else src).read_text())
     md_idx = [i for i, c in enumerate(nb["cells"]) if c["cell_type"] == "markdown"]
     got_idx = [c["i"] for c in cells]
     if md_idx != got_idx:
@@ -45,14 +71,16 @@ def inject(src: Path, translated: Path, dst: Path) -> None:
 
 
 def main() -> None:
-    if len(sys.argv) < 4 or sys.argv[1] not in ("extract", "inject"):
+    argv = [a for a in sys.argv[1:] if a != "--base-dst"]
+    base_dst = "--base-dst" in sys.argv
+    if len(argv) < 3 or argv[0] not in ("extract", "inject"):
         sys.exit(__doc__)
-    if sys.argv[1] == "extract":
-        extract(Path(sys.argv[2]), Path(sys.argv[3]))
+    if argv[0] == "extract":
+        extract(Path(argv[1]), Path(argv[2]))
     else:
-        if len(sys.argv) != 5:
+        if len(argv) != 4:
             sys.exit(__doc__)
-        inject(Path(sys.argv[2]), Path(sys.argv[3]), Path(sys.argv[4]))
+        inject(Path(argv[1]), Path(argv[2]), Path(argv[3]), base_dst=base_dst)
 
 
 if __name__ == "__main__":

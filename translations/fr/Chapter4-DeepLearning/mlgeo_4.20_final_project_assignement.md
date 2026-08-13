@@ -65,4 +65,4 @@ Tout ce qui est exigé ci-dessous est enseigné avec du code fonctionnel dans ce
 
 ---
 
-**Total : 100 %**
+**Total : 100 %**

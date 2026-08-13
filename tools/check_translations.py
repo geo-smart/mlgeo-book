@@ -38,6 +38,18 @@ def check_ipynb(src: Path, dst: Path, localized: bool, errors: list) -> None:
         errors.append(f"{dst}: cell structure differs from {src}")
         return
     if localized:
+        # The manifest claims this notebook uses different data, so we cannot
+        # require identical code — but we CAN require that the localization is
+        # actually there. Without this, a tool that rebuilds the notebook from
+        # the English base silently reverts the localization and every other
+        # check still passes.
+        if [c for c in a if c["cell_type"] == "code"] == [
+            c for c in b if c["cell_type"] == "code"
+        ]:
+            errors.append(
+                f"{dst}: MANIFEST marks this data-localized, but its code and "
+                f"outputs are identical to {src} — the localization was lost"
+            )
         return
     for i, (ca, cb) in enumerate(zip(a, b)):
         if ca["cell_type"] != "code":
