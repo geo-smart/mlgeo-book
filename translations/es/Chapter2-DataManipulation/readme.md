@@ -16,7 +16,7 @@ Las lecciones se construyen en orden:
 6. **2.6 Remuestreo** — remuestreo estadístico (aleatorización, *bootstrap*, Monte Carlo) para la incertidumbre, y luego remuestreo de señales: diezmado con antisolapamiento de un registro de mareógrafo, interpolación con política de huecos de una serie GNSS degradada, agregación de una red irregular de pozos y el *block bootstrap* para ruido correlacionado — con datos GNSS sintéticos y reales en todo momento.
 7. **2.7 Consideraciones estadísticas** — momentos, distribuciones y la ley de Gutenberg-Richter, sobre datos geoquímicos sintéticos y reales.
 8. **2.8 Transformadas espectrales** — transformadas de Fourier y de ondículas (*wavelets*) de sismogramas y de campos 2D.
-9. **2.9 Filtrado** — filtros pasa-bajas, pasa-altas y pasa-banda; filtros de fase cero frente a causales; separación de tendencia, ciclo estacional y ruido; filtrado a través de huecos y recuperación de un error de reloj en un sismograma real.
+9. **2.9 Filtrado** — filtros pasabajas, pasaaltas y pasabanda; filtros de fase cero frente a causales; separación de tendencia, ciclo estacional y ruido; filtrado a través de huecos y recuperación de un error de reloj en un sismograma real.
 10. **2.10 Datos sintéticos** — construcción de sismogramas sintéticos y de ruido con espectro ajustado; una medición resuelta del piso de detección STA/LTA con barras de error binomiales; cuándo los datos sintéticos son admisibles en ciencia.
 11. **2.11 Ingeniería de características** — características construidas a mano y automatizadas para series de tiempo, con un *benchmark* real de formas de onda sísmicas.
 12. **2.12 Reducción de dimensionalidad** — PCA, EOF sobre campos climáticos, ICA y t-SNE.
