@@ -14,7 +14,7 @@ Une note sur notre façon de travailler dans ce chapitre : les carnets n'appell
 4. **[6.4 Déclaration et normes](6.4_disclosure_and_norms.md)** — Attribution et déclaration pour la recherche assistée par IA : ce qu'attendent les revues, le format de déclaration du cours, la couche institutionnelle au-delà de la revue (politique de l'employeur ou du financeur, classification des données, conservation des transcriptions), et qui est propriétaire de l'exactitude (vous).
 5. **[6.5 L'arc de lecture](6.5_reading_arc.md)** — Le contrat filé sur tout le trimestre : une revue de littérature assistée par IA avec journal de vérification des citations, l'anatomie des bons articles, une grille de qualité que vous rédigez dans le genre que vous déclarez, et un agent de relecture avant soumission construit à partir de cette grille et évalué avec la machinerie de ce chapitre.
 
-## Acquis d'apprentissage
+## Objectifs d'apprentissage
 
 À la fin de ce chapitre, vous savez :
 

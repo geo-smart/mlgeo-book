@@ -17,7 +17,7 @@ Le moment compte. En 2026, une grande partie du code d'un projet de recherche es
 
 - énoncer la différence entre reproductibilité et réplicabilité, et dire laquelle des deux une vérification donnée met à l'épreuve ;
 - épingler un environnement pour qu'un collaborateur (ou l'intégration continue, ou un agent) réexécute votre code avec les mêmes versions de bibliothèques ;
-- suivre vos expériences pour que chaque nombre rapporté soit traçable jusqu'à une exécution, une validation (*commit*) et une version de jeu de données ;
+- suivre vos expériences pour que chaque nombre rapporté soit traçable jusqu'à une exécution, un *commit* et une version de jeu de données ;
 - décider quand un projet demande plus de calcul qu'un portable, et choisir l'option adéquate la moins chère ;
 - mettre en place une intégration continue qui exécute vos carnets (*notebooks*) à chaque *pull request*.
 
