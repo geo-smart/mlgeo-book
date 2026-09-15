@@ -16,6 +16,7 @@ issue or pull request that decided it is the record.
 | File | Tool | Date | Repo snapshot | Outcome |
 |---|---|---|---|---|
 | [2026-08-13-codex-language-audit.md](2026-08-13-codex-language-audit.md) | OpenAI Codex | 2026-08-13 | `4d08539` | Accepted in substance; tracked as issues #47–#52 |
+| [2026-09-15-figure-ip-audit.md](2026-09-15-figure-ip-audit.md) | Claude Code (this repo's own audit) | 2026-09-15 | `32ca93a` | 22 figures redrawn, 2 removed, 6 credits added, 25 unreferenced files deleted |
 
 Related: `translations/personas/` holds the **synthetic** reader personas used
 to steer the translations. They are design aids, not community review — the
