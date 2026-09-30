@@ -9,16 +9,16 @@ title-slide-attributes:
 
 [🤖]{.lecture-icon}
 
-### Today's question
+### Learning objective
 
-**What evidence makes an AI-assisted result reproducible and defensible?**
+Evaluate an AI-assisted workflow as a scientific process: identify which decisions belong to the model, which operations belong to tools, which access constraints come from the sandbox, and which evidence supports the reported result.
 
 ::: {.dim}
 Reading: [1.8 AI in your workflow](https://geo-smart.github.io/mlgeo-book/ai-in-your-workflow) + [6.1 From language models to agents](https://geo-smart.github.io/mlgeo-book/llms-to-agents)
 :::
 
 ::: {.notes}
-Continue the rubric thread from Friday. The session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first score the paper they found, then learn where an agent's environment and sandbox fit, run a calibration experiment, and finish with a peer rerun. The class should leave with rubric version 0.2 and an evidence-based AI policy.
+Continue the rubric thread from Friday. The session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first score the paper they found, then learn where an agent's environment and sandbox fit, run a calibration experiment, and finish with a peer rerun. The class should leave with rubric version 0.2 and an evidence-based AI policy. Suggested 80-minute allocation: rubric checkpoint 8 minutes; executable claims and agent architecture 17; failure modes 10; calibration experiment 20; policy, governance, and rubric extension 10; peer rerun 10; synthesis 5.
 :::
 
 ## Rubric checkpoint
@@ -34,11 +34,27 @@ For each dimension, assign:
 - **2** another team can verify it
 
 ::: {.takeaway}
-Choose one score your partner could challenge. Point to evidence.
+Select one score whose interpretation is uncertain and identify the evidence that would resolve the disagreement.
 :::
 
 ::: {.notes}
 Give pairs eight minutes. Each score needs a URL, file, passage, or explicit absence. Ask for two challenged scores and let the room decide what evidence would move each score. This creates the need for the agent-specific criteria later. A paper can provide code and still score poorly if the environment, data version, or evaluation split cannot be reconstructed.
+:::
+
+## From available artifacts to an executable claim
+
+Code availability answers only one question: **Can the files be inspected?**
+
+A computational claim also depends on:
+
+- the data object and preprocessing state
+- the software environment and external services
+- the order of operations and configuration
+- the evaluation target and tolerance for agreement
+- the hardware or numerical behavior that may affect the result
+
+::: {.notes}
+Distinguish an open repository from a reproducible result. A repository may omit large data, credentials, preprocessing steps, package versions, configuration files, or the command that produced the reported output. Conversely, a well-documented workflow may depend on restricted data and still support a transparent evaluation of what can and cannot be reproduced. Ask students to state the smallest executable claim for their paper, such as “recreate Figure 3 within the plotted uncertainty” rather than “reproduce the paper.”
 :::
 
 ## Agent, tools, environment, sandbox
@@ -53,11 +69,27 @@ Give pairs eight minutes. Each score needs a URL, file, passage, or explicit abs
 | Hardware | CPU, GPU, memory, storage, and network underneath the run |
 
 ::: {.takeaway}
-The sandbox defines reach. The environment defines available software.
+The environment determines which software can execute. The sandbox constrains which resources that software may reach.
 :::
 
 ::: {.notes}
 Connect directly to Friday's vocabulary. An agent can write correct Python and still fail because the sandbox blocks the data path or network. It can have access but compute a different result because the package version changed. It can have the right environment and still exhaust memory. Ask students to classify three errors aloud: “permission denied,” “module not found,” and “CUDA out of memory.” This makes the layers usable rather than definitional. The assigned literature supplies measured examples for the next slide: Liu et al. on attention, Sharma et al. on agreement, and Zheng et al. on evaluation bias.
+:::
+
+## The agent loop
+
+Each iteration contains three distinct sources of scientific responsibility:
+
+| Stage | Example | Question for the audit |
+|---|---|---|
+| Specification | “Estimate the velocity of station P395” | Were the target, units, interval, and success criterion defined? |
+| Execution | the agent reads data and runs regression code | Which tools, data, environment, and permissions shaped the operation? |
+| Interpretation | the agent explains the estimated trend | Does the conclusion follow from the computed output and domain assumptions? |
+
+An exact execution log cannot repair an underspecified scientific question.
+
+::: {.notes}
+This distinction supports a stronger audit. Execution errors include wrong paths, package changes, or arithmetic bugs. Specification errors include an ambiguous component, date interval, or treatment of offsets. Interpretation errors include treating a seasonal signal as tectonic acceleration. Agent traces often document execution better than specification or interpretation. The rubric should therefore evaluate all three stages.
 :::
 
 ## Where errors enter
@@ -70,11 +102,26 @@ Connect directly to Friday's vocabulary. An agent can write correct Python and s
 | Hallucination | fluent claims or citations have no source | resolve citations; recompute quantitative claims |
 
 ::: {.takeaway}
-Fluency provides no score in the class rubric.
+The rubric evaluates evidence and decision quality rather than confidence, fluency, or length of explanation.
 :::
 
 ::: {.notes}
 Keep this short. The goal is to generate testable rubric evidence. Long reasoning may make a failure more persuasive without making it less wrong. Tools improve arithmetic only when the agent uses them correctly. A successful command does not validate the scientific judgment that selected the command. Link each row to a later graded habit: file references, hypothesis checks, evaluation against known cases, and citation resolution.
+:::
+
+## Long context and incomplete evidence
+
+An agent may receive an entire repository while using only a small fraction of it effectively.
+
+- Retrieval and attention determine which passages influence the next action
+- Files listed in a trace may not have influenced the conclusion equally
+- Summaries can omit exceptions, warnings, and negative results
+- A long reasoning trace records a proposed path, not a guarantee of causal faithfulness
+
+The audit should test specific claims against source files and outputs rather than infer completeness from trace length.
+
+::: {.notes}
+Connect this slide to Liu et al.'s “lost in the middle” result. The practical point is not that long contexts always fail. It is that nominal access to a file does not establish that relevant content influenced the answer. Ask students how they would test an agent's claim that it “reviewed the whole repository.” Useful checks include requesting exact file and line references, sampling omitted files, and designing questions whose answers occur in different context positions.
 :::
 
 ## Calibration experiment
@@ -88,29 +135,78 @@ Keep this short. The goal is to generate testable rubric evidence. Long reasonin
 5. Resolve every DOI and count unsupported citations
 
 ::: {.dim}
-The class tally becomes a small eval set: numeric agreement, tool use, and citation validity.
+The class will report denominators, not anecdotes: number of attempts, valid tool executions, numerically consistent answers, and verified citations.
 :::
 
 ::: {.notes}
 Students need a saved P395 data file or the 1.7 notebook. Do not announce a “correct” hallucination rate. Measure what happens in this room with the models students use. Record denominators. For the numeric task, note whether the assistant executed code, whether the environment contained the needed packages, and whether the final number matches the independent computation within a stated tolerance. For citations, distinguish a valid DOI with an irrelevant paper from a DOI that does not resolve.
 :::
 
+## Numerical calibration protocol
+
+Before asking the assistant, define the reference calculation:
+
+- station component and date interval
+- treatment of missing data, offsets, and seasonality
+- regression model, units, and reported precision
+- tolerance for agreement and an independently executed implementation
+
+Then record whether the assistant accessed the intended data, executed code, exposed warnings, and produced a value consistent with the reference.
+
+::: {.notes}
+The point is not to catch a model making arithmetic mistakes. It is to show that a numerical answer depends on the specification and execution pathway. Two correct programs can disagree if one removes seasonal terms or uses a different interval. Students should compare assumptions before comparing numbers. If the assistant uses a tool, preserve the code and output. If it produces a number without executing code, classify the result separately rather than combining it with tool-based estimates.
+:::
+
+## Citation calibration protocol
+
+For each suggested paper, verify four properties independently:
+
+| Property | Verification source |
+|---|---|
+| Existence | DOI resolver, publisher, or trusted bibliographic index |
+| Bibliographic identity | title, authors, year, and venue match |
+| Relevance | abstract or full text addresses the stated scientific question |
+| Accessibility of evidence | data, code, supplement, and licensing can be located |
+
+A real citation can still fail the relevance or evidence test.
+
+::: {.notes}
+This protocol separates fabrication from retrieval quality. A paper may exist but use a different data modality or make a different claim. A DOI may resolve while the assistant has altered the title or authors. Record each failure type rather than reporting a single “hallucination” count. This produces a more informative small eval set and reinforces the paper sprint's evidence trail.
+:::
+
 ## Course AI modes
 
 🔒 **By hand**
 
-The drill builds a reading or coding reflex that you must own.
+The learning objective requires unaided execution or interpretation. These exercises establish the skills needed to inspect an assistant's work.
 
 🤝 **Assistant allowed**
 
-Use the tool. Review the work, verify the evidence, and disclose its role.
+The assistant may contribute to the workflow. The submission must disclose its contribution, preserve accepted artifacts, and document independent verification.
 
 ::: {.takeaway}
-Any submitted line may become an oral explanation question.
+Students remain responsible for explaining the scientific and computational decisions represented in submitted work.
 :::
 
 ::: {.notes}
 Explain that AI use is expected in this course. The badges control the learning objective. A student who delegates every indexing drill cannot review an agent's data-selection code. Disclosure can be brief but specific. “Used ChatGPT” lacks the task and contribution. A useful statement names what the tool drafted, what the student changed, and how the student verified the result.
+:::
+
+## Sandbox boundaries and research data
+
+Before giving an agent access to research material, classify both the data and the action.
+
+| Question | Examples of relevant evidence |
+|---|---|
+| May the service receive these data? | consent, data-use agreement, export controls, institutional policy |
+| May the process contact the network? | approved domains, API terms, firewall or sandbox configuration |
+| May the process modify or delete files? | write scope, version control, backups, confirmation policy |
+| May outputs leave the environment? | disclosure risk, licensing, embargo, human review |
+
+Credentials should enter through approved secret-management mechanisms rather than prompts, notebooks, or committed files.
+
+::: {.notes}
+Treat this as research governance, not merely cybersecurity. Public data can still carry license or attribution requirements. Restricted data can include unpublished collaborator data, location-sensitive ecological observations, or human-subject information. A local sandbox may provide stronger control than a hosted assistant, but local execution does not remove policy obligations. Students should identify the relevant authority before transmitting data to an external service.
 :::
 
 ## AI-assisted rubric extension {.smaller}
@@ -142,7 +238,7 @@ Exchange repository URLs with another pair.
 5. Compare one output and log the first obstacle
 
 ::: {.takeaway}
-The peer does not repair the repository. The obstacle becomes rubric evidence.
+The peer records the first obstacle before requesting help, because that obstacle provides evidence about documentation, environment, access, or computational assumptions.
 :::
 
 ::: {.notes}

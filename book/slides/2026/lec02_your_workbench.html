@@ -140,14 +140,14 @@
 <section id="section" class="slide level2" data-background-color="#faf7f2">
 <h2></h2>
 <p><span class="lecture-icon">🧰</span></p>
-<h3 id="todays-products">Today’s products</h3>
-<p><strong>A class rubric for reproducible projects</strong></p>
-<p><strong>A workbench that can satisfy it</strong></p>
+<h3 id="learning-objectives-and-class-products">Learning objectives and class products</h3>
+<p>By the end of the session, you should be able to evaluate whether a published computational result can be rerun, identify the computing resources a workflow requires, and distinguish an environment from a sandbox or container.</p>
+<p>The class will produce a first reproducibility rubric. Each student will begin a repository that can supply evidence for that rubric.</p>
 <div class="dim">
 <p>Readings: <a href="https://geo-smart.github.io/mlgeo-book/open-reproducible-science">1.1</a>–<a href="https://geo-smart.github.io/mlgeo-book/version-control-git">1.5</a> · Lab: <a href="https://geo-smart.github.io/mlgeo-book/workbench-setup-hw1">1.9 workbench setup</a></p>
 </div>
 <aside class="notes">
-<p>Open by naming the unfinished work from Wednesday. Today does not start a new topic. The class finishes the paper sprint, extracts evidence from it, and uses that evidence to write a rubric. The hardware and workbench material then answers one rubric question: what would another person need to rerun this result on another machine? The session produces two reusable artifacts rather than a page of notes: rubric version 0.1 and each student’s course repository.</p>
+<p>Open by naming the unfinished work from Wednesday. Today does not start a new topic. The class finishes the paper sprint, extracts evidence from it, and uses that evidence to write a rubric. The hardware and workbench material then answers one rubric question: what would another person need to rerun this result on another machine? The session produces two reusable artifacts rather than a page of notes: rubric version 0.1 and each student’s course repository. Suggested 80-minute allocation: framing 4 minutes; paper sprint 12; terminology and rubric construction 14; computing concepts 20; compute-choice activity 7; workbench lab 18; exit ticket 5.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -179,10 +179,57 @@
 </blockquote>
 <p>Then propose <strong>one observable criterion</strong> for the course rubric.</p>
 <div class="dim">
-<p>Example: “Uses GitHub” is a weak criterion. “A fresh clone regenerates Figure 3 from documented commands” can be tested.</p>
+<p>“Uses GitHub” describes a platform. “A fresh clone regenerates Figure 3 from documented commands” states an observable test.</p>
 </div>
 <aside class="notes">
 <p>Resume the paper-to-project activity without repeating the introduction. Each pair should finish one evidence trail and turn it into a testable criterion. Ask them to write literal locations when possible: repository URL, archive DOI, environment file name, figure number, and evaluation split. “Code unavailable” is useful. “Not reproducible” is too vague. Each proposed criterion must describe evidence an evaluator can inspect. Collect one strong trail and one broken trail, then sort suggestions aloud into broad dimensions. The next slide supplies a candidate structure only after students have generated evidence themselves.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reproducibility-terminology" class="slide level2">
+<h2>Reproducibility terminology</h2>
+<p>Terminology varies across fields, so every assessment should state which claim it makes.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Claim</th>
+<th>Question</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Repeatability</strong></td>
+<td>Can the original team obtain the result again under the same conditions?</td>
+</tr>
+<tr class="even">
+<td><strong>Computational reproducibility</strong></td>
+<td>Can another team use the same data and workflow to obtain a consistent result?</td>
+</tr>
+<tr class="odd">
+<td><strong>Robustness</strong></td>
+<td>Does the conclusion survive reasonable analytical choices and perturbations?</td>
+</tr>
+<tr class="even">
+<td><strong>Replication</strong></td>
+<td>Do new data or an independently implemented method support the conclusion?</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Scientific communities use these terms differently. The important graduate-level habit is to state the operational claim instead of relying on a label alone. This course first emphasizes computational reproducibility because students can evaluate it directly from repositories, data records, and environment specifications. Later assignments add robustness through alternative splits, baselines, uncertainty estimates, and sensitivity analysis. A successful rerun does not establish that the scientific conclusion is correct; it establishes that the reported computational pathway can be examined.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -237,10 +284,34 @@
 </table>
 <p><strong>0</strong> missing · <strong>1</strong> present but incomplete · <strong>2</strong> another team can verify it</p>
 <div class="takeaway">
-<p>This is a draft. Evidence from today’s work will change it.</p>
+<p>Rubric criteria should describe inspectable evidence and the scientific claim that the evidence supports.</p>
 </div>
 <aside class="notes">
 <p>Compare the class suggestions with this candidate structure. Merge or rename dimensions rather than declaring this table final. Clarify that reproducibility has levels: computational reproducibility asks whether the same data and code reproduce the result; robustness asks whether reasonable choices preserve the conclusion; replication asks whether new data support it. The course rubric begins with computational reproducibility and honest evaluation. Save the class’s revised wording for rubric version 0.2 on Monday.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rubric-calibration" class="slide level2">
+<h2>Rubric calibration</h2>
+<p>Before using the rubric for grades, test whether two evaluators interpret it similarly.</p>
+<ol type="1">
+<li>Select one paper or repository</li>
+<li>Score each dimension independently</li>
+<li>Compare scores and identify the source of disagreement</li>
+<li>Revise the criterion or add an example</li>
+</ol>
+<p>Disagreement may reveal ambiguous wording, missing evidence, or a substantive difference in scientific judgment.</p>
+<aside class="notes">
+<p>Introduce inter-rater agreement as a design problem rather than a statistic to calculate today. A rubric can look precise while allowing different interpretations of “documented,” “available,” or “verified.” Ask two pairs to score the same evidence and explain any difference. The class should revise criteria that produce disagreement because the expected evidence is unclear. Preserve disagreements that reflect legitimate scientific judgment, such as whether an evaluation metric matches the intended use.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -298,10 +369,57 @@
 </tbody>
 </table>
 <div class="takeaway">
-<p>“It needs a fast computer” is incomplete. Name the resource the workflow consumes.</p>
+<p>A computational requirement should identify the relevant resource, its scale, and the evidence used to estimate it.</p>
 </div>
 <aside class="notes">
 <p>Use one concrete comparison. A pandas join on a moderate table usually needs CPU and RAM; a convolutional neural network often benefits from a GPU; neither helps if the data cannot move from storage quickly enough. A GPU is not a generally faster CPU. It accelerates workloads that expose large amounts of parallel work and use supported software. Ask students which resource limited the largest computation they have already attempted.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="cpu-and-gpu-execution-models" class="slide level2">
+<h2>CPU and GPU execution models</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>CPU</th>
+<th>GPU</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>a small number of sophisticated cores</td>
+<td>many simpler arithmetic units</td>
+</tr>
+<tr class="even">
+<td>strong performance for branching and sequential logic</td>
+<td>strong performance for uniform parallel operations</td>
+</tr>
+<tr class="odd">
+<td>usually accesses large system memory</td>
+<td>usually uses separate, capacity-limited device memory</td>
+</tr>
+<tr class="even">
+<td>common target for preprocessing and general scientific code</td>
+<td>common target for tensor operations and neural-network training</td>
+</tr>
+</tbody>
+</table>
+<p>Moving data between CPU memory and GPU memory has a cost. Small models, irregular algorithms, and slow data pipelines may gain little from a GPU.</p>
+<aside class="notes">
+<p>Avoid equating GPU use with machine learning sophistication. The speedup depends on arithmetic intensity, parallelism, memory capacity, and software support. A GPU can remain idle while a CPU data loader or network filesystem limits throughput. Conversely, matrix and convolution operations can use thousands of parallel arithmetic units efficiently. Ask students to identify the parts of a typical training pipeline that remain on the CPU and the point where data transfer occurs.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -373,6 +491,57 @@
           display:block!important;
       }</style></aside>
 </section>
+<section id="how-an-hpc-job-reaches-hardware" class="slide level2">
+<h2>How an HPC job reaches hardware</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Login</td>
+<td>the user connects to a login node and prepares code, data references, and a job request</td>
+</tr>
+<tr class="even">
+<td>Resource request</td>
+<td>the job specifies cores, memory, GPUs, wall time, and sometimes node type</td>
+</tr>
+<tr class="odd">
+<td>Scheduling</td>
+<td>the scheduler waits until a compatible allocation is available</td>
+</tr>
+<tr class="even">
+<td>Execution</td>
+<td>the job runs on one or more compute nodes, usually without an interactive desktop</td>
+</tr>
+<tr class="odd">
+<td>Persistence</td>
+<td>logs, checkpoints, and results must be written to approved storage before the allocation ends</td>
+</tr>
+</tbody>
+</table>
+<p>Requesting substantially more resources can increase queue time and allocation cost. Requesting too little can terminate the job.</p>
+<aside class="notes">
+<p>Clarify the distinction between login nodes and compute nodes. Students should not run heavy jobs on a login node. The scheduler protects shared resources and records requests; it is not merely an inconvenience. Wall time, memory, and GPU requests become part of computational provenance because they can affect whether a workflow completes. Array jobs suit many independent files or parameter combinations, while distributed jobs require software that coordinates work across nodes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="software-boundaries" class="slide level2">
 <h2>Software boundaries</h2>
 <table class="caption-top">
@@ -406,10 +575,37 @@
 </tbody>
 </table>
 <div class="takeaway">
-<p>A lockfile records the environment. A sandbox limits access. They solve different problems.</p>
+<p>A lockfile specifies software resolution. A sandbox specifies permitted access. A container captures a broader runtime stack.</p>
 </div>
 <aside class="notes">
 <p>Students often merge these words. The hardware can stay fixed while the environment changes. The same environment can run inside different sandboxes. A sandbox may block the network or restrict writes even when every required package is installed. A container packages a broader software stack than a Python environment but still runs on host hardware and a host kernel. Pixi manages the course environment. The Codex workspace and many notebook services also impose sandbox boundaries. Connect this vocabulary to error diagnosis: “package missing” differs from “permission denied” and from “out of GPU memory.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="minimum-computational-provenance" class="slide level2">
+<h2>Minimum computational provenance</h2>
+<p>A reproducible run should preserve enough information to reconstruct both software and execution context:</p>
+<ul>
+<li>source revision and uncommitted changes, if any</li>
+<li>data identifiers, versions, and preprocessing parameters</li>
+<li>environment specification and lockfile</li>
+<li>command, configuration, random seed, and requested resources</li>
+<li>logs, warnings, output checksums, and the result selected for reporting</li>
+</ul>
+<div class="takeaway">
+<p>The final figure does not reveal the computational state that produced it.</p>
+</div>
+<aside class="notes">
+<p>Different projects need different levels of capture. A small notebook may need a repository revision, environment lockfile, data DOI, and executed notebook. An HPC training run may also need scheduler directives, GPU type, random seed, checkpoint, and logs. Hardware identity matters when numerical libraries, nondeterministic GPU operations, or memory constraints can change behavior. The rubric should ask for material provenance rather than indiscriminate logging.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -456,7 +652,7 @@
 </tbody>
 </table>
 <div class="dim">
-<p>Six minutes in groups. Defend one choice; another group names its failure mode.</p>
+<p>Six minutes in groups. State the assumptions behind one choice. Another group identifies a condition under which that choice would fail.</p>
 </div>
 <aside class="notes">
 <p>There is no single correct platform. Grade the reasoning. The 4 GB case often fits a laptop if RAM and storage are adequate. The waveform search benefits from moving compute near the archive and may suit a server or HPC array job. CNN training often benefits from a GPU, but data loading can dominate. Restricted data may require an approved server or cloud enclave with network and export controls. Each answer must include reproducibility evidence: machine class, requested CPU or GPU, memory, environment lockfile, command, and any access restrictions.</p>
@@ -483,7 +679,7 @@
 <li>Review the diff, commit with a real message, and push</li>
 </ol>
 <div class="takeaway">
-<p>The repository should tell a future student what to run and what success looks like.</p>
+<p>The repository should specify a runnable target, the environment that supports it, and an observable success condition.</p>
 </div>
 <aside class="notes">
 <p>Allow about 30 minutes. Start the large install first, then complete git and GitHub steps while packages download. Circulate with rubric language: ask students to show evidence, not say that setup “worked.” Common failures separate cleanly using today’s vocabulary: command not found is a shell or PATH problem; dependency resolution is an environment problem; permission denied may be a sandbox or filesystem problem; killed processes often indicate memory limits. Students who finish should exchange repository URLs and attempt a fresh-clone check.</p>
