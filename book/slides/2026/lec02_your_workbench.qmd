@@ -1,6 +1,6 @@
 ---
-title: "Your workbench"
-subtitle: "Session 2 · Fri Oct 2 · Book sections 1.2–1.5, 1.9"
+title: "Your reproducible workbench"
+subtitle: "Session 2 · Fri Oct 2 · Book sections 1.1–1.5, 1.9"
 title-slide-attributes:
   data-background-color: "#faf7f2"
 ---
@@ -9,109 +9,168 @@ title-slide-attributes:
 
 [🧰]{.lecture-icon}
 
-### Today's question
+### Today's products
 
-**If your laptop died tonight, could tomorrow-you rerun today's analysis and get today's numbers?**
+**A class rubric for reproducible projects**
 
-::: {.dim}
-Readings: [1.2](https://geo-smart.github.io/mlgeo-book/jupyter-environment)–[1.5](https://geo-smart.github.io/mlgeo-book/version-control-git) · Lab: [1.9 workbench setup](https://geo-smart.github.io/mlgeo-book/workbench-setup-hw1)
-:::
-
-::: {.notes}
-Lab session: ten minutes of deck, then the room works. Frame the question physically — a dead laptop, a returning reviewer two years after submission, a teammate on a different OS. All three are the same problem: is the analysis a thing on one machine, or a recipe any machine can follow? Today builds the recipe: a pinned environment and a version-controlled repository. Practical note before starting: everyone should kick off the course-book `pixi install` at the top of the lab — it downloads gigabytes — and do the git steps while it runs.
-:::
-
-## This lecture in the literature
-
-{{< include refs/lec02_refs.qmd >}}
-
-::: {.takeaway}
-The reproducibility problem is measured, not hypothetical. The fix is mechanical, and today you install it.
-:::
-
-::: {.notes}
-One minute each. Baker's Nature survey: of 1,576 researchers, about 70% had failed to reproduce another scientist's experiment, and over half had failed to reproduce one of their own — the "their own" number is the one to emphasize, because tonight's laptop-death question is exactly that scenario. The Turing Way is the reference handbook this chapter leans on — environments, version control, licensing — free, open, community-written; it is where to go deeper than the book takes you.
-:::
-
-## The environment is part of the result {.smaller}
-
-::: {.big-number}
-1 lockfile [every package, exact version, hashed — rebuilt identically anywhere]{.unit}
-:::
-
-::: {.big-number}
-3 machines [laptop, Hyak, cloud instance — same environment, same numbers]{.unit}
-:::
+**A workbench that can satisfy it**
 
 ::: {.dim}
-Unpinned environments drift: this book runs numpy 2.5 and pandas 3.0; last year's defaults do not. Same script, different numbers, no error message.
-:::
-
-::: {.takeaway}
-A result is code + data + environment. pixi pins the third, and `pixi run` uses it — nothing to activate, nothing to forget.
+Readings: [1.1](https://geo-smart.github.io/mlgeo-book/open-reproducible-science)–[1.5](https://geo-smart.github.io/mlgeo-book/version-control-git) · Lab: [1.9 workbench setup](https://geo-smart.github.io/mlgeo-book/workbench-setup-hw1)
 :::
 
 ::: {.notes}
-The argument, not the tool, comes first: your GNSS trend from Wednesday depends on which numpy computed it. Environment drift produces silently different numbers — the worst failure class, because nothing crashes. A lockfile turns "install roughly these packages" into "install exactly these builds, verified by hash," which is what lets the same workflow run on a laptop, the Hyak cluster, or a cloud instance (learning outcome #2). In this course the environment files travel inside every repository — HW1 has students copy `pixi.toml` and `pixi.lock` into their own repo, so their work is reproducible from day one. Tool spellings live in 1.9, which they are about to follow.
+Open by naming the unfinished work from Wednesday. Today does not start a new topic. The class finishes the paper sprint, extracts evidence from it, and uses that evidence to write a rubric. The hardware and workbench material then answers one rubric question: what would another person need to rerun this result on another machine? The session produces two reusable artifacts rather than a page of notes: rubric version 0.1 and each student's course repository.
 :::
 
-## git is the lab notebook of code
+## Paper sprint completion {.smaller}
 
-- Every commit: a dated, attributed entry — what changed, and why
-- The history answers "which version made this figure?"
-- Committed work is recoverable; uncommitted work is not
-- HW1 is graded from your commit history — it is the evidence
+**12 minutes in pairs**
 
-::: {.takeaway}
-Field notebooks are sacred in this department. This one is for code, and it syncs to GitHub.
-:::
+1. Confirm the paper, DOI, and scientific claim
+2. Locate the data and its access conditions
+3. Locate code, license, and dependency record
+4. Identify the exact figure or table you would rerun
+5. Record the first point where the evidence trail breaks
 
-::: {.notes}
-The lab-notebook analogy carries the rules: entries are dated and signed (commits), you never tear out a page (history is append-only; a bad commit is recoverable, an overwritten uncommitted file is not — 1.5's warning about restore/reset), and the notebook leaves the building (push to GitHub = off-site copy; the dead-laptop answer). Define the loop in words: edit, review the change, commit with a message, push. git is the local tool; GitHub is the hosted copy plus collaboration — forks, issues, pull requests. The pull request gets its own slide next, because it is where AI enters.
-:::
+Then complete two sentences:
 
-## AI writes code; you sign the history
+> Another team could rerun this result because the authors provide ___
 
-- **Review every AI diff before committing** — nothing enters the history unread
-- **Disclose** substantial AI drafts in the commit message
-- Team work flows through **pull requests**: an AI can open one; only a person merges one
+> Another team would get stuck at ___ because ___
 
-::: {.takeaway}
-If you cannot explain a line, it does not get committed under your name.
+Then propose **one observable criterion** for the course rubric.
+
+::: {.dim}
+Example: “Uses GitHub” is a weak criterion. “A fresh clone regenerates Figure 3 from documented commands” can be tested.
 :::
 
 ::: {.notes}
-This is the 2026 section of 1.5, and it is course law. By now much of the code in a student repository was first drafted by an assistant, sometimes as a whole agent-opened pull request. Version control is where you stay in charge: the diff view exists precisely so nothing lands unread — for a multi-file agent change, read all of it. Disclosure in the commit message ("initial draft by Copilot, reviewed and tested by me") mirrors the course-wide policy in 1.8, Monday's session. And in team settings, protect the main branch so changes arrive by pull request with at least one human review — reviewing a teammate's AI-assisted PR means checking what the code does, not trusting that the AI "usually gets it right." Today's dry run rehearses exactly this: they will review their own diff in the Files-changed view before merging.
+Resume the paper-to-project activity without repeating the introduction. Each pair should finish one evidence trail and turn it into a testable criterion. Ask them to write literal locations when possible: repository URL, archive DOI, environment file name, figure number, and evaluation split. “Code unavailable” is useful. “Not reproducible” is too vague. Each proposed criterion must describe evidence an evaluator can inspect. Collect one strong trail and one broken trail, then sort suggestions aloud into broad dimensions. The next slide supplies a candidate structure only after students have generated evidence themselves.
 :::
 
-## The workbench, in one table
+## Class rubric v0.1 {.smaller}
 
-| Habit | What it prevents | Example |
+| Dimension | Observable evidence |
+|---|---|
+| Scientific claim | one result and its success condition are stated precisely |
+| Data and provenance | source, version, license, and processing history are recorded |
+| Code and workflow | a fresh clone exposes the full path from data to result |
+| Environment and compute | dependencies, hardware needs, and run commands are specified |
+| Evaluation | split, baseline, metric, and uncertainty match the claim |
+| Publication and credit | outputs are citable; people, data, software, and AI help receive credit |
+
+**0** missing · **1** present but incomplete · **2** another team can verify it
+
+::: {.takeaway}
+This is a draft. Evidence from today's work will change it.
+:::
+
+::: {.notes}
+Compare the class suggestions with this candidate structure. Merge or rename dimensions rather than declaring this table final. Clarify that reproducibility has levels: computational reproducibility asks whether the same data and code reproduce the result; robustness asks whether reasonable choices preserve the conclusion; replication asks whether new data support it. The course rubric begins with computational reproducibility and honest evaluation. Save the class's revised wording for rubric version 0.2 on Monday.
+:::
+
+## Hardware resources
+
+**Hardware** is the physical machinery that executes and stores the work.
+
+| Resource | What it does | Typical bottleneck |
 |---|---|---|
-| pinned environment | "works on my machine" | the same GNSS trend on laptop, Hyak, or cloud |
-| small commits, real messages | mystery figures | the figure in your paper regenerates next year |
-| review + disclose AI diffs | unread code in your name | an agent-drafted data loader, read line by line |
-| pull request before merge | unreviewed changes on main | leaderboard entries arrive as PRs |
+| **CPU** | general instructions; many scientific tasks | serial code or too few cores |
+| **GPU** | many similar operations in parallel | model/data transfer and GPU memory |
+| **RAM** | working memory for running processes | arrays or tables do not fit |
+| **Storage** | persistent files and checkpoints | capacity and read/write speed |
+| **Network** | moves data between systems | bandwidth, latency, access rules |
 
 ::: {.takeaway}
-Four habits, installed today, graded all quarter.
+“It needs a fast computer” is incomplete. Name the resource the workflow consumes.
 :::
 
 ::: {.notes}
-Leave this up during the transition to the lab. Each row maps to a graded artifact: the environment and the commit history are HW1 (due Mon Oct 12); disclosure practice is every homework and the project; the pull-request workflow is how the Chapter 3 classification leaderboard accepts submissions, so the dry run today is not ceremonial. Then hand the room to 1.9.
+Use one concrete comparison. A pandas join on a moderate table usually needs CPU and RAM; a convolutional neural network often benefits from a GPU; neither helps if the data cannot move from storage quickly enough. A GPU is not a generally faster CPU. It accelerates workloads that expose large amounts of parallel work and use supported software. Ask students which resource limited the largest computation they have already attempted.
 :::
 
-## The lab: build your workbench — open 1.9
+## Where computation runs {.smaller}
 
-1. Follow [1.9](https://geo-smart.github.io/mlgeo-book/workbench-setup-hw1) steps 1–6: pixi → git + GitHub → your `MLGEO2026_UWNETID` repo → book environment (`pixi install`) → smoke-test a notebook → push a commit
-2. Then the **pull-request dry run** at the end of [1.5](https://geo-smart.github.io/mlgeo-book/version-control-git): branch, edit, `gh pr create`, review your own diff, merge
-3. Verify each step — every 1.9 step has a "success looks like" line
-4. Stuck ten minutes? Raise a hand. The install clinic continues in office hours
+| Context | What it means | Good fit | Main tradeoff |
+|---|---|---|---|
+| **Local laptop** | hardware you control directly | exploration, small data, offline work | limited memory, storage, and uptime |
+| **Back-end Linux server** | remote shared machine reached through a network | longer jobs, shared data, stable services | permissions and shared resources |
+| **Cloud server** | rented remote compute created on demand | temporary scale, public services, special hardware | cost and data governance |
+| **HPC system** | many managed compute nodes plus a scheduler | large parallel jobs, many experiments | queues, modules, storage policy |
+
+A **computing center** operates shared hardware, storage, networking, schedulers, and support. Hyak is UW's HPC system.
+
+::: {.notes}
+Demystify remote computing. A server is a computer that provides resources over a network. A back-end Linux server may be one powerful machine or a service entry point. A cloud server is still physical hardware in a data center, but the user rents a virtual machine or managed service. An HPC system combines many nodes and uses a scheduler so users request resources rather than taking them directly. A computing center is the organization and facility that operates these systems. Ask students which context they have used, even indirectly through a web service.
+:::
+
+## Software boundaries
+
+| Term | Question it answers |
+|---|---|
+| **Operating system** | Which processes, files, devices, and users does the machine manage? |
+| **Computing environment** | Which interpreter, packages, libraries, and exact versions run the code? |
+| **Sandbox** | Which files, network services, tools, and actions may this process access? |
+| **Container** | Which operating-system-level dependencies travel with the application? |
+
+::: {.takeaway}
+A lockfile records the environment. A sandbox limits access. They solve different problems.
+:::
+
+::: {.notes}
+Students often merge these words. The hardware can stay fixed while the environment changes. The same environment can run inside different sandboxes. A sandbox may block the network or restrict writes even when every required package is installed. A container packages a broader software stack than a Python environment but still runs on host hardware and a host kernel. Pixi manages the course environment. The Codex workspace and many notebook services also impose sandbox boundaries. Connect this vocabulary to error diagnosis: “package missing” differs from “permission denied” and from “out of GPU memory.”
+:::
+
+## Compute choice activity
+
+Choose a **location**, the likely **limiting resource**, and the **rubric evidence** you would record.
+
+| Case | Decision prompt |
+|---|---|
+| 4 GB of GNSS data and exploratory plots | laptop, server, cloud, or HPC? |
+| 2 TB of continuous waveforms searched overnight | where should data and computation meet? |
+| CNN training on 100,000 satellite tiles | when does a GPU help? |
+| restricted collaborator data | what should the sandbox prevent? |
 
 ::: {.dim}
-HW1 due Mon Oct 12 · Ch 1 quiz opens Tue Oct 6 · Windows: WSL2 or Codespaces — top of 1.9
+Six minutes in groups. Defend one choice; another group names its failure mode.
 :::
 
 ::: {.notes}
-Timing for the 80-minute block (10:00–11:20), lab-shaped and no pulse talks yet: this deck ~10 min, lab ~60, wrap ~10. First move: everyone starts `pixi install` (multi-gigabyte download), then does the git and GitHub steps while it runs. Circulate; the common failure points are PATH after the pixi install (restart the terminal), gh auth in the browser, and Windows students who have not set up WSL2 — route them to the note at the top of 1.9 (WSL2 primary, Codespaces fallback). Students who finish early: point them at the 1.7 GNSS notebook as the smoke test, then at Monday's reading (1.8 + 6.1). Wrap by collecting two or three "what did the verify step catch?" stories — the habit of checking state before moving on is the same verification habit the AI policy needs on Monday.
+There is no single correct platform. Grade the reasoning. The 4 GB case often fits a laptop if RAM and storage are adequate. The waveform search benefits from moving compute near the archive and may suit a server or HPC array job. CNN training often benefits from a GPU, but data loading can dominate. Restricted data may require an approved server or cloud enclave with network and export controls. Each answer must include reproducibility evidence: machine class, requested CPU or GPU, memory, environment lockfile, command, and any access restrictions.
+:::
+
+## Workbench lab
+
+Open [1.9](https://geo-smart.github.io/mlgeo-book/workbench-setup-hw1) and produce evidence for the rubric:
+
+1. Start `pixi install` for the book environment
+2. Create `MLGEO2026_UWNETID` and add `pixi.toml` plus `pixi.lock`
+3. Record the tested operating system and machine type in the README
+4. Run one notebook or smoke test through `pixi run`
+5. Review the diff, commit with a real message, and push
+
+::: {.takeaway}
+The repository should tell a future student what to run and what success looks like.
+:::
+
+::: {.notes}
+Allow about 30 minutes. Start the large install first, then complete git and GitHub steps while packages download. Circulate with rubric language: ask students to show evidence, not say that setup “worked.” Common failures separate cleanly using today's vocabulary: command not found is a shell or PATH problem; dependency resolution is an environment problem; permission denied may be a sandbox or filesystem problem; killed processes often indicate memory limits. Students who finish should exchange repository URLs and attempt a fresh-clone check.
+:::
+
+## Exit ticket: rubric v0.2
+
+Submit three lines before leaving:
+
+- one rubric criterion you would keep
+- one criterion you would sharpen, with observable evidence
+- one computing choice your project may require
+
+::: {.dim}
+HW1 due Mon Oct 12 · Ch 1 quiz opens Tue Oct 6 · Monday begins by scoring your paper and workbench with the revised rubric
+:::
+
+::: {.notes}
+Reserve the final five minutes. Collect responses in Canvas or the Gaia workspace. Use them to prepare Monday's rubric version 0.2. The continuity matters: Monday should begin with their words and their evidence rather than a new instructor-generated checklist. If several students still lack a functioning environment, direct them to the install clinic and allow the paper audit and rubric work to count as today's completed intellectual product.
 :::

@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="">
-  <title>Working with agents: policy and mechanism</title>
+  <title>Reproducible work with agents</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="lec03_working_with_agents_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link rel="stylesheet" href="lec03_working_with_agents_files/libs/revealjs/dist/theme/quarto-7d69a6c8e4a4c5d4828d6d4d14650861.css">
   <link href="lec03_working_with_agents_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec03_working_with_agents_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec03_working_with_agents_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,7 +130,7 @@
     <div class="slides">
 
 <section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
-  <h1 class="title">Working with agents:<br>policy and mechanism</h1>
+  <h1 class="title">Reproducible work with agents</h1>
   <p class="subtitle">Session 3 · Mon Oct 5 · Book sections 1.8 + 6.1</p>
 
 <div class="quarto-title-authors">
@@ -141,13 +141,12 @@
 <h2></h2>
 <p><span class="lecture-icon">🤖</span></p>
 <h3 id="todays-question">Today’s question</h3>
-<p>A fast, tireless, well-read collaborator — with no stake in being right.</p>
-<p><strong>What are the working rules?</strong></p>
+<p><strong>What evidence makes an AI-assisted result reproducible and defensible?</strong></p>
 <div class="dim">
 <p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/ai-in-your-workflow">1.8 AI in your workflow</a> + <a href="https://geo-smart.github.io/mlgeo-book/llms-to-agents">6.1 From language models to agents</a></p>
 </div>
 <aside class="notes">
-<p>Frame from 1.8’s own sentence: an assistant is a fast, tireless, well-read collaborator with no stake in being right. It will produce plausible code for a method it misunderstood, cite papers that do not exist, and agree with a wrong framing. Everything today follows from that one sentence. Two halves to the session: mechanism (what an agent is and where errors physically enter — 6.1), then policy (badges, disclosure, verification — 1.8). Knowing where errors enter is what makes checking for them possible; that ordering is deliberate.</p>
+<p>Continue the rubric thread from Friday. The session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first score the paper they found, then learn where an agent’s environment and sandbox fit, run a calibration experiment, and finish with a peer rerun. The class should leave with rubric version 0.2 and an evidence-based AI policy.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -160,56 +159,21 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="this-lecture-in-the-literature" class="slide level2">
-<h2>This lecture in the literature</h2>
-<!-- Literature anchors for lecture 3. Edit THIS file to update the papers;
-     the deck includes it verbatim. Keep 2-4 entries. These three are the
-     failure-mode anchors cited in book section 6.1 (references.bib:
-     liu2024lost, sharma2023sycophancy, zheng2023judging).
-     Format: verdict + bold message on one line; full citation on its own
-     line below (blank line between them — they must be separate paragraphs). -->
-<div class="ref-item">
-<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">Finite attention: recall sags in the middle of long contexts — an agent “reading” your repository is sampling it.</span></p>
-<p><span class="ref-cite">Liu, N. F., Lin, K., Hewitt, J., et al.&nbsp;(2024). Lost in the middle: How language models use long contexts. <em>Transactions of the Association for Computational Linguistics</em>, 12, 157–173.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">Trained to please: preference-tuned assistants agree with your framing — including when your framing is wrong.</span></p>
-<p><span class="ref-cite">Sharma, M., Tong, M., Korbak, T., et al.&nbsp;(2023). Towards understanding sycophancy in language models. arXiv:2310.13548 (also published at ICLR 2024).</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">AI grading AI tracks human raters — but carries position and verbosity biases you must measure first.</span></p>
-<p><span class="ref-cite">Zheng, L., Chiang, W.-L., Sheng, Y., et al.&nbsp;(2023). Judging LLM-as-a-judge with MT-Bench and Chatbot Arena. <em>Advances in Neural Information Processing Systems 36</em>, Datasets and Benchmarks Track.</span></p>
-</div>
-<div class="takeaway">
-<p>Three measured failure modes — attention, agreement, judging. Not anecdotes: experiments you can rerun.</p>
-</div>
-<aside class="notes">
-<p>Two minutes each; all three are cited in book section 6.1 and all three are ✗ on purpose — today is the failure-mode lecture. Liu et al.&nbsp;measured recall as a function of position in the context window: material in the middle of a long context is recalled worse than material at the ends, so an agent that “read” a 40-file repository has sampled it and may answer confidently from the parts it attended to. Sharma et al.&nbsp;(Anthropic) showed preference-tuned models systematically defer to the user — change your stated opinion and the model’s answer follows; a model tuned to please raters tends to please you, including when you are wrong. Zheng et al.&nbsp;built the LLM-as-a-judge methodology: strong agreement with human raters, but position bias and verbosity bias — relevant in week 7 when students build agent evals, and a preview that “judge” is a role you must itself evaluate.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="what-an-agent-is" class="slide level2">
-<h2>What an agent is</h2>
-<p><strong>an LLM + a set of tools + a loop over observations</strong></p>
+<section id="rubric-checkpoint" class="slide level2">
+<h2>Rubric checkpoint</h2>
+<p>Score the paper from your sprint using Friday’s six dimensions:</p>
+<p><strong>scientific claim · data · code/workflow · environment/compute · evaluation · publication/credit</strong></p>
+<p>For each dimension, assign:</p>
 <ul>
-<li>The model proposes an action; the harness runs it; the result returns as context</li>
-<li>Reading files, running Python, querying an earthquake catalog — all just tools</li>
-<li>“Did seismicity rate change after the M6.4?” → query, write the test, run, look, revise</li>
+<li><strong>0</strong> missing</li>
+<li><strong>1</strong> present but incomplete</li>
+<li><strong>2</strong> another team can verify it</li>
 </ul>
 <div class="takeaway">
-<p>The arithmetic moved to numpy, which is reliable. What to query, which test, what the result means — still the model’s judgment.</p>
+<p>Choose one score your partner could challenge. Point to evidence.</p>
 </div>
 <aside class="notes">
-<p>Demystify: an agent is not a new kind of mind, it is a language model that can emit structured tool calls instead of prose, plus a loop that executes them and feeds results back. Walk the seismicity example from 6.1: the agent queries an FDSN catalog, writes a rate-change test, runs it, reads the numbers, revises — a genuine multi-step scientific task. Then the trust relocation, which is today’s central mechanism point: tool use fixes the arithmetic problem (numpy computes), but everything the model still decides — which data, which test, whether completeness magnitude was handled, whether an empty result means “no earthquakes” or “wrong request” — remains unreliable. Agent errors are specification and judgment errors, which is why Chapter 6 evaluates agents end to end against ground truth rather than reading their code line by line.</p>
+<p>Give pairs eight minutes. Each score needs a URL, file, passage, or explicit absence. Ask for two challenged scores and let the room decide what evidence would move each score. This creates the need for the agent-specific criteria later. A paper can provide code and still score poorly if the environment, data version, or evaluation split cannot be reconstructed.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -222,22 +186,44 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="why-the-model-cannot-do-the-math-itself" class="slide level2 smaller">
-<h2>Why the model cannot do the math itself</h2>
-<div class="big-number">
-<p>0 <span class="unit">numeric types inside a language model — digits are vocabulary</span></p>
-</div>
-<div class="big-number">
-<p>3,650 <span class="unit">daily GNSS values pasted into a prompt: a regression handed to a text engine</span></p>
-</div>
-<div class="dim">
-<p><code>13.847</code> may tokenize as <code>13</code> · <code>.</code> · <code>847</code>. Arithmetic becomes pattern completion over digit strings — fluent, roughly plausible, silently wrong.</p>
-</div>
+<section id="agent-tools-environment-sandbox" class="slide level2">
+<h2>Agent, tools, environment, sandbox</h2>
+<p><strong>Agent = language model + tools + a loop over observations</strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>Role in an agent run</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tools</td>
+<td>actions such as reading files, running Python, or querying a catalog</td>
+</tr>
+<tr class="even">
+<td>Environment</td>
+<td>exact Python, packages, libraries, and command-line programs</td>
+</tr>
+<tr class="odd">
+<td>Sandbox</td>
+<td>allowed files, network destinations, tools, and write locations</td>
+</tr>
+<tr class="even">
+<td>Hardware</td>
+<td>CPU, GPU, memory, storage, and network underneath the run</td>
+</tr>
+</tbody>
+</table>
 <div class="takeaway">
-<p>A well-built agent writes and runs the numpy code. It does not “read” your numbers.</p>
+<p>The sandbox defines reach. The environment defines available software.</p>
 </div>
 <aside class="notes">
-<p>The mechanism in one breath: text is split into tokens, numbers get fragmented arbitrarily, and the model has no numeric type — so asking it to compute is asking it to complete a familiar-looking digit pattern. Ten years of daily GNSS displacements pasted into a prompt is the canonical mistake: the model will answer, fluently, with a roughly plausible trend, and there is no error message. The fix is not a better prompt; it is giving the model a calculator — which is exactly what tool use is. This is today’s in-class exercise: they will ask their own assistant for the P395 east velocity and check whether it wrote code or “read” the numbers.</p>
+<p>Connect directly to Friday’s vocabulary. An agent can write correct Python and still fail because the sandbox blocks the data path or network. It can have access but compute a different result because the package version changed. It can have the right environment and still exhaust memory. Ask students to classify three errors aloud: “permission denied,” “module not found,” and “CUDA out of memory.” This makes the layers usable rather than definitional. The assigned literature supplies measured examples for the next slide: Liu et al.&nbsp;on attention, Sharma et al.&nbsp;on agreement, and Zheng et al.&nbsp;on evaluation bias.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -250,105 +236,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="where-errors-enter-the-loop" class="slide level2">
-<h2>Where errors enter the loop</h2>
-<ul>
-<li><strong>Attention</strong>: long contexts sag in the middle — an agent “reading” 40 files is sampling them</li>
-<li><strong>Agreement</strong>: tuned on human approval, it tends to ratify your framing, wrong framings included</li>
-<li><strong>Judgment</strong>: does an empty catalog result mean “no earthquakes” — or “wrong request”?</li>
-</ul>
-<div class="takeaway">
-<p>Long visible reasoning makes errors more persuasive, not less common.</p>
-</div>
-<aside class="notes">
-<p>Map each bullet to its paper from the literature slide. Attention is Liu et al.&nbsp;— practical consequence: never assume the agent saw the whole repository; point it at the specific files that matter and spot-check what it claims to have read. Agreement is Sharma et al.&nbsp;— practical counter: ask for the case against your framing, or state the opposite hypothesis and see whether the model follows you there too; students will measure this in the 6.2 lab (Fri Oct 23). Judgment is 6.1’s empty-query example — the error class no amount of model scale removes, because it is a specification problem. Close with the reasoning-model caveat from 6.1: models that generate long internal deliberation genuinely help on multi-step problems, but a wrong answer after ten thousand tokens of deliberation is still wrong — and reads as more convincing.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="hallucination-is-not-ordinary-error" class="slide level2">
-<h2>Hallucination is not ordinary error</h2>
-<ul>
-<li>An ordinary error comes from a traceable process — it usually <em>looks</em> wrong somehow</li>
-<li>Hallucination is fluent fabrication, optimized to look right</li>
-<li>Canonical case: the fabricated citation — real journal, well-formed DOI, no paper</li>
-<li>Subtler: an extraction table where a few values appear nowhere in the source</li>
-</ul>
-<div class="takeaway">
-<p>Plausibility is the one test hallucination is guaranteed to pass. Verify against the data, never against plausibility.</p>
-</div>
-<aside class="notes">
-<p>The distinction that changes behavior: your error-detection instincts are calibrated to ordinary errors — a sign flip, an off-by-one, a unit mismatch — which leave traces. Hallucinated content is selected for looking right, because generating plausible text is what the model is optimized to do. The fabricated citation is the classic scientific case: plausible authors, plausible title, a DOI that resolves to nothing. The extraction-table case is nastier: fifty abstracts in, most rows correct, a few values from nowhere, formatted identically — nothing marks them. Consequences, verbatim from 6.1: every citation gets resolved; every quantitative claim gets verified against the data; confidence and formatting carry no evidence. A tidy table is not more likely to be correct because it is tidy. Treat LLM output like a measurement from an uncalibrated instrument: possibly excellent, unusable until you run your own calibration.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="every-exercise-declares-its-ai-mode" class="slide level2">
-<h2>Every exercise declares its AI mode</h2>
-<p>🔒 <strong>By hand</strong> — assistant closed; the drill builds a reflex you must own</p>
-<p>🤝 <strong>Assistant allowed</strong> — use it; verify every line; disclose the use</p>
-<div class="dim">
-<p>No badge means assistant allowed. The “by hand” syntax — indexing, slicing, core numpy and pandas — is the same syntax you later use to check the machine.</p>
-</div>
-<div class="takeaway">
-<p>Delegate the drills and the skill never forms — and then you cannot check the assistant.</p>
-</div>
-<aside class="notes">
-<p>From Chapter 2 on, every exercise in the book carries one of these two badges. The logic of “by hand”: some reflexes must exist in your fingers before an assistant is useful, because they are the reflexes you verify with — a student who cannot read a slicing expression cannot review an agent’s diff. Do the by-hand drills unaided, then compare with an assistant’s answer afterward if curious. “Assistant allowed” is not “anything goes”: the verification and disclosure duties apply in full. Note the framing from the course intro: AI use here is a skill to be taught, not a shortcut to be policed — the badges are the teaching instrument.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="course-law-disclose-defend-verify" class="slide level2">
-<h2>Course law: disclose, defend, verify</h2>
-<ul>
-<li><strong>Disclose</strong> — every submission names the tools and what they did; substantial AI commits say so in the message</li>
-<li><strong>Defend</strong> — any line, unaided, on request; “the AI wrote it” is not an explanation</li>
-<li><strong>Verify</strong> — numbers recomputed a second way, citations resolved, interfaces checked against the docs</li>
-</ul>
-<div class="takeaway">
-<p>Undisclosed AI help is an integrity issue exactly as undisclosed human help is.</p>
-</div>
-<aside class="notes">
-<p>The policy, stated plainly. AI use is allowed and expected — refusing it mostly costs time — and disclosure is one or two sentences, not a form: “Claude Code drafted the loaders and first plots; I wrote the feature engineering and verified outputs against the raw files.” The defense rule has teeth: the instructor may ask anyone, at any point, to walk through their code with no assistant and no notes; if you cannot, the work is not yours yet, whatever the commit log says. Verification duties, from 1.8: never accept numerical results without recomputing or testing a known case; never accept citations without resolving them; never accept API claims without the documentation — assistants’ training data lags current libraries (this book runs numpy 2.5 and pandas 3.0). And treat AI review of your work as a first pass from a reviewer who has never done fieldwork and cannot be embarrassed — useful, not authoritative.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="today-in-one-table" class="slide level2">
-<h2>Today, in one table</h2>
+<section id="where-errors-enter" class="slide level2">
+<h2>Where errors enter</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -358,38 +247,38 @@
 <thead>
 <tr class="header">
 <th>Failure mode</th>
-<th>Mechanism</th>
-<th>Your counter</th>
+<th>What can happen</th>
+<th>Evidence or countermeasure</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>bad arithmetic</td>
-<td>digits are vocabulary, not numbers</td>
-<td>make it write and run the numpy</td>
+<td>Attention</td>
+<td>important context receives little weight</td>
+<td>name required files; test cited details</td>
 </tr>
 <tr class="even">
-<td>missed context</td>
-<td>attention sags mid-context</td>
-<td>name the files; spot-check what it “read”</td>
+<td>Agreement</td>
+<td>the model follows a user’s wrong framing</td>
+<td>request alternatives; test opposing hypotheses</td>
 </tr>
 <tr class="odd">
-<td>sycophancy</td>
-<td>tuned on human approval</td>
-<td>ask for the case against your framing</td>
+<td>Judgment</td>
+<td>it chooses the wrong data, method, or interpretation</td>
+<td>specify success criteria; compare with ground truth</td>
 </tr>
 <tr class="even">
-<td>hallucination</td>
-<td>fabrication optimized to look right</td>
-<td>resolve every citation; verify against data</td>
+<td>Hallucination</td>
+<td>fluent claims or citations have no source</td>
+<td>resolve citations; recompute quantitative claims</td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>Verification is not distrust of the tool. It is how the tool becomes usable for science.</p>
+<p>Fluency provides no score in the class rubric.</p>
 </div>
 <aside class="notes">
-<p>Leave this up for questions; it is the session in one screen and it maps one-to-one onto the literature slide. Each counter becomes a graded habit: the numpy rule is today’s exercise, the citation rule is the reading arc (starting today), the framing rule is the 6.2 lab in week 4, and all four return in week 7 when students build an eval set that measures an agent’s failure rates instead of trusting spot checks. The through-line to say aloud: the same fair-evaluation discipline they will learn for models applies to the AI itself — that is the course’s distinctive move.</p>
+<p>Keep this short. The goal is to generate testable rubric evidence. Long reasoning may make a failure more persuasive without making it less wrong. Tools improve arithmetic only when the agent uses them correctly. A successful command does not validate the scientific judgment that selected the command. Link each row to a later graded habit: file references, hypothesis checks, evaluation against known cases, and citation resolution.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -402,19 +291,149 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="now-calibrate-your-collaborator" class="slide level2">
-<h2>Now calibrate your collaborator</h2>
+<section id="calibration-experiment" class="slide level2">
+<h2>Calibration experiment</h2>
+<p><strong>20 minutes in pairs</strong></p>
 <ol type="1">
-<li>Assistant running? (Claude Code / Copilot agent — 1.9’s follow-up if not)</li>
-<li>Ask it for the mean east velocity of station P395 from 1.7’s saved CSV — did it write code, or “read” the numbers? Verify the value yourself</li>
-<li>Ask it for three papers on ML in your subfield — resolve every citation; count the fabrications</li>
-<li><strong>Sign up for your pulse talk</strong> (Canvas, opens today) · <strong>Reading arc stage 1 assigned</strong> — AI-assisted literature review, every citation verified, due Wed Oct 21</li>
+<li>Ask an assistant for the mean east velocity of station P395</li>
+<li>Record whether it runs code or answers from text</li>
+<li>Recompute the value independently and compare</li>
+<li>Ask for three ML papers in your subfield</li>
+<li>Resolve every DOI and count unsupported citations</li>
 </ol>
 <div class="dim">
-<p>Ch 1 quiz: opens Tue Oct 6, closes Thu Oct 8 · Wednesday: meet the data (2.1–2.2, 1.6–1.7)</p>
+<p>The class tally becomes a small eval set: numeric agreement, tool use, and citation validity.</p>
 </div>
 <aside class="notes">
-<p>Timing for the 80-minute block (10:00–11:20), no pulse talks yet (they start week 3): deck ~25 min, exercise ~40, synthesis ~10, logistics ~5. During the exercise, circulate for task 2 — the interesting split is between students whose assistant wrote and ran code (correct behavior) and those whose assistant answered from the prompt; both outcomes teach. Synthesis: tally the task-3 fabrication counts on the board — a live measurement of hallucination rate, and quietly the class’s first eval set; keep the number for week 7. Logistics: pulse-talk sign-ups open today on Canvas (every student presents once, weeks 3–10; everyone scores every talk through the standing peer survey); reading arc stage 1 is assigned today — topic: opportunities and challenges of AI in your subfield, with the two anchor readings (Bergen et al.&nbsp;2019; Karpatne et al.&nbsp;2019), due Wed Oct 21 — and task 3 was a rehearsal of exactly its verification duty. Ch 1 quiz opens tomorrow on Canvas, scenario-based, closes Thursday.</p>
+<p>Students need a saved P395 data file or the 1.7 notebook. Do not announce a “correct” hallucination rate. Measure what happens in this room with the models students use. Record denominators. For the numeric task, note whether the assistant executed code, whether the environment contained the needed packages, and whether the final number matches the independent computation within a stated tolerance. For citations, distinguish a valid DOI with an irrelevant paper from a DOI that does not resolve.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="course-ai-modes" class="slide level2">
+<h2>Course AI modes</h2>
+<p>🔒 <strong>By hand</strong></p>
+<p>The drill builds a reading or coding reflex that you must own.</p>
+<p>🤝 <strong>Assistant allowed</strong></p>
+<p>Use the tool. Review the work, verify the evidence, and disclose its role.</p>
+<div class="takeaway">
+<p>Any submitted line may become an oral explanation question.</p>
+</div>
+<aside class="notes">
+<p>Explain that AI use is expected in this course. The badges control the learning objective. A student who delegates every indexing drill cannot review an agent’s data-selection code. Disclosure can be brief but specific. “Used ChatGPT” lacks the task and contribution. A useful statement names what the tool drafted, what the student changed, and how the student verified the result.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ai-assisted-rubric-extension" class="slide level2 smaller">
+<h2>AI-assisted rubric extension</h2>
+<p>Add these criteria to the class rubric:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Observable evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tool disclosure</td>
+<td>tool and its contribution are named in the submission or commit</td>
+</tr>
+<tr class="even">
+<td>Human review</td>
+<td>the student can explain the accepted code and scientific choices</td>
+</tr>
+<tr class="odd">
+<td>Independent verification</td>
+<td>numbers, citations, and API claims are checked outside the model output</td>
+</tr>
+<tr class="even">
+<td>Access boundaries</td>
+<td>sensitive data and credentials stay outside unapproved tools and sandboxes</td>
+</tr>
+<tr class="odd">
+<td>Run record</td>
+<td>accepted code, environment, inputs, and outputs are preserved in the repository</td>
+</tr>
+</tbody>
+</table>
+<p><strong>0</strong> missing · <strong>1</strong> claimed · <strong>2</strong> supported by inspectable evidence</p>
+<aside class="notes">
+<p>Ask the class whether any row belongs inside an existing rubric dimension rather than becoming a seventh dimension. The likely answer is yes: tool disclosure belongs with publication and credit; access boundaries belong with data and environment; independent verification belongs with evaluation. This discussion prevents “AI reproducibility” from becoming a detached checklist. The same evidence standards govern all scientific work.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="peer-rerun" class="slide level2">
+<h2>Peer rerun</h2>
+<p>Exchange repository URLs with another pair.</p>
+<ol type="1">
+<li>Read only the README first</li>
+<li>Clone into a fresh directory</li>
+<li>Build the environment from the lockfile</li>
+<li>Run the named smoke test or notebook</li>
+<li>Compare one output and log the first obstacle</li>
+</ol>
+<div class="takeaway">
+<p>The peer does not repair the repository. The obstacle becomes rubric evidence.</p>
+</div>
+<aside class="notes">
+<p>Allow 20 minutes. A fresh directory approximates a new user, though it does not guarantee a clean machine. Students should not use their partner’s verbal instructions until after they record the first obstacle. If the clone contains no small, fast target, that is itself a finding. Ask peers to classify the obstacle using Friday’s layers: documentation, data access, environment, sandbox or permissions, hardware, or scientific ambiguity.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rubric-v0.2" class="slide level2">
+<h2>Rubric v0.2</h2>
+<p>As a class, choose:</p>
+<ul>
+<li>one criterion the paper audit exposed</li>
+<li>one criterion the calibration experiment exposed</li>
+<li>one criterion the peer rerun exposed</li>
+<li>the evidence required for a score of <strong>2</strong></li>
+</ul>
+<div class="dim">
+<p>Ch 1 quiz opens Tue Oct 6 and closes Thu Oct 8 · Wednesday: data modalities, formats, and the class project landscape</p>
+</div>
+<aside class="notes">
+<p>Reserve ten minutes for synthesis and logistics. Record the agreed wording in the Gaia workspace so the rubric remains editable and visible. Announce that every project checkpoint will use the current rubric, and the class may revise it when new failure modes appear. The first three rows should come from actual obstacles today, not generic principles. Pulse-talk sign-ups and reading-arc stage 1 can follow after the rubric decision.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

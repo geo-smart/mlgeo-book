@@ -1,5 +1,5 @@
 ---
-title: "Working with agents:<br>policy and mechanism"
+title: "Reproducible work with agents"
 subtitle: "Session 3 · Mon Oct 5 · Book sections 1.8 + 6.1"
 title-slide-attributes:
   data-background-color: "#faf7f2"
@@ -11,157 +11,157 @@ title-slide-attributes:
 
 ### Today's question
 
-A fast, tireless, well-read collaborator — with no stake in being right.
-
-**What are the working rules?**
+**What evidence makes an AI-assisted result reproducible and defensible?**
 
 ::: {.dim}
 Reading: [1.8 AI in your workflow](https://geo-smart.github.io/mlgeo-book/ai-in-your-workflow) + [6.1 From language models to agents](https://geo-smart.github.io/mlgeo-book/llms-to-agents)
 :::
 
 ::: {.notes}
-Frame from 1.8's own sentence: an assistant is a fast, tireless, well-read collaborator with no stake in being right. It will produce plausible code for a method it misunderstood, cite papers that do not exist, and agree with a wrong framing. Everything today follows from that one sentence. Two halves to the session: mechanism (what an agent is and where errors physically enter — 6.1), then policy (badges, disclosure, verification — 1.8). Knowing where errors enter is what makes checking for them possible; that ordering is deliberate.
+Continue the rubric thread from Friday. The session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first score the paper they found, then learn where an agent's environment and sandbox fit, run a calibration experiment, and finish with a peer rerun. The class should leave with rubric version 0.2 and an evidence-based AI policy.
 :::
 
-## This lecture in the literature
+## Rubric checkpoint
 
-{{< include refs/lec03_refs.qmd >}}
+Score the paper from your sprint using Friday's six dimensions:
+
+**scientific claim · data · code/workflow · environment/compute · evaluation · publication/credit**
+
+For each dimension, assign:
+
+- **0** missing
+- **1** present but incomplete
+- **2** another team can verify it
 
 ::: {.takeaway}
-Three measured failure modes — attention, agreement, judging. Not anecdotes: experiments you can rerun.
+Choose one score your partner could challenge. Point to evidence.
 :::
 
 ::: {.notes}
-Two minutes each; all three are cited in book section 6.1 and all three are ✗ on purpose — today is the failure-mode lecture. Liu et al. measured recall as a function of position in the context window: material in the middle of a long context is recalled worse than material at the ends, so an agent that "read" a 40-file repository has sampled it and may answer confidently from the parts it attended to. Sharma et al. (Anthropic) showed preference-tuned models systematically defer to the user — change your stated opinion and the model's answer follows; a model tuned to please raters tends to please you, including when you are wrong. Zheng et al. built the LLM-as-a-judge methodology: strong agreement with human raters, but position bias and verbosity bias — relevant in week 7 when students build agent evals, and a preview that "judge" is a role you must itself evaluate.
+Give pairs eight minutes. Each score needs a URL, file, passage, or explicit absence. Ask for two challenged scores and let the room decide what evidence would move each score. This creates the need for the agent-specific criteria later. A paper can provide code and still score poorly if the environment, data version, or evaluation split cannot be reconstructed.
 :::
 
-## What an agent is
+## Agent, tools, environment, sandbox
 
-**an LLM + a set of tools + a loop over observations**
+**Agent = language model + tools + a loop over observations**
 
-- The model proposes an action; the harness runs it; the result returns as context
-- Reading files, running Python, querying an earthquake catalog — all just tools
-- "Did seismicity rate change after the M6.4?" → query, write the test, run, look, revise
+| Layer | Role in an agent run |
+|---|---|
+| Tools | actions such as reading files, running Python, or querying a catalog |
+| Environment | exact Python, packages, libraries, and command-line programs |
+| Sandbox | allowed files, network destinations, tools, and write locations |
+| Hardware | CPU, GPU, memory, storage, and network underneath the run |
 
 ::: {.takeaway}
-The arithmetic moved to numpy, which is reliable. What to query, which test, what the result means — still the model's judgment.
+The sandbox defines reach. The environment defines available software.
 :::
 
 ::: {.notes}
-Demystify: an agent is not a new kind of mind, it is a language model that can emit structured tool calls instead of prose, plus a loop that executes them and feeds results back. Walk the seismicity example from 6.1: the agent queries an FDSN catalog, writes a rate-change test, runs it, reads the numbers, revises — a genuine multi-step scientific task. Then the trust relocation, which is today's central mechanism point: tool use fixes the arithmetic problem (numpy computes), but everything the model still decides — which data, which test, whether completeness magnitude was handled, whether an empty result means "no earthquakes" or "wrong request" — remains unreliable. Agent errors are specification and judgment errors, which is why Chapter 6 evaluates agents end to end against ground truth rather than reading their code line by line.
+Connect directly to Friday's vocabulary. An agent can write correct Python and still fail because the sandbox blocks the data path or network. It can have access but compute a different result because the package version changed. It can have the right environment and still exhaust memory. Ask students to classify three errors aloud: “permission denied,” “module not found,” and “CUDA out of memory.” This makes the layers usable rather than definitional. The assigned literature supplies measured examples for the next slide: Liu et al. on attention, Sharma et al. on agreement, and Zheng et al. on evaluation bias.
 :::
 
-## Why the model cannot do the math itself {.smaller}
+## Where errors enter
 
-::: {.big-number}
-0 [numeric types inside a language model — digits are vocabulary]{.unit}
-:::
-
-::: {.big-number}
-3,650 [daily GNSS values pasted into a prompt: a regression handed to a text engine]{.unit}
-:::
-
-::: {.dim}
-`13.847` may tokenize as `13` · `.` · `847`. Arithmetic becomes pattern completion over digit strings — fluent, roughly plausible, silently wrong.
-:::
-
-::: {.takeaway}
-A well-built agent writes and runs the numpy code. It does not "read" your numbers.
-:::
-
-::: {.notes}
-The mechanism in one breath: text is split into tokens, numbers get fragmented arbitrarily, and the model has no numeric type — so asking it to compute is asking it to complete a familiar-looking digit pattern. Ten years of daily GNSS displacements pasted into a prompt is the canonical mistake: the model will answer, fluently, with a roughly plausible trend, and there is no error message. The fix is not a better prompt; it is giving the model a calculator — which is exactly what tool use is. This is today's in-class exercise: they will ask their own assistant for the P395 east velocity and check whether it wrote code or "read" the numbers.
-:::
-
-## Where errors enter the loop
-
-- **Attention**: long contexts sag in the middle — an agent "reading" 40 files is sampling them
-- **Agreement**: tuned on human approval, it tends to ratify your framing, wrong framings included
-- **Judgment**: does an empty catalog result mean "no earthquakes" — or "wrong request"?
-
-::: {.takeaway}
-Long visible reasoning makes errors more persuasive, not less common.
-:::
-
-::: {.notes}
-Map each bullet to its paper from the literature slide. Attention is Liu et al. — practical consequence: never assume the agent saw the whole repository; point it at the specific files that matter and spot-check what it claims to have read. Agreement is Sharma et al. — practical counter: ask for the case against your framing, or state the opposite hypothesis and see whether the model follows you there too; students will measure this in the 6.2 lab (Fri Oct 23). Judgment is 6.1's empty-query example — the error class no amount of model scale removes, because it is a specification problem. Close with the reasoning-model caveat from 6.1: models that generate long internal deliberation genuinely help on multi-step problems, but a wrong answer after ten thousand tokens of deliberation is still wrong — and reads as more convincing.
-:::
-
-## Hallucination is not ordinary error
-
-- An ordinary error comes from a traceable process — it usually *looks* wrong somehow
-- Hallucination is fluent fabrication, optimized to look right
-- Canonical case: the fabricated citation — real journal, well-formed DOI, no paper
-- Subtler: an extraction table where a few values appear nowhere in the source
-
-::: {.takeaway}
-Plausibility is the one test hallucination is guaranteed to pass. Verify against the data, never against plausibility.
-:::
-
-::: {.notes}
-The distinction that changes behavior: your error-detection instincts are calibrated to ordinary errors — a sign flip, an off-by-one, a unit mismatch — which leave traces. Hallucinated content is selected for looking right, because generating plausible text is what the model is optimized to do. The fabricated citation is the classic scientific case: plausible authors, plausible title, a DOI that resolves to nothing. The extraction-table case is nastier: fifty abstracts in, most rows correct, a few values from nowhere, formatted identically — nothing marks them. Consequences, verbatim from 6.1: every citation gets resolved; every quantitative claim gets verified against the data; confidence and formatting carry no evidence. A tidy table is not more likely to be correct because it is tidy. Treat LLM output like a measurement from an uncalibrated instrument: possibly excellent, unusable until you run your own calibration.
-:::
-
-## Every exercise declares its AI mode
-
-🔒 **By hand** — assistant closed; the drill builds a reflex you must own
-
-🤝 **Assistant allowed** — use it; verify every line; disclose the use
-
-::: {.dim}
-No badge means assistant allowed. The "by hand" syntax — indexing, slicing, core numpy and pandas — is the same syntax you later use to check the machine.
-:::
-
-::: {.takeaway}
-Delegate the drills and the skill never forms — and then you cannot check the assistant.
-:::
-
-::: {.notes}
-From Chapter 2 on, every exercise in the book carries one of these two badges. The logic of "by hand": some reflexes must exist in your fingers before an assistant is useful, because they are the reflexes you verify with — a student who cannot read a slicing expression cannot review an agent's diff. Do the by-hand drills unaided, then compare with an assistant's answer afterward if curious. "Assistant allowed" is not "anything goes": the verification and disclosure duties apply in full. Note the framing from the course intro: AI use here is a skill to be taught, not a shortcut to be policed — the badges are the teaching instrument.
-:::
-
-## Course law: disclose, defend, verify
-
-- **Disclose** — every submission names the tools and what they did; substantial AI commits say so in the message
-- **Defend** — any line, unaided, on request; "the AI wrote it" is not an explanation
-- **Verify** — numbers recomputed a second way, citations resolved, interfaces checked against the docs
-
-::: {.takeaway}
-Undisclosed AI help is an integrity issue exactly as undisclosed human help is.
-:::
-
-::: {.notes}
-The policy, stated plainly. AI use is allowed and expected — refusing it mostly costs time — and disclosure is one or two sentences, not a form: "Claude Code drafted the loaders and first plots; I wrote the feature engineering and verified outputs against the raw files." The defense rule has teeth: the instructor may ask anyone, at any point, to walk through their code with no assistant and no notes; if you cannot, the work is not yours yet, whatever the commit log says. Verification duties, from 1.8: never accept numerical results without recomputing or testing a known case; never accept citations without resolving them; never accept API claims without the documentation — assistants' training data lags current libraries (this book runs numpy 2.5 and pandas 3.0). And treat AI review of your work as a first pass from a reviewer who has never done fieldwork and cannot be embarrassed — useful, not authoritative.
-:::
-
-## Today, in one table
-
-| Failure mode | Mechanism | Your counter |
+| Failure mode | What can happen | Evidence or countermeasure |
 |---|---|---|
-| bad arithmetic | digits are vocabulary, not numbers | make it write and run the numpy |
-| missed context | attention sags mid-context | name the files; spot-check what it "read" |
-| sycophancy | tuned on human approval | ask for the case against your framing |
-| hallucination | fabrication optimized to look right | resolve every citation; verify against data |
+| Attention | important context receives little weight | name required files; test cited details |
+| Agreement | the model follows a user's wrong framing | request alternatives; test opposing hypotheses |
+| Judgment | it chooses the wrong data, method, or interpretation | specify success criteria; compare with ground truth |
+| Hallucination | fluent claims or citations have no source | resolve citations; recompute quantitative claims |
 
 ::: {.takeaway}
-Verification is not distrust of the tool. It is how the tool becomes usable for science.
+Fluency provides no score in the class rubric.
 :::
 
 ::: {.notes}
-Leave this up for questions; it is the session in one screen and it maps one-to-one onto the literature slide. Each counter becomes a graded habit: the numpy rule is today's exercise, the citation rule is the reading arc (starting today), the framing rule is the 6.2 lab in week 4, and all four return in week 7 when students build an eval set that measures an agent's failure rates instead of trusting spot checks. The through-line to say aloud: the same fair-evaluation discipline they will learn for models applies to the AI itself — that is the course's distinctive move.
+Keep this short. The goal is to generate testable rubric evidence. Long reasoning may make a failure more persuasive without making it less wrong. Tools improve arithmetic only when the agent uses them correctly. A successful command does not validate the scientific judgment that selected the command. Link each row to a later graded habit: file references, hypothesis checks, evaluation against known cases, and citation resolution.
 :::
 
-## Now calibrate your collaborator
+## Calibration experiment
 
-1. Assistant running? (Claude Code / Copilot agent — 1.9's follow-up if not)
-2. Ask it for the mean east velocity of station P395 from 1.7's saved CSV — did it write code, or "read" the numbers? Verify the value yourself
-3. Ask it for three papers on ML in your subfield — resolve every citation; count the fabrications
-4. **Sign up for your pulse talk** (Canvas, opens today) · **Reading arc stage 1 assigned** — AI-assisted literature review, every citation verified, due Wed Oct 21
+**20 minutes in pairs**
+
+1. Ask an assistant for the mean east velocity of station P395
+2. Record whether it runs code or answers from text
+3. Recompute the value independently and compare
+4. Ask for three ML papers in your subfield
+5. Resolve every DOI and count unsupported citations
 
 ::: {.dim}
-Ch 1 quiz: opens Tue Oct 6, closes Thu Oct 8 · Wednesday: meet the data (2.1–2.2, 1.6–1.7)
+The class tally becomes a small eval set: numeric agreement, tool use, and citation validity.
 :::
 
 ::: {.notes}
-Timing for the 80-minute block (10:00–11:20), no pulse talks yet (they start week 3): deck ~25 min, exercise ~40, synthesis ~10, logistics ~5. During the exercise, circulate for task 2 — the interesting split is between students whose assistant wrote and ran code (correct behavior) and those whose assistant answered from the prompt; both outcomes teach. Synthesis: tally the task-3 fabrication counts on the board — a live measurement of hallucination rate, and quietly the class's first eval set; keep the number for week 7. Logistics: pulse-talk sign-ups open today on Canvas (every student presents once, weeks 3–10; everyone scores every talk through the standing peer survey); reading arc stage 1 is assigned today — topic: opportunities and challenges of AI in your subfield, with the two anchor readings (Bergen et al. 2019; Karpatne et al. 2019), due Wed Oct 21 — and task 3 was a rehearsal of exactly its verification duty. Ch 1 quiz opens tomorrow on Canvas, scenario-based, closes Thursday.
+Students need a saved P395 data file or the 1.7 notebook. Do not announce a “correct” hallucination rate. Measure what happens in this room with the models students use. Record denominators. For the numeric task, note whether the assistant executed code, whether the environment contained the needed packages, and whether the final number matches the independent computation within a stated tolerance. For citations, distinguish a valid DOI with an irrelevant paper from a DOI that does not resolve.
+:::
+
+## Course AI modes
+
+🔒 **By hand**
+
+The drill builds a reading or coding reflex that you must own.
+
+🤝 **Assistant allowed**
+
+Use the tool. Review the work, verify the evidence, and disclose its role.
+
+::: {.takeaway}
+Any submitted line may become an oral explanation question.
+:::
+
+::: {.notes}
+Explain that AI use is expected in this course. The badges control the learning objective. A student who delegates every indexing drill cannot review an agent's data-selection code. Disclosure can be brief but specific. “Used ChatGPT” lacks the task and contribution. A useful statement names what the tool drafted, what the student changed, and how the student verified the result.
+:::
+
+## AI-assisted rubric extension {.smaller}
+
+Add these criteria to the class rubric:
+
+| Dimension | Observable evidence |
+|---|---|
+| Tool disclosure | tool and its contribution are named in the submission or commit |
+| Human review | the student can explain the accepted code and scientific choices |
+| Independent verification | numbers, citations, and API claims are checked outside the model output |
+| Access boundaries | sensitive data and credentials stay outside unapproved tools and sandboxes |
+| Run record | accepted code, environment, inputs, and outputs are preserved in the repository |
+
+**0** missing · **1** claimed · **2** supported by inspectable evidence
+
+::: {.notes}
+Ask the class whether any row belongs inside an existing rubric dimension rather than becoming a seventh dimension. The likely answer is yes: tool disclosure belongs with publication and credit; access boundaries belong with data and environment; independent verification belongs with evaluation. This discussion prevents “AI reproducibility” from becoming a detached checklist. The same evidence standards govern all scientific work.
+:::
+
+## Peer rerun
+
+Exchange repository URLs with another pair.
+
+1. Read only the README first
+2. Clone into a fresh directory
+3. Build the environment from the lockfile
+4. Run the named smoke test or notebook
+5. Compare one output and log the first obstacle
+
+::: {.takeaway}
+The peer does not repair the repository. The obstacle becomes rubric evidence.
+:::
+
+::: {.notes}
+Allow 20 minutes. A fresh directory approximates a new user, though it does not guarantee a clean machine. Students should not use their partner's verbal instructions until after they record the first obstacle. If the clone contains no small, fast target, that is itself a finding. Ask peers to classify the obstacle using Friday's layers: documentation, data access, environment, sandbox or permissions, hardware, or scientific ambiguity.
+:::
+
+## Rubric v0.2
+
+As a class, choose:
+
+- one criterion the paper audit exposed
+- one criterion the calibration experiment exposed
+- one criterion the peer rerun exposed
+- the evidence required for a score of **2**
+
+::: {.dim}
+Ch 1 quiz opens Tue Oct 6 and closes Thu Oct 8 · Wednesday: data modalities, formats, and the class project landscape
+:::
+
+::: {.notes}
+Reserve ten minutes for synthesis and logistics. Record the agreed wording in the Gaia workspace so the rubric remains editable and visible. Announce that every project checkpoint will use the current rubric, and the class may revise it when new failure modes appear. The first three rows should come from actual obstacles today, not generic principles. Pulse-talk sign-ups and reading-arc stage 1 can follow after the rubric decision.
 :::
