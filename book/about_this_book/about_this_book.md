@@ -1,4 +1,20 @@
+:::{div}
+:class: mlgeo-hero
+
+<img class="mlgeo-hero-art" src="../img/brand/mlgeo-scientific-landscape-hero.png" alt="" aria-hidden="true">
+
 # Machine Learning in the Geosciences
+
+**Build AI for Earth. Evaluate it like science.**
+
+An open, research-facing textbook for senior undergraduates, graduate students,
+and applied geoscientists.
+
+<div class="mlgeo-hero-actions">
+  <a href="schedule_fall2026">View the Autumn 2026 schedule</a>
+  <a href="../Chapter1-GettingStarted/readme">Start with Chapter 1</a>
+</div>
+:::
 
 The **GeoS**cience **MA**chine Learning **R**esources and **T**raining (GeoSMART) framework provides an educational pathway in open source scientific computing, general ML theory, toolkits, and deployment.
 

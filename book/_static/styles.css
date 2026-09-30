@@ -22,3 +22,127 @@
 .admonition-student-response-section > p:not(.admonition-title) {
   display: none;
 }
+
+:root {
+  --mlgeo-navy: #070b36;
+  --mlgeo-indigo: #2b1763;
+  --mlgeo-cyan: #59d7ff;
+  --mlgeo-gold: #f7c843;
+}
+
+.mlgeo-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(25rem, 56vw, 40rem);
+  margin: 0 0 2.5rem;
+  padding: clamp(2.25rem, 6vw, 5.5rem);
+  border: 1px solid rgb(89 215 255 / 28%);
+  border-radius: 1.4rem;
+  color: white;
+  background: var(--mlgeo-navy);
+  box-shadow: 0 1.5rem 4rem rgb(7 11 54 / 24%);
+}
+
+.mlgeo-hero::before,
+.mlgeo-hero::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.mlgeo-hero::before {
+  background:
+    linear-gradient(90deg, rgb(7 11 54 / 96%) 0%, rgb(7 11 54 / 78%) 46%, rgb(7 11 54 / 20%) 78%),
+    linear-gradient(0deg, rgb(7 11 54 / 44%) 0%, transparent 48%);
+}
+
+.mlgeo-hero::after {
+  background: radial-gradient(circle at 16% 20%, rgb(89 215 255 / 13%), transparent 32%);
+}
+
+.mlgeo-hero > :not(.mlgeo-hero-art) {
+  position: relative;
+  z-index: 2;
+}
+
+.mlgeo-hero-art {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0 !important;
+  object-fit: cover;
+  object-position: center;
+}
+
+.mlgeo-hero h1 {
+  max-width: 15ch;
+  margin: 0 0 1.1rem;
+  color: white;
+  font-size: clamp(2.45rem, 6vw, 5.4rem);
+  font-weight: 520;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.mlgeo-hero > p {
+  max-width: 42rem;
+  margin: 0.55rem 0;
+  color: rgb(255 255 255 / 88%);
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  line-height: 1.5;
+}
+
+.mlgeo-hero > p:first-of-type strong {
+  color: var(--mlgeo-cyan);
+  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
+  font-weight: 520;
+}
+
+.mlgeo-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.7rem;
+}
+
+.mlgeo-hero-actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.8rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgb(255 255 255 / 40%);
+  border-radius: 999px;
+  color: var(--mlgeo-navy);
+  background: rgb(255 255 255 / 92%);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.mlgeo-hero-actions a:hover,
+.mlgeo-hero-actions a:focus-visible {
+  border-color: var(--mlgeo-cyan);
+  background: white;
+  box-shadow: 0 0 0 0.2rem rgb(89 215 255 / 24%);
+}
+
+@media (max-width: 48rem) {
+  .mlgeo-hero {
+    min-height: 34rem;
+    padding: 2rem 1.4rem;
+  }
+
+  .mlgeo-hero::before {
+    background: linear-gradient(180deg, rgb(7 11 54 / 92%) 0%, rgb(7 11 54 / 66%) 58%, rgb(7 11 54 / 34%) 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mlgeo-hero-actions a {
+    scroll-behavior: auto;
+  }
+}

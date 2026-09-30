@@ -1,6 +1,6 @@
 # Course Schedule — Autumn 2026
 
-ESS 469/569, University of Washington. Class meets **Monday, Wednesday, Friday, 10:00–11:20 in SIG 227** (Sieg Hall). Bring a charged laptop — the room has tablet-arm seating and limited power; lab sessions run the full 80 minutes. Instruction runs September 30 – December 11, 2026; there is no class on **Wednesday November 11** (Veterans Day) or **Friday November 27** (Native American Heritage Day), and Thanksgiving is Thursday November 26. Final examination week is December 12–18.
+ESS 469/569, University of Washington. Class meets **Monday and Wednesday, 10:00–11:20 in ECE 003, and Friday, 10:00–11:20 in JHN 175**. Bring a charged laptop to every class meeting; lab sessions run the full 80 minutes. Instruction runs September 30 – December 11, 2026; there is no class on **Wednesday November 11** (Veterans Day) or **Friday November 27** (Native American Heritage Day), and Thanksgiving is Thursday November 26. Final examination week is December 12–18.
 
 This page is the course-delivery layer on top of the book: which sessions cover which sections, and when graded work is due. The book carries the full depth; in-class delivery selects from it (see the 469/569 differentiation notes in each assignment).
 
@@ -38,7 +38,7 @@ Chapter 7 has no quiz: its outcomes (audience translation, downstream impact) ar
 ## Week by week
 
 **Week 1 — Open, reproducible science** (2 sessions)
-- Wed Sep 30 — Course introduction; why ML in the geosciences; open reproducible science ([1.1](../Chapter1-GettingStarted/1.1_open_reproducible_science.md)). HW1 assigned; setup help continues in the week-1 install clinic (office hours), not in lecture. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec01_why_ml_geosciences.html)
+- Wed Sep 30 — Course introduction; why ML in the geosciences; open reproducible science ([1.1](../Chapter1-GettingStarted/1.1_open_reproducible_science.md)); active paper-to-project sprint: discover a relevant ML paper with ChatGPT Search, verify its DOI and source, trace its data/code/environment/evaluation artifacts, and turn it into a class project-gallery entry. HW1 assigned; setup help continues in the week-1 install clinic (office hours), not in lecture. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec01_why_ml_geosciences.html)
 - Fri Oct 2 — Workbench lab: version control and environments ([1.2](../Chapter1-GettingStarted/1.2_jupyter_environment.md)–[1.5](../Chapter1-GettingStarted/1.5_version_control_git.md), with [1.9](../Chapter1-GettingStarted/1.9_workbench_setup_hw1.md) as the self-serve walkthrough); the pull-request dry run. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec02_your_workbench.html)
 
 **Week 2 — Agents, then data** (Ch 1 quiz Tue–Thu)
