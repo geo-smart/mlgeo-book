@@ -43,7 +43,7 @@ corregiremos.
 
 El libro se benefició enormemente de otros recursos abiertos:
 
-- [The Turing Way](https://book.the-turing-way.org/){cite:p}`the_turing_way_community_2022_6909298`
+- [The Turing Way](https://book.the-turing-way.org/){cite:p}`the_turing_way_community_2025_15213042`
 - [Software Carpentries](http://software-carpentry.org/lessons/)
 - [EarthDataScience](https://earthdatascience.org/courses/) de CU Boulder — lecciones adaptadas de materiales desarrollados por Earth Lab
 - [geohackweek](https://geohackweek.github.io/)

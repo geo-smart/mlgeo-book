@@ -20,7 +20,42 @@ Readings: [1.1](https://geo-smart.github.io/mlgeo-book/open-reproducible-science
 :::
 
 ::: {.notes}
-Open by naming the unfinished work from Wednesday. Today does not start a new topic. The class finishes the paper sprint, extracts evidence from it, and uses that evidence to write a rubric. The hardware and workbench material then answers one rubric question: what would another person need to rerun this result on another machine? The session produces two reusable artifacts rather than a page of notes: rubric version 0.1 and each student's course repository. Suggested 80-minute allocation: framing 4 minutes; paper sprint 12; terminology and rubric construction 14; computing concepts 20; compute-choice activity 7; workbench lab 18; exit ticket 5.
+Open by naming the unfinished work from Wednesday. Today does not start a new topic. The class finishes the paper sprint, extracts evidence from it, and uses that evidence to write a rubric. The hardware and workbench material then answers one rubric question: what would another person need to rerun this result on another machine? The session produces two reusable artifacts rather than a page of notes: rubric version 0.1 and each student's course repository. Suggested 80-minute allocation: framing 2 minutes; evidence and literature 8; paper sprint 12; matrix, strong result, and rubric construction 16; computing concepts 14; compute-choice activity 7; workbench lab 16; exit ticket 5. If time runs short, compress the CPU/GPU and HPC slides to their takeaways; they are covered in 1.4.
+:::
+
+## Why spend a session on this? {.smaller}
+
+| Audit | Tested | Outcome |
+|---|---|---|
+| Begley & Ellis 2012 | 53 landmark cancer studies | **6** confirmed |
+| Open Science Collab. 2015 | 100 psychology experiments | **36%** replicated (97% originally) |
+| Stodden et al. 2018 | 204 computational *Science* papers | **26%** reproduced |
+| Stagge et al. 2019 | 360 hydrology articles | **1.6%** reproduced |
+| Konkol et al. 2019 | R code of 41 geoscience papers | **2** ran cleanly; **46 of 97** figures differ |
+| Massonnet et al. 2020 | one Earth system model, two HPC systems | different climates |
+
+::: {.dim}
+Baker 2016 survey, recomputed from the raw data: 64% of 95 Earth and environmental scientists had failed to reproduce another group's result.
+:::
+
+::: {.takeaway}
+Most published computational results have never been rerun, and the geosciences are measured, not exempt.
+:::
+
+::: {.notes}
+Two minutes. Read the bottom two rows aloud: they are our field. Stagge et al. sampled 360 of 1,989 articles published in 2017 in six hydrology and water-resources journals and could regenerate results for 1.6% of those tested; their 95% confidence interval for all 1,989 is 0.6 to 6.8%. The main bottleneck was not secrecy: 44% had only some artifacts, and most had no directions to run them. Massonnet et al. (Geoscientific Model Development, 2020) ran the older EC-Earth3 version on two HPC systems and obtained statistically distinguishable climates, traced to the treatment of Antarctic river runoff; the newer version passed. Konkol, Kray and Pfeiffer (IJGIS, 2019) reran, in a clean rocker/geospatial container, the R code of 41 open-access papers: 31 Copernicus geoscience articles from 2016–2017 plus the 10 most-cited Journal of Statistical Software R-package papers. 2 ran without issues, 33 ran after fixes, 2 ran partially, and 4 could not be run; 15 required contacting the authors (11 helped, 3 never replied). They logged 173 issues in 39 papers, the most common being a missing library (49 cases) and hard-coded directories (34). Of 97 figures regenerated from 28 papers, 78 had a different aspect ratio (cosmetic) and 46 differed in content: different curves, missing or different key numbers. Massonnet's conclusion is worth quoting: the default assumption should be that Earth system models are not replicable under a change of HPC environment until shown otherwise. The Baker number is not in the article itself; it is recomputed from the raw survey file Nature posted on figshare (doi:10.6084/m9.figshare.3394951). Earth and environmental scientists were 95 of 1,576 respondents; 61 had failed to reproduce someone else's result, 39 their own. Ask: which row would your sprint paper fall into?
+:::
+
+## This lecture in the literature
+
+{{< include refs/lec02_refs.qmd >}}
+
+::: {.takeaway}
+Rerunning did not decide any of these cases. It made each one checkable.
+:::
+
+::: {.notes}
+Six minutes, four stories. Stagge et al. is the hydrology audit from the previous slide. Ireland et al. (Seismica, 2023) is our closest field: 200 geophysics articles and 20 journal policies; about 86% had a data availability statement but the original data were reachable for 54% and the software was named for 49%. A statement is not the data. DeVries et al. (Nature, 2018) trained a 13,451-parameter network on more than 131,000 mainshock–aftershock pairs and reported AUC 0.849 against 0.583 for Coulomb stress change. Mignan and Broccardo (Nature, 2019) matched it with logistic regression on two parameters, AUC 0.85. A data scientist, Rajiv Shah, also argued that the same earthquakes appeared in training and test sets; the authors disputed it and Nature did not act. The number reproduced; the interpretation that deep learning found physics a simple model misses did not survive a baseline. The hockey stick is the success story: Mann, Bradley and Hughes (1998, 1999); McIntyre and McKitrick (GRL, 2005) challenged the principal-component centering; Wahl and Ammann (Climatic Change, 2007) reimplemented the method and found the result robust to those criticisms; PAGES 2k (Nature Geoscience, 2013 and 2019) used 692 new proxy records and seven methods and reached the same conclusion. That walk across the table is on the next slides. If time allows, add Resplandy et al. (Nature, 2018): an outside reader, Nicholas Lewis, found that systematic errors had been treated as random; uncertainty grew about fourfold and the paper was retracted in 2019.
 :::
 
 ## Paper sprint completion {.smaller}
@@ -46,22 +81,43 @@ Then propose **one observable criterion** for the course rubric.
 :::
 
 ::: {.notes}
-Resume the paper-to-project activity without repeating the introduction. Each pair should finish one evidence trail and turn it into a testable criterion. Ask them to write literal locations when possible: repository URL, archive DOI, environment file name, figure number, and evaluation split. “Code unavailable” is useful. “Not reproducible” is too vague. Each proposed criterion must describe evidence an evaluator can inspect. Collect one strong trail and one broken trail, then sort suggestions aloud into broad dimensions. The next slide supplies a candidate structure only after students have generated evidence themselves.
+Resume the paper-to-project activity without repeating the introduction. Each pair should finish one evidence trail and turn it into a testable criterion. Ask them to write literal locations when possible: repository URL, archive DOI, environment file name, figure number, and evaluation split. “Code unavailable” is useful. “Not reproducible” is too vague. Each proposed criterion must describe evidence an evaluator can inspect. Collect one strong trail and one broken trail, then sort suggestions aloud into broad dimensions. The rubric slide supplies a candidate structure only after students have generated evidence themselves and seen the four-cell table.
 :::
 
-## Reproducibility terminology
+## Same or different data, same or different analysis
 
-Terminology varies across fields, so every assessment should state which claim it makes.
+|  | **Same data** | **Different data** |
+|---|---|---|
+| **Same analysis** | **Reproducible** | **Replicable** |
+| **Different analysis** | **Robust** | **Generalisable** |
 
-| Claim | Question |
-|---|---|
-| **Repeatability** | Can the original team obtain the result again under the same conditions? |
-| **Computational reproducibility** | Can another team use the same data and workflow to obtain a consistent result? |
-| **Robustness** | Does the conclusion survive reasonable analytical choices and perturbations? |
-| **Replication** | Do new data or an independently implemented method support the conclusion? |
+::: {.dim}
+Hold the research question fixed. The Turing Way definitions (book 1.1). The National Academies (2019) use the top row; some fields swap the two words. State the operational test, not the label.
+:::
+
+::: {.takeaway}
+Each cell is a different claim. A rerun of your notebook tests only the top-left one.
+:::
 
 ::: {.notes}
-Scientific communities use these terms differently. The important graduate-level habit is to state the operational claim instead of relying on a label alone. This course first emphasizes computational reproducibility because students can evaluate it directly from repositories, data records, and environment specifications. Later assignments add robustness through alternative splits, baselines, uncertainty estimates, and sensitivity analysis. A successful rerun does not establish that the scientific conclusion is correct; it establishes that the reported computational pathway can be examined.
+This is the table from Wednesday's slide, now with all four cells. Read each cell in our terms, using GNSS displacement as the running example. Reproducible: same NGL time series, same notebook, fresh clone, same trend. Robust: same series, but a different seed, split design, preprocessing choice, or model family, compared with a simple baseline. Replicable: the same pipeline on other stations, another region, or a later period. Generalisable: independent groups with different data and methods reach the same conclusion. The Turing Way gives its robust example as one pipeline in R and another in Python. The National Academies report used in Chapter 5.1 defines reproducibility with the same data, code and conditions, and replicability with each study obtaining its own data, which matches the top row. Older computational-science usage swaps the words; that is why the rubric asks for the test, not the label. Ask: which cell did your sprint paper claim, and which cell did its evidence support?
+:::
+
+## What makes a result strong? {.smaller}
+
+| Passed | Rules out | Still possible |
+|---|---|---|
+| Reproducible | missing steps, unbuildable environment | a bug, a leak, a bad metric |
+| Robust | dependence on one seed, split, or choice; no baseline | a quirk of this data set |
+| Replicable | dependence on one station, region, period | a shared blind spot in the method |
+| Generalisable | dependence on one data set and pipeline | nothing is settled for good |
+
+::: {.takeaway}
+A strong result keeps its conclusion as it moves across the table, and states where it should fail.
+:::
+
+::: {.notes}
+Point out that reproducibility is necessary and not sufficient; the Turing Way lists "being reproducible does not mean the answer is right" among its barriers to reproducible research. A bug reproduces perfectly. Map the two cases: the aftershock network passed reproducible and failed robust once a baseline was added. The hockey stick passed all four, over two decades, by other groups. Then map the course: homework is graded on reproducible; hidden-test leaderboards in Chapter 3 test a form of replicable; the final project should report robustness (seeds, split designs, baseline) and one replication on held-out locations or periods. Ask students to add one robustness criterion to the rubric on the next slide.
 :::
 
 ## Class rubric v0.1 {.smaller}
