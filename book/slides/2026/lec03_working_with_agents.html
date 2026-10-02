@@ -248,7 +248,7 @@
 <p>The environment determines which software can execute. The sandbox constrains which resources that software may reach.</p>
 </div>
 <aside class="notes">
-<p>Connect directly to Friday’s vocabulary. An agent can write correct Python and still fail because the sandbox blocks the data path or network. It can have access but compute a different result because the package version changed. It can have the right environment and still exhaust memory. Ask students to classify three errors aloud: “permission denied,” “module not found,” and “CUDA out of memory.” This makes the layers usable rather than definitional. The assigned literature supplies measured examples for the next slide: Liu et al.&nbsp;on attention, Sharma et al.&nbsp;on agreement, and Zheng et al.&nbsp;on evaluation bias.</p>
+<p>Connect directly to Friday’s vocabulary. An agent can write correct Python and still fail because the sandbox blocks the data path or network. It can have access but compute a different result because the package version changed. It can have the right environment and still exhaust memory. Ask students to classify three errors aloud: “permission denied,” “module not found,” and “CUDA out of memory.” This makes the layers usable rather than definitional. The assigned literature supplies measured examples for the failure-mode slide: Liu et al.&nbsp;on attention, Sharma et al.&nbsp;on agreement, and Zheng et al.&nbsp;on evaluation bias.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -389,33 +389,6 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="calibration-experiment" class="slide level2">
-<h2>Calibration experiment</h2>
-<p><strong>20 minutes in pairs</strong></p>
-<ol type="1">
-<li>Ask an assistant for the mean east velocity of station P395</li>
-<li>Record whether it runs code or answers from text</li>
-<li>Recompute the value independently and compare</li>
-<li>Ask for three ML papers in your subfield</li>
-<li>Resolve every DOI and count unsupported citations</li>
-</ol>
-<div class="dim">
-<p>The class will report denominators, not anecdotes: number of attempts, valid tool executions, numerically consistent answers, and verified citations.</p>
-</div>
-<aside class="notes">
-<p>Students need a saved P395 data file or the 1.7 notebook. Do not announce a “correct” hallucination rate. Measure what happens in this room with the models students use. Record denominators. For the numeric task, note whether the assistant executed code, whether the environment contained the needed packages, and whether the final number matches the independent computation within a stated tolerance. For citations, distinguish a valid DOI with an irrelevant paper from a DOI that does not resolve.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
 <section id="numerical-calibration-protocol" class="slide level2">
 <h2>Numerical calibration protocol</h2>
 <p>Before asking the assistant, define the reference calculation:</p>
@@ -476,6 +449,33 @@
 <p>A real citation can still fail the relevance or evidence test.</p>
 <aside class="notes">
 <p>This protocol separates fabrication from retrieval quality. A paper may exist but use a different data modality or make a different claim. A DOI may resolve while the assistant has altered the title or authors. Record each failure type rather than reporting a single “hallucination” count. This produces a more informative small eval set and reinforces the paper sprint’s evidence trail.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="calibration-experiment" class="slide level2">
+<h2>Calibration experiment</h2>
+<p><strong>20 minutes in pairs</strong></p>
+<ol type="1">
+<li>Give an assistant <code>book/Chapter1-GettingStarted/data/gps_P395_relative_position.csv</code> and ask for the east velocity of P395 in mm/yr</li>
+<li>Record whether it runs code or answers from text</li>
+<li>Recompute the value independently and compare</li>
+<li>Ask for three ML papers in your subfield</li>
+<li>Resolve every DOI and count unsupported citations</li>
+</ol>
+<div class="dim">
+<p>The class will report denominators, not anecdotes: number of attempts, valid tool executions, numerically consistent answers, and verified citations.</p>
+</div>
+<aside class="notes">
+<p>The P395 file is committed in the book repository, so every student who cloned it on Friday already has it; 1.7, which produces it, is not taught until Wednesday. Do not announce a “correct” hallucination rate. Measure what happens in this room with the models students use. Record denominators. For the numeric task, note whether the assistant executed code, whether the environment contained the needed packages, and whether the final number matches the independent computation within a stated tolerance. For citations, distinguish a valid DOI with an irrelevant paper from a DOI that does not resolve.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -596,7 +596,10 @@
 </tr>
 </tbody>
 </table>
-<p><strong>0</strong> missing · <strong>1</strong> claimed · <strong>2</strong> supported by inspectable evidence</p>
+<p><strong>0</strong> missing · <strong>1</strong> present but incomplete · <strong>2</strong> another team can verify it</p>
+<div class="dim">
+<p>Same scale as v0.1. A claim without inspectable evidence, such as “verified the citations”, scores 1.</p>
+</div>
 <aside class="notes">
 <p>Ask the class whether any row belongs inside an existing rubric dimension rather than becoming a seventh dimension. The likely answer is yes: tool disclosure belongs with publication and credit; access boundaries belong with data and environment; independent verification belongs with evaluation. This discussion prevents “AI reproducibility” from becoming a detached checklist. The same evidence standards govern all scientific work.</p>
 <style type="text/css">
@@ -618,14 +621,14 @@
 <li>Read only the README first</li>
 <li>Clone into a fresh directory</li>
 <li>Build the environment from the lockfile</li>
-<li>Run the named smoke test or notebook</li>
+<li>Run the smoke test the README names (<code>pixi run smoke</code>)</li>
 <li>Compare one output and log the first obstacle</li>
 </ol>
 <div class="takeaway">
 <p>The peer records the first obstacle before requesting help, because that obstacle provides evidence about documentation, environment, access, or computational assumptions.</p>
 </div>
 <aside class="notes">
-<p>Allow 20 minutes. A fresh directory approximates a new user, though it does not guarantee a clean machine. Students should not use their partner’s verbal instructions until after they record the first obstacle. If the clone contains no small, fast target, that is itself a finding. Ask peers to classify the obstacle using Friday’s layers: documentation, data access, environment, sandbox or permissions, hardware, or scientific ambiguity.</p>
+<p>Allow 10 minutes. The environment builds quickly because pixi reuses the package cache from Friday’s install. The product is the logged first obstacle, not a completed run. A fresh directory approximates a new user, though it does not guarantee a clean machine. Students should not use their partner’s verbal instructions until after they record the first obstacle. If the clone contains no small, fast target, that is itself a finding. Ask peers to classify the obstacle using Friday’s layers: documentation, data access, environment, sandbox or permissions, hardware, or scientific ambiguity.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -651,7 +654,7 @@
 <p>Ch 1 quiz opens Tue Oct 6 and closes Thu Oct 8 · Wednesday: data modalities, formats, and the class project landscape</p>
 </div>
 <aside class="notes">
-<p>Reserve ten minutes for synthesis and logistics. Record the agreed wording in the Gaia workspace so the rubric remains editable and visible. Announce that every project checkpoint will use the current rubric, and the class may revise it when new failure modes appear. The first three rows should come from actual obstacles today, not generic principles. Pulse-talk sign-ups and reading-arc stage 1 can follow after the rubric decision.</p>
+<p>Reserve the final five minutes for synthesis. Record the agreed wording in the Gaia workspace so the rubric remains editable and visible. Announce that every project checkpoint will use the current rubric, and the class may revise it when new failure modes appear. The first three rows should come from actual obstacles today, not generic principles. Announce pulse-talk sign-ups and reading-arc stage 1 on Canvas rather than spending synthesis time on them.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

@@ -73,7 +73,7 @@ The environment determines which software can execute. The sandbox constrains wh
 :::
 
 ::: {.notes}
-Connect directly to Friday's vocabulary. An agent can write correct Python and still fail because the sandbox blocks the data path or network. It can have access but compute a different result because the package version changed. It can have the right environment and still exhaust memory. Ask students to classify three errors aloud: “permission denied,” “module not found,” and “CUDA out of memory.” This makes the layers usable rather than definitional. The assigned literature supplies measured examples for the next slide: Liu et al. on attention, Sharma et al. on agreement, and Zheng et al. on evaluation bias.
+Connect directly to Friday's vocabulary. An agent can write correct Python and still fail because the sandbox blocks the data path or network. It can have access but compute a different result because the package version changed. It can have the right environment and still exhaust memory. Ask students to classify three errors aloud: “permission denied,” “module not found,” and “CUDA out of memory.” This makes the layers usable rather than definitional. The assigned literature supplies measured examples for the failure-mode slide: Liu et al. on attention, Sharma et al. on agreement, and Zheng et al. on evaluation bias.
 :::
 
 ## The agent loop
@@ -124,24 +124,6 @@ The audit should test specific claims against source files and outputs rather th
 Connect this slide to Liu et al.'s “lost in the middle” result. The practical point is not that long contexts always fail. It is that nominal access to a file does not establish that relevant content influenced the answer. Ask students how they would test an agent's claim that it “reviewed the whole repository.” Useful checks include requesting exact file and line references, sampling omitted files, and designing questions whose answers occur in different context positions.
 :::
 
-## Calibration experiment
-
-**20 minutes in pairs**
-
-1. Ask an assistant for the mean east velocity of station P395
-2. Record whether it runs code or answers from text
-3. Recompute the value independently and compare
-4. Ask for three ML papers in your subfield
-5. Resolve every DOI and count unsupported citations
-
-::: {.dim}
-The class will report denominators, not anecdotes: number of attempts, valid tool executions, numerically consistent answers, and verified citations.
-:::
-
-::: {.notes}
-Students need a saved P395 data file or the 1.7 notebook. Do not announce a “correct” hallucination rate. Measure what happens in this room with the models students use. Record denominators. For the numeric task, note whether the assistant executed code, whether the environment contained the needed packages, and whether the final number matches the independent computation within a stated tolerance. For citations, distinguish a valid DOI with an irrelevant paper from a DOI that does not resolve.
-:::
-
 ## Numerical calibration protocol
 
 Before asking the assistant, define the reference calculation:
@@ -172,6 +154,24 @@ A real citation can still fail the relevance or evidence test.
 
 ::: {.notes}
 This protocol separates fabrication from retrieval quality. A paper may exist but use a different data modality or make a different claim. A DOI may resolve while the assistant has altered the title or authors. Record each failure type rather than reporting a single “hallucination” count. This produces a more informative small eval set and reinforces the paper sprint's evidence trail.
+:::
+
+## Calibration experiment
+
+**20 minutes in pairs**
+
+1. Give an assistant `book/Chapter1-GettingStarted/data/gps_P395_relative_position.csv` and ask for the east velocity of P395 in mm/yr
+2. Record whether it runs code or answers from text
+3. Recompute the value independently and compare
+4. Ask for three ML papers in your subfield
+5. Resolve every DOI and count unsupported citations
+
+::: {.dim}
+The class will report denominators, not anecdotes: number of attempts, valid tool executions, numerically consistent answers, and verified citations.
+:::
+
+::: {.notes}
+The P395 file is committed in the book repository, so every student who cloned it on Friday already has it; 1.7, which produces it, is not taught until Wednesday. Do not announce a “correct” hallucination rate. Measure what happens in this room with the models students use. Record denominators. For the numeric task, note whether the assistant executed code, whether the environment contained the needed packages, and whether the final number matches the independent computation within a stated tolerance. For citations, distinguish a valid DOI with an irrelevant paper from a DOI that does not resolve.
 :::
 
 ## Course AI modes
@@ -221,7 +221,11 @@ Add these criteria to the class rubric:
 | Access boundaries | sensitive data and credentials stay outside unapproved tools and sandboxes |
 | Run record | accepted code, environment, inputs, and outputs are preserved in the repository |
 
-**0** missing · **1** claimed · **2** supported by inspectable evidence
+**0** missing · **1** present but incomplete · **2** another team can verify it
+
+::: {.dim}
+Same scale as v0.1. A claim without inspectable evidence, such as "verified the citations", scores 1.
+:::
 
 ::: {.notes}
 Ask the class whether any row belongs inside an existing rubric dimension rather than becoming a seventh dimension. The likely answer is yes: tool disclosure belongs with publication and credit; access boundaries belong with data and environment; independent verification belongs with evaluation. This discussion prevents “AI reproducibility” from becoming a detached checklist. The same evidence standards govern all scientific work.
@@ -234,7 +238,7 @@ Exchange repository URLs with another pair.
 1. Read only the README first
 2. Clone into a fresh directory
 3. Build the environment from the lockfile
-4. Run the named smoke test or notebook
+4. Run the smoke test the README names (`pixi run smoke`)
 5. Compare one output and log the first obstacle
 
 ::: {.takeaway}
@@ -242,7 +246,7 @@ The peer records the first obstacle before requesting help, because that obstacl
 :::
 
 ::: {.notes}
-Allow 20 minutes. A fresh directory approximates a new user, though it does not guarantee a clean machine. Students should not use their partner's verbal instructions until after they record the first obstacle. If the clone contains no small, fast target, that is itself a finding. Ask peers to classify the obstacle using Friday's layers: documentation, data access, environment, sandbox or permissions, hardware, or scientific ambiguity.
+Allow 10 minutes. The environment builds quickly because pixi reuses the package cache from Friday's install. The product is the logged first obstacle, not a completed run. A fresh directory approximates a new user, though it does not guarantee a clean machine. Students should not use their partner's verbal instructions until after they record the first obstacle. If the clone contains no small, fast target, that is itself a finding. Ask peers to classify the obstacle using Friday's layers: documentation, data access, environment, sandbox or permissions, hardware, or scientific ambiguity.
 :::
 
 ## Rubric v0.2
@@ -259,5 +263,5 @@ Ch 1 quiz opens Tue Oct 6 and closes Thu Oct 8 · Wednesday: data modalities, fo
 :::
 
 ::: {.notes}
-Reserve ten minutes for synthesis and logistics. Record the agreed wording in the Gaia workspace so the rubric remains editable and visible. Announce that every project checkpoint will use the current rubric, and the class may revise it when new failure modes appear. The first three rows should come from actual obstacles today, not generic principles. Pulse-talk sign-ups and reading-arc stage 1 can follow after the rubric decision.
+Reserve the final five minutes for synthesis. Record the agreed wording in the Gaia workspace so the rubric remains editable and visible. Announce that every project checkpoint will use the current rubric, and the class may revise it when new failure modes appear. The first three rows should come from actual obstacles today, not generic principles. Announce pulse-talk sign-ups and reading-arc stage 1 on Canvas rather than spending synthesis time on them.
 :::
