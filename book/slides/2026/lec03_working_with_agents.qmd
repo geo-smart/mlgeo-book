@@ -34,7 +34,7 @@ For each dimension, assign:
 - **2** another team can verify it
 
 ::: {.takeaway}
-Select one score whose interpretation is uncertain and identify the evidence that would resolve the disagreement.
+A score whose interpretation is uncertain indicates where the rubric needs a clearer criterion or additional evidence.
 :::
 
 ::: {.notes}
@@ -76,23 +76,23 @@ The environment determines which software can execute. The sandbox constrains wh
 Connect directly to Friday's vocabulary. An agent can write correct Python and still fail because the sandbox blocks the data path or network. It can have access but compute a different result because the package version changed. It can have the right environment and still exhaust memory. Ask students to classify three errors aloud: “permission denied,” “module not found,” and “CUDA out of memory.” This makes the layers usable rather than definitional. The assigned literature supplies measured examples for the failure-mode slide: Liu et al. on attention, Sharma et al. on agreement, and Zheng et al. on evaluation bias.
 :::
 
-## The agent loop
+## The agent loop {.smaller}
 
 Each iteration contains three distinct sources of scientific responsibility:
 
-| Stage | Example | Question for the audit |
+| Stage | Example | Question for the reviewer |
 |---|---|---|
 | Specification | “Estimate the velocity of station P395” | Were the target, units, interval, and success criterion defined? |
 | Execution | the agent reads data and runs regression code | Which tools, data, environment, and permissions shaped the operation? |
 | Interpretation | the agent explains the estimated trend | Does the conclusion follow from the computed output and domain assumptions? |
 
-An exact execution log cannot repair an underspecified scientific question.
+A complete execution log does not compensate for a scientific question that was underspecified at the start.
 
 ::: {.notes}
-This distinction supports a stronger audit. Execution errors include wrong paths, package changes, or arithmetic bugs. Specification errors include an ambiguous component, date interval, or treatment of offsets. Interpretation errors include treating a seasonal signal as tectonic acceleration. Agent traces often document execution better than specification or interpretation. The rubric should therefore evaluate all three stages.
+This distinction supports a more complete evaluation. Execution errors include wrong paths, package changes, or arithmetic bugs. Specification errors include an ambiguous component, date interval, or treatment of offsets. Interpretation errors include treating a seasonal signal as tectonic acceleration. Agent traces often document execution better than specification or interpretation. The rubric should therefore evaluate all three stages.
 :::
 
-## Where errors enter
+## Where errors enter {.smaller}
 
 | Failure mode | What can happen | Evidence or countermeasure |
 |---|---|---|
@@ -118,7 +118,7 @@ An agent may receive an entire repository while using only a small fraction of i
 - Summaries can omit exceptions, warnings, and negative results
 - A long reasoning trace records a proposed path, not a guarantee of causal faithfulness
 
-The audit should test specific claims against source files and outputs rather than infer completeness from trace length.
+An evaluation should test specific claims against source files and outputs rather than infer completeness from trace length.
 
 ::: {.notes}
 Connect this slide to Liu et al.'s “lost in the middle” result. The practical point is not that long contexts always fail. It is that nominal access to a file does not establish that relevant content influenced the answer. Ask students how they would test an agent's claim that it “reviewed the whole repository.” Useful checks include requesting exact file and line references, sampling omitted files, and designing questions whose answers occur in different context positions.
@@ -253,7 +253,7 @@ Allow 10 minutes. The environment builds quickly because pixi reuses the package
 
 As a class, choose:
 
-- one criterion the paper audit exposed
+- one criterion the paper review exposed
 - one criterion the calibration experiment exposed
 - one criterion the peer rerun exposed
 - the evidence required for a score of **2**

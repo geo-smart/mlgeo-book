@@ -23,9 +23,9 @@ Readings: [1.1](https://geo-smart.github.io/mlgeo-book/open-reproducible-science
 Open by naming the unfinished work from Wednesday. Today does not start a new topic. The class finishes the paper sprint, extracts evidence from it, and uses that evidence to write a rubric. The hardware and workbench material then answers one rubric question: what would another person need to rerun this result on another machine? The session produces two reusable artifacts rather than a page of notes: rubric version 0.1 and each student's course repository. Suggested 80-minute allocation: framing 2 minutes; evidence and literature 8; paper sprint 12; matrix, strong result, and rubric construction 16; computing concepts 14; compute-choice activity 7; workbench lab 16; exit ticket 5. If time runs short, compress the CPU/GPU and HPC slides to their takeaways; they are covered in 1.4.
 :::
 
-## Why spend a session on this? {.smaller}
+## Measured reproducibility of published research {.smaller}
 
-| Audit | Tested | Outcome |
+| Study | Tested | Outcome |
 |---|---|---|
 | Begley & Ellis 2012 | 53 landmark cancer studies | **6** confirmed |
 | Open Science Collab. 2015 | 100 psychology experiments | **36%** replicated (97% originally) |
@@ -39,7 +39,7 @@ Baker 2016 survey, recomputed from the raw data: 64% of 95 Earth and environment
 :::
 
 ::: {.takeaway}
-Most published computational results have never been rerun, and the geosciences are measured, not exempt.
+Where reproducibility has been measured, most published computational results could not be regenerated. The geoscience studies report rates comparable to, or lower than, those in other fields.
 :::
 
 ::: {.notes}
@@ -51,11 +51,11 @@ Two minutes. Read the bottom two rows aloud: they are our field. Stagge et al. s
 {{< include refs/lec02_refs.qmd >}}
 
 ::: {.takeaway}
-Rerunning did not decide any of these cases. It made each one checkable.
+A rerun did not establish whether any of these results was correct; it allowed other researchers to examine and test them.
 :::
 
 ::: {.notes}
-Six minutes, four stories. Stagge et al. is the hydrology audit from the previous slide. Ireland et al. (Seismica, 2023) is our closest field: 200 geophysics articles and 20 journal policies; about 86% had a data availability statement but the original data were reachable for 54% and the software was named for 49%. A statement is not the data. DeVries et al. (Nature, 2018) trained a 13,451-parameter network on more than 131,000 mainshock–aftershock pairs and reported AUC 0.849 against 0.583 for Coulomb stress change. Mignan and Broccardo (Nature, 2019) matched it with logistic regression on two parameters, AUC 0.85. A data scientist, Rajiv Shah, also argued that the same earthquakes appeared in training and test sets; the authors disputed it and Nature did not act. The number reproduced; the interpretation that deep learning found physics a simple model misses did not survive a baseline. The hockey stick is the success story: Mann, Bradley and Hughes (1998, 1999); McIntyre and McKitrick (GRL, 2005) challenged the principal-component centering; Wahl and Ammann (Climatic Change, 2007) reimplemented the method and found the result robust to those criticisms; PAGES 2k (Nature Geoscience, 2013 and 2019) used 692 new proxy records and seven methods and reached the same conclusion. That walk across the table is on the next slides. If time allows, add Resplandy et al. (Nature, 2018): an outside reader, Nicholas Lewis, found that systematic errors had been treated as random; uncertainty grew about fourfold and the paper was retracted in 2019.
+Six minutes, four stories. Stagge et al. is the hydrology study from the previous slide. Ireland et al. (Seismica, 2023) is our closest field: 200 geophysics articles and 20 journal policies; about 86% had a data availability statement but the original data were reachable for 54% and the software was named for 49%. A data availability statement does not guarantee access to the data. DeVries et al. (Nature, 2018) trained a 13,451-parameter network on more than 131,000 mainshock–aftershock pairs and reported AUC 0.849 against 0.583 for Coulomb stress change. Mignan and Broccardo (Nature, 2019) matched it with logistic regression on two parameters, AUC 0.85. A data scientist, Rajiv Shah, also argued that the same earthquakes appeared in training and test sets; the authors disputed it and Nature did not act. The number reproduced; the interpretation that deep learning found physics a simple model misses did not survive a baseline. The hockey stick is the success story: Mann, Bradley and Hughes (1998, 1999); McIntyre and McKitrick (GRL, 2005) challenged the principal-component centering; Wahl and Ammann (Climatic Change, 2007) reimplemented the method and found the result robust to those criticisms; PAGES 2k (Nature Geoscience, 2013 and 2019) used 692 new proxy records and seven methods and reached the same conclusion. That walk across the table is on the next slides. If time allows, add Resplandy et al. (Nature, 2018): an outside reader, Nicholas Lewis, found that systematic errors had been treated as random; uncertainty grew about fourfold and the paper was retracted in 2019.
 :::
 
 ## Paper sprint completion {.smaller}
@@ -96,14 +96,14 @@ Hold the research question fixed. The Turing Way definitions (book 1.1). The Nat
 :::
 
 ::: {.takeaway}
-Each cell is a different claim. A rerun of your notebook tests only the top-left one.
+Each cell corresponds to a distinct claim. Rerunning a notebook on the original data tests only reproducibility, the upper-left cell.
 :::
 
 ::: {.notes}
 This is the table from Wednesday's slide, now with all four cells. Read each cell in our terms, using GNSS displacement as the running example. Reproducible: same NGL time series, same notebook, fresh clone, same trend. Robust: same series, but a different seed, split design, preprocessing choice, or model family, compared with a simple baseline. Replicable: the same pipeline on other stations, another region, or a later period. Generalisable: independent groups with different data and methods reach the same conclusion. The Turing Way gives its robust example as one pipeline in R and another in Python. The National Academies report used in Chapter 5.1 defines reproducibility with the same data, code and conditions, and replicability with each study obtaining its own data, which matches the top row. Older computational-science usage swaps the words; that is why the rubric asks for the test, not the label. Ask: which cell did your sprint paper claim, and which cell did its evidence support?
 :::
 
-## What makes a result strong? {.smaller}
+## What each test establishes {.smaller}
 
 | Passed | Rules out | Still possible |
 |---|---|---|
@@ -113,7 +113,7 @@ This is the table from Wednesday's slide, now with all four cells. Read each cel
 | Generalisable | dependence on one data set and pipeline | nothing is settled for good |
 
 ::: {.takeaway}
-A strong result keeps its conclusion as it moves across the table, and states where it should fail.
+A conclusion gains support as it persists across these tests. A complete report also states the conditions under which the result is expected to fail.
 :::
 
 ::: {.notes}
@@ -232,7 +232,7 @@ Clarify the distinction between login nodes and compute nodes. Students should n
 | **Container** | Which operating-system-level dependencies travel with the application? |
 
 ::: {.takeaway}
-A lockfile specifies software resolution. A sandbox specifies permitted access. A container captures a broader runtime stack.
+A lockfile fixes package versions, a sandbox limits what a process may access, and a container also carries operating-system dependencies.
 :::
 
 ::: {.notes}
@@ -250,7 +250,7 @@ A reproducible run should preserve enough information to reconstruct both softwa
 - logs, warnings, output checksums, and the result selected for reporting
 
 ::: {.takeaway}
-The final figure does not reveal the computational state that produced it.
+A published figure does not record the software, data, and parameters that produced it, so that information has to be preserved alongside the figure.
 :::
 
 ::: {.notes}
@@ -307,5 +307,5 @@ HW1 due Mon Oct 12 · Ch 1 quiz opens Tue Oct 6 · Monday begins by scoring your
 :::
 
 ::: {.notes}
-Reserve the final five minutes. Collect responses in Canvas or the Gaia workspace. Use them to prepare Monday's rubric version 0.2. The continuity matters: Monday should begin with their words and their evidence rather than a new instructor-generated checklist. If several students still lack a functioning environment, direct them to the install clinic and allow the paper audit and rubric work to count as today's completed intellectual product.
+Reserve the final five minutes. Collect responses in Canvas or the Gaia workspace. Use them to prepare Monday's rubric version 0.2. The continuity matters: Monday should begin with their words and their evidence rather than a new instructor-generated checklist. If several students still lack a functioning environment, direct them to the install clinic and allow the paper review and rubric work to count as today's completed intellectual product.
 :::
