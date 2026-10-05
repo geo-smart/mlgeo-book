@@ -11,8 +11,6 @@ title-slide-attributes:
 
 ### Learning objectives
 
-Place your research within an Earth or planetary system and a discipline, and label a dataset by its source, system, and discipline.
-
 Evaluate an AI-assisted workflow as a scientific process: identify which decisions belong to the model, which operations belong to tools, which access constraints come from the sandbox, and which evidence supports the reported result.
 
 Write an agent instruction file whose rules can be checked against the agent's output.
@@ -22,91 +20,7 @@ Reading: [1.8 AI in your workflow](https://geo-smart.github.io/mlgeo-book/ai-in-
 :::
 
 ::: {.notes}
-Continue the rubric thread from Friday. The session opens with a short orientation: the systems and disciplines of the geosciences, a check of where each student's research sits, and the badge system that labels every dataset in the course. The rest of the session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first score the paper they found, then learn where an agent's environment and sandbox fit, run a calibration experiment, and finish by writing an agent instruction file and checking whether an agent follows it. The class should leave with rubric version 0.2, an evidence-based AI policy, and a first AGENTS.md. The peer rerun moves to the start of Wednesday's session, when more repositories will have a smoke test. Suggested 80-minute allocation: systems, disciplines, and background check 8 minutes; rubric checkpoint 6; executable claims and agent architecture 14; failure modes 8; calibration experiment, including the P395 context slide, 20; policy, governance, and rubric extension 9; instruction file and compliance check 10; synthesis 5.
-:::
-
-## Geoscience: the systems we study {.smaller .compact}
-
-The geosciences study Earth and other planetary bodies as coupled physical, chemical, and biological systems: their materials, the processes that move mass and energy between them, and the history those materials record, over timescales from seconds to billions of years.
-
-| System | What it includes | Processes studied |
-|---|---|---|
-| [🪨 Solid Earth]{.gb .sys .solid} | crust, mantle, core | plate motion, earthquakes, volcanism, landscape evolution |
-| [🌊 Ocean]{.gb .sys .ocean} | water column, seafloor | circulation, heat and carbon uptake, waves, sea level |
-| [💧 Land water]{.gb .sys .water} | rivers, lakes, soil, groundwater, snowpack | runoff, infiltration, evapotranspiration, floods, droughts |
-| [🌤️ Atmosphere]{.gb .sys .air} | the air column, surface to upper atmosphere | weather, climate, transport of heat, water, and aerosols |
-| [🧊 Cryosphere]{.gb .sys .ice} | glaciers, ice sheets, sea ice, permafrost | ice flow, melt, contribution to sea level |
-| [🌱 Biosphere]{.gb .sys .bio} | ecosystems on land and in the ocean | exchange of carbon, water, and energy with the other systems |
-| [🪐 Planets & exoplanets]{.gb .sys .planet} | bodies in and beyond the Solar System | interiors, surfaces, atmospheres, habitability |
-
-::: {.takeaway}
-The systems exchange mass and energy, so most research questions, and most course datasets, involve more than one of them.
-:::
-
-::: {.notes}
-Two minutes. The definition is deliberately broad enough to include planetary science, because the class includes an exoplanet team. Give one coupling per row as you read: groundwater extraction lowers the land surface (land water and solid Earth); melting ice sheets raise sea level (cryosphere and ocean); volcanic aerosols cool the atmosphere (solid Earth and atmosphere). The badge in the first column is the label students will see on every dataset from now on.
-:::
-
-## Disciplines and the systems they study {.smaller .compact}
-
-| Discipline | Main systems | Typical data |
-|---|---|---|
-| [📈 Seismology]{.gb .disc .solid} | [🪨 Solid Earth]{.gb .sys .solid} | seismic waveforms, earthquake catalogs |
-| [📐 Geodesy]{.gb .disc .solid} | [🪨 Solid Earth]{.gb .sys .solid} [🧊 Cryosphere]{.gb .sys .ice} [💧 Land water]{.gb .sys .water} | GNSS positions, InSAR, gravity |
-| [🌋 Volcanology]{.gb .disc .solid} | [🪨 Solid Earth]{.gb .sys .solid} [🌤️ Atmosphere]{.gb .sys .air} | seismicity, deformation, gas and thermal emission |
-| [⛰️ Geology & geomorphology]{.gb .disc .solid} | [🪨 Solid Earth]{.gb .sys .solid} | maps, samples, topography |
-| [💧 Hydrology & land-surface modeling]{.gb .disc .water} | [💧 Land water]{.gb .sys .water} [🌱 Biosphere]{.gb .sys .bio} | stream gauges, soil moisture, land-surface model output |
-| [🌊 Oceanography]{.gb .disc .ocean} | [🌊 Ocean]{.gb .sys .ocean} | floats, moorings, satellite altimetry |
-| [🌡️ Atmospheric & climate science]{.gb .disc .air} | [🌤️ Atmosphere]{.gb .sys .air} | weather stations, reanalyses, climate models |
-| [🧊 Glaciology]{.gb .disc .ice} | [🧊 Cryosphere]{.gb .sys .ice} | ice velocity, altimetry, ice cores |
-| [🦠 Biogeosciences]{.gb .disc .bio} | [🌱 Biosphere]{.gb .sys .bio} | flux towers, ocean color |
-| [🪐 Planetary science & astrobiology]{.gb .disc .planet} | [🪐 Planets & exoplanets]{.gb .sys .planet} | spacecraft and telescope observations, exoplanet spectra |
-
-::: {.dim}
-A discipline is a community of questions and methods; a single project usually draws on more than one.
-:::
-
-::: {.notes}
-One minute. Do not read the table. Point out that the discipline badge takes the color of its main system, so the color groups disciplines without replacing the label. Geodesy appears under three systems because the same GNSS and gravity measurements record tectonics, ice loss, and groundwater change.
-:::
-
-## Data sources, and how course datasets are labeled {.smaller}
-
-| Source | What it is | Examples |
-|---|---|---|
-| [📍 In-situ sensor]{.gb .src} | an instrument that measures where it sits | seismometer, GNSS receiver, stream gauge, float, weather station |
-| [🛰️ Satellite & airborne]{.gb .src} | remote sensing from orbit or aircraft | InSAR, optical imagery, altimetry, gravity |
-| [🔭 Telescope]{.gb .src} | observation of other planetary bodies and stars | light curves, spectra |
-| [🖥️ Model & simulation]{.gb .src} | numerical solution of physical equations | climate and land-surface models, reanalyses, synthetic data |
-| [🗂️ Catalog & compiled product]{.gb .src} | records derived from other data | earthquake catalogs, velocity fields, gridded compilations |
-| [🧪 Sample & laboratory]{.gb .src} | measurements on physical material | rock, water, and ice-core analyses |
-
-Each dataset carries three labels. The calibration station later today: [📍 In-situ sensor]{.gb .src} [🪨 Solid Earth]{.gb .sys .solid} [📐 Geodesy]{.gb .disc .solid}
-
-::: {.notes}
-One minute. Sources are drawn as dark filled badges, systems as outlined badges, disciplines as badges with a colored bar. Every dataset shown in this course from now on carries one of each. Derived products matter for reproducibility: a velocity field or an earthquake catalog is itself the output of a processing pipeline, and its provider documents that pipeline.
-:::
-
-## Where does your research sit? {.smaller}
-
-**4 minutes, individually, then a show of hands**
-
-1. Choose the system, or systems, your research question concerns
-2. Choose your discipline, or two
-3. Name the data source you expect to use
-
-Teams already forming from the project landscape:
-
-- volcano team · [🌋 Volcanology]{.gb .disc .solid} [🪨 Solid Earth]{.gb .sys .solid} [🌤️ Atmosphere]{.gb .sys .air}
-- exoplanet team · [🪐 Planetary science & astrobiology]{.gb .disc .planet} [🔭 Telescope]{.gb .src}
-- land-surface-modeling team · [💧 Hydrology & land-surface modeling]{.gb .disc .water} [🖥️ Model & simulation]{.gb .src}
-
-::: {.takeaway}
-The system and discipline you choose define the subfield for reading-arc stage 1, assigned today.
-:::
-
-::: {.notes}
-Ask students to write their three labels in the Canvas survey or on a card; read out the counts per system. Students who do not fit one bucket should list two; interdisciplinary work is common and the badges are meant to describe, not to sort people. Call on two or three students to connect their label to a question they care about. Stage 1 asks each student to drive an assistant through a literature review on the opportunities and challenges of AI in their subfield, so the label chosen here becomes the search scope. Keep the responses: they seed project teams and tell you which datasets to badge first in later sessions.
+Continue the rubric thread from Friday. The session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first score the paper they found, then learn where an agent's environment and sandbox fit, run a calibration experiment, and finish by writing an agent instruction file and checking whether an agent follows it. The class should leave with rubric version 0.2, an evidence-based AI policy, and a first AGENTS.md. The peer rerun moves to the start of Wednesday's session, when more repositories will have a smoke test. Suggested 80-minute allocation: rubric checkpoint 8 minutes; executable claims and agent architecture 17; failure modes 10; calibration experiment, including the P395 context slide, 20; policy, governance, and rubric extension 10; instruction file and compliance check 10; synthesis 5.
 :::
 
 ## Rubric checkpoint
@@ -126,7 +40,7 @@ A score whose interpretation is uncertain indicates where the rubric needs a cle
 :::
 
 ::: {.notes}
-Give pairs six minutes. Each score needs a URL, file, passage, or explicit absence. Ask for two challenged scores and let the room decide what evidence would move each score. This creates the need for the agent-specific criteria later. A paper can provide code and still score poorly if the environment, data version, or evaluation split cannot be reconstructed.
+Give pairs eight minutes. Each score needs a URL, file, passage, or explicit absence. Ask for two challenged scores and let the room decide what evidence would move each score. This creates the need for the agent-specific criteria later. A paper can provide code and still score poorly if the environment, data version, or evaluation split cannot be reconstructed.
 :::
 
 ## From available artifacts to an executable claim
@@ -225,7 +139,7 @@ Relative to stable North America, the Oregon coast at P395 moves northeast at ab
 :::
 
 ::: {.notes}
-Two minutes; this slide gives the experiment its physical meaning. P395 sits in the Oregon Coast Range at 45.02°N, 123.86°W (NGL llh.out). NGL's MIDAS solution, retrieved 2026-10-05, gives east +6.9 ± 0.2 and north +10.7 ± 0.2 mm/yr relative to stable North America, and up +0.2 ± 0.4 mm/yr, so no vertical rate is resolved. The northeast motion is commonly attributed to two contributions: elastic shortening of the upper plate while the subduction interface is locked between earthquakes, and clockwise rotation of the Oregon forearc (McCaffrey et al., 2013, JGR, doi:10.1029/2012JB009473). The annual oscillations in both components are seasonal signals, such as hydrological loading, that a velocity estimate must either model or average over. The class CSV is in the IGS20 frame, not the North-America-fixed frame drawn here; the next slide makes the frame part of the specification.
+Two minutes; this slide gives the experiment its physical meaning. The badges are the labels introduced in session 1. P395 sits in the Oregon Coast Range at 45.02°N, 123.86°W (NGL llh.out). NGL's MIDAS solution, retrieved 2026-10-05, gives east +6.9 ± 0.2 and north +10.7 ± 0.2 mm/yr relative to stable North America, and up +0.2 ± 0.4 mm/yr, so no vertical rate is resolved. The northeast motion is commonly attributed to two contributions: elastic shortening of the upper plate while the subduction interface is locked between earthquakes, and clockwise rotation of the Oregon forearc (McCaffrey et al., 2013, JGR, doi:10.1029/2012JB009473). The annual oscillations in both components are seasonal signals, such as hydrological loading, that a velocity estimate must either model or average over. The class CSV is in the IGS20 frame, not the North-America-fixed frame drawn here; the next slide makes the frame part of the specification.
 :::
 
 ## Numerical calibration protocol

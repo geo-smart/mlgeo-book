@@ -9,12 +9,13 @@
 
   const palettes = {
     discipline: {
-      "Earthquakes & volcanoes": "#b3402a",
-      "Climate & weather": "#2f6fb0",
-      "Cryosphere & remote sensing": "#4d8f95",
-      "Hydrology & hazards": "#327a5f",
-      "Solid Earth & geodesy": "#8a5a44",
-      "Oceans & ecosystems": "#6558a6",
+      "Solid Earth": "#eb6834",
+      Ocean: "#2a78d6",
+      "Land water": "#1baf7a",
+      Atmosphere: "#eda100",
+      Cryosphere: "#4a3aa7",
+      Biosphere: "#008300",
+      "Planets & exoplanets": "#e87ba4",
     },
     modality: {
       "Time series": "#116b66",
@@ -33,12 +34,12 @@
   };
 
   const examples = [
-    { idea: "Detect small earthquakes hidden in continuous waveforms", discipline: "Earthquakes & volcanoes", modality: "Waveforms", task: "Detect & classify" },
-    { idea: "Discover ocean regimes from float profiles", discipline: "Oceans & ecosystems", modality: "Profiles & trajectories", task: "Discover structure" },
-    { idea: "Forecast streamflow during atmospheric rivers", discipline: "Hydrology & hazards", modality: "Time series", task: "Forecast" },
-    { idea: "Emulate a regional climate simulation", discipline: "Climate & weather", modality: "Gridded fields", task: "Emulate & invert" },
-    { idea: "Map glacier retreat from satellite scenes", discipline: "Cryosphere & remote sensing", modality: "Images & rasters", task: "Detect & classify" },
-    { idea: "Find transient deformation in GNSS stations", discipline: "Solid Earth & geodesy", modality: "Tables & points", task: "Discover structure" },
+    { idea: "Detect small earthquakes hidden in continuous waveforms", discipline: "Solid Earth", modality: "Waveforms", task: "Detect & classify" },
+    { idea: "Discover ocean regimes from float profiles", discipline: "Ocean", modality: "Profiles & trajectories", task: "Discover structure" },
+    { idea: "Forecast streamflow during atmospheric rivers", discipline: "Land water", modality: "Time series", task: "Forecast" },
+    { idea: "Emulate a regional climate simulation", discipline: "Atmosphere", modality: "Gridded fields", task: "Emulate & invert" },
+    { idea: "Map glacier retreat from satellite scenes", discipline: "Cryosphere", modality: "Images & rasters", task: "Detect & classify" },
+    { idea: "Detect exoplanet transits in telescope light curves", discipline: "Planets & exoplanets", modality: "Time series", task: "Detect & classify" },
   ];
 
   let projects = [];
@@ -70,7 +71,7 @@
     const lower = Object.fromEntries(Object.entries(row).map(([key, value]) => [key.trim().toLowerCase(), String(value || "").trim()]));
     return {
       idea: lower.idea || lower.question || lower["project idea"] || "",
-      discipline: lower.discipline || lower.domain || "",
+      discipline: lower.system || lower["earth system"] || lower.discipline || lower.domain || "",
       modality: lower.modality || lower["data modality"] || "",
       task: lower.task || lower["ml task"] || "",
     };
