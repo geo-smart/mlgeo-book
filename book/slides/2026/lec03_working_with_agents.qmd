@@ -9,7 +9,9 @@ title-slide-attributes:
 
 [🤖]{.lecture-icon}
 
-### Learning objective
+### Learning objectives
+
+Place your research within an Earth or planetary system and a discipline, and label a dataset by its source, system, and discipline.
 
 Evaluate an AI-assisted workflow as a scientific process: identify which decisions belong to the model, which operations belong to tools, which access constraints come from the sandbox, and which evidence supports the reported result.
 
@@ -18,7 +20,91 @@ Reading: [1.8 AI in your workflow](https://geo-smart.github.io/mlgeo-book/ai-in-
 :::
 
 ::: {.notes}
-Continue the rubric thread from Friday. The session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first score the paper they found, then learn where an agent's environment and sandbox fit, run a calibration experiment, and finish with a peer rerun. The class should leave with rubric version 0.2 and an evidence-based AI policy. Suggested 80-minute allocation: rubric checkpoint 8 minutes; executable claims and agent architecture 17; failure modes 10; calibration experiment 20; policy, governance, and rubric extension 10; peer rerun 10; synthesis 5.
+Continue the rubric thread from Friday. The session opens with a short orientation: the systems and disciplines of the geosciences, a check of where each student's research sits, and the badge system that labels every dataset in the course. The rest of the session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first score the paper they found, then learn where an agent's environment and sandbox fit, run a calibration experiment, and finish with a peer rerun. The class should leave with rubric version 0.2 and an evidence-based AI policy. Suggested 80-minute allocation: systems, disciplines, and background check 8 minutes; rubric checkpoint 6; executable claims and agent architecture 14; failure modes 8; calibration experiment, including the P395 context slide, 20; policy, governance, and rubric extension 9; peer rerun 10; synthesis 5.
+:::
+
+## Geoscience: the systems we study {.smaller .compact}
+
+The geosciences study Earth and other planetary bodies as coupled physical, chemical, and biological systems: their materials, the processes that move mass and energy between them, and the history those materials record, over timescales from seconds to billions of years.
+
+| System | What it includes | Processes studied |
+|---|---|---|
+| [🪨 Solid Earth]{.gb .sys .solid} | crust, mantle, core | plate motion, earthquakes, volcanism, landscape evolution |
+| [🌊 Ocean]{.gb .sys .ocean} | water column, seafloor | circulation, heat and carbon uptake, waves, sea level |
+| [💧 Land water]{.gb .sys .water} | rivers, lakes, soil, groundwater, snowpack | runoff, infiltration, evapotranspiration, floods, droughts |
+| [🌤️ Atmosphere]{.gb .sys .air} | the air column, surface to upper atmosphere | weather, climate, transport of heat, water, and aerosols |
+| [🧊 Cryosphere]{.gb .sys .ice} | glaciers, ice sheets, sea ice, permafrost | ice flow, melt, contribution to sea level |
+| [🌱 Biosphere]{.gb .sys .bio} | ecosystems on land and in the ocean | exchange of carbon, water, and energy with the other systems |
+| [🪐 Planets & exoplanets]{.gb .sys .planet} | bodies in and beyond the Solar System | interiors, surfaces, atmospheres, habitability |
+
+::: {.takeaway}
+The systems exchange mass and energy, so most research questions, and most course datasets, involve more than one of them.
+:::
+
+::: {.notes}
+Two minutes. The definition is deliberately broad enough to include planetary science, because the class includes an exoplanet team. Give one coupling per row as you read: groundwater extraction lowers the land surface (land water and solid Earth); melting ice sheets raise sea level (cryosphere and ocean); volcanic aerosols cool the atmosphere (solid Earth and atmosphere). The badge in the first column is the label students will see on every dataset from now on.
+:::
+
+## Disciplines and the systems they study {.smaller .compact}
+
+| Discipline | Main systems | Typical data |
+|---|---|---|
+| [📈 Seismology]{.gb .disc .solid} | [🪨 Solid Earth]{.gb .sys .solid} | seismic waveforms, earthquake catalogs |
+| [📐 Geodesy]{.gb .disc .solid} | [🪨 Solid Earth]{.gb .sys .solid} [🧊 Cryosphere]{.gb .sys .ice} [💧 Land water]{.gb .sys .water} | GNSS positions, InSAR, gravity |
+| [🌋 Volcanology]{.gb .disc .solid} | [🪨 Solid Earth]{.gb .sys .solid} [🌤️ Atmosphere]{.gb .sys .air} | seismicity, deformation, gas and thermal emission |
+| [⛰️ Geology & geomorphology]{.gb .disc .solid} | [🪨 Solid Earth]{.gb .sys .solid} | maps, samples, topography |
+| [💧 Hydrology & land-surface modeling]{.gb .disc .water} | [💧 Land water]{.gb .sys .water} [🌱 Biosphere]{.gb .sys .bio} | stream gauges, soil moisture, land-surface model output |
+| [🌊 Oceanography]{.gb .disc .ocean} | [🌊 Ocean]{.gb .sys .ocean} | floats, moorings, satellite altimetry |
+| [🌡️ Atmospheric & climate science]{.gb .disc .air} | [🌤️ Atmosphere]{.gb .sys .air} | weather stations, reanalyses, climate models |
+| [🧊 Glaciology]{.gb .disc .ice} | [🧊 Cryosphere]{.gb .sys .ice} | ice velocity, altimetry, ice cores |
+| [🦠 Biogeosciences]{.gb .disc .bio} | [🌱 Biosphere]{.gb .sys .bio} | flux towers, ocean color |
+| [🪐 Planetary science & astrobiology]{.gb .disc .planet} | [🪐 Planets & exoplanets]{.gb .sys .planet} | spacecraft and telescope observations, exoplanet spectra |
+
+::: {.dim}
+A discipline is a community of questions and methods; a single project usually draws on more than one.
+:::
+
+::: {.notes}
+One minute. Do not read the table. Point out that the discipline badge takes the color of its main system, so the color groups disciplines without replacing the label. Geodesy appears under three systems because the same GNSS and gravity measurements record tectonics, ice loss, and groundwater change.
+:::
+
+## Data sources, and how course datasets are labeled {.smaller}
+
+| Source | What it is | Examples |
+|---|---|---|
+| [📍 In-situ sensor]{.gb .src} | an instrument that measures where it sits | seismometer, GNSS receiver, stream gauge, float, weather station |
+| [🛰️ Satellite & airborne]{.gb .src} | remote sensing from orbit or aircraft | InSAR, optical imagery, altimetry, gravity |
+| [🔭 Telescope]{.gb .src} | observation of other planetary bodies and stars | light curves, spectra |
+| [🖥️ Model & simulation]{.gb .src} | numerical solution of physical equations | climate and land-surface models, reanalyses, synthetic data |
+| [🗂️ Catalog & compiled product]{.gb .src} | records derived from other data | earthquake catalogs, velocity fields, gridded compilations |
+| [🧪 Sample & laboratory]{.gb .src} | measurements on physical material | rock, water, and ice-core analyses |
+
+Each dataset carries three labels. The calibration station later today: [📍 In-situ sensor]{.gb .src} [🪨 Solid Earth]{.gb .sys .solid} [📐 Geodesy]{.gb .disc .solid}
+
+::: {.notes}
+One minute. Sources are drawn as dark filled badges, systems as outlined badges, disciplines as badges with a colored bar. Every dataset shown in this course from now on carries one of each. Derived products matter for reproducibility: a velocity field or an earthquake catalog is itself the output of a processing pipeline, and its provider documents that pipeline.
+:::
+
+## Where does your research sit? {.smaller}
+
+**4 minutes, individually, then a show of hands**
+
+1. Choose the system, or systems, your research question concerns
+2. Choose your discipline, or two
+3. Name the data source you expect to use
+
+Teams already forming from the project landscape:
+
+- volcano team · [🌋 Volcanology]{.gb .disc .solid} [🪨 Solid Earth]{.gb .sys .solid} [🌤️ Atmosphere]{.gb .sys .air}
+- exoplanet team · [🪐 Planetary science & astrobiology]{.gb .disc .planet} [🔭 Telescope]{.gb .src}
+- land-surface-modeling team · [💧 Hydrology & land-surface modeling]{.gb .disc .water} [🖥️ Model & simulation]{.gb .src}
+
+::: {.takeaway}
+The system and discipline you choose define the subfield for reading-arc stage 1, assigned today.
+:::
+
+::: {.notes}
+Ask students to write their three labels in the Canvas survey or on a card; read out the counts per system. Students who do not fit one bucket should list two; interdisciplinary work is common and the badges are meant to describe, not to sort people. Call on two or three students to connect their label to a question they care about. Stage 1 asks each student to drive an assistant through a literature review on the opportunities and challenges of AI in their subfield, so the label chosen here becomes the search scope. Keep the responses: they seed project teams and tell you which datasets to badge first in later sessions.
 :::
 
 ## Rubric checkpoint
@@ -38,7 +124,7 @@ A score whose interpretation is uncertain indicates where the rubric needs a cle
 :::
 
 ::: {.notes}
-Give pairs eight minutes. Each score needs a URL, file, passage, or explicit absence. Ask for two challenged scores and let the room decide what evidence would move each score. This creates the need for the agent-specific criteria later. A paper can provide code and still score poorly if the environment, data version, or evaluation split cannot be reconstructed.
+Give pairs six minutes. Each score needs a URL, file, passage, or explicit absence. Ask for two challenged scores and let the room decide what evidence would move each score. This creates the need for the agent-specific criteria later. A paper can provide code and still score poorly if the environment, data version, or evaluation split cannot be reconstructed.
 :::
 
 ## From available artifacts to an executable claim
@@ -124,11 +210,27 @@ An evaluation should test specific claims against source files and outputs rathe
 Connect this slide to Liu et al.'s “lost in the middle” result. The practical point is not that long contexts always fail. It is that nominal access to a file does not establish that relevant content influenced the answer. Ask students how they would test an agent's claim that it “reviewed the whole repository.” Useful checks include requesting exact file and line references, sampling omitted files, and designing questions whose answers occur in different context positions.
 :::
 
+## The calibration dataset: GNSS station P395
+
+::: {.badge-row}
+[📍 In-situ sensor]{.gb .src} [🪨 Solid Earth]{.gb .sys .solid} [📐 Geodesy]{.gb .disc .solid}
+:::
+
+![](figs/1.7_get_geodetic_gnss/p395_context_slide.png){.r-stretch}
+
+::: {.takeaway}
+Relative to stable North America, the Oregon coast at P395 moves northeast at about 13 mm/yr while the Cascadia megathrust offshore is locked.
+:::
+
+::: {.notes}
+Two minutes; this slide gives the experiment its physical meaning. P395 sits in the Oregon Coast Range at 45.02°N, 123.86°W (NGL llh.out). NGL's MIDAS solution, retrieved 2026-10-05, gives east +6.9 ± 0.2 and north +10.7 ± 0.2 mm/yr relative to stable North America, and up +0.2 ± 0.4 mm/yr, so no vertical rate is resolved. The northeast motion is commonly attributed to two contributions: elastic shortening of the upper plate while the subduction interface is locked between earthquakes, and clockwise rotation of the Oregon forearc (McCaffrey et al., 2013, JGR, doi:10.1029/2012JB009473). The annual oscillations in both components are seasonal signals, such as hydrological loading, that a velocity estimate must either model or average over. The class CSV is in the IGS20 frame, not the North-America-fixed frame drawn here; the next slide makes the frame part of the specification.
+:::
+
 ## Numerical calibration protocol
 
 Before asking the assistant, define the reference calculation:
 
-- station component and date interval
+- station component, date interval, and reference frame
 - treatment of missing data, offsets, and seasonality
 - regression model, units, and reported precision
 - tolerance for agreement and an independently executed implementation
@@ -136,7 +238,7 @@ Before asking the assistant, define the reference calculation:
 Then record whether the assistant accessed the intended data, executed code, exposed warnings, and produced a value consistent with the reference.
 
 ::: {.notes}
-The point is not to catch a model making arithmetic mistakes. It is to show that a numerical answer depends on the specification and execution pathway. Two correct programs can disagree if one removes seasonal terms or uses a different interval. Students should compare assumptions before comparing numbers. If the assistant uses a tool, preserve the code and output. If it produces a number without executing code, classify the result separately rather than combining it with tool-based estimates.
+The point is not to catch a model making arithmetic mistakes. It is to show that a numerical answer depends on the specification and execution pathway. Two correct programs can disagree if one removes seasonal terms or uses a different interval. The reference frame matters most here: in the IGS20 frame of the class CSV, NGL's MIDAS east rate for P395 is −6.4 ± 0.2 mm/yr, while relative to stable North America it is +6.9 ± 0.2 mm/yr (both from the MIDAS files retrieved 2026-10-05). The station has not changed; the specification has. Students should compare assumptions before comparing numbers. If the assistant uses a tool, preserve the code and output. If it produces a number without executing code, classify the result separately rather than combining it with tool-based estimates.
 :::
 
 ## Citation calibration protocol
@@ -162,7 +264,7 @@ This protocol separates fabrication from retrieval quality. A paper may exist bu
 
 1. Give an assistant `book/Chapter1-GettingStarted/data/gps_P395_relative_position.csv` and ask for the east velocity of P395 in mm/yr
 2. Record whether it runs code or answers from text
-3. Recompute the value independently and compare
+3. Recompute the value independently, then compare both with NGL's published MIDAS rate
 4. Ask for three ML papers in your subfield
 5. Resolve every DOI and count unsupported citations
 
@@ -171,7 +273,7 @@ The class will report denominators, not anecdotes: number of attempts, valid too
 :::
 
 ::: {.notes}
-The P395 file is committed in the book repository, so every student who cloned it on Friday already has it; 1.7, which produces it, is not taught until Wednesday. Do not announce a “correct” hallucination rate. Measure what happens in this room with the models students use. Record denominators. For the numeric task, note whether the assistant executed code, whether the environment contained the needed packages, and whether the final number matches the independent computation within a stated tolerance. For citations, distinguish a valid DOI with an irrelevant paper from a DOI that does not resolve.
+The P395 file is committed in the book repository, so every student who cloned it on Friday already has it; 1.7, which produces it, is not taught until Wednesday. The external reference is NGL's MIDAS IGS20 solution, not an instructor calculation: east −6.417 ± 0.185 mm/yr, north −3.410 ± 0.158 mm/yr (https://geodesy.unr.edu/gps_timeseries/IGS20/midas/midas.IGS.txt, retrieved 2026-10-05; Blewitt et al., 2016, JGR, doi:10.1002/2015JB012552). Show students where that file is, and note that the CSV ends at 2026.505 while the MIDAS file runs to 2026.716, so small differences are expected. Do not announce a “correct” hallucination rate. Measure what happens in this room with the models students use. Record denominators. For the numeric task, note whether the assistant executed code, whether the environment contained the needed packages, and whether the final number matches the independent computation within a stated tolerance. For citations, distinguish a valid DOI with an irrelevant paper from a DOI that does not resolve.
 :::
 
 ## Course AI modes

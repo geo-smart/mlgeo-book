@@ -1,7 +1,7 @@
 """Slide figure: the three-way split drawn on a real GNSS time series.
 
 Each panel shows the same daily east-displacement record from GNSS station
-P395 (Parkfield, California), with points colored train/validation for one
+P395 (Oregon Coast Range), with points colored train/validation for one
 representative fold of each splitting strategy — so the leakage is visible
 in the data, not abstracted into index bars. Falls back to the synthetic
 mlgeo_synth.gnss_series if the P395 cache is unavailable.
