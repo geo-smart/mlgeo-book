@@ -147,7 +147,111 @@
 <p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/data-definitions">2.1 Data definitions</a> · <a href="https://geo-smart.github.io/mlgeo-book/data-formats-rendered">2.2 Data formats</a> · <a href="https://geo-smart.github.io/mlgeo-book/data-gallery">1.6 Data gallery</a> · <a href="https://geo-smart.github.io/mlgeo-book/get-geodetic-gnss">1.7 GNSS data</a></p>
 </div>
 <aside class="notes">
-<p>Frame the session: Monday was about agents and verification culture; today the course meets its raw material. ML projects in the geosciences succeed or fail on the data, and most of the work is upstream of any model. Two goals for the next 20 minutes: name the three data streams that run through the whole course, and see that a storage format is a scientific decision with measurable consequences — then touch the first real dataset. Ask the room: what data does your intended final project run on? Keep the answers; they map onto today’s table.</p>
+<p>Frame the session: Monday was about agents and verification culture, and it ended with an AGENTS.md whose data rules say where values come from. Today opens with the peer rerun moved from Monday, then turns from reproducible code to the data that code consumes. ML projects in the geosciences succeed or fail on the data, and most of the work is upstream of any model. Two goals for the next 20 minutes: name the three data streams that run through the whole course, and see that a storage format is a scientific decision with measurable consequences — then touch the first real dataset. Ask the room to restate Monday’s three labels for their project (source, system, discipline); they map onto today’s stream table.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="peer-rerun" class="slide level2">
+<h2>Peer rerun</h2>
+<p>Exchange repository URLs with another pair.</p>
+<ol type="1">
+<li>Read only the README first</li>
+<li>Clone into a fresh directory</li>
+<li>Build the environment from the lockfile</li>
+<li>Run the smoke test the README names (<code>pixi run smoke</code>)</li>
+<li>Open the AGENTS.md and check that each rule could be verified</li>
+<li>Log the first obstacle before asking for help</li>
+</ol>
+<div class="takeaway">
+<p>The first obstacle a peer meets is evidence about documentation, environment, access, or computational assumptions.</p>
+</div>
+<aside class="notes">
+<p>Ten minutes, moved here from Monday so that more repositories have the HW1 smoke test (Step 6 of 1.9) and AGENTS.md (Step 7). pixi reuses the package cache, so the environment builds quickly. The product is the logged first obstacle, not a completed run. Students should not use their partner’s verbal instructions until the obstacle is recorded. If the clone has no runnable target, that is itself a finding. Ask peers to classify the obstacle by Friday’s layers: documentation, data access, environment, sandbox or permissions, hardware, or scientific ambiguity. Collect two obstacles about data access; they introduce the next slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-reproducible-code-to-curated-data" class="slide level2 smaller compact">
+<h2>From reproducible code to curated data</h2>
+<p><strong>Data curation</strong>: selecting, documenting, checking, versioning, and licensing data so that someone else can find, understand, and reuse it. It is the rubric’s <em>data and provenance</em> dimension, and the data rules in your AGENTS.md.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Curation question</th>
+<th>Book</th>
+<th>Session</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>What is this dataset, where did it come from, and under what license?</td>
+<td>1.6–1.7, 2.1</td>
+<td>today</td>
+</tr>
+<tr class="even">
+<td>Does the stored form keep its meaning: types, units, metadata?</td>
+<td>2.2</td>
+<td>today</td>
+</tr>
+<tr class="odd">
+<td>Does the table record what happened: missing values, types, joins?</td>
+<td>2.3–2.4</td>
+<td>Fri Oct 9</td>
+</tr>
+<tr class="even">
+<td>Are arrays and irregular samples on a consistent time base?</td>
+<td>2.5–2.6</td>
+<td>Mon Oct 12</td>
+</tr>
+<tr class="odd">
+<td>What do its distributions and spectra show?</td>
+<td>2.7–2.8</td>
+<td>Wed Oct 14</td>
+</tr>
+<tr class="even">
+<td>Are gaps, drift, and timing errors repaired, and the repairs recorded?</td>
+<td>2.9</td>
+<td>Fri Oct 16</td>
+</tr>
+<tr class="odd">
+<td>Which features carry the signal, checked against synthetic truth?</td>
+<td>2.10–2.12</td>
+<td>Mon Oct 19 – Wed Oct 21</td>
+</tr>
+<tr class="even">
+<td>Is it AI-ready, with a data card another team can audit?</td>
+<td>2.13, 2.20</td>
+<td>Wed Oct 21</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>Chapter 2 is one curation workflow; each session answers one of these questions for your project data.</p>
+</div>
+<aside class="notes">
+<p>Three minutes. This slide is the map for the next six sessions; return to it at the start of each. The final-project data card (2.20) collects the answers to every row for one dataset, and the critical-evaluation lab on Oct 23 applies the same questions to an AI’s claims about data. Point out that the curation questions do not depend on the modality: GNSS positions, satellite scenes, and model output all need a provenance, a license, a stored form that keeps units, and a record of repairs.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -200,19 +304,21 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="three-data-streams-run-through-this-course" class="slide level2">
+<section id="three-data-streams-run-through-this-course" class="slide level2 smaller">
 <h2>Three data streams run through this course</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Stream</th>
 <th>Geoscience examples</th>
 <th>Shape</th>
+<th>Typical labels</th>
 </tr>
 </thead>
 <tbody>
@@ -220,16 +326,19 @@
 <td><strong>Regular high-rate series</strong></td>
 <td>100 Hz seismograms, hourly tide gauges, daily GNSS</td>
 <td>1D, clocked by the instrument</td>
+<td><span class="gb src">📍 In-situ sensor</span> <span class="gb disc solid">📈 Seismology</span> <span class="gb disc solid">📐 Geodesy</span></td>
 </tr>
 <tr class="even">
 <td><strong>Gridded fields</strong></td>
 <td>climate rasters, satellite imagery, model output</td>
 <td>2D–4D arrays over region and time</td>
+<td><span class="gb src">🛰️ Satellite &amp; airborne</span> <span class="gb src">🖥️ Model &amp; simulation</span> <span class="gb disc air">🌡️ Atmospheric &amp; climate science</span></td>
 </tr>
 <tr class="odd">
 <td><strong>Irregular sparse points</strong></td>
 <td>multi-well networks, field campaigns</td>
 <td>samples wherever access allowed</td>
+<td><span class="gb src">📍 In-situ sensor</span> <span class="gb sys water">💧 Land water</span> <span class="gb disc water">💧 Hydrology &amp; land-surface modeling</span></td>
 </tr>
 </tbody>
 </table>
@@ -357,14 +466,49 @@
           display:block!important;
       }</style></aside>
 </section>
+<section id="where-the-first-dataset-comes-from" class="slide level2 smaller">
+<h2>Where the first dataset comes from</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/1.7_get_geodetic_gnss/gnss_stations_map_slide.png" height="700"></p>
+</div><div class="column" style="width:50%;">
+<div class="badge-row">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📐 Geodesy</span></p>
+</div>
+<p><strong>P395</strong>, Oregon Coast Range, above the Cascadia subduction zone: 12.7 mm/yr to the northeast; vertical +0.2 ± 0.4 mm/yr, not resolved.</p>
+<p><strong>P563</strong>, southern San Joaquin Valley, California, in the Pacific–North America plate boundary zone: 18.6 mm/yr to the northwest; subsides at 7.2 ± 0.5 mm/yr.</p>
+<div class="dim">
+<p>Horizontal rates relative to stable North America (arrows). NGL MIDAS, IGS20 solution, retrieved 2026-10-05.</p>
+</div>
+</div></div>
+<div class="takeaway">
+<p>The same instrument records different processes at the two sites: plate-boundary deformation at both, and land subsidence at P563.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; every dataset in this course is shown with its place and its physics. P395 (45.02°N, 123.86°W): MIDAS east +6.9 ± 0.2, north +10.7 ± 0.2, up +0.2 ± 0.4 mm/yr relative to stable North America; the northeast motion is commonly attributed to elastic loading of the coast while the megathrust is locked, with a contribution from rotation of the Oregon forearc (McCaffrey et al., 2013). P563 (35.42°N, 119.42°W): east −11.9, north +14.3, up −7.2 mm/yr; the northwest motion reflects shear across the Pacific–North America plate boundary zone, and the subsidence is consistent with groundwater extraction from the Central Valley aquifer system. Point back to Monday’s coupling of systems: at P563 the land-water system moves the solid Earth, so one GNSS record carries two system labels (<span class="gb sys water">💧 Land water</span> as well). All values come from NGL’s files (llh.out and midas.NA.txt), fetched by figscripts/gnss_stations_map.py.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="the-first-real-dataset" class="slide level2">
 <h2>The first real dataset</h2>
+<div class="badge-row">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📐 Geodesy</span></p>
+</div>
 <img data-src="figs/1.7_get_geodetic_gnss/fig_01.png" class="r-stretch">
 <div class="takeaway">
 <p>Plate tectonics, measured daily to a few millimeters: GNSS stations P395 (Oregon Coast Range) and P563 (San Joaquin Valley, California) drift steadily; P395 has 7,418 daily solutions since 2006. Real data: NGL, IGS20 frame.</p>
 </div>
 <aside class="notes">
-<p>The course’s first real dataset — savor it. Each point is one daily position solution; the y-axis is east displacement relative to the first day. The smooth drift is plate motion in the IGS20 global reference frame (define: the current international terrestrial reference frame — positions are relative to the whole Earth, so trends are real plate velocities). At P395 the east drift works out to about −6.5 mm/yr — westward — which we will fit, with honest error bars, in section 2.6 on Monday. Look closer: seasonal wiggles from water and snow loading, and small offsets from equipment changes or earthquakes — every later lesson (trend fitting, gap repair, splits) returns to this station. Credit aloud: Nevada Geodetic Laboratory, Blewitt et al.&nbsp;2018.</p>
+<p>The course’s first real dataset — savor it. Each point is one daily position solution; the y-axis is east displacement relative to the first day. The smooth drift is plate motion in the IGS20 global reference frame (define: the current international terrestrial reference frame — positions are relative to the whole Earth, so trends are real plate velocities). At P395, NGL’s MIDAS solution gives an east rate of −6.4 ± 0.2 mm/yr in this IGS20 frame (westward), and +6.9 mm/yr relative to stable North America, as on the map slide; students fit it themselves, with honest error bars, in section 2.6 on Monday Oct 12, and compare with NGL’s value. Look closer: seasonal wiggles from water and snow loading, and small offsets from equipment changes or earthquakes — every later lesson (trend fitting, gap repair, splits) returns to this station. Credit aloud: Nevada Geodetic Laboratory, Blewitt et al.&nbsp;2018.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -401,7 +545,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="where-each-stream-lives" class="slide level2">
+<section id="where-each-stream-lives" class="slide level2 smaller compact">
 <h2>Where each stream lives</h2>
 <table class="caption-top">
 <colgroup>
@@ -421,19 +565,19 @@
 <tbody>
 <tr class="odd">
 <td>Regular high-rate series</td>
-<td>P395 daily positions (real, NGL)</td>
+<td>P395 daily positions (real, NGL) <span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📐 Geodesy</span></td>
 <td>time-indexed table / 1D array</td>
 <td>CSV small · Parquet, HDF5 at scale</td>
 </tr>
 <tr class="even">
 <td>Gridded fields</td>
-<td>temperature-anomaly field (synthetic, mlgeo_synth)</td>
+<td>temperature-anomaly field (synthetic, mlgeo_synth) <span class="gb src">🖥️ Model &amp; simulation</span> <span class="gb sys air">🌤️ Atmosphere</span> <span class="gb disc air">🌡️ Atmospheric &amp; climate science</span></td>
 <td>labeled array</td>
 <td>netCDF local · Zarr cloud</td>
 </tr>
 <tr class="odd">
 <td>Irregular sparse points</td>
-<td>Cascade volcano locations</td>
+<td>Cascade volcano locations <span class="gb src">🗂️ Catalog &amp; compiled product</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">🌋 Volcanology</span></td>
 <td>table + geometry</td>
 <td>GeoJSON · GeoParquet</td>
 </tr>
@@ -462,13 +606,13 @@
 <li><code>pixi run jupyter lab</code> → <code>2.2_data_formats_rendered.ipynb</code></li>
 <li>Run the round-trips: JSON → CSV/Parquet → GeoTIFF/GeoJSON → netCDF → Zarr; reproduce the size table</li>
 <li>Open <code>1.7_get_geodetic_gnss.ipynb</code>: download P395 with <code>pooch</code>, record the SHA256 your run prints</li>
-<li>Browse the data gallery (1.6): pick one dataset near your project and find its license + citation</li>
+<li>Browse the data gallery (1.6): pick one dataset near your project; find its license and citation, and give it its three labels</li>
 </ol>
 <div class="dim">
 <p>Friday: tables that tell the truth (2.3–2.4) · Ch 1 quiz closes Thu Oct 8 · HW1 due Mon Oct 12</p>
 </div>
 <aside class="notes">
-<p>Timing for the 80-minute block (10:00–11:20): no pulse talks yet this week — intro and admin ~10 min, deck ~20 min, guided notebook ~40 min, synthesis ~10 min collecting task-4 answers (each team names one dataset, its stream, its license). Implementation names live here and in the notebook: pandas read_csv/to_parquet, rasterio for GeoTIFF, geopandas for GeoJSON, xarray to_netcdf/to_zarr, h5py to peek inside HDF5, pooch.retrieve with known_hash. The Natural Earth raster download is ~100 MB — have neighbors share if the room’s wifi chokes. Remind: Ch 1 quiz closes tomorrow; HW1 (workbench) due Monday; paper-pulse sign-ups are open on Canvas.</p>
+<p>Timing for the 80-minute block (10:00–11:20): no pulse talks yet this week. Intro and admin about 5 minutes, peer rerun 10, deck 20 (including the curation map and the station map), guided notebook 35, synthesis 10 collecting task-4 answers: each team names one dataset, its stream, its license, and its three labels. Implementation names live here and in the notebook: pandas read_csv/to_parquet, rasterio for GeoTIFF, geopandas for GeoJSON, xarray to_netcdf/to_zarr, h5py to peek inside HDF5, pooch.retrieve with known_hash. The Natural Earth raster download is ~100 MB — have neighbors share if the room’s wifi chokes. Remind: Ch 1 quiz closes tomorrow; HW1 (workbench) due Monday; paper-pulse sign-ups are open on Canvas.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
