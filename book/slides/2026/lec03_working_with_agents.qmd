@@ -15,12 +15,14 @@ Place your research within an Earth or planetary system and a discipline, and la
 
 Evaluate an AI-assisted workflow as a scientific process: identify which decisions belong to the model, which operations belong to tools, which access constraints come from the sandbox, and which evidence supports the reported result.
 
+Write an agent instruction file whose rules can be checked against the agent's output.
+
 ::: {.dim}
 Reading: [1.8 AI in your workflow](https://geo-smart.github.io/mlgeo-book/ai-in-your-workflow) + [6.1 From language models to agents](https://geo-smart.github.io/mlgeo-book/llms-to-agents)
 :::
 
 ::: {.notes}
-Continue the rubric thread from Friday. The session opens with a short orientation: the systems and disciplines of the geosciences, a check of where each student's research sits, and the badge system that labels every dataset in the course. The rest of the session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first score the paper they found, then learn where an agent's environment and sandbox fit, run a calibration experiment, and finish with a peer rerun. The class should leave with rubric version 0.2 and an evidence-based AI policy. Suggested 80-minute allocation: systems, disciplines, and background check 8 minutes; rubric checkpoint 6; executable claims and agent architecture 14; failure modes 8; calibration experiment, including the P395 context slide, 20; policy, governance, and rubric extension 9; peer rerun 10; synthesis 5.
+Continue the rubric thread from Friday. The session opens with a short orientation: the systems and disciplines of the geosciences, a check of where each student's research sits, and the badge system that labels every dataset in the course. The rest of the session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first score the paper they found, then learn where an agent's environment and sandbox fit, run a calibration experiment, and finish by writing an agent instruction file and checking whether an agent follows it. The class should leave with rubric version 0.2, an evidence-based AI policy, and a first AGENTS.md. The peer rerun moves to the start of Wednesday's session, when more repositories will have a smoke test. Suggested 80-minute allocation: systems, disciplines, and background check 8 minutes; rubric checkpoint 6; executable claims and agent architecture 14; failure modes 8; calibration experiment, including the P395 context slide, 20; policy, governance, and rubric extension 9; instruction file and compliance check 10; synthesis 5.
 :::
 
 ## Geoscience: the systems we study {.smaller .compact}
@@ -333,22 +335,52 @@ Same scale as v0.1. A claim without inspectable evidence, such as "verified the 
 Ask the class whether any row belongs inside an existing rubric dimension rather than becoming a seventh dimension. The likely answer is yes: tool disclosure belongs with publication and credit; access boundaries belong with data and environment; independent verification belongs with evaluation. This discussion prevents “AI reproducibility” from becoming a detached checklist. The same evidence standards govern all scientific work.
 :::
 
-## Peer rerun
+## From rubric to AGENTS.md
 
-Exchange repository URLs with another pair.
+An **instruction file** is a plain-text file at the root of a repository that a coding agent reads at the start of every session. AGENTS.md is an open format read by Codex, the GitHub Copilot coding agent, Cursor, Gemini CLI, and others; Claude Code reads it when the project has no CLAUDE.md, and otherwise imports it with `@AGENTS.md`.
 
-1. Read only the README first
-2. Clone into a fresh directory
-3. Build the environment from the lockfile
-4. Run the smoke test the README names (`pixi run smoke`)
-5. Compare one output and log the first obstacle
+```markdown
+# AGENTS.md for MLGEO2026_UWNETID
+## Environment
+- Run all code through `pixi run`; add packages only through pixi.toml.
+- Run `pixi run smoke` before reporting any result.
+## Data
+- Fetch values that a provider publishes (station coordinates, velocities,
+  catalogs) and cite the URL and retrieval date; do not recompute or retype them.
+- Cite every dataset by DOI in the README.
+## Reporting
+- State the reference frame, units, and time window of every number.
+- Mark AI-drafted commits: "AI-assisted: <tool>, <what it drafted>".
+```
 
 ::: {.takeaway}
-The peer records the first obstacle before requesting help, because that obstacle provides evidence about documentation, environment, access, or computational assumptions.
+Each rule restates a rubric criterion as an instruction whose outcome can be checked in the agent's output.
 :::
 
 ::: {.notes}
-Allow 10 minutes. The environment builds quickly because pixi reuses the package cache from Friday's install. The product is the logged first obstacle, not a completed run. A fresh directory approximates a new user, though it does not guarantee a clean machine. Students should not use their partner's verbal instructions until after they record the first obstacle. If the clone contains no small, fast target, that is itself a finding. Ask peers to classify the obstacle using Friday's layers: documentation, data access, environment, sandbox or permissions, hardware, or scientific ambiguity.
+Four minutes. Walk from rubric v0.1 to the file: environment and compute becomes the pixi rules, data and provenance becomes the provider rule, evaluation becomes the reporting rule, publication and credit becomes the commit rule. Contrast with rules that cannot be checked, such as "write clean code" or "be careful with data": no transcript can show whether the agent complied. The provider rule comes from this session's calibration slide: NGL publishes P395's velocity, so an agent that recomputes it from a CSV has not followed the specification even if its number is close. For Claude Code, AGENTS.md support requires v2.1.277 or later (Claude Code memory documentation). An instruction file is a task specification without an evaluation set; 6.3 on Nov 13 supplies the evaluation set.
+:::
+
+## Does the agent follow its instructions?
+
+**6 minutes in pairs**
+
+1. Put the AGENTS.md above, or three of its rules, in your course repository or a scratch folder
+2. Ask your agent: *"Report the east velocity of GNSS station P395 and where the value comes from."*
+3. Score three rules as yes or no from the transcript and the changed files
+4. Exchange transcripts with the next pair and score theirs without discussion
+5. Compare the two sets of scores, rule by rule
+
+::: {.dim}
+A disagreement between pairs means the rule is ambiguous or the evidence is missing; record which.
+:::
+
+::: {.takeaway}
+Whether an agent follows a rule is an empirical question, answered from its output rather than from the instruction file.
+:::
+
+::: {.notes}
+This is a preview of outcome 10, not its assessment. One run per pair cannot estimate a compliance rate, and two raters on one transcript cannot estimate agreement; say so explicitly. The full method arrives in stages: the critical-evaluation lab (6.2, Oct 23) adds bias controls for model graders; 6.3 (Nov 13) builds an eval set with planted cases and rule-by-rule binary scoring; reading-arc stage 4 (Dec 10) runs five trials per case and reports pass rates with binomial standard errors and Cohen's kappa between raters. Expect the provider rule to fail often: many agents fit the CSV instead of citing NGL's MIDAS file. Collect one disagreement for the rubric v0.2 discussion.
 :::
 
 ## Rubric v0.2
@@ -357,11 +389,11 @@ As a class, choose:
 
 - one criterion the paper review exposed
 - one criterion the calibration experiment exposed
-- one criterion the peer rerun exposed
+- one rule the instruction-file check exposed
 - the evidence required for a score of **2**
 
 ::: {.dim}
-Ch 1 quiz opens Tue Oct 6 and closes Thu Oct 8 · Wednesday: data modalities, formats, and the class project landscape
+Ch 1 quiz opens Tue Oct 6 and closes Thu Oct 8 · HW1 now includes an AGENTS.md · Wednesday: peer rerun of your repositories, then from reproducible code to curated data
 :::
 
 ::: {.notes}
