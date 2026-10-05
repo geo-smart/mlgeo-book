@@ -35,20 +35,25 @@ Two maps of the opportunity, one measurement of the failure mode. The refs file 
 Two minutes per paper. Bergen et al. is the Science survey of what ML has already done in solid-Earth geoscience — earthquake detection, pattern discovery in lab friction data, emulation of expensive simulations; it is the optimistic map, and one of the two anchor readings for the reading arc. Karpatne et al. is the other side: why our data resist off-the-shelf methods — physical constraints, correlated samples, rare events, few labels; it reads like a syllabus for Chapter 2. Kapoor & Narayanan is the caution: a systematic review finding leakage-driven overoptimism in ML-based science across 17 fields — the exact failure the fair-evaluation thread of this course exists to prevent. Point students at these as the first entries of their reading arc.
 :::
 
-## Twenty years of ground motion, measured daily
+## Twenty years of ground motion, measured daily {.smaller}
 
-::: {.badge-row}
-[📍 In-situ sensor]{.gb .src} [🪨 Solid Earth]{.gb .sys .solid} [📐 Geodesy]{.gb .disc .solid}
+:::: {.columns}
+::: {.column width="38%"}
+![](figs/1.7_get_geodetic_gnss/gnss_stations_map_slide.png){height="600px"}
 :::
+::: {.column width="62%"}
+![](figs/1.7_get_geodetic_gnss/fig_01.png){width="100%"}
 
-![](figs/1.7_get_geodetic_gnss/fig_01.png){.r-stretch}
+Each point is the station's daily east position, measured to a few millimeters. In this global frame both stations drift west, and 12 to 13 mm/yr of that drift is the North America plate itself. What remains is deformation at the plate boundary (map arrows, relative to stable North America): the Oregon coast at P395 is pushed landward while the Cascadia megathrust is locked, and P563 is carried northwest in the shear zone between the Pacific and North America plates.
+:::
+::::
 
 ::: {.takeaway}
-GNSS stations P395 (Oregon Coast Range) and P563 (San Joaquin Valley, California): daily positions to a few millimeters (Nevada Geodetic Laboratory). The steady drift is plate motion; the annual oscillations are seasonal signals such as hydrological loading.
+A daily position record measures plate motion, plate-boundary deformation, and seasonal loading in one signal; separating them is a modeling task.
 :::
 
 ::: {.notes}
-This is the course's first data set; notebook 1.7 downloads it live and it returns in Chapters 2 and 3. A permanent GNSS station measures its own position every day to a few millimeters. Read the slope aloud: in the IGS20 frame P563 moves west at about 2.3 cm/yr (NGL MIDAS, retrieved 2026-10-05), mostly the motion of the North America plate itself, and it subsides at about 7 mm/yr, a rate consistent with groundwater extraction in the San Joaquin Valley. P395 gives 7,418 daily data samples for one component alone. Ask the room: what could you extract from this? (Velocities, seasonal loading, earthquake offsets, slow slip.) Also the open-science point: this exists because NGL publishes it freely — cite Blewitt et al. (2018, Eos) when you use it. That habit, data citation, is part of section 1.1.
+This is the course's first data set; notebook 1.7 downloads it live and it returns in Chapters 2 and 3. All rates are NGL MIDAS (IGS20 solution), retrieved 2026-10-05. Read the time series first: it is the east position in the global IGS20 frame. P395 moves east at −6.4 mm/yr and P563 at −23.5 mm/yr in that frame. Relative to stable North America the same stations move +6.9 and −11.9 mm/yr east, so the plate's own motion accounts for 13.3 and 11.6 mm/yr of westward drift; that is the meaning of "reference frame", which session 3 returns to. At P395 the remaining northeast motion is commonly attributed to elastic loading of the upper plate while the subduction interface is locked, with a contribution from rotation of the Oregon forearc (McCaffrey et al., 2013). At P563, about half of the 2.3 cm/yr westward drift is the plate and half is shear across the Pacific–North America boundary zone; the station also subsides at 7.2 mm/yr, a rate consistent with groundwater extraction in the San Joaquin Valley. The annual oscillations at both stations are seasonal signals such as hydrological loading. P395 has 7,418 daily solutions in the course file. Ask the room: what could you extract from this? (Velocities, seasonal loading, earthquake offsets, slow slip.) Open-science point: this exists because NGL publishes it freely; cite Blewitt et al. (2018, Eos). Data citation is part of section 1.1.
 :::
 
 ## What ML does for the geosciences
