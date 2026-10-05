@@ -2,7 +2,7 @@
 
 ESS 469/569, University of Washington. Class meets **Monday and Wednesday, 10:00–11:20 in ECE 003, and Friday, 10:00–11:20 in JHN 175**. Bring a charged laptop to every class meeting; lab sessions run the full 80 minutes. Instruction runs September 30 – December 11, 2026; there is no class on **Wednesday November 11** (Veterans Day) or **Friday November 27** (Native American Heritage Day), and Thanksgiving is Thursday November 26. Final examination week is December 12–18.
 
-This page is the course-delivery layer on top of the book: which sessions cover which sections, and when graded work is due. The book carries the full depth; in-class delivery selects from it (see the 469/569 differentiation notes in each assignment).
+This page is the course-delivery layer on top of the book: which sessions cover which sections, and when graded work is due. The slides for every session, in teaching order, are collected in [Lectures (Autumn 2026)](../Lectures/readme.md). The book carries the full depth; in-class delivery selects from it (see the 469/569 differentiation notes in each assignment).
 
 Two design choices shape the quarter. First, **the agent thread runs through the whole course** rather than waiting for the end: what agents are and how we use them (week 2), turning your data skills on an AI's claims (week 4), and building eval sets for agents (week 7) — so the course's distinctive material is taught early and applied often, and the capstone gets a month of runway. Second, **December contains no new core material**: only application, clinics, one deliberate buffer session, and presentations, so nothing important is lost if a week slips.
 

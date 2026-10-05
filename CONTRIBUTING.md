@@ -151,3 +151,7 @@ Open a [GitHub issue](https://github.com/geo-smart/mlgeo-book/issues). Useful ti
 `[bug]`, `[content]`, `[translation]`, `[data]`, `[persona]`. If you found a factual or
 scientific error, say what the correct claim is and where you checked it — that turns a
 report into a fix.
+
+## Lecture slides
+
+Decks live in `book/slides/2026/` as Quarto files (`quarto render <deck>.qmd`). The book's *Lectures (Autumn 2026)* chapter is generated from each deck's `title` and `subtitle` ("Session N · Day Mon D · Book sections …"); after adding or retitling a deck, run `pixi run python tools/gen_lecture_pages.py` and commit `book/Lectures/`. Do not edit those pages by hand.
