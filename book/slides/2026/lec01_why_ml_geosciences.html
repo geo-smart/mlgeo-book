@@ -222,6 +222,171 @@
           display:block!important;
       }</style></aside>
 </section>
+<section id="spot-the-synthetic" class="slide level2">
+<h2>Spot the synthetic</h2>
+<img data-src="figs/1.7_get_geodetic_gnss/p395_model_synthetic_slide.png" class="r-stretch">
+<p><strong>One of Series 1 and 2 is the station; the other is NGL’s model plus independent random noise of the same size. Which is synthetic, and what gives it away?</strong></p>
+<div class="fragment">
+<p>Series 1 is synthetic. The real record wanders for weeks at a time, and its 2016 drop starts in January, months before the step the model places at the antenna change.</p>
+</div>
+<aside class="notes">
+<p>Three minutes: one minute alone, one with a neighbor, one to collect answers. The top panel is NGL’s trajectory model for P395 (east component): a constant rate of −6.4 mm/yr, annual and semi-annual sinusoids, and four steps, all read from NGL’s .modfit file; it leaves a 1.8 mm RMS misfit, the value NGL reports. Series 1 adds independent Gaussian noise with that RMS to the model. Most students identify the synthetic from texture: its scatter is the same every day, while real errors are correlated in time. The second clue is the 2016 drop: the model explains it with steps at the equipment changes on 2016-05-12 and 2016-06-10, but the observed decline begins around January. Do not resolve that yet; it is feature D on the next slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="measurement-error-or-model-error" class="slide level2">
+<h2>Measurement error or model error?</h2>
+<img data-src="figs/1.7_get_geodetic_gnss/p395_residuals_slide.png" class="r-stretch">
+<p><strong>For each letter, vote: measurement or processing error, physics the model leaves out, or cannot tell yet.</strong></p>
+<aside class="notes">
+<p>Four minutes: votes by show of hands, letter by letter, before revealing the next slide. The top panel is the observation minus NGL’s model with the equipment steps deliberately left in, so they show; the bottom panel is the same operation on the synthetic series, which leaves only noise. Everything the top panel has and the bottom one lacks is information the model does not contain. Dates and event types come from NGL’s step catalogue (steps.txt).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-the-residual-contains" class="slide level2 smaller compact">
+<h2>What the residual contains</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Feature</th>
+<th>Most likely cause</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A</strong></td>
+<td>day-to-day scatter, 1.8 mm RMS</td>
+<td>measurement</td>
+<td>receiver noise, multipath, and atmospheric delay; same size as the synthetic noise</td>
+</tr>
+<tr class="even">
+<td><strong>B</strong></td>
+<td>+3.0 mm step, June 2010</td>
+<td>measurement system</td>
+<td>antenna change in the station log; an antenna shifts the measured phase center, not the ground</td>
+</tr>
+<tr class="odd">
+<td><strong>C</strong></td>
+<td>nothing, October 2012</td>
+<td>physics hypothesis rejected</td>
+<td>catalogue flags a possible step from an M7.8 earthquake 1,051 km away (USGS usp000juhz); NGL’s estimate is 0.1 ± 0.08 mm</td>
+</tr>
+<tr class="even">
+<td><strong>D</strong></td>
+<td>−5.9 and +2.0 mm, May–June 2016</td>
+<td>both, or cannot tell</td>
+<td>antenna and receiver changes, but the decline begins months earlier</td>
+</tr>
+<tr class="odd">
+<td><strong>E</strong></td>
+<td>wander of several mm over months</td>
+<td>model error and correlated noise</td>
+<td>absent from the synthetic: seasonal loading that changes from year to year, possible transient deformation, noise correlated in time</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>The model’s residual mixes instrument effects, missing physics, and noise; telling them apart is the scientific question, and the place where data-driven methods can help.</p>
+</div>
+<aside class="notes">
+<p>Reveal after the votes. A: NGL’s residual RMS for this fit is 1.83 mm east. B, C, D: the catalogue records equipment changes (code 1) and earthquakes whose epicenter falls within a magnitude-dependent distance of the station (code 2); NGL notes that a flagged earthquake may cause no displacement, and C is such a case: the model includes the step and estimates it as zero within uncertainty. D is the open case: equipment changes explain a jump, but the observed decline starts in early 2016, so part of it may be ground motion or seasonal signal that the constant-amplitude sinusoids miss. E: the synthetic residual shows what independent errors look like; the real residual’s months-long excursions mean the errors are correlated or the model is missing physics, and one station cannot separate the two. Neighboring stations can: motion shared across a network is either common-mode error or regional physics.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="where-could-machine-learning-reduce-the-error" class="slide level2 smaller compact">
+<h2>Where could machine learning reduce the error?</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Residual feature</th>
+<th>A data-driven approach</th>
+<th>Where in the course</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A · daily scatter</td>
+<td>estimate the error shared by nearby stations and remove it</td>
+<td>2.9 repairing records, Fri Oct 16</td>
+</tr>
+<tr class="even">
+<td>B, D · instrument steps</td>
+<td>detect offsets and classify them as equipment or ground motion</td>
+<td>2.9; 3.4 rare-event detection, Fri Oct 30</td>
+</tr>
+<tr class="odd">
+<td>C · catalogue flags</td>
+<td>learn which flagged earthquakes produce measurable steps</td>
+<td>3.4 imbalanced classification</td>
+</tr>
+<tr class="even">
+<td>E · correlated wander</td>
+<td>predict the residual from hydrology covariates (rain, snow, soil moisture); group similar transients across stations</td>
+<td>2.11 features, Mon Oct 19; 3.3 clustering, Wed Oct 28; 3.7 forests, Fri Nov 6</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Before trusting any of these: how would you know it worked?</strong></p>
+<div class="fragment">
+<p>Add signals of known size to synthetic series and check that the method recovers them: section 2.10, Mon Oct 19.</p>
+</div>
+<div class="takeaway">
+<p>Machine learning is most useful on what the physical model leaves in the residual, and it has to be tested where the truth is known.</p>
+</div>
+<aside class="notes">
+<p>Three minutes. Ask each pair to choose one row and say what data they would need and what could go wrong. Common answers to push on: a network filter can remove real regional deformation along with error; a step classifier trained on equipment logs learns what the logs record, not what the ground did; a hydrology regression explains the residual only if the covariates are measured independently of the GNSS record. The fragment is the course’s answer to every row: synthetic data with known truth (2.10), which is why Series 1 existed on the earlier slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="what-ml-does-for-the-geosciences" class="slide level2">
 <h2>What ML does for the geosciences</h2>
 <ul>

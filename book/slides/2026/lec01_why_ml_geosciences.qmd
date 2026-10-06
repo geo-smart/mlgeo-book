@@ -56,6 +56,71 @@ A daily position record measures plate motion, plate-boundary deformation, and s
 This is the course's first data set; notebook 1.7 downloads it live and it returns in Chapters 2 and 3. All rates are NGL MIDAS (IGS20 solution), retrieved 2026-10-05. Read the time series first: it is the east position in the global IGS20 frame. P395 moves east at −6.4 mm/yr and P563 at −23.5 mm/yr in that frame. Relative to stable North America the same stations move +6.9 and −11.9 mm/yr east, so the plate's own motion accounts for 13.3 and 11.6 mm/yr of westward drift; that is the meaning of "reference frame", which session 3 returns to. At P395 the remaining northeast motion is commonly attributed to elastic loading of the upper plate while the subduction interface is locked, with a contribution from rotation of the Oregon forearc (McCaffrey et al., 2013). At P563, about half of the 2.3 cm/yr westward drift is the plate and half is shear across the Pacific–North America boundary zone; the station also subsides at 7.2 mm/yr, a rate consistent with groundwater extraction in the San Joaquin Valley. The annual oscillations at both stations are seasonal signals such as hydrological loading. P395 has 7,418 daily solutions in the course file. Ask the room: what could you extract from this? (Velocities, seasonal loading, earthquake offsets, slow slip.) Open-science point: this exists because NGL publishes it freely; cite Blewitt et al. (2018, Eos). Data citation is part of section 1.1.
 :::
 
+## Spot the synthetic
+
+![](figs/1.7_get_geodetic_gnss/p395_model_synthetic_slide.png){.r-stretch}
+
+**One of Series 1 and 2 is the station; the other is NGL's model plus independent random noise of the same size. Which is synthetic, and what gives it away?**
+
+::: {.fragment}
+Series 1 is synthetic. The real record wanders for weeks at a time, and its 2016 drop starts in January, months before the step the model places at the antenna change.
+:::
+
+::: {.notes}
+Three minutes: one minute alone, one with a neighbor, one to collect answers. The top panel is NGL's trajectory model for P395 (east component): a constant rate of −6.4 mm/yr, annual and semi-annual sinusoids, and four steps, all read from NGL's .modfit file; it leaves a 1.8 mm RMS misfit, the value NGL reports. Series 1 adds independent Gaussian noise with that RMS to the model. Most students identify the synthetic from texture: its scatter is the same every day, while real errors are correlated in time. The second clue is the 2016 drop: the model explains it with steps at the equipment changes on 2016-05-12 and 2016-06-10, but the observed decline begins around January. Do not resolve that yet; it is feature D on the next slide.
+:::
+
+## Measurement error or model error?
+
+![](figs/1.7_get_geodetic_gnss/p395_residuals_slide.png){.r-stretch}
+
+**For each letter, vote: measurement or processing error, physics the model leaves out, or cannot tell yet.**
+
+::: {.notes}
+Four minutes: votes by show of hands, letter by letter, before revealing the next slide. The top panel is the observation minus NGL's model with the equipment steps deliberately left in, so they show; the bottom panel is the same operation on the synthetic series, which leaves only noise. Everything the top panel has and the bottom one lacks is information the model does not contain. Dates and event types come from NGL's step catalogue (steps.txt).
+:::
+
+## What the residual contains {.smaller .compact}
+
+| | Feature | Most likely cause | Evidence |
+|---|---|---|---|
+| **A** | day-to-day scatter, 1.8 mm RMS | measurement | receiver noise, multipath, and atmospheric delay; same size as the synthetic noise |
+| **B** | +3.0 mm step, June 2010 | measurement system | antenna change in the station log; an antenna shifts the measured phase center, not the ground |
+| **C** | nothing, October 2012 | physics hypothesis rejected | catalogue flags a possible step from an M7.8 earthquake 1,051 km away (USGS usp000juhz); NGL's estimate is 0.1 ± 0.08 mm |
+| **D** | −5.9 and +2.0 mm, May–June 2016 | both, or cannot tell | antenna and receiver changes, but the decline begins months earlier |
+| **E** | wander of several mm over months | model error and correlated noise | absent from the synthetic: seasonal loading that changes from year to year, possible transient deformation, noise correlated in time |
+
+::: {.takeaway}
+The model's residual mixes instrument effects, missing physics, and noise; telling them apart is the scientific question, and the place where data-driven methods can help.
+:::
+
+::: {.notes}
+Reveal after the votes. A: NGL's residual RMS for this fit is 1.83 mm east. B, C, D: the catalogue records equipment changes (code 1) and earthquakes whose epicenter falls within a magnitude-dependent distance of the station (code 2); NGL notes that a flagged earthquake may cause no displacement, and C is such a case: the model includes the step and estimates it as zero within uncertainty. D is the open case: equipment changes explain a jump, but the observed decline starts in early 2016, so part of it may be ground motion or seasonal signal that the constant-amplitude sinusoids miss. E: the synthetic residual shows what independent errors look like; the real residual's months-long excursions mean the errors are correlated or the model is missing physics, and one station cannot separate the two. Neighboring stations can: motion shared across a network is either common-mode error or regional physics.
+:::
+
+## Where could machine learning reduce the error? {.smaller .compact}
+
+| Residual feature | A data-driven approach | Where in the course |
+|---|---|---|
+| A · daily scatter | estimate the error shared by nearby stations and remove it | 2.9 repairing records, Fri Oct 16 |
+| B, D · instrument steps | detect offsets and classify them as equipment or ground motion | 2.9; 3.4 rare-event detection, Fri Oct 30 |
+| C · catalogue flags | learn which flagged earthquakes produce measurable steps | 3.4 imbalanced classification |
+| E · correlated wander | predict the residual from hydrology covariates (rain, snow, soil moisture); group similar transients across stations | 2.11 features, Mon Oct 19; 3.3 clustering, Wed Oct 28; 3.7 forests, Fri Nov 6 |
+
+**Before trusting any of these: how would you know it worked?**
+
+::: {.fragment}
+Add signals of known size to synthetic series and check that the method recovers them: section 2.10, Mon Oct 19.
+:::
+
+::: {.takeaway}
+Machine learning is most useful on what the physical model leaves in the residual, and it has to be tested where the truth is known.
+:::
+
+::: {.notes}
+Three minutes. Ask each pair to choose one row and say what data they would need and what could go wrong. Common answers to push on: a network filter can remove real regional deformation along with error; a step classifier trained on equipment logs learns what the logs record, not what the ground did; a hydrology regression explains the residual only if the covariates are measured independently of the GNSS record. The fragment is the course's answer to every row: synthetic data with known truth (2.10), which is why Series 1 existed on the earlier slide.
+:::
+
 ## What ML does for the geosciences
 
 - **Automation** — catalog events at rates no human analyst can match
