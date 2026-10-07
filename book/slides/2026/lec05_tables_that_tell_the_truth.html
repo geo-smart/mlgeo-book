@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="">
-  <title>Tables that tell the truth: cleaning without rewriting the geology</title>
+  <title>Cleaning tables without rewriting the geology</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="lec05_tables_that_tell_the_truth_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link rel="stylesheet" href="lec05_tables_that_tell_the_truth_files/libs/revealjs/dist/theme/quarto-0c0bb623db655821208cac898ba7f7c8.css">
   <link href="lec05_tables_that_tell_the_truth_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec05_tables_that_tell_the_truth_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec05_tables_that_tell_the_truth_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,7 +130,7 @@
     <div class="slides">
 
 <section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
-  <h1 class="title">Tables that tell the truth:<br>cleaning without rewriting the geology</h1>
+  <h1 class="title">Cleaning tables without rewriting the geology</h1>
   <p class="subtitle">Session 5 · Fri Oct 9 · Book sections 2.3–2.4</p>
 
 <div class="quarto-title-authors">
@@ -142,12 +142,12 @@
 <p><span class="lecture-icon">🧮</span></p>
 <h3 id="todays-question">Today’s question</h3>
 <p>Cleaning changes your data before any model ever sees it.</p>
-<p><strong>Which of your table’s oddities are damage — and which are the science?</strong></p>
+<p><strong>Which of your table’s oddities are damage, and which are the science?</strong></p>
 <div class="dim">
 <p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/pandas-rendered">2.3 Pandas</a> · <a href="https://geo-smart.github.io/mlgeo-book/dataframes-prep">2.4 DataFrame preparation</a></p>
 </div>
 <aside class="notes">
-<p>Frame the session: Wednesday named the streams and formats; today is the tabular stream, and specifically what happens between “file opens” and “data trusted.” The danger is not dirty data — everyone expects that — it is <em>cleaning that quietly rewrites the science</em>: deleting the evolved granites along with the bad zeros, or trusting values an instrument fabricated. Every decision today gets graded against planted truth. Ask the room: who has ever deleted rows from a dataset? What was the rule, and who reviewed it?</p>
+<p>Frame the session with Wednesday’s curation map: today answers its third row, “does the table record what happened: missing values, types, joins?” Wednesday named the streams and formats; today is the tabular stream, and specifically what happens between “the file opens” and “the data are trusted.” The danger is not dirty data, which everyone expects. It is cleaning that quietly rewrites the science: deleting the evolved granites along with the bad zeros, or trusting values an instrument fabricated. Every decision today is graded against planted truth. Ask the room: who has ever deleted rows from a dataset? What was the rule, and who reviewed it? Keep the answers; the AGENTS.md slide near the end returns to them.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -183,7 +183,7 @@
 <p>Rows dropped from a table have moved national policy. Cleaning decisions are scientific claims.</p>
 </div>
 <aside class="notes">
-<p>Two minutes. Rubin 1976 is the playbook: the legitimacy of ignoring missing data depends on the <em>mechanism</em> — missing completely at random, missing at random, missing not at random; those terms come back on slide 7. Herndon: the Reinhart–Rogoff “debt slows growth” result, cited in austerity debates worldwide, partly rested on a spreadsheet that excluded five countries’ rows; reanalysis of the same table reversed the headline — the cleaning was the result. Helsel: environmental chemistry’s standard reference on detection limits — substituting the limit (or half of it) for nondetects “fabricates data”; his fix, survival-analysis methods, is the honest path our censoring slide points to. Refs update monthly — bring candidates.</p>
+<p>Two minutes. Rubin 1976 is the playbook: whether missing data can be ignored depends on the mechanism (missing completely at random, missing at random, missing not at random); those terms return on the slide about gaps. Herndon: the Reinhart–Rogoff “debt slows growth” result, cited in austerity debates worldwide, partly rested on a spreadsheet that excluded five countries’ rows; reanalysis of the same table reversed the headline. The cleaning was the result. Helsel: environmental chemistry’s standard reference on detection limits. Substituting the limit (or half of it) for nondetects “fabricates data”; his fix, survival-analysis methods, is the honest path the censoring slides point to. Refs update monthly; bring candidates.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -196,18 +196,17 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="one-library-every-table" class="slide level2">
-<h2>One library, every table</h2>
-<ul>
-<li>A global earthquake catalog: <strong>1,785 events, M ≥ 6.0</strong>, depths 0–685 km, with timestamps and place names</li>
-<li>The same verbs every time: read, <strong>describe</strong>, filter, transform, <strong>group</strong>, join, map</li>
-<li>Datetime-aware: select by time window, resample by day, roll a moving average</li>
-</ul>
+<section id="twelve-years-of-large-earthquakes" class="slide level2">
+<h2>Twelve years of large earthquakes</h2>
+<div class="badge-row">
+<p><span class="gb src">🗂️ Catalog &amp; compiled product</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+</div>
+<img data-src="figs/2.3_pandas_rendered/global_quakes_map_slide.png" class="r-stretch">
 <div class="takeaway">
-<p>Learn the verbs, not the spellings — your coding agent knows the syntax; you must know what to ask for.</p>
+<p>Every data sample is an event; depth traces the slabs. The first summary shows depth stored in meters, so the first transform is a unit conversion.</p>
 </div>
 <aside class="notes">
-<p>This is 2.3 compressed to one slide; the notebook is a guided tour and much of it is marked for self-study. The catalog is real — EarthScope/IRIS global M≥6 events; describe() instantly shows depth in <em>meters</em> (max 685,500), which is why the first transform is unit conversion — a one-line lambda. Show of hands: who has used a spreadsheet for this? Pandas is the spreadsheet you can version-control, test, and rerun. Implementation names for the notebook: read_csv, describe, apply/map with lambdas, groupby, agg, sort_values, plotly for the interactive quake map. The skill the slides train is the next four slides: knowing which values to distrust.</p>
+<p>Section 2.3 compressed to one slide. The catalog is the EarthScope/IRIS event-service export kept in the UW-MLGEO dataset repository (Global_Quakes_IRIS.csv): 1,785 events of M 6 and above, 2 July 2010 to 30 June 2022, with time, latitude, longitude, depth, magnitude, and a place name. Geoscience first: shallow events outline every plate boundary; the 154 events deeper than 300 km all sit in subducting slabs (Tonga–Fiji, the Kuril–Japan–Izu–Bonin arcs, the Banda Sea, beneath South America), the Wadati–Benioff zones. The largest is the M 9.1 Tohoku-oki earthquake of 11 March 2011. Then the table: describe() reports a maximum depth of 685,500, which only makes sense in meters, hence a one-line conversion to km before anything else. The verbs to know, not the spellings: read, describe, filter, transform, group, join, map, and select by time window. Implementation names for the notebook: read_csv, describe, apply/map, groupby, agg, sort_values, plotly for the interactive map. Figure: figscripts/global_quakes_map.py fetches the catalog, PB2002 plate boundaries (Bird, 2003), and Natural Earth land at run time.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -220,22 +219,25 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="todays-table-a-rock-survey-with-planted-truth" class="slide level2 smaller">
-<h2>Today’s table: a rock survey with planted truth</h2>
-<div class="big-number">
-<p>10,000 <span class="unit">rock samples — 7 major-element oxides, density, magnetic susceptibility, lithology</span></p>
+<section id="a-rock-survey-with-planted-truth" class="slide level2 smaller">
+<h2>A rock survey with planted truth</h2>
+<div class="badge-row">
+<p><span class="gb src">🧪 Sample &amp; laboratory</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">⛰️ Geology &amp; geomorphology</span></p>
 </div>
 <div class="big-number">
-<p>985 <span class="unit">andesites — against 5,525 granites: a 5.6 : 1 class imbalance</span></p>
+<p>10,000 <span class="unit">rock samples: 7 major-element oxides, density, magnetic susceptibility, lithology</span></p>
+</div>
+<div class="big-number">
+<p>985 <span class="unit">andesites, against 5,525 granites: a 5.6 : 1 class imbalance</span></p>
 </div>
 <div class="dim">
 <p>Synthetic whole-rock geochemistry (mlgeo_synth): the generator plants the correlations and the pathologies, so every cleaning decision is graded against known truth.</p>
 </div>
 <div class="takeaway">
-<p>Imbalance is the norm in geoscience labels — remember 985 when a classifier reports 90% accuracy in Chapter 3.</p>
+<p>Imbalance is the norm in geoscience labels. Remember 985 when a classifier reports 90% accuracy in Chapter 3.</p>
 </div>
 <aside class="notes">
-<p>Introduce the table: each data sample is one rock — oxides in weight percent, bulk density, magnetic susceptibility, and a lithology label (granite/basalt/andesite) a classifier will later predict. Why synthetic: 2.4’s whole point is that repairs get <em>graded</em> — we planted 2% missing densities, 3% missing susceptibilities, and 15 sentinel zeros, then check whether cleaning recovers the truth. The imbalance number seeds exercise question 3: a model that always says “granite” scores 55% accuracy — hold that thought until the classification weeks. Physical sanity checks come first in the notebook: oxides 0–100 wt%, crustal densities roughly 2.5–3.3 g/cm³ — read describe() against physics, always.</p>
+<p>Introduce the table: each data sample is one rock, with oxides in weight percent, bulk density, magnetic susceptibility, and a lithology label (granite, basalt, andesite) that a classifier will later predict. The badges describe what the table imitates, laboratory analyses of hand samples; the science tag says it is synthetic, and no map applies because the samples have no locations. Why synthetic: 2.4’s point is that repairs get graded. The notebook knocks out 2% of densities and 3% of susceptibilities at random and plants 15 density zeros, then checks whether cleaning recovers the truth. The imbalance seeds exercise question 3: a model that always says “granite” scores 55% accuracy (5,525 of 10,000). Physical sanity checks come first in the notebook: oxides between 0 and 100 wt%, crustal densities roughly 2.5 to 3.3 g/cm³. Read describe() against physics, always.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -267,17 +269,17 @@
 <tr class="odd">
 <td>MgO</td>
 <td><strong>1,434</strong></td>
-<td>real — evolved granites have fractionated their magnesium away</td>
+<td>real: evolved granites have fractionated their magnesium away</td>
 </tr>
 <tr class="even">
 <td>K2O</td>
 <td>824</td>
-<td>real — same logic, other rock types</td>
+<td>real: same logic, other rock types</td>
 </tr>
 <tr class="odd">
 <td>density</td>
 <td><strong>15</strong></td>
-<td>impossible — no rock has zero density: an instrument’s failure code</td>
+<td>impossible: no rock has zero density, so this is an instrument’s failure code</td>
 </tr>
 </tbody>
 </table>
@@ -285,10 +287,10 @@
 <p>The check: is zero inside the physically possible range of <em>this</em> variable?</p>
 </div>
 <div class="takeaway">
-<p>“Replace all zeros with missing” would delete 1,432 silica-rich granites — rewriting the geology, not cleaning it.</p>
+<p>“Replace all zeros with missing” would delete 1,432 silica-rich granites. That rewrites the geology; it does not clean it.</p>
 </div>
 <aside class="notes">
-<p>The tempting shortcut is a global zeros-to-missing sweep; walk why it fails per column. The MgO zeros sit almost entirely in granites (1,432 of 1,434), and those granites are silica-rich — median SiO2 of 74.2 wt% versus 69.2 for the full table. That is textbook petrology: evolved melts run out of Mg — the zeros carry the geology. The 15 density zeros are the opposite: physically impossible, so they are sentinel codes — a database’s way of writing “no measurement” inside the data values. Real archives use 0, −999, −9999; the fingerprint is a heap at an impossible or suspiciously round value. Fix: replace <em>only</em> the impossible ones with an explicit missing marker.</p>
+<p>The tempting shortcut is a global zeros-to-missing sweep; walk through why it fails, column by column. The MgO zeros sit almost entirely in granites (1,432 of 1,434), and those granites are silica-rich: median SiO2 of 74.2 wt% against 69.2 for the full table. That is textbook petrology: evolved melts run out of Mg, so the zeros carry the geology. The 15 density zeros are the opposite. They are physically impossible, so they are sentinel codes, a database’s way of writing “no measurement” inside the data values. Real archives use 0, −999, −9999; the fingerprint is a heap at an impossible or suspiciously round value. Fix: replace only the impossible ones with an explicit missing marker. Numbers rerun on Oct 7 from mlgeo_synth.geochem_table(n=10000, seed=42) and the notebook’s planting step.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -301,42 +303,17 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="censored-present-plausible-and-wrong" class="slide level2">
-<h2>Censored: present, plausible, and wrong</h2>
+<section id="censored-values-look-right-and-are-wrong" class="slide level2">
+<h2>Censored values look right and are wrong</h2>
 <img data-src="figs/2.4_dataframes_prep/censored_series_slide.png" class="r-stretch">
-<div class="takeaway">
-<p>12% of samples sit exactly at the 5 mm floor — yet a missing-data check reports <em>zero</em> problems. Censored data passes every missingness test.</p>
-</div>
-<aside class="notes">
-<p>Define censoring aloud: the instrument reports a number, but the number is the <em>reporting floor</em>, not the measurement — geochemical analyses write “&lt;0.01” as 0.01, stream gauges floor out at low flow, positioning systems near their resolution. Left panel: the reported series (red) rides the dashed floor whenever the true series (gray) dips below it. Right panel: the fingerprint — a heap of identical values exactly at the limit, the same signature as the sentinel zeros one slide ago, at a value that is plausible instead of impossible. That plausibility is what makes censoring dangerous: nothing looks broken. Data are synthetic (mlgeo_synth) with the uncensored truth returned, so the next slide can measure the damage exactly.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="what-the-floor-does-to-the-science" class="slide level2 smaller">
-<h2>What the floor does to the science</h2>
-<div class="big-number">
-<p>12.44 mm/yr <span class="unit">trend fit on the true, uncensored values</span></p>
-</div>
-<div class="big-number">
-<p>11.59 mm/yr <span class="unit">trend fit on what the sensor reported</span></p>
-</div>
 <div class="dim">
-<p>Every low excursion pulled up to the floor: the early mean is too high, the fitted trend too low — biased in a <em>predictable direction</em>. Dropping the censored samples deletes exactly the low values: worse.</p>
+<p>Synthetic (mlgeo_synth): a displacement series moving at 12 mm/yr, reported through a 5 mm floor.</p>
 </div>
 <div class="takeaway">
-<p>Model the censoring, or report the limit in the data card — never substitute and move on.</p>
+<p>12% of samples sit exactly at the 5 mm floor, yet a missing-data check reports <em>zero</em> problems. Censored data passes every missingness test.</p>
 </div>
 <aside class="notes">
-<p>The bias is not noise — it has a sign you can reason out: censoring only ever pulls values <em>up</em>, so first-year statistics inflate and the trend deflates. 0.85 mm/yr may sound small; over a GNSS velocity field it is the difference between locked and creeping fault interpretations. Neither of the two lazy fixes works: substitution (the limit, or half of it) is Helsel’s “fabricating data”; dropping removes exactly the informative low tail. Honest options: survival/tobit-style methods that treat “below L” as the datum it is, or at minimum reporting the limit alongside the data so downstream users can. Related trap for the notes: a mid-record instrument swap changes the floor mid-series — a step in a record’s variance is a metadata question before it is a discovery.</p>
+<p>Define censoring aloud: the instrument reports a number, but the number is the reporting floor, not the measurement. Geochemical analyses write “&lt;0.01” as 0.01; stream gauges floor out at low flow. Be straight about the example: a GNSS position has no such floor, so this is a GNSS-shaped series with a floor imposed to make the bias measurable; the real cases are laboratory detection limits (trace elements, nutrients, contaminants) and gauges at low flow. Left panel: the reported series (red) rides the dashed floor whenever the true series (gray) dips below it. Right panel: the fingerprint, a heap of identical values exactly at the limit, the same signature as the sentinel zeros one slide ago, but at a value that is plausible instead of impossible. That plausibility is what makes censoring dangerous: nothing looks broken. The generator returns the uncensored truth, so the next slide can measure the damage exactly.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -349,21 +326,69 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="why-is-it-missing-the-gap-can-be-the-data" class="slide level2">
-<h2>Why is it missing? The gap can be the data</h2>
+<section id="what-the-floor-does-to-the-science" class="slide level2">
+<h2>What the floor does to the science</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Series used for the fit</th>
+<th style="text-align: right;">Trend (mm/yr)</th>
+<th style="text-align: right;">Year-1 mean (mm)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>True, uncensored</td>
+<td style="text-align: right;"><strong>12.44</strong></td>
+<td style="text-align: right;"><strong>4.80</strong></td>
+</tr>
+<tr class="even">
+<td>Reported, floor values kept</td>
+<td style="text-align: right;">11.59</td>
+<td style="text-align: right;">7.24</td>
+</tr>
+<tr class="odd">
+<td>Reported, floor values dropped</td>
+<td style="text-align: right;">11.82</td>
+<td style="text-align: right;">9.29</td>
+</tr>
+</tbody>
+</table>
+<div class="dim">
+<p>Both shortcuts bias in the same, predictable direction. Dropping makes the early mean worse and the trend slightly less wrong: neither recovers the truth.</p>
+</div>
+<div class="takeaway">
+<p>Model the censoring, or report the limit in the data card. Never substitute or drop and move on.</p>
+</div>
+<aside class="notes">
+<p>The bias is not noise; it has a sign you can reason out. Censoring only ever pulls low values up, so first-year statistics inflate and the trend deflates. Ask the room to predict the third row before revealing it. Dropping removes the low tail entirely, so the year-1 mean rises further (9.29 against 7.24, truth 4.80); the trend improves a little (11.82 against 11.59) because the dropped samples were the ones dragging the early fit up, but it is still 0.6 mm/yr low, and which statistic suffers depends on what you compute. That is the lesson: neither shortcut is safe in general. Honest options: survival or tobit-type methods that treat “below L” as the datum it is, or at minimum reporting the limit alongside the data so downstream users can. Related trap: a mid-record instrument swap changes the floor mid-series, so a step in a record’s variance is a metadata question before it is a discovery. All six numbers rerun on Oct 7: mlgeo_synth.gnss_series(n_years=4, velocity_mm_yr=12.0, seed=7) through degrade_series(detection_limit_mm=5.0, seed=7), least-squares line on 1,461 daily samples (1,286 after dropping).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-gap-can-be-the-data" class="slide level2">
+<h2>The gap can be the data</h2>
 <ul>
 <li>The stream gauge drowns in the flood it was built to measure</li>
 <li>The GNSS antenna goes silent under the storm’s snow load</li>
 <li>The field crew skips the location when the road washes out</li>
 </ul>
 <div class="dim">
-<p>Missing completely at random (MCAR) — safe to drop. Missing <em>because of</em> the value (MNAR) — dropping deletes your extremes.</p>
+<p>Missing completely at random (MCAR): safe to drop. Missing <em>because of</em> the value (MNAR): dropping deletes your extremes.</p>
 </div>
 <div class="takeaway">
 <p>Ask what process made the gap. If the answer involves the measurement, the missingness belongs in your data card as data.</p>
 </div>
 <aside class="notes">
-<p>Rubin’s vocabulary, on geoscience instruments. Our planted gaps were MCAR by construction — that is what licensed dropna in the notebook, and the text says so explicitly. Real instruments rarely oblige: each bullet is a case where the gap is <em>caused by</em> the value that would have been measured, so dropping rows systematically deletes floods, storms, washouts — the events the analysis probably exists to study. Connect backward: the MgO zeros were the same idea inverted — “suspicious” values concentrated in one geology, so removing them rewrites the field. The operational habit: for every gap pattern, write one sentence on its mechanism; if the sentence mentions the measured quantity, the missingness policy is a scientific decision to defend, not a default.</p>
+<p>Rubin’s vocabulary, on geoscience instruments. The planted gaps in 2.4 are MCAR by construction; that is what licenses dropna in the notebook, and the text says so. Real instruments rarely oblige: each bullet is a case where the gap is caused by the value that would have been measured, so dropping rows systematically deletes floods, storms, and washouts, the events the analysis probably exists to study. Connect backward: the MgO zeros were the same idea inverted, “suspicious” values concentrated in one geology, so removing them rewrites the field. The operational habit: for every gap pattern, write one sentence on its mechanism; if the sentence mentions the measured quantity, the missingness policy is a scientific decision to defend, not a default.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -379,15 +404,15 @@
 <section id="the-dtype-trap" class="slide level2">
 <h2>The dtype trap</h2>
 <ul>
-<li>Cleaning density: replace the impossible zeros with a missing marker — correct</li>
-<li>pandas silently upcast the column: <strong>float64 → object</strong> (numbers stored as generic objects)</li>
-<li>Every later “numeric columns only” step — correlations, summaries — now <em>drops density without a warning</em></li>
+<li>Cleaning density: replace the impossible zeros with a missing marker. Correct.</li>
+<li>pandas silently changed the column’s storage type: <strong>float64 → object</strong> (numbers stored as generic objects)</li>
+<li>Every later “numeric columns only” step (correlations, summaries) now <em>drops density without a warning</em></li>
 </ul>
 <div class="takeaway">
 <p>A column can be numeric in content and non-numeric in dtype. Check dtypes after every cleaning step, not just the first.</p>
 </div>
 <aside class="notes">
-<p>The notebook’s most instructive bug, planted deliberately. The very cleaning that protected density (zeros → missing) changed its storage type; from then on, any select-numeric-columns operation — the correlation matrices, describe — silently excludes the column the cleaning was defending. No error, no warning; the analysis just quietly loses a variable. The fix is one cast back to numeric, but the lesson is the habit: dtype checks are part of every step. This is also the modern-pandas moment: assign results (df = df.replace(…)) rather than inplace mutations — chained inplace on slices errors in pandas 3. Downstream payoff of a clean table: the correlation matrices reveal the planted geochemistry (SiO2 anticorrelates with FeO/MgO/CaO), plus the closure effect — oxides sum to ~100 wt%, building anticorrelation into the table regardless of petrology. That subtlety is exercise question 1.</p>
+<p>The notebook’s most instructive bug, planted deliberately. The cleaning that protected density (zeros to missing) changed its storage type; from then on, any select-numeric-columns operation, the correlation matrices and describe(), silently excludes the column the cleaning was defending. No error, no warning; the analysis quietly loses a variable. The fix is one cast back to numeric, but the lesson is the habit: dtype checks are part of every step. This is also the modern-pandas moment: assign results (df = df.replace(…)) rather than mutating in place, because chained in-place edits on slices raise errors in pandas 3. Downstream payoff of a clean table: the correlation matrices show the planted geochemistry (SiO2 anticorrelates with FeO, MgO, CaO), plus the closure effect: oxides sum to about 100 wt%, which builds anticorrelation into the table regardless of petrology. That subtlety is exercise question 1.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -427,7 +452,7 @@
 <tr class="even">
 <td><strong>Censored value</strong></td>
 <td>heap at a plausible round value</td>
-<td>5 mm detection floor</td>
+<td>laboratory detection limit</td>
 <td>model it, or report the limit</td>
 </tr>
 <tr class="odd">
@@ -445,10 +470,10 @@
 </tbody>
 </table>
 <div class="takeaway">
-<p>Same discipline throughout: diagnose the mechanism first; clean second; write the decision down.</p>
+<p>Same discipline throughout: diagnose the mechanism first, clean second, write the decision down.</p>
 </div>
 <aside class="notes">
-<p>The lecture in one screen — leave it up for questions. Each row was a slide; the connecting idea is that every pathology has a <em>mechanism</em> (a failing instrument, a reporting floor, a physical cause, a library behavior) and a <em>fingerprint</em> you can test for — and that the response is a documented decision, not a reflex. This table becomes part of the 2.13 data-card checklist and gets applied to the students’ own project data at check-in #1. The censoring and gap rows return Monday on time series, where the same mistakes cost RMS error we can measure.</p>
+<p>The lecture in one screen; leave it up for questions. Each row was a slide. The connecting idea is that every pathology has a mechanism (a failing instrument, a reporting floor, a physical cause, a library behavior) and a fingerprint you can test for, and that the response is a documented decision, not a reflex. This table becomes part of the 2.13 data-card checklist and is applied to each team’s own project data at check-in 1. The censoring and gap rows return Monday on time series, where the same mistakes cost an error we can measure.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -461,19 +486,66 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="now-run-it-yourself-open-2.4" class="slide level2">
-<h2>Now run it yourself — open 2.4</h2>
-<ol type="1">
-<li><code>pixi run jupyter lab</code> → <code>2.4_dataframes_prep.ipynb</code></li>
-<li>Run the cleaning: count the zeros, replace only the impossible ones, catch the dtype flip and fix it</li>
-<li>Reproduce the censoring bias: 11.59 vs 12.44 mm/yr — then try <em>dropping</em> the censored samples and watch it get worse</li>
-<li>Exercise Q3: what accuracy does “always predict granite” achieve — and what does that imply for evaluating any classifier on this table?</li>
-</ol>
-<div class="dim">
-<p>Monday: sampling, resampling &amp; irregular data (2.5–2.6) · HW1 due Mon Oct 12</p>
+<section id="cleaning-rules-your-agent-must-follow" class="slide level2">
+<h2>Cleaning rules your agent must follow</h2>
+<p>Ask an assistant to “clean this table” and the likely result is the global sweep: zeros to missing, then drop incomplete samples.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>A rule that cannot be checked</th>
+<th>A rule that can</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Clean the data carefully</td>
+<td>Replace a value only if it lies outside the physical range stated in <code>data/README.md</code></td>
+</tr>
+<tr class="even">
+<td>Handle missing values</td>
+<td>Log every replacement or drop (column, rule, count) to <code>cleaning_log.csv</code></td>
+</tr>
+<tr class="odd">
+<td>Fix the types</td>
+<td>Report <code>df.dtypes</code> before and after each cleaning step</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>A cleaning decision you have not written down is one your agent will make for you.</p>
 </div>
 <aside class="notes">
-<p>Timing for the 80-minute block (10:00–11:20): pulse-talk sign-ups just opened, no talks yet — admin ~10 min, deck ~20 min, guided notebook ~40 min (task 3 is where the learning is — circulate and ask students to predict the direction of the bias before running), synthesis ~10 min on task 4, whose answer (about 55%) seeds the class-imbalance thread that runs to Chapter 3. Implementation names live here: isna/dropna, replace with pd.NA, pd.to_numeric, select_dtypes, corr(method=‘spearman’), value_counts. 2.3’s remaining levels (plotly maps, station-metadata parsing) are marked self-guided. Remind: HW1 due Monday.</p>
+<p>Three minutes, 🤝 assistant allowed. This links today to Monday’s AGENTS.md (HW1 Step 7, due Monday Oct 12). The left column is what most people would type; none of it can be settled by reading the agent’s output, so it does not count toward the five rules. The right column can be checked against the commits and the log. Ask each student to write one data-cleaning rule for their own project data and add it to their AGENTS.md before Monday; the peer who reran their repository on Wednesday is the right person to check it. Return to the opening question: the rules people described for deleting rows are exactly what belongs here.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="run-notebook-2.4" class="slide level2">
+<h2>Run notebook 2.4</h2>
+<ol type="1">
+<li><code>pixi run jupyter lab</code> → <code>2.4_dataframes_prep.ipynb</code></li>
+<li>Run the cleaning: count the zeros, replace only the impossible ones, catch the dtype change and fix it</li>
+<li>Reproduce the censoring bias (11.59 vs 12.44 mm/yr), then drop the floor values: predict first which statistic gets worse, the trend or the year-1 mean</li>
+<li>Exercise Q3: what accuracy does “always predict granite” achieve, and what does that imply for evaluating any classifier on this table?</li>
+<li>Write one checkable cleaning rule into your AGENTS.md</li>
+</ol>
+<div class="dim">
+<p>Monday: sampling, resampling, and irregular data (2.5–2.6) · HW1 due Mon Oct 12</p>
+</div>
+<aside class="notes">
+<p>Timing for the 80-minute block (10:00–11:20): pulse-talk sign-ups are open, no talks yet. Admin about 7 minutes, deck about 20, guided notebook about 40 (task 3 is where the learning is: circulate and ask students to commit to a prediction before running), synthesis about 13 on tasks 4 and 5. Task 4’s answer (55%) seeds the class-imbalance thread that runs to Chapter 3; collect two or three AGENTS.md rules from task 5 and test them against the left/right columns of the previous slide. Implementation names live here: isna/dropna, replace with pd.NA, pd.to_numeric, select_dtypes, corr(method=‘spearman’), value_counts. 2.3’s remaining levels (plotly maps, station-metadata parsing) are self-guided. Remind: HW1 due Monday, including the AGENTS.md.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
