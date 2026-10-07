@@ -91,13 +91,13 @@ for sta in STATIONS:
             sta,
             fontsize=19, color=INK, va="top", fontweight="bold")
 
-ax.text(-127.6, 36.0, "Pacific\nplate", fontsize=18, color=MUTED, style="italic")
-ax.text(-118.2, 40.2, "North America\nplate", fontsize=18, color=MUTED, style="italic")
-ax.text(-126.7, 42.6, "Cascadia\nsubduction zone", fontsize=16, color=INK, rotation=82, ha="center")
+ax.text(-127.6, 36.6, "Pacific\nplate", fontsize=18, color=MUTED, style="italic")
+ax.text(-119.0, 40.2, "North America\nplate", fontsize=18, color=MUTED, style="italic")
+ax.text(-127.35, 45.6, "Cascadia\nsubduction zone", fontsize=16, color=INK, rotation=82, ha="center", va="center")
 ax.text(-121.4, 34.0, "San Andreas\nfault system", fontsize=16, color=INK, rotation=-38, ha="center")
-ax.annotate("", xy=(-116.6 + 10 * scale, 32.8), xytext=(-116.6, 32.8),
+ax.annotate("", xy=(-127.5 + 10 * scale, 32.6), xytext=(-127.5, 32.6),
             arrowprops=dict(arrowstyle="-|>", color=ARROW_C, lw=3))
-ax.text(-116.6, 33.05, "10 mm/yr", fontsize=16, color=INK)
+ax.text(-127.5, 32.9, "10 mm/yr", fontsize=16, color=INK)
 ax.set_title("Course GNSS stations", loc="left")
 fig.text(0.01, 0.005, f"Coordinates: NGL llh.out · velocities: NGL MIDAS IGS20,\nNorth America fixed, "
          f"retrieved {dt.date.today().isoformat()} · plate boundaries: PB2002 (Bird, 2003)",

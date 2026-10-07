@@ -2,7 +2,7 @@
 
 One page per deck in book/slides/2026/lec*.qmd, in session order, plus an
 overview table. Everything comes from each deck's front matter:
-  title:    "Meet the data:<br>streams, formats, and a first real dataset"
+  title:    "Data streams, formats, and the first real dataset"
   subtitle: "Session 4 · Wed Oct 7 · Book sections 2.1–2.2 & 1.6–1.7"
 Book section numbers are resolved to the book pages that carry them, so the
 links follow the sessions' order rather than the chapters'.
