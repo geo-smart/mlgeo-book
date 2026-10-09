@@ -642,7 +642,7 @@
 <p>Replacing every zero with a missing value, then dropping incomplete samples, would remove 1,432 silica-rich granites from the table.</p>
 </div>
 <aside class="notes">
-<p>The tempting shortcut is a global zeros-to-missing sweep; walk through why it fails, column by column. The MgO zeros sit almost entirely in granites (1,432 of 1,434), and those granites are silica-rich: median SiO2 of 74.2 wt% against 69.2 for the full table. That is textbook petrology: evolved melts run out of Mg, so these zeros are measurements. The 15 density zeros are the opposite. They are physically impossible, so they are sentinel codes, a database’s way of writing “no measurement” inside the data values. Real archives use 0, −999, −9999; the fingerprint is a heap at an impossible or suspiciously round value. Fix: replace only the impossible ones with an explicit missing marker. Numbers rerun on Oct 7 from mlgeo_synth.geochem_table(n=10000, seed=42) and the notebook’s planting step.</p>
+<p>The tempting shortcut is a global zeros-to-missing sweep; walk through why it fails, column by column. The MgO zeros sit almost entirely in granites (1,432 of 1,434), and those granites are silica-rich: median SiO2 of 74.2 wt% against 69.2 for the full table. That is textbook petrology: evolved melts run out of Mg, so these zeros are measurements. The 15 density zeros are the opposite. They are physically impossible, so they are sentinel codes, a database’s way of writing “no measurement” inside the data values. Real archives use 0, −999, −9999; the fingerprint is a spike in the histogram, many rows sharing one impossible or suspiciously round value. Fix: replace only the impossible ones with an explicit missing marker. Numbers rerun on Oct 7 from mlgeo_synth.geochem_table(n=10000, seed=42) and the notebook’s planting step.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -665,7 +665,7 @@
 <p>12% of samples are recorded at the 5 mm limit instead of their true value, and a missing-value check finds none: censored values are numbers.</p>
 </div>
 <aside class="notes">
-<p>Define censoring aloud: the instrument or laboratory reports a number, but the number is its detection limit, not the measurement. Geochemical analyses write “&lt;0.01” as 0.01; stream gauges floor out at low flow. Be straight about the example: a GNSS position has no such floor, so this is a GNSS-shaped series with a floor imposed to make the bias measurable; the real cases are laboratory detection limits (trace elements, nutrients, contaminants) and gauges at low flow. Left panel: the reported series (red) rides the dashed floor whenever the true series (gray) dips below it. Right panel: the fingerprint, a heap of identical values exactly at the limit, the same signature as the sentinel zeros one slide ago, but at a value that is plausible instead of impossible. Because the value is plausible, nothing in a summary table flags it. The generator returns the uncensored truth, so the next slide can measure the damage exactly.</p>
+<p>Define censoring aloud: the instrument or laboratory reports a number, but the number is its detection limit, not the measurement. Geochemical analyses write “&lt;0.01” as 0.01; stream gauges floor out at low flow. Be straight about the example: a GNSS position has no such floor, so this is a GNSS-shaped series with a floor imposed to make the bias measurable; the real cases are laboratory detection limits (trace elements, nutrients, contaminants) and gauges at low flow. Left panel: the reported series (red) rides the dashed floor whenever the true series (gray) dips below it. Right panel: the fingerprint, a spike of identical values exactly at the limit, the same signature as the sentinel zeros one slide ago, but at a value that is plausible instead of impossible. Because the value is plausible, nothing in a summary table flags it. The generator returns the uncensored truth, so the next slide can measure the damage exactly.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -799,13 +799,13 @@
 <tbody>
 <tr class="odd">
 <td><strong>Sentinel value</strong></td>
-<td>heap at an impossible value</td>
+<td>spike in the histogram at an impossible value</td>
 <td>density = 0 g/cm³</td>
 <td>replace only the impossible ones</td>
 </tr>
 <tr class="even">
 <td><strong>Censored value</strong></td>
-<td>heap at a plausible round value</td>
+<td>spike at a plausible round value</td>
 <td>laboratory detection limit</td>
 <td>model it, or report the limit</td>
 </tr>

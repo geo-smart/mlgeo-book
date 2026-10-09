@@ -178,7 +178,7 @@ Replacing every zero with a missing value, then dropping incomplete samples, wou
 :::
 
 ::: {.notes}
-The tempting shortcut is a global zeros-to-missing sweep; walk through why it fails, column by column. The MgO zeros sit almost entirely in granites (1,432 of 1,434), and those granites are silica-rich: median SiO2 of 74.2 wt% against 69.2 for the full table. That is textbook petrology: evolved melts run out of Mg, so these zeros are measurements. The 15 density zeros are the opposite. They are physically impossible, so they are sentinel codes, a database's way of writing "no measurement" inside the data values. Real archives use 0, −999, −9999; the fingerprint is a heap at an impossible or suspiciously round value. Fix: replace only the impossible ones with an explicit missing marker. Numbers rerun on Oct 7 from mlgeo_synth.geochem_table(n=10000, seed=42) and the notebook's planting step.
+The tempting shortcut is a global zeros-to-missing sweep; walk through why it fails, column by column. The MgO zeros sit almost entirely in granites (1,432 of 1,434), and those granites are silica-rich: median SiO2 of 74.2 wt% against 69.2 for the full table. That is textbook petrology: evolved melts run out of Mg, so these zeros are measurements. The 15 density zeros are the opposite. They are physically impossible, so they are sentinel codes, a database's way of writing "no measurement" inside the data values. Real archives use 0, −999, −9999; the fingerprint is a spike in the histogram, many rows sharing one impossible or suspiciously round value. Fix: replace only the impossible ones with an explicit missing marker. Numbers rerun on Oct 7 from mlgeo_synth.geochem_table(n=10000, seed=42) and the notebook's planting step.
 :::
 
 ## Values below a detection limit
@@ -194,7 +194,7 @@ A 5 mm detection limit imposed on a synthetic GNSS-shaped series to measure the 
 :::
 
 ::: {.notes}
-Define censoring aloud: the instrument or laboratory reports a number, but the number is its detection limit, not the measurement. Geochemical analyses write "<0.01" as 0.01; stream gauges floor out at low flow. Be straight about the example: a GNSS position has no such floor, so this is a GNSS-shaped series with a floor imposed to make the bias measurable; the real cases are laboratory detection limits (trace elements, nutrients, contaminants) and gauges at low flow. Left panel: the reported series (red) rides the dashed floor whenever the true series (gray) dips below it. Right panel: the fingerprint, a heap of identical values exactly at the limit, the same signature as the sentinel zeros one slide ago, but at a value that is plausible instead of impossible. Because the value is plausible, nothing in a summary table flags it. The generator returns the uncensored truth, so the next slide can measure the damage exactly.
+Define censoring aloud: the instrument or laboratory reports a number, but the number is its detection limit, not the measurement. Geochemical analyses write "<0.01" as 0.01; stream gauges floor out at low flow. Be straight about the example: a GNSS position has no such floor, so this is a GNSS-shaped series with a floor imposed to make the bias measurable; the real cases are laboratory detection limits (trace elements, nutrients, contaminants) and gauges at low flow. Left panel: the reported series (red) rides the dashed floor whenever the true series (gray) dips below it. Right panel: the fingerprint, a spike of identical values exactly at the limit, the same signature as the sentinel zeros one slide ago, but at a value that is plausible instead of impossible. Because the value is plausible, nothing in a summary table flags it. The generator returns the uncensored truth, so the next slide can measure the damage exactly.
 :::
 
 ## Effect of the detection limit on the fitted trend
@@ -258,8 +258,8 @@ The notebook plants this bug on purpose. The cleaning that protected density (ze
 
 | Pathology | Fingerprint | Geoscience example | Response |
 |---|---|---|---|
-| **Sentinel value** | heap at an impossible value | density = 0 g/cm³ | replace only the impossible ones |
-| **Censored value** | heap at a plausible round value | laboratory detection limit | model it, or report the limit |
+| **Sentinel value** | spike in the histogram at an impossible value | density = 0 g/cm³ | replace only the impossible ones |
+| **Censored value** | spike at a plausible round value | laboratory detection limit | model it, or report the limit |
 | **Informative gap** | gaps track events | gauge drowned in the flood | treat the gap as data |
 | **Dtype drift** | numeric content, non-numeric dtype | density after cleaning | check dtypes every step |
 
