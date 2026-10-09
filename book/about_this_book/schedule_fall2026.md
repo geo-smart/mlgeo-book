@@ -12,8 +12,8 @@ Two design choices shape the quarter. First, **the agent thread runs through the
 
 | Item | Opens | Due / window |
 |---|---|---|
-| HW1 — workbench setup ([1.9](../Chapter1-GettingStarted/1.9_workbench_setup_hw1.md)) | Sep 30 | Mon Oct 12 |
-| Ch 1 quiz (Canvas, timed) | Tue Oct 6 | Thu Oct 8 |
+| HW1 — workbench setup ([1.9](../Chapter1-GettingStarted/1.9_workbench_setup_hw1.md)) | Sep 30 | Wed Oct 14 |
+| Ch 1 quiz (Canvas, timed; [study guide](../Chapter1-GettingStarted/1.10_study_guide_part1.md)) | Wed Oct 14 | Wed Oct 14 |
 | Reading arc stage 1 — AI-assisted lit review ([6.5](../Chapter6-AgenticAI/6.5_reading_arc.md)) | Oct 5 | Wed Oct 21 |
 | Ch 2 quiz | Mon Oct 26 | Wed Oct 28 |
 | Final project proposal ([1.10](1.10_MLGEO_FinalProject.md)) | Oct 12 | Fri Oct 30 |
@@ -41,12 +41,12 @@ Chapter 7 has no quiz: its outcomes (audience translation, downstream impact) ar
 - Wed Sep 30 — Course introduction; why ML in the geosciences; open reproducible science ([1.1](../Chapter1-GettingStarted/1.1_open_reproducible_science.md)); active paper-to-project sprint: discover a relevant ML paper with ChatGPT Search, verify its DOI and source, trace its data/code/environment/evaluation artifacts, and turn it into a class project-gallery entry. HW1 assigned; setup help continues in the week-1 install clinic (office hours), not in lecture. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec01_why_ml_geosciences.html)
 - Fri Oct 2 — **Reproducible workbench studio:** finish the paper sprint; build class rubric v0.1 from observed evidence gaps; distinguish CPU, GPU, memory, storage, local computing, back-end servers, cloud, HPC, environments, containers, and sandboxes; then apply the rubric while setting up the version-controlled workbench ([1.1](../Chapter1-GettingStarted/1.1_open_reproducible_science.md) revisited, [1.2](../Chapter1-GettingStarted/1.2_jupyter_environment.md)–[1.5](../Chapter1-GettingStarted/1.5_version_control_git.md), with [1.9](../Chapter1-GettingStarted/1.9_workbench_setup_hw1.md) as the self-serve walkthrough). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec02_your_workbench.html)
 
-**Week 2 — Agents, then data** (Ch 1 quiz Tue–Thu)
+**Week 2 — Agents, then data**
 - Mon Oct 5 — **Reproducible work with agents** ([1.8](../Chapter1-GettingStarted/1.8_ai_in_your_workflow.md) + [6.1](../Chapter6-AgenticAI/6.1_llms_to_agents.md)): score the sprint paper with the class rubric; connect agents, tools, environments, sandboxes, and hardware; measure numeric and citation failures; peer-rerun a repository; publish rubric v0.2 for AI-assisted work. Reading arc stage 1 assigned; paper-pulse sign-ups open. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec03_working_with_agents.html)
 - Wed Oct 7 — Data streams, formats, and the first real dataset ([2.1](../Chapter2-DataManipulation/2.1_Data_Definitions.md)–[2.2](../Chapter2-DataManipulation/2.2_data_formats_rendered.ipynb)), the data gallery, and a first real dataset ([1.6](../Chapter1-GettingStarted/1.6_data_gallery.md)–[1.7](../Chapter1-GettingStarted/1.7_get_geodetic_gnss.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec04_meet_the_data.html)
 - Fri Oct 9 — Cleaning tabular data ([2.3](../Chapter2-DataManipulation/2.3_pandas_rendered.ipynb)–[2.4](../Chapter2-DataManipulation/2.4_dataframes_prep.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec05_tables_that_tell_the_truth.html)
 
-**Week 3 — Signals** (HW1 due Mon)
+**Week 3 — Signals** (HW1 due and Ch 1 quiz Wed)
 - Mon Oct 12 — Arrays and gridded data ([2.5](../Chapter2-DataManipulation/2.5_Arrays.ipynb)); resampling and irregular data ([2.6](../Chapter2-DataManipulation/2.6_resampling.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec06_sampling_resampling.html)
 - Wed Oct 14 — Statistical considerations ([2.7](../Chapter2-DataManipulation/2.7_statistical_considerations.ipynb)); spectral transforms ([2.8](../Chapter2-DataManipulation/2.8_data_spectral_transforms.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec07_statistics_spectra.html)
 - Fri Oct 16 — Filtering, gaps, timing errors: repairing real records ([2.9](../Chapter2-DataManipulation/2.9_filtering_data.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec08_repairing_records.html)

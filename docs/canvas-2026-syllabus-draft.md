@@ -128,8 +128,8 @@ interpretation. The assignment page for each item states the distinction.
 
 | Item | Due/window |
 |---|---|
-| HW1 — workbench setup | October 12 |
-| Chapter 1 quiz | October 6–8 |
+| HW1 — workbench setup | October 14 |
+| Chapter 1 quiz | October 14 |
 | Reading arc stage 1 | October 21 |
 | Chapter 2 quiz | October 26–28 |
 | Final project proposal | October 30 |
