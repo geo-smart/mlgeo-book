@@ -129,29 +129,30 @@ Keeping all 36,518 events gives b = 0.43; keeping the 16,892 events at or above 
 Three minutes. Data: USGS ComCat, Washington and Oregon box (42–49.5°N, 125.5–116.5°W), M ≥ 0, 2010–2024, retrieved 2026-10-09 by figscripts/pnw_catalog_completeness.py; 99% of the events come from the Pacific Northwest Seismic Network (uw). Geoscience first: the map shows Puget Sound crustal seismicity, the Cascade volcanoes (the dense clusters at Mount St. Helens and Mount Hood), and scattered events in eastern Washington and Oregon. The Gutenberg–Richter law says the number of earthquakes of magnitude M or larger falls as 10^(−bM); in most tectonic regions b is close to 1. The network does not detect every small event, so below some magnitude the counts fall short of the line: that is the magnitude of completeness, Mc. Here Mc is the maximum-curvature estimate (0.8) plus 0.2, the correction Woessner and Wiemer (2005) recommend, so Mc = 1.0; 54% of the table lies below it. Fitting b with the Aki–Utsu maximum-likelihood formula on every event gives 0.43, a value that would imply far more large earthquakes per small one than the region produces; fitting above Mc gives 0.81. The map shows why a single Mc is itself a simplification: small events are detected near the dense Puget Sound and volcano-monitoring networks and missed elsewhere, so Mc varies across the region. A second cleaning issue sits in the magType column: 33,016 local magnitudes (ml) and 3,323 duration magnitudes (md) in the same table. Ask: which cleaning step would you document first?
 :::
 
-## A synthetic rock survey with known errors
+## A synthetic rock survey with known errors {.smaller .compact}
 
 ::: {.badge-row}
 [🧪 Sample & laboratory]{.gb .src} [🪨 Solid Earth]{.gb .sys .solid} [⛰️ Geology & geomorphology]{.gb .disc .solid}
 :::
 
-::: {.big-number}
-10,000 [rock samples]{.unit}
-:::
-
-::: {.big-number}
-5.6 : 1 [granites to andesites]{.unit}
-:::
-
-[Each data sample: 7 major-element oxides (wt%), bulk density, magnetic susceptibility, and a lithology label.]{.dim}
-
 ```python
 import mlgeo_synth
 df = mlgeo_synth.geochem_table(n=10000, seed=42)   # synthetic: the true values are known
+df.head()
 ```
 
+| | SiO2 | Al2O3 | FeO | MgO | CaO | Na2O | K2O | density g/cm³ | susc. 10⁻³ SI | label |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| 0 | 45.91 | 16.27 | 11.98 | 9.70 | 12.75 | 2.08 | 0.00 | 3.01 | 0.44 | basalt |
+| 1 | 68.27 | 14.42 | 4.86 | 2.24 | 4.76 | 3.05 | 3.42 | 2.69 | 0.17 | granite |
+| 2 | 50.42 | 15.27 | 8.21 | 5.85 | 10.38 | 2.55 | 1.24 | 2.94 | 1.34 | basalt |
+| 3 | 46.50 | 14.57 | 11.73 | 7.62 | 12.45 | 1.24 | 0.00 | 3.00 | 1.12 | basalt |
+| 4 | 68.31 | 13.59 | 3.46 | 2.52 | 3.78 | 3.27 | 3.74 | 2.68 | 0.09 | granite |
+
+[Oxides in wt%. 10,000 data samples: 5,525 granite, 3,490 basalt, 985 andesite (5.6 : 1 granite to andesite).]{.dim}
+
 ::: {.takeaway}
-Class imbalance is common in geoscience labels: a classifier that always predicts granite already scores 55%.
+Each row is one rock; two of the first five already have K2O = 0, and a classifier that always predicts granite scores 55%.
 :::
 
 ::: {.notes}
