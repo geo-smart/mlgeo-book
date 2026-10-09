@@ -1,0 +1,65 @@
+# Course environment for a student's own repository (e.g. MLGEO2026_UWNETID).
+#
+# Copy this file and the pixi.lock next to it into the top of your repository,
+# then run `pixi install`. It carries the same scientific stack as the book's
+# root pixi.toml, without the book-building tools (mystmd, nodejs) and the
+# tasks that only work inside the book's folder layout.
+#
+# Keep the dependency list in step with ../../pixi.toml when it changes.
+
+[workspace]
+name = "mlgeo-student"
+version = "0.1.0"
+description = "MLGeo (ESS 469/569) course environment for a student repository"
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "linux-64"]
+
+[tasks]
+lab = "jupyter lab"
+
+[dependencies]
+python = "3.12.*"
+numpy = ">=2.0"
+pandas = ">=2.2"
+scipy = ">=1.15"
+scikit-learn = ">=1.6"
+pytorch = ">=2.4"
+torchvision = "*"
+obspy = ">=1.4"
+xarray = "*"
+netcdf4 = "*"
+h5py = "*"
+zarr = "*"
+geopandas = "*"
+rasterio = "*"
+matplotlib = ">=3.9"
+seaborn = "*"
+plotly = ">=6"
+statsmodels = "*"
+lightgbm = "*"
+optuna = "*"
+pywavelets = "*"
+pooch = "*"
+pyarrow = "*"
+folium = "*"
+scikit-image = "*"
+tqdm = "*"
+jupyterlab = "*"
+ipykernel = "*"
+ipywidgets = "*"
+jupytext = "*"
+pytest = "*"
+dask = ">=2026.7.1,<2027"
+s3fs = ">=2026.6.0,<2027"
+
+[pypi-dependencies]
+# The book's synthetic-data generators (`import mlgeo_synth`), used by the
+# Chapter 2 and 4 notebooks and Homework_DL. Installed from a snapshot of the
+# book's GitHub repository (a ~190 MB download on the first install, then
+# cached). To pick up later changes to mlgeo_synth, replace the commit hash
+# and run `pixi install`. Delete this line if you never run book notebooks in
+# your own repository.
+mlgeo-synth = { url = "https://github.com/geo-smart/mlgeo-book/archive/247bc014c1d01084b3f2aaf52db81cc1fcf1db0f.tar.gz" }
+tsfel = "*"
+seisbench = "*"
+torchinfo = "*"

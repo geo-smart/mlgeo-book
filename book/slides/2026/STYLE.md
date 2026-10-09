@@ -44,16 +44,42 @@ The governing order for every slide and every explanation:
   "train on the past, validate on the future," "leave a region out, with a
   buffer" — not API names.
 
-## The literature slide (required, early)
+## The literature slides (required, early)
 
-Every deck's introduction includes a **"This lecture in the literature"**
-slide: 2–4 publications — at least one where the concept was applied well and
-one where its absence misled a field — each with a one-line tag saying which
-it is (✓ / ✗). The entries live in a per-deck include file
-(`refs/lecNN_refs.qmd`), so updating papers as the field moves means editing
-one small file, never the deck. Speaker notes carry the two-minute story of
-each paper. New papers land monthly; instructors and students are invited to
-propose replacements.
+Every deck's introduction carries two literature slides, both from the
+geosciences.
+
+1. **One paper told in full.** Pick the paper where the lecture's concept
+   changed a geoscience result. Stage it with: a citation card stating the
+   finding in one sentence; a map or picture of the geoscience domain; a few
+   real records from the data table (data samples as rows, the key columns,
+   including the metadata columns that matter); and the figure where the
+   problem shows. Rebuild every visual from the open data behind the paper with
+   a figscript; never paste screenshots or figures from the publisher (the repo
+   is CC BY and publisher figures are not). If today's data no longer
+   reproduce the published number, say so on the slide and in the notes.
+   Example: lecture 5, sea surface temperatures in the 1940s
+   (figscripts/sst_1945_discontinuity.py).
+2. **Breadth: the same problem elsewhere.** Three or four cards, each a
+   number or a short term first, one sentence, then the citation, drawn from
+   different Earth systems where possible. The cards live in the per-deck
+   include file (`refs/lecNN_refs.qmd`), so updating papers means editing one
+   small file, never the deck.
+
+Check every citation (DOI resolves, title and authors match) before it goes on
+a slide, and check every number against the paper or a rerun. Speaker notes
+carry the full story of each paper.
+
+## Titles, takeaways, and code on slides
+
+- **No slogans.** A title names what the slide shows ("Zeros in three
+  columns"), not a punchline ("A zero is not one thing"). A takeaway states
+  one specific finding, with its number where there is one. No "not X, it's
+  Y" constructions, no one-word fragments, no em-dashes.
+- **Short code is welcome** where it shows the operation on the data: two to
+  four lines, copied from the session's notebook so it runs, on a content
+  slide after the geoscience and the concept. Longer code stays in the
+  notebook.
 
 ## Figures
 

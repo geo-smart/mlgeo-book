@@ -58,9 +58,9 @@ lon = quake["longitude"].where(quake["longitude"] >= -20, quake["longitude"] + 3
 sc = ax.scatter(lon, quake["latitude"], c=quake["depth_km"], cmap=ramp,
                 vmin=0, vmax=700, s=6 * (quake["magnitude"] - 5.5) ** 3 + 8,
                 edgecolors="white", linewidths=0.6, zorder=3)
-ax.set_xlim(-20, 340); ax.set_ylim(-70, 80)
+ax.set_xlim(-20, 340); ax.set_ylim(-72, 77)
 ax.set_aspect("equal")
-ax.set_xticks([]); ax.set_yticks([])
+ax.set_xticks([]); ax.set_yticks([]); ax.set_xlabel(""); ax.set_ylabel("")
 for s in ax.spines.values():
     s.set_visible(False)
 cb = fig.colorbar(sc, ax=ax, fraction=0.02, pad=0.01, shrink=0.8)

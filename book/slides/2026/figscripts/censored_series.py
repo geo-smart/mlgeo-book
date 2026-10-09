@@ -33,7 +33,7 @@ ax[0].plot(t, censored["disp_mm"], lw=0.7, color="#b3402a", label="reported")
 ax[0].axhline(5.0, color="k", ls="--", lw=1.5, label="detection limit (5 mm)")
 ax[0].set_xlabel("time (yr)")
 ax[0].set_ylabel("displacement (mm)")
-ax[0].set_title("The sensor reports its floor, not the ground", loc="left")
+ax[0].set_title("Reported values stop at the 5 mm floor", loc="left")
 ax[0].legend(fontsize=17, loc="upper left")
 
 ax[1].hist(censored["disp_mm"][:365], bins=40, color="#b3402a", alpha=0.6,
@@ -42,10 +42,10 @@ ax[1].hist(truth["clean"][:365], bins=40, histtype="step", lw=2, color="gray",
            label="true, year 1")
 ax[1].set_xlabel("displacement (mm)")
 ax[1].set_ylabel("count")
-ax[1].set_title("The fingerprint: a heap at the limit", loc="left")
+ax[1].set_title("Year-1 values pile up at 5 mm", loc="left")
 ax[1].legend(fontsize=17)
 
-fig.suptitle("Synthetic GNSS displacement, 12 mm/yr — mlgeo_synth (planted truth)",
+fig.suptitle("Synthetic GNSS displacement, 12 mm/yr (mlgeo_synth, true values known)",
              x=0.01, ha="left", fontsize=20, fontweight="normal", color="#6e675c")
 fig.tight_layout(rect=(0, 0, 1, 0.95))
 

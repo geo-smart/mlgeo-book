@@ -2,9 +2,11 @@ You are preparing Canvas quizzes for ESS 469/569 "Machine Learning in the
 Geosciences", Autumn 2026, University of Washington.
 
 INPUT
-The directory tools/quizzes/ contains six question banks I will use
-(ch1.md, ch2.md, ch3.md, ch4.md, ch5.md, ch6.md) plus ch7.md (NOT used as
-a quiz — skip it) and a README.md describing the format. Each bank is
+The directory docs/quizzes/ contains the question banks I will use
+(ch2.md, ch3.md, ch4.md, ch5.md, ch6.md) plus ch7.md (NOT used as a quiz —
+skip it) and a README.md describing the format. Chapter 1 is already
+packaged as ch1_quiz_2026.md and ch1_quiz_2026.zip; leave those and
+ch1_bank_2026-08-12_superseded.md alone. Each bank is
 plain markdown: numbered questions, four options a–d with the correct
 option marked by an asterisk inline, and an answer key with one-sentence
 rationales at the bottom of the file. Do not change any question content,
@@ -114,10 +116,10 @@ CONSTRAINTS
 - Never publish, upload, or share the bank contents anywhere; these files
   contain answer keys and are deliberately kept out of the public course
   repository.
-- Work only inside tools/quizzes/ and a new tools/quizzes/canvas_export/
+- Work only inside docs/quizzes/ and a new docs/quizzes/canvas_export/
   output directory; do not commit anything to git.
 - End by printing a checklist of what you produced and a per-quiz
-  question count so I can verify against the sources (expected: ch1=10,
-  ch2=12, ch3=12, ch4=13, ch5=12, ch6=14), plus the survey count
+  question count so I can verify against the sources (expected:
+  ch2=13, ch3=12, ch4=13, ch5=12, ch6=14), plus the survey count
   (expected: 19 pulse surveys + 2 final-presentation surveys + roster +
   announcement).

@@ -25,6 +25,80 @@ see [adopting this book](book/about_this_book/adopting_this_book.md). The
 French and Spanish editions localize prose (examples, institutions, hazards)
 but, apart from the GNSS notebook 1.7, still run on the English edition's data.
 
+## Set up your course environment (students)
+
+All course code runs in one [pixi](https://pixi.sh) environment, pinned for
+macOS (Apple silicon) and Linux. On Windows, work inside WSL2 or a GitHub
+Codespace, as described in
+[Homework 1](book/Chapter1-GettingStarted/1.9_workbench_setup_hw1.md). Install
+pixi first:
+
+```sh
+curl -fsSL https://pixi.sh/install.sh | sh   # or: brew install pixi
+pixi --version                               # restart the terminal if not found
+```
+
+Then pick the manifest that matches where your work lives:
+
+| You work in | Use this `pixi.toml` | Where it comes from |
+|---|---|---|
+| A clone or fork of this book | `pixi.toml` at the top of this repository | Already there |
+| Your own repository, started blank (e.g. `MLGEO2026_UWNETID`) | [`environments/student/pixi.toml`](environments/student/pixi.toml) and its `pixi.lock` | Copy both into the top of your repository |
+
+### Option A: clone or fork the book
+
+```sh
+git clone https://github.com/geo-smart/mlgeo-book.git   # or your fork's URL
+cd mlgeo-book
+pixi install
+pixi run jupyter lab
+```
+
+The first `pixi install` downloads a few gigabytes. Fork the repository on
+GitHub first if you want to push your own commits; you cannot push to
+`geo-smart/mlgeo-book`.
+
+### Option B: start from a blank repository
+
+Create the repository on GitHub (tick "Add a README file"), clone it, and copy
+the student manifest and its lockfile into the top level:
+
+```sh
+git clone https://github.com/<your-username>/MLGEO2026_UWNETID.git
+cd MLGEO2026_UWNETID
+curl -fsSLO https://raw.githubusercontent.com/geo-smart/mlgeo-book/main/environments/student/pixi.toml
+curl -fsSLO https://raw.githubusercontent.com/geo-smart/mlgeo-book/main/environments/student/pixi.lock
+pixi install
+pixi run lab                                  # starts JupyterLab
+git add pixi.toml pixi.lock
+git commit -m "Add MLGeo course environment"
+git push
+```
+
+If you already have a clone of the book next to your repository,
+`cp ../mlgeo-book/environments/student/pixi.{toml,lock} .` does the same as the
+two `curl` lines.
+
+Do not copy the root `pixi.toml` into a blank repository. It installs the
+book's `mlgeo_synth` package from the book's own folder, so outside the book
+every `pixi run` fails with "does not appear to be a Python project", and its
+build and check tasks expect the book's `book/` and `tools/` folders. The
+student manifest pins the same package versions as the book's lockfile,
+installs `mlgeo_synth` from a snapshot of the book on GitHub (about 190 MB,
+downloaded once and then cached), drops the book-building tools, and adds a
+`pixi run lab` task.
+
+Check that the environment works:
+
+```sh
+pixi run python -c "import numpy, torch, sklearn, obspy, mlgeo_synth; print('environment ok')"
+```
+
+From then on, change the environment only through pixi: `pixi add <package>`
+for conda-forge packages, `pixi add --pypi <package>` for PyPI-only ones, and
+commit `pixi.toml` and `pixi.lock` together every time. You may rename
+`name = "mlgeo-student"` under `[workspace]` to your repository's name.
+
 ## Make this book yours
 
 The book is CC BY 4.0 and the code is MIT. Fork it, retarget it, teach it. We
