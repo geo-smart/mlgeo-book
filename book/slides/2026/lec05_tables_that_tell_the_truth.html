@@ -655,17 +655,17 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="values-censored-at-a-reporting-floor" class="slide level2">
-<h2>Values censored at a reporting floor</h2>
+<section id="values-below-a-detection-limit" class="slide level2">
+<h2>Values below a detection limit</h2>
 <img data-src="figs/2.4_dataframes_prep/censored_series_slide.png" class="r-stretch">
 <div class="dim">
-<p>Synthetic (mlgeo_synth): a displacement series moving at 12 mm/yr, reported through a 5 mm floor.</p>
+<p>A 5 mm detection limit imposed on a synthetic GNSS-shaped series to measure the bias. GNSS has no such limit; groundwater arsenic (“&lt;0.5 µg/L”) and low-flow stream gauges do.</p>
 </div>
 <div class="takeaway">
-<p>12% of samples sit exactly at the 5 mm floor, and a missing-value check finds none: censored values are numbers, so missingness tests cannot detect them.</p>
+<p>12% of samples are recorded at the 5 mm limit instead of their true value, and a missing-value check finds none: censored values are numbers.</p>
 </div>
 <aside class="notes">
-<p>Define censoring aloud: the instrument reports a number, but the number is the reporting floor, not the measurement. Geochemical analyses write “&lt;0.01” as 0.01; stream gauges floor out at low flow. Be straight about the example: a GNSS position has no such floor, so this is a GNSS-shaped series with a floor imposed to make the bias measurable; the real cases are laboratory detection limits (trace elements, nutrients, contaminants) and gauges at low flow. Left panel: the reported series (red) rides the dashed floor whenever the true series (gray) dips below it. Right panel: the fingerprint, a heap of identical values exactly at the limit, the same signature as the sentinel zeros one slide ago, but at a value that is plausible instead of impossible. Because the value is plausible, nothing in a summary table flags it. The generator returns the uncensored truth, so the next slide can measure the damage exactly.</p>
+<p>Define censoring aloud: the instrument or laboratory reports a number, but the number is its detection limit, not the measurement. Geochemical analyses write “&lt;0.01” as 0.01; stream gauges floor out at low flow. Be straight about the example: a GNSS position has no such floor, so this is a GNSS-shaped series with a floor imposed to make the bias measurable; the real cases are laboratory detection limits (trace elements, nutrients, contaminants) and gauges at low flow. Left panel: the reported series (red) rides the dashed floor whenever the true series (gray) dips below it. Right panel: the fingerprint, a heap of identical values exactly at the limit, the same signature as the sentinel zeros one slide ago, but at a value that is plausible instead of impossible. Because the value is plausible, nothing in a summary table flags it. The generator returns the uncensored truth, so the next slide can measure the damage exactly.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -678,8 +678,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="effect-of-the-floor-on-the-fitted-trend" class="slide level2">
-<h2>Effect of the floor on the fitted trend</h2>
+<section id="effect-of-the-detection-limit-on-the-fitted-trend" class="slide level2">
+<h2>Effect of the detection limit on the fitted trend</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -695,19 +695,19 @@
 <td style="text-align: right;"><strong>4.80</strong></td>
 </tr>
 <tr class="even">
-<td>Reported, floor values kept</td>
+<td>Reported, values at the limit kept</td>
 <td style="text-align: right;">11.59</td>
 <td style="text-align: right;">7.24</td>
 </tr>
 <tr class="odd">
-<td>Reported, floor values dropped</td>
+<td>Reported, values at the limit dropped</td>
 <td style="text-align: right;">11.82</td>
 <td style="text-align: right;">9.29</td>
 </tr>
 </tbody>
 </table>
 <div class="dim">
-<p>Both shortcuts raise the early values and lower the trend. Dropping the floor values worsens the year-1 mean and slightly improves the trend; neither recovers the true values.</p>
+<p>Both shortcuts raise the early values and lower the trend. Dropping the values at the limit worsens the year-1 mean and slightly improves the trend; neither recovers the true values.</p>
 </div>
 <div class="takeaway">
 <p>Use a method that treats “below 5 mm” as information, or report the limit in the data card so later users can.</p>
@@ -877,7 +877,7 @@
 <td>1,432 granites removed</td>
 </tr>
 <tr class="odd">
-<td>keep values at the reporting floor</td>
+<td>keep values recorded at the detection limit</td>
 <td>GNSS-shaped series (synthetic)</td>
 <td>trend 11.59 instead of 12.44 mm/yr</td>
 </tr>
@@ -956,7 +956,7 @@
 <ol type="1">
 <li><code>pixi run jupyter lab</code> → <code>2.4_dataframes_prep.ipynb</code></li>
 <li>Run the cleaning: count the zeros, replace only the impossible ones, catch the dtype change and fix it</li>
-<li>Reproduce the censoring bias (11.59 vs 12.44 mm/yr), then drop the floor values: predict first which statistic gets worse, the trend or the year-1 mean</li>
+<li>Reproduce the censoring bias (11.59 vs 12.44 mm/yr), then drop the values at the limit: predict first which statistic gets worse, the trend or the year-1 mean</li>
 <li>Exercise Q3: what accuracy does “always predict granite” achieve, and what does that imply for evaluating any classifier on this table?</li>
 <li>Write one checkable cleaning rule into your AGENTS.md</li>
 </ol>

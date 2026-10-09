@@ -2,7 +2,7 @@
 
 Re-plots the 2.4 censored-values demonstration at lecture scale: a synthetic
 GNSS displacement series (mlgeo_synth, planted truth) reported by a sensor
-with a 5 mm floor, plus the year-1 histogram whose heap at the limit is the
+with a 5 mm detection limit, plus the year-1 histogram whose heap at the limit is the
 fingerprint of censoring. Same data and seeds as the executed notebook.
 
 Regenerate: pixi run python book/slides/2026/figscripts/censored_series.py
@@ -33,7 +33,7 @@ ax[0].plot(t, censored["disp_mm"], lw=0.7, color="#b3402a", label="reported")
 ax[0].axhline(5.0, color="k", ls="--", lw=1.5, label="detection limit (5 mm)")
 ax[0].set_xlabel("time (yr)")
 ax[0].set_ylabel("displacement (mm)")
-ax[0].set_title("Reported values stop at the 5 mm floor", loc="left")
+ax[0].set_title("Reported values stop at 5 mm", loc="left")
 ax[0].legend(fontsize=17, loc="upper left")
 
 ax[1].hist(censored["disp_mm"][:365], bins=40, color="#b3402a", alpha=0.6,
