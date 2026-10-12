@@ -6,6 +6,15 @@ on:
   push:
     branches: [main, 2026-edition]
   workflow_dispatch:
+    inputs:
+      full:
+        description: "Re-execute every notebook (ignore the notebook cache)"
+        type: boolean
+        default: false
+  # Weekly full rebuild: re-executes every notebook, so notebooks that download
+  # living data (NGL GNSS, USGS, FDSN) refresh, and runs the link check.
+  schedule:
+    - cron: "0 9 * * 1"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -49,8 +58,32 @@ jobs:
           pixi run python tools/check_prose_typos.py
         continue-on-error: true
 
-      - name: Execute all notebooks (sequential — myst's concurrent kernels OOM the runner)
-        run: pixi run python tools/execute_notebooks.py
+      # Executed notebooks are cached by fingerprint (code cells, pixi.lock,
+      # mlgeo_synth, data files beside the notebook): a push re-executes only
+      # notebooks whose fingerprint changed; markdown edits reuse cached
+      # outputs. The key ends in the run id so every run saves a fresh cache;
+      # restore-keys picks up the latest one for the same lockfile.
+      - name: Restore notebook cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .nbcache
+          key: nbcache-${{ hashFiles('pixi.lock') }}-${{ github.run_id }}
+          restore-keys: nbcache-${{ hashFiles('pixi.lock') }}-
+
+      - name: Execute notebooks (sequential — myst's concurrent kernels OOM the runner)
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.full }}" = "true" ]; then
+            pixi run python tools/execute_notebooks.py --cache-dir .nbcache --no-cache
+          else
+            pixi run python tools/execute_notebooks.py --cache-dir .nbcache
+          fi
+
+      - name: Save notebook cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .nbcache
+          key: nbcache-${{ hashFiles('pixi.lock') }}-${{ github.run_id }}
 
       - name: Build book from executed notebooks
         run: pixi run myst build --html
@@ -85,7 +118,9 @@ jobs:
           cp -R book/slides/2026 book/_build/html/slides/2026
           cp book/slides/*.pdf book/_build/html/slides/ 2>/dev/null || true
 
+      # Advisory and slow (about 2.5 min): weekly and manual full runs only.
       - name: Link check
+        if: github.event_name == 'schedule' || inputs.full
         run: pixi run myst build --check-links
         working-directory: book
         continue-on-error: true
