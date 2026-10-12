@@ -65,6 +65,14 @@ geosciences.
    different Earth systems where possible. The cards live in the per-deck
    include file (`refs/lecNN_refs.qmd`), so updating papers means editing one
    small file, never the deck.
+   A deck may replace the cards with a **gallery** of figures from recent papers
+   (lecture 6 does: gridded data from rock cores to global models). Gallery
+   figures must come from articles published under CC BY (or CC0), confirmed
+   on the article page; use the publisher's largest figure file, unmodified;
+   put a `.credit` line under each figure (authors, year, journal, volume,
+   pages, figure number, DOI, license) and list every file in a `SOURCES.md`
+   in its figure folder. Publisher figures under any other license stay
+   forbidden.
 
 Check every citation (DOI resolves, title and authors match) before it goes on
 a slide, and check every number against the paper or a rerun. Speaker notes

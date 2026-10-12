@@ -23,16 +23,98 @@ Reading: [2.5 Arrays](https://geo-smart.github.io/mlgeo-book/arrays) · [2.6 Res
 Frame the session: Friday was tables; today the other two streams — gridded arrays and sensor series — and the operations that change their sampling. "Resampling" means two things and we do both: statistical resampling (bootstrap — redraw from a sample to measure uncertainty) and signal resampling (change a series' sampling rate or grid). They share one trap: done naively, each manufactures data that was never measured. Every repair today is graded against planted truth. Ask the room: who has ever called a resample-to-daily function, or interpolated across a gap, without checking what it did? Everyone — that is today.
 :::
 
-## This lecture in the literature
+## Gridded data from micrometers to the globe {.smaller}
 
-{{< include refs/lec06_refs.qmd >}}
+![](figs/lit_gridded_gallery/gridded_data_scales.png){.r-stretch}
+
+[Drawn for this course from spacings and extents stated in 18 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) articles (list: figs/lit_gridded_gallery/SOURCES.md). Global products all span the Earth; markers stacked by up to ×1.6.]{.credit}
 
 ::: {.takeaway}
-Sampling theory is old; geoscience still pays for ignoring it — in aliased tides, jumpy station averages, and error bars several times too small.
+Grid spacing spans ten orders of magnitude, from 2.25 µm voxels to 100 km model cells; most grids are 100 to 10,000 cells across.
 :::
 
 ::: {.notes}
-Two minutes. Shannon: the sampling theorem — a series sampled at interval Δt represents only frequencies below the Nyquist frequency 1/(2Δt); everything above folds back in, disguised as a lower frequency. Today's tide-gauge demo is that theorem with sea water in it. Mao: GPS velocity papers assumed white (memoryless) noise; the noise is time-correlated, and the published error bars were several times too small — our block-bootstrap slide reproduces exactly that failure and its fix on synthetic data where truth is known. Hansen & Lebedeff: the classic anomaly method — average station *departures*, not raw temperatures, so a station joining or leaving the network cancels instead of jumping the global mean; our multi-well slide is the same move on groundwater. Künsch: the block bootstrap, formalized — resample contiguous chunks so the noise correlation survives. Refs update monthly — bring candidates.
+Two minutes; this slide opens a six-slide gallery that replaces the reference list. Every point is a published dataset, placed by its grid spacing (horizontal) and the extent it covers (vertical), using the numbers stated in each paper; sources in figs/lit_gridded_gallery/SOURCES.md, all CC BY 4.0. Read three encodings. Color is the data type: an observation (an instrument wrote these numbers on a grid), a product derived from observations (irregular measurements interpolated or retrieved onto a grid), a reanalysis (a model pulled toward observations, like the grid in notebook 2.5), a model simulation. Marker is the dimensionality: a 2D map, a 2D map with several channels (element maps, spectra, velocity components), a 3D volume, space plus time, and an ensemble (many equally likely versions of the same field). The dashed lines count cells across the dataset: extent divided by spacing. Global products all span the Earth; their markers are numbered and named in the key, and stacked slightly so they do not overlap. Point out that a rock core and a global reanalysis have about the same number of cells across (one to a few thousand), which is why the same tools, and the same mistakes, apply to both. Ask: where would your project's data sit, and which marker does it get?
+:::
+
+## Laboratory: a sandstone core as a 4D grid {.smaller}
+
+[🧪 Sample & laboratory]{.gb .src} [🪨 Solid Earth]{.gb .sys .solid} [📈 Seismology]{.gb .disc .solid}
+
+![](figs/lit_gridded_gallery/cartwright2022_natcommun_fig2.png){.r-stretch}
+
+[Cartwright-Taylor et al. (2022), *Nature Communications* 13, 6169, Fig. 2, [doi:10.1038/s41467-022-33855-z](https://doi.org/10.1038/s41467-022-33855-z). [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).]{.credit}
+
+::: {.takeaway}
+Each volume is 1,596 × 1,506 × 3,080 voxels of 7.91 µm, about 15 GB at 16 bits, repeated every 85 s while the rock fails.
+:::
+
+::: {.notes}
+Three minutes. A cylinder of Clashach sandstone, 10 mm across, loaded until it fails along a shear band, imaged by synchrotron X-ray micro-CT at Diamond Light Source while it deforms. Panel a: a horizontal slice and a vertical re-slice; the zoom states the grid spacing on the figure ("1 pixel = 7.91 µm") and the grayscale is X-ray attenuation in 16-bit counts, not a physical unit. Panel b: the same 2.3 mm window in successive tomograms (labelled 'slice 16' to 'slice 34' in the figure, but each is a full 3D volume at a later time), before and after peak stress (19); panel c: zooms of 0.8 to 1.1 mm where cracks open, grains rotate and break. This is a 4D grid (x, y, z, time). Two sampling questions for the room. In space: a crack narrower than about two voxels (16 µm) cannot be resolved, even if it is there. In time: each volume takes about 80 s to acquire and they come every 85 s, so anything faster (the acoustic emissions, the 'seismic events' of the title) is invisible to the grid; the paper's point is that the seismic events and the grain-scale mechanisms see different parts of the failure. The 15 GB is our arithmetic: 1596 × 1506 × 3080 voxels × 2 bytes.
+:::
+
+## Field: radar ice thickness, from survey lines to grids {.smaller}
+
+[📍 In-situ sensor]{.gb .src} [🖥️ Model & simulation]{.gb .src} [🧊 Cryosphere]{.gb .sys .ice} [🧊 Glaciology]{.gb .disc .ice}
+
+![](figs/lit_gridded_gallery/wang2026_essd_fig3.jpg){height="575px"} ![](figs/lit_gridded_gallery/wang2026_essd_fig4.jpg){height="575px"}
+
+[Wang et al. (2026), *Earth System Science Data* 18, 4241–4262, Figs. 3–4, [doi:10.5194/essd-18-4241-2026](https://doi.org/10.5194/essd-18-4241-2026); the middle and right grids re-plot Frank and van Pelt (2024) and Farinotti et al. (2019). [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).]{.credit}
+
+::: {.takeaway}
+Lines 20 to 300 m apart become a 10 m grid; on the same four glaciers, two published grids differ by 21 to 72 m on average.
+:::
+
+::: {.notes}
+Three minutes; this is the lecture's "irregular data" in one picture. Left: radio-echo sounding on four reference glaciers in northern Sweden (Kebnekaise area). The axes are easting and northing in km in SWEREF 99 TM, Sweden's projected grid, not latitude and longitude: a grid always comes with a coordinate system, and converting between systems is part of using it. Ice thickness is measured every 4 to 6 m along each line, and the lines are 20 to 300 m apart, so the samples are dense in one direction and sparse in the other; right half of the left figure is each point's uncertainty, 5 to more than 25 m. Right: three gridded answers for the same glaciers: this study's 10 m grid (points interpolated with a mass-conservation inversion), a coarser model grid (Frank and van Pelt 2024, visibly blocky), and the global consensus estimate (Farinotti et al. 2019), drawn on older glacier outlines that no longer match the black line. The mean absolute difference between the first two is 36, 31, 21 and 72 m for the four glaciers (paper's text). The authors say their 10 m grid "does not represent the realistic spatial resolution away from the RES survey lines", because bed features smaller than about one ice thickness cannot be recovered from surface information: grid spacing is a choice made after the measurement; resolution is set by where the measurements are and by the physics of the inversion. Ask: if you trained a model on the 10 m grid, how many independent samples would you really have?
+:::
+
+## Satellite: soil moisture before and after gap filling
+
+[🛰️ Satellite & airborne]{.gb .src} [💧 Land water]{.gb .sys .water} [💧 Hydrology & land-surface modeling]{.gb .disc .water}
+
+![](figs/lit_gridded_gallery/preimesberger2025_essd_fig6.png){.r-stretch}
+
+[Preimesberger et al. (2025), *Earth System Science Data* 17, 4305–4329, Fig. 6, [doi:10.5194/essd-17-4305-2025](https://doi.org/10.5194/essd-17-4305-2025). [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).]{.credit}
+
+::: {.takeaway}
+On 1 March 2007, frozen ground (hatched) and dense vegetation leave much of the land without a retrieval; filled values match in situ stations about as well as retrievals do (median R = 0.72), but they are estimates.
+:::
+
+::: {.notes}
+Three minutes. ESA Climate Change Initiative soil moisture, the upper few centimeters of soil, in m³ of water per m³ of soil, on a regular 0.25° grid (about 25 km), daily, 1991 to 2023. Top row: the satellite record on one day (a) and its uncertainty (b). Large areas are empty: the hatching marks where ERA5 soil temperature is below 0 °C, because microwave sensors cannot retrieve liquid soil water from frozen ground. Apart from missing satellite overpasses in the early years, the paper ranks retrieval failures: "The most common cause are frozen soils", then "dense vegetation, which can mask contributions from the soil" (tropical rainforests are masked permanently in the original record), then radio-frequency interference and very dry barren soils. The filled values compare with in situ stations about as well as the originals (global median R = 0.72, unbiased RMSD 0.05 m³/m³, paper's evaluation). Bottom row: the gap-filled product (c) and its uncertainty (d). Most gaps are filled with a statistical method (discrete cosine transform with penalized least squares) that borrows from neighboring days and cells; the long frozen-soil gaps, the hatched areas here, are filled mainly by linear interpolation in time between the previous autumn and the following spring. Ice sheets stay excluded. Two discussion points. The gaps are not random: they follow temperature, vegetation and orbit, which is the informative missingness of 2.4 on a grid. And a filled value is an estimate, not a measurement; keep the flag that says which cells were filled, or a model trained on the product will learn the filling method as if it were soil physics.
+:::
+
+## Satellite: the local time each orbit samples drifts
+
+[🛰️ Satellite & airborne]{.gb .src} [🌊 Ocean]{.gb .sys .ocean} [🌊 Oceanography]{.gb .disc .ocean}
+
+![](figs/lit_gridded_gallery/embury2024_scidata_fig1.png){.r-stretch}
+
+[Embury et al. (2024), *Scientific Data* 11, 326, Fig. 1, [doi:10.1038/s41597-024-03147-w](https://doi.org/10.1038/s41597-024-03147-w). [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).]{.credit}
+
+::: {.takeaway}
+NOAA-14 drifted from 13:40 local time in 1995 to after 18:00 by 2002; the record adjusts every observation to 10:30 or 22:30 so the daily warming cycle does not alias into the trend.
+:::
+
+::: {.notes}
+Three minutes; this connects to the tide-gauge aliasing slide later today. Each line is one satellite carrying an infrared radiometer used for the ESA CCI sea surface temperature record since 1980 (N = NOAA platforms carrying AVHRR, the Advanced Very High Resolution Radiometer; AT = ATSR, the Along-Track Scanning Radiometer; M = MetOp; S3 = Sentinel-3 with SLSTR, the ATSR successor; AMSR-E and AMSR2 are microwave sensors). The vertical axis is the local solar time at which the satellite crosses the equator in daylight. A sun-synchronous orbit samples the ocean at the same local time every day, so it samples the daily warming cycle at one phase only, like keeping one tide-gauge reading a day. The orbits drift: NOAA-14 crossed near 13:40 in 1995 and after 18:00 by 2002. Sea surface temperature warms by up to 0.5 K during a typical day, and by more than 5 K on calm sunny days (paper's text), so a drifting sampling time turns the daily cycle into a spurious slow trend. The product's fix is to adjust every observation to the nearest 10:30 or 22:30 local mean solar time. The gridded product: 0.05° (about 5 km) daily, with gaps (level 3) and gap-free (level 4).
+:::
+
+## Models: finer grids resolve lakes and eddies {.smaller}
+
+[🖥️ Model & simulation]{.gb .src} [🌤️ Atmosphere]{.gb .sys .air} [🌊 Ocean]{.gb .sys .ocean} [🌡️ Atmospheric & climate science]{.gb .disc .air} [🌊 Oceanography]{.gb .disc .ocean}
+
+![](figs/lit_gridded_gallery/munozsabater2021_essd_fig4.png){height="505px"} ![](figs/lit_gridded_gallery/hohenegger2023_gmd_fig17.jpg){height="505px"}
+
+[Left: Muñoz-Sabater et al. (2021), *Earth System Science Data* 13, 4349–4383, Fig. 4, [doi:10.5194/essd-13-4349-2021](https://doi.org/10.5194/essd-13-4349-2021). Right: Hohenegger et al. (2023), *Geoscientific Model Development* 16, 779–811, Fig. 17, [doi:10.5194/gmd-16-779-2023](https://doi.org/10.5194/gmd-16-779-2023). [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).]{.credit}
+
+::: {.takeaway}
+ERA5-Land at 9 km resolves lakes and valleys that ERA5 at 31 km averages away; in this North Atlantic run, small eddies and fronts need a grid spacing between 2.5 and 1 km.
+:::
+
+::: {.notes}
+Three minutes. Left, the Alps around Switzerland: ERA5 (about 31 km, left column) and ERA5-Land (about 9 km, right column), both hourly and global. Top: the model's own terrain; ERA5 misses many peaks, ERA5-Land shows Lakes Geneva (Léman), Neuchâtel and Constance. Middle and bottom: land surface temperature on 15 July 2018 at 06:00 and 15:00 UTC; at 06:00 the lakes stay warmer than the land around them, visible only at 9 km. Caveat: ERA5-Land assimilates no observations of its own; it is a land-surface model driven by ERA5 weather interpolated to the finer grid and corrected for elevation, so its extra detail comes from terrain and lakes, not from finer weather. Right, the Gulf Stream in the ICON ocean model: local Rossby number (rotation of the flow divided by the planet's rotation) at 5, 2.5 and 1.25 km and on a telescoping grid that refines to about 530 m. At 5 and 2.5 km the Rossby number stays mostly below 1 (weak, with grid-scale noise at 5 km); small eddies and sharp fronts appear at 1.25 km and on the telescope grid; the paper places the critical grid spacing between 2.5 and 1 km for this configuration in boreal winter. Ask: if you trained an ML model on 31 km data, what would it never see, and what would it learn to average?
 :::
 
 ## Arrays that know their coordinates {.smaller}
