@@ -159,12 +159,12 @@ Each row is one rock; two of the first five already have K2O = 0, and a classifi
 Introduce the table: each data sample is one rock, with oxides in weight percent, bulk density, magnetic susceptibility, and a lithology label (granite, basalt, andesite) that a classifier will later predict. The badges describe what the table imitates, laboratory analyses of hand samples; the science tag says it is synthetic, and no map applies because the samples have no locations. Why synthetic: 2.4's point is that repairs get graded. The notebook knocks out 2% of densities and 3% of susceptibilities at random and plants 15 density zeros, then checks whether cleaning recovers the truth. The imbalance seeds exercise question 3: a model that always says "granite" scores 55% accuracy (5,525 of 10,000). Physical sanity checks come first in the notebook: oxides between 0 and 100 wt%, crustal densities roughly 2.5 to 3.3 g/cm³. Read describe() against physics, always.
 :::
 
-## Zeros in three columns
+## Zeros in three columns {.smaller}
 
 | Column | Zeros in the table | Verdict |
 |---|---|---|
-| MgO | **1,434** | real: evolved granites have fractionated their magnesium away |
-| K2O | 824 | real: same logic, other rock types |
+| MgO | **1,434** | below detection: low in evolved granites, but 0.00 is not "none" |
+| K2O | 824 | below detection, in basalts |
 | density | **15** | impossible: no rock has zero density, so this is an instrument's failure code |
 
 ```python
@@ -178,7 +178,7 @@ Replacing every zero with a missing value, then dropping incomplete samples, wou
 :::
 
 ::: {.notes}
-The tempting shortcut is a global zeros-to-missing sweep; walk through why it fails, column by column. The MgO zeros sit almost entirely in granites (1,432 of 1,434), and those granites are silica-rich: median SiO2 of 74.2 wt% against 69.2 for the full table. That is textbook petrology: evolved melts run out of Mg, so these zeros are measurements. The 15 density zeros are the opposite. They are physically impossible, so they are sentinel codes, a database's way of writing "no measurement" inside the data values. Real archives use 0, −999, −9999; the fingerprint is a spike in the histogram, many rows sharing one impossible or suspiciously round value. Fix: replace only the impossible ones with an explicit missing marker. Numbers rerun on Oct 7 from mlgeo_synth.geochem_table(n=10000, seed=42) and the notebook's planting step.
+The tempting shortcut is a global zeros-to-missing sweep; walk through why it fails, column by column. The MgO zeros sit almost entirely in granites (1,432 of 1,434), and those granites are silica-rich: median SiO2 of 74.2 wt% against 69.2 for the full table. Low MgO in evolved granites is textbook petrology, but an analysis that reports exactly 0.00 wt% is saying "below the detection limit", not "no magnesium". These are censored values, the topic of the next slide; the generator produced them by setting negative draws to zero, and it records no detection limit. Fix: keep the rows, flag the values as below detection, and log that the limit is unknown. The K2O zeros are the same case in basalts. Correction announced Oct 13: in the Oct 9 session these zeros were described as measurements. The 15 density zeros are the opposite. They are physically impossible, so they are sentinel codes, a database's way of writing "no measurement" inside the data values. Real archives use 0, −999, −9999; the fingerprint is a spike in the histogram, many rows sharing one impossible or suspiciously round value. Fix: replace only the impossible ones with an explicit missing marker. Numbers rerun on Oct 7 from mlgeo_synth.geochem_table(n=10000, seed=42) and the notebook's planting step.
 :::
 
 ## Values below a detection limit

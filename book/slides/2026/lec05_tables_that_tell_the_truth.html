@@ -602,7 +602,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="zeros-in-three-columns" class="slide level2">
+<section id="zeros-in-three-columns" class="slide level2 smaller">
 <h2>Zeros in three columns</h2>
 <table class="caption-top">
 <colgroup>
@@ -621,12 +621,12 @@
 <tr class="odd">
 <td>MgO</td>
 <td><strong>1,434</strong></td>
-<td>real: evolved granites have fractionated their magnesium away</td>
+<td>below detection: low in evolved granites, but 0.00 is not “none”</td>
 </tr>
 <tr class="even">
 <td>K2O</td>
 <td>824</td>
-<td>real: same logic, other rock types</td>
+<td>below detection, in basalts</td>
 </tr>
 <tr class="odd">
 <td>density</td>
@@ -642,7 +642,7 @@
 <p>Replacing every zero with a missing value, then dropping incomplete samples, would remove 1,432 silica-rich granites from the table.</p>
 </div>
 <aside class="notes">
-<p>The tempting shortcut is a global zeros-to-missing sweep; walk through why it fails, column by column. The MgO zeros sit almost entirely in granites (1,432 of 1,434), and those granites are silica-rich: median SiO2 of 74.2 wt% against 69.2 for the full table. That is textbook petrology: evolved melts run out of Mg, so these zeros are measurements. The 15 density zeros are the opposite. They are physically impossible, so they are sentinel codes, a database’s way of writing “no measurement” inside the data values. Real archives use 0, −999, −9999; the fingerprint is a spike in the histogram, many rows sharing one impossible or suspiciously round value. Fix: replace only the impossible ones with an explicit missing marker. Numbers rerun on Oct 7 from mlgeo_synth.geochem_table(n=10000, seed=42) and the notebook’s planting step.</p>
+<p>The tempting shortcut is a global zeros-to-missing sweep; walk through why it fails, column by column. The MgO zeros sit almost entirely in granites (1,432 of 1,434), and those granites are silica-rich: median SiO2 of 74.2 wt% against 69.2 for the full table. Low MgO in evolved granites is textbook petrology, but an analysis that reports exactly 0.00 wt% is saying “below the detection limit”, not “no magnesium”. These are censored values, the topic of the next slide; the generator produced them by setting negative draws to zero, and it records no detection limit. Fix: keep the rows, flag the values as below detection, and log that the limit is unknown. The K2O zeros are the same case in basalts. Correction announced Oct 13: in the Oct 9 session these zeros were described as measurements. The 15 density zeros are the opposite. They are physically impossible, so they are sentinel codes, a database’s way of writing “no measurement” inside the data values. Real archives use 0, −999, −9999; the fingerprint is a spike in the histogram, many rows sharing one impossible or suspiciously round value. Fix: replace only the impossible ones with an explicit missing marker. Numbers rerun on Oct 7 from mlgeo_synth.geochem_table(n=10000, seed=42) and the notebook’s planting step.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
