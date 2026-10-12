@@ -1,0 +1,13 @@
+# Sources for the lecture 6 gap-filling slides
+
+Each figure is reproduced unmodified from an article published under a Creative
+Commons Attribution license, confirmed on the article page; downloaded 2026-10-12.
+
+| File | Source | License |
+|---|---|---|
+| `cowtan_way2014_qjrms_fig1.jpg` | Cowtan, K., & Way, R. G. (2014). Coverage bias in the HadCRUT4 temperature series and its impact on recent temperature trends. *Quarterly Journal of the Royal Meteorological Society*, 140(683), 1935–1944. Fig. 1. [doi:10.1002/qj.2297](https://doi.org/10.1002/qj.2297) | CC BY 3.0 |
+| `vekuri2023_scirep_fig3.png` | Vekuri, H., Tuovinen, J.-P., Kulmala, L., Papale, D., Kolari, P., Aurela, M., Laurila, T., Liski, J., & Lohila, A. (2023). A widely-used eddy covariance gap-filling method creates systematic bias in carbon balance estimates. *Scientific Reports*, 13, 1720. Fig. 3. [doi:10.1038/s41598-023-28827-2](https://doi.org/10.1038/s41598-023-28827-2) | CC BY 4.0 |
+| `barth2022_gmd_fig8.png` | Barth, A., Alvera-Azcárate, A., Troupin, C., & Beckers, J.-M. (2022). DINCAE 2.0: multivariate convolutional neural network with error estimates to reconstruct sea surface temperature satellite and altimetry observations. *Geoscientific Model Development*, 15, 2183–2196. Fig. 8. [doi:10.5194/gmd-15-2183-2022](https://doi.org/10.5194/gmd-15-2183-2022) | CC BY 4.0 |
+
+Other sources cited on the slides (text only): Merchant et al. (2019), *Scientific Data* 6, 223, doi:10.1038/s41597-019-0236-x; Rubin (1976), *Biometrika* 63, 581–592, doi:10.1093/biomet/63.3.581; Morice et al. (2021), *JGR Atmospheres* 126, e2019JD032361, doi:10.1029/2019JD032361; Preimesberger et al. (2025), *ESSD* 17, 4305–4329, doi:10.5194/essd-17-4305-2025; Pastorello et al. (2020), *Scientific Data* 7, 225, doi:10.1038/s41597-020-0534-3; Vuichard & Papale (2015), *ESSD* 7, 157–171, doi:10.5194/essd-7-157-2015; Barth et al. (2020), *GMD* 13, 1609–1622, doi:10.5194/gmd-13-1609-2020; Sun et al. (2021), *Water Resources Research* 57, e2020WR028666, doi:10.1029/2020WR028666; Lecomte et al. (2024), *Journal of Geodesy* 98, 107, doi:10.1007/s00190-024-01917-3; Ploton et al. (2020), *Nature Communications* 11, 4540, doi:10.1038/s41467-020-18321-y.
+Also cited in the notes: Beckers & Rixen (2003), *Journal of Atmospheric and Oceanic Technology* 20, 1839–1856, doi:10.1175/1520-0426(2003)020<1839:ECADFF>2.0.CO;2; Reichstein et al. (2005), *Global Change Biology* 11, 1424–1439, doi:10.1111/j.1365-2486.2005.001002.x; Reynolds et al. (2007), *Journal of Climate* 20, 5473–5496, doi:10.1175/2007JCLI1824.1; Rubin (1976), *Biometrika* 63, 581–592, doi:10.1093/biomet/63.3.581.

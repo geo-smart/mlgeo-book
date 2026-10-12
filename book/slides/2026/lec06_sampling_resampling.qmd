@@ -179,6 +179,43 @@ The daily mean — a humble 24-h average — already suppresses the tide; a prop
 Walk the curves: red = midnight subsampling, swinging ±0.8 m at the folded 14.8-day period; orange = daily mean (a 24-hour boxcar is a crude low-pass filter — that is why the everyday resample-to-daily-mean idiom is largely safe); blue = decimation with a designed anti-alias filter; black dashed = the true subtidal sea level, known because the data are synthetic (mlgeo_synth) with the tide returned separately. Real-world anchor for the notes: satellite altimetry lives with this permanently — the TOPEX/Jason orbit revisits each point every ~10 days, aliasing M2 into a ~62-day signal that must be modeled away; mission orbits are *designed* around tidal aliasing. Ask the room: what is the highest frequency in *your* project's data, and what will your averaging do to it?
 :::
 
+## One sensor, two samplings {.smaller}
+
+[📍 In-situ sensor]{.gb .src} [💧 Land water]{.gb .sys .water} [💧 Hydrology & land-surface modeling]{.gb .disc .water} · [🪨 Solid Earth]{.gb .sys .solid} [📈 Seismology]{.gb .disc .solid}
+
+![](figs/2.6_resampling/native_vs_distributed_series.png){width="100%"}
+
+[Data: USGS Water Services site 12213100 and USGS ComCat nc73821036, [public domain](https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits); IU.COR.00 BHZ, LHZ via EarthScope FDSN (response removed), Global Seismograph Network [doi:10.7914/SN/IU](https://doi.org/10.7914/SN/IU). Figure: figscripts/native_vs_distributed_series.py.]{.credit}
+
+::: {.takeaway}
+The daily mean (1,413 m³/s) is 11% below the instantaneous flood peak (1,594 m³/s); the 1 sample/s channel shows 24% less peak velocity than the 40 sample/s channel.
+:::
+
+::: {.notes}
+Three minutes. Providers do the downsampling of the last slide for you: USGS with the daily mean, the seismometer's digitizer with anti-alias filters. Both panels are one instrument recorded once and distributed at two samplings. (a) The Nooksack River at Ferndale, WA, during the November 2021 atmospheric-river flood that flooded Everson and Sumas. USGS measures discharge continuously, "often at a fixed 15-minute interval" (USGS data categories page; the 07:52 value is an extra, off-schedule value USGS stored at the peak; the highest value on the 15-minute schedule is 1,574 m³/s at 07:45), and publishes daily values as "a statistical summary or metric of the continuous data", here the mean. Historically the daily value was the approved record and the instantaneous data were not published at all (USGS Office of Surface Water memo 2006.03). Anyone who downloads the daily series to study floods sees a peak 11% low, with no time of day; this gauge publishes only the daily mean, no daily maximum. (b) The M6.4 Ferndale, California earthquake of 20 December 2022 recorded 460 km north at Corvallis, OR. The same seismometer is digitized at a high rate and then low-pass filtered and decimated into channels: BHZ at 40 samples per second and LHZ at 1 sample per second (FDSN band codes; decimating digitizers apply anti-alias FIR filters that strongly attenuate, rather than alias, content near and above each channel's Nyquist frequency, 20 Hz and 0.5 Hz; IU.COR's own StationXML does not list those stages). LHZ follows the long-period motion and misses the sharp peaks. All numbers are computed by the figure script from today's provider data. Ask: which product would you train a flood-peak model on, and which an earthquake-magnitude model?
+:::
+
+## Native and distributed resolution {.smaller .compact .tight}
+
+| Kind | Data | Native | As distributed | Not in the distributed product |
+|---|---|---|---|---|
+| series | Stream gauge (USGS) | every 15 min | daily mean (min and max at some gauges) | the hour of the peak; at mean-only gauges, its size too |
+| series | Seismometer (FDSN) | digitizer at a high rate | 40 (BH) and 1 (LH) samples/s, anti-alias filtered | all above each channel's Nyquist frequency |
+| series | GNSS (EarthScope; Nevada Geodetic Lab) | phase every 15 or 30 s | 24-hour and 5-minute positions | motion faster than 5 min; in daily positions, the hour of an offset |
+| series | Flux tower (FLUXNET2015) | wind and gas at 10 to 20 Hz | 30-minute fluxes, gap-filled | turbulence within each half hour |
+| grid | Reanalysis (ERA5) | hourly, 31 km model grid | regular 0.25° grid | nothing finer than 31 km |
+| grid | InSAR (Sentinel-1) | 5 × 20 m pixels, every 6 or 12 days | velocity and displacement series on a 100 m grid (European Ground Motion Service) | detail finer than 100 m; the line-of-sight direction |
+| grid | Soil moisture (NASA SMAP radiometer) | footprint about 40 km | 36 km and 9 km grids | nothing finer than about 40 km |
+| grid | Gravity (GRACE, JPL) | 3° mascons, monthly | 0.5° grid | nothing finer than 3° |
+
+::: {.takeaway}
+JPL's 0.5° GRACE grid has 259,200 cells but rests on 4,551 independent mascons: check the native sampling before choosing a grid or counting samples.
+:::
+
+::: {.notes}
+Two minutes; the first four rows are time series at a point, the last four are grids (a reanalysis and three kinds of satellite imagery). Two details left off the slide: ERA5 accumulated fields (precipitation, fluxes) cover the hour ending at the time stamp, while analysed fields are instantaneous; and a GNSS earthquake offset in daily positions is located only to the day. Sources, each checked on the provider's page on 12 Oct 2026. Stream gauge: USGS data categories page and memo 2006.03 ("recorded time-intervals ... typically range from 5 to 60 minutes"). Seismometer: FDSN Source Identifiers band codes (B: 10 to 80 samples/s; L: about 1) and the EarthScope instrument-response short course (a 5120 → 320 → 80 → 40 sample/s FIR cascade). GNSS: EarthScope GNSS data management ("recorded at 15-s or 30-s intervals"), Blewitt, Hammond and Kreemer (2018, Eos, doi:10.1029/2018EO104623) for NGL's daily and 5-minute solutions. Flux tower: Pastorello et al. (2020, Scientific Data, doi:10.1038/s41597-020-0534-3), FLUXNET2015 and the ONEFlux processing. ERA5: ECMWF ERA5 data documentation (hourly, 0.28125° native; served on 0.25° by interpolation). InSAR: ESA Sentinel-1 mission pages (12-day repeat per satellite, 6 days with two; Sentinel-1B lost in December 2021) and the European Ground Motion Service Ortho product (100 m grid, updated annually). SMAP: NSIDC SMAP documentation (40 km footprint; 9 km enhanced product by Backus-Gilbert interpolation). GRACE: JPL mascon documentation (4,551 equal-area 3° caps; "only 4,551 independent estimates of uncertainty" behind a 0.5° grid). The general point for ML: two neighbouring grid cells or samples can come from the same measurement, which inflates the apparent sample size and leaks information between train and test sets.
+:::
+
 ## Gaps: interpolation is a decision, not a default
 
 ![](figs/2.6_resampling/fig_15.png){.r-stretch}
@@ -189,6 +226,75 @@ Synthetic GNSS with planted truth (mlgeo_synth): a 150-day outage hides a 25 mm 
 
 ::: {.notes}
 The scenario: a daily GNSS record degraded with eight random short gaps plus one 150-day outage placed across an earthquake — a station knocked out by the shaking it was supposed to record is not hypothetical. Gray = truth (never observed), red dashed = what linear interpolation fabricates, blue = the stated policy. The graded numbers: short gaps interpolate at 0.7–2.4 mm RMS — at or below the 2.4 mm daily noise, because trend plus seasonal cycle barely move in a few days; the 150-day gap costs 8.1 mm RMS and, worse, the filled values are *confidently wrong* — smooth, plausible, and treated as measurements by any downstream trend fit or ML feature window. The policy is the lesson: a threshold derived from this station's signal rates (faster station → shorter threshold), written in the data card; NaN is an honest statement. Mantra from the notebook: fix what the data constrain, mask what they do not, write the threshold down.
+:::
+
+## Six ways to handle a gap {.smaller .compact}
+
+| Choice | Assumes | Fails when | Used in |
+|---|---|---|---|
+| Leave it missing, with a flag | every later step reads the flag | a mean over the observed cells treats the gaps as average | satellite sea surface temperature, levels 2–3; HadCRUT4 |
+| Drop the affected rows | gaps are unrelated to any value, measured or not (missing completely at random) | the gap is caused by the value: floods, frozen soil | notebook 2.4 |
+| Interpolate: linear in time, kriging or optimal interpolation in space | the signal is smooth across the gap | a step or a front hides in the gap; features are smoothed | NOAA OISST; HadCRUT5 analysis |
+| Statistical reconstruction: dominant spatial patterns, a smoother, a look-up of similar weather | the gap resembles patterns seen elsewhere | conditions in the gap are rare | ESA CCI soil moisture; flux towers |
+| Fill from a model or reanalysis | the model is right where data are absent | the model's bias becomes data | FLUXNET weather from ERA-Interim |
+| Train an ML model | training gaps look like the real ones | gaps fall in conditions or places absent from training | neural networks for sea surface temperature and sea level; boosted trees for flux towers; the GRACE gap |
+
+::: {.takeaway}
+Filled values are typically at least half of a flux-tower record (Vekuri et al. 2023): keep a flag for each filled value, and its uncertainty.
+:::
+
+::: {.notes}
+Three minutes; this extends the previous slide from one station to the methods in use. Row by row, with sources (all in figs/lit_gap_filling/SOURCES.md). Leave missing: ESA CCI sea surface temperature keeps the cloud gaps in its level 2 and 3 products and gives each value a 0 to 5 quality level; only the level 4 analysis is gap-free, and the authors write that "the process of interpolation inevitably means feature resolution is degraded", so users studying fronts and eddies should use the gappy data (Merchant et al. 2019). HadCRUT4 left cells without data empty; as Cowtan and Way point out, leaving a cell out of an area-weighted mean is the same as filling it with the mean of the observed cells, next slide. Drop rows: dropping is safe only if the gaps are missing completely at random (MCAR); Rubin (1976) shows that likelihood methods can ignore the gap mechanism under the weaker missing-at-random condition, but row deletion cannot; this is notebook 2.4's MCAR and MNAR. Interpolate: NOAA's daily OISST grids satellite, ship and buoy SST by optimum interpolation; HadCRUT5's analysis variant fills gaps with a Gaussian-process method close to kriging, and ships the unfilled grid next to it (Morice et al. 2021). Statistical reconstruction: DINEOF fills gaps from the leading EOFs (empirical orthogonal functions, the dominant spatial patterns) (Beckers and Rixen 2003); ESA CCI soil moisture uses a DCT-PLS smoother (discrete cosine transform, penalized least squares) and fills long frozen-soil gaps by linear interpolation in time (Preimesberger et al. 2025); flux towers use marginal distribution sampling, a look-up of measurements made under similar weather (Reichstein et al. 2005). Model or reanalysis: FLUXNET fills tower weather from ERA-Interim downscaled to each site; the correction removes only 10 to 36% of the mismatch and wind speed is filled poorly (Vuichard and Papale 2015). ML: DINCAE, a convolutional autoencoder for satellite SST and altimetry (Barth et al. 2020, 2022); XGBoost for flux towers (Vekuri et al. 2023); AutoML to bridge the 11-month gap between GRACE and GRACE-FO (Sun et al. 2021); for the same gap, a benchmark without neural networks found a simple fit of trend plus annual and semi-annual terms scores well, and at one point gap filling underestimated the annual power by 20% (Lecomte et al. 2024). The flags: FLUXNET2015 marks every meteorological value 0 measured, 1 filled from similar weather, 2 filled from reanalysis, and every filled flux 0 measured, 1 to 3 filled with high, medium or low confidence (Pastorello et al. 2020); ESA CCI soil moisture ships a filled/observed mask and a per-value uncertainty.
+:::
+
+## Two cases where the filling choice changed the result {.smaller}
+
+[🗂️ Catalog & compiled product]{.gb .src} [🌤️ Atmosphere]{.gb .sys .air} [🌡️ Atmospheric & climate science]{.gb .disc .air} · [📍 In-situ sensor]{.gb .src} [🌱 Biosphere]{.gb .sys .bio} [🦠 Biogeosciences]{.gb .disc .bio}
+
+:::: {.columns}
+::: {.column width="50%"}
+![](figs/lit_gap_filling/cowtan_way2014_qjrms_fig1.jpg){width="100%"}
+:::
+::: {.column width="50%"}
+![](figs/lit_gap_filling/vekuri2023_scirep_fig3.png){width="100%"}
+:::
+::::
+
+[Left: Cowtan & Way (2014), *Quarterly Journal of the Royal Meteorological Society* 140, 1935–1944, Fig. 1, [doi:10.1002/qj.2297](https://doi.org/10.1002/qj.2297), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). Right: Vekuri et al. (2023), *Scientific Reports* 13, 1720, Fig. 3, [doi:10.1038/s41598-023-28827-2](https://doi.org/10.1038/s41598-023-28827-2), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).]{.credit}
+
+::: {.takeaway}
+Kriging the empty cells, mostly polar, raised the 1997–2012 warming trend from 0.064 (unfilled) to 0.108 °C per decade; at ten northern flux-tower sites, look-up filling biased the annual carbon balance toward emission by up to 42 g C m⁻² y⁻¹.
+:::
+
+::: {.notes}
+Four minutes. Left, a map: temperature trends for January 1997 to December 2012 in °C per decade, in HadCRUT4 (a), which left cells without data empty (hatched), and three products that cover them: GISTEMP, the UAH satellite record and the NCEP/NCAR reanalysis. All three show the Arctic warming fastest, exactly where HadCRUT4 has no data (about 84% coverage, gaps at the poles and over Africa). Cowtan and Way's Table 3, trends in °C per decade: HadCRUT4 as published 0.046; the same data rebaselined with no filling 0.064; kriging 0.108; kriging plus satellite data 0.119. Compare 0.064 with 0.108 for the effect of filling alone; the step from 0.046 to 0.064 comes from the baseline change. Most of the bias is in northern winter (−0.086 °C per decade in December to February), when air over Arctic sea ice is unobserved. HadCRUT5 now ships both a non-infilled grid and a filled analysis (Morice et al. 2021). Right, a time series: eddy-covariance towers measure CO₂ exchange every half hour, and FLUXNET2015 sites are missing 68% of half-hourly CO₂ fluxes on average (as cited by Vekuri et al.). The authors built gap-free synthetic series for ten sites above 60° N, cut gaps shaped like the real ones (half an hour to 3 days, same lengths and timing), and filled them. Red: marginal distribution sampling, the standard look-up method; grey: XGBoost. At 30 to 70% gaps, the look-up filler overestimated the annual carbon balance in all but one case, by up to 42 g C m⁻² y⁻¹; XGBoost's median errors were −4 to 2. For scale, the mean annual net exchange reported for high-latitude boreal and tundra biomes is about −17 g C m⁻². The cause: northern radiation distributions are skewed, so similar-weather look-ups pick the wrong neighbours.
+:::
+
+## Testing a machine-learned gap filler {.smaller}
+
+[🛰️ Satellite & airborne]{.gb .src} [🌊 Ocean]{.gb .sys .ocean} [🌊 Oceanography]{.gb .disc .ocean}
+
+:::: {.columns}
+::: {.column width="50%"}
+![](figs/lit_gap_filling/barth2022_gmd_fig8.png){width="100%"}
+:::
+::: {.column width="50%"}
+- **Hide test data the way gaps really look:** whole satellite tracks (panel d), real cloud masks, real gap lengths
+- **Never score on data the model saw:** on one sea surface temperature image, the network misfits its own input by 0.15 °C and hidden pixels by 0.55 °C
+- **Compare with a tuned interpolator:** 3.58 cm for the network against 3.60 cm for a tuned variational interpolator
+- **Hold out places, not pixels:** random cross-validation R² 0.53, spatial 0.14 (Ploton et al. 2020)
+- **Score filled values on their own:** soil moisture R 0.59 for filled values against 0.70 for observed ones
+:::
+::::
+
+[Barth et al. (2022), *Geoscientific Model Development* 15, 2183–2196, Fig. 8, [doi:10.5194/gmd-15-2183-2022](https://doi.org/10.5194/gmd-15-2183-2022), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).]{.credit}
+
+::: {.takeaway}
+Held out by place instead of by pixel, one biomass map's R² fell from 0.53 to 0.14: test a gap filler on gaps shaped like the real ones, in places it has not seen, against a tuned interpolator.
+:::
+
+::: {.notes}
+Three minutes; this is the lecture's link to the evaluation thread of chapters 3 and 6. The figure: DINCAE 2.0, a convolutional autoencoder, reconstructing Mediterranean sea level anomaly (m) on 7 June 2017 from along-track satellite altimetry: (a) reconstruction, (b) its own error estimate, (c) the tracks used for training over a 21-day window, (d) tracks withheld for validation. Whole tracks go to one split only (70% train, 20% development, 10% test), so neighbouring points on a track never sit on both sides (Barth et al. 2022). Each bullet with its source. Real gap shapes: DINCAE 1.0 imposed the cloud masks of the first 50 images on the last 50 (Barth et al. 2020); Vekuri et al. 2023 drew artificial gaps from the real gap lengths and times. Own input versus hidden pixels: on one Adriatic MODIS image, DINCAE 2.0 differs from the data it was given by 0.15 °C RMS and from pixels hidden under added clouds by 0.55 °C (Barth et al. 2022, Fig. 5). Tuned baseline: on the test tracks, DINCAE 3.58 cm against 3.60 cm for DIVAnd, a variational interpolator tuned by Bayesian optimization; with SST as a second input, DINCAE reached 3.47 cm; the authors say the main gain is a more reliable error estimate. Places, not pixels: a random-forest biomass map in central Africa scored R² = 0.53 with random 10-fold cross-validation and 0.14 with spatial blocks, close to a model with no predictors (Ploton et al. 2020). Filled values on their own: in one ESA CCI soil moisture example area with 40% missing data, the anomaly correlation with in situ stations is 0.59 for filled values and 0.70 for observed ones (Preimesberger et al. 2025). Also check the error estimate itself: DINCAE 1.0's normalized errors had a standard deviation of 0.85, so it overestimated its error by about 15%.
 :::
 
 ## The irregular stream: 25 wells, 40 years, no grid
