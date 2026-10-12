@@ -35,18 +35,32 @@ Sampling theory is old; geoscience still pays for ignoring it — in aliased tid
 Two minutes. Shannon: the sampling theorem — a series sampled at interval Δt represents only frequencies below the Nyquist frequency 1/(2Δt); everything above folds back in, disguised as a lower frequency. Today's tide-gauge demo is that theorem with sea water in it. Mao: GPS velocity papers assumed white (memoryless) noise; the noise is time-correlated, and the published error bars were several times too small — our block-bootstrap slide reproduces exactly that failure and its fix on synthetic data where truth is known. Hansen & Lebedeff: the classic anomaly method — average station *departures*, not raw temperatures, so a station joining or leaving the network cancels instead of jumping the global mean; our multi-well slide is the same move on groundwater. Künsch: the block bootstrap, formalized — resample contiguous chunks so the noise correlation survives. Refs update monthly — bring candidates.
 :::
 
-## Arrays that know their coordinates
+## Arrays that know their coordinates {.smaller}
 
-- Geoscience arrays come with meaning attached: time, latitude, depth — not index 0, 1, 2
-- **Labeled dimensions**: ask for the grid cell nearest 47.6° N, 122.3° W — not for row 12
-- Reanalysis air temperature: **2,920 time steps × 25 × 53 grid** — Seattle's series is one labeled selection
+[🖥️ Model & simulation]{.gb .src} [🌤️ Atmosphere]{.gb .sys .air} [🌡️ Atmospheric & climate science]{.gb .disc .air}
+
+- **NCEP/NCAR Reanalysis 1**: air temperature at the lowest model level (sigma 0.995, about 40 m above the model's ground), every 6 h, 2.5° grid, 2013–2014: **2,920 × 25 × 53** values
+- One value is a model state pulled toward observations (Kalnay et al. 1996, class B), at grid points about 280 × 190 km apart at Seattle, at 00/06/12/18 UTC
+- The file's own metadata say `level_desc: Surface` and `statistic: Individual Obs`; the provider's documentation says otherwise
 
 ::: {.takeaway}
-Units, coordinates, and provenance travel *with* the array — the first requirement of AI-ready gridded data.
+Before using a grid value, say what it stands for: level, area, time, and how much of it is model.
 :::
 
 ::: {.notes}
-2.5 in one slide. NumPy arrays index by position; the moment data are geophysical, position should mean something — a labeled array carries coordinate vectors and units, so selection is by physical value ("nearest 47.6 N") and errors like transposed axes become impossible to write. The example is the notebook's real reanalysis air-temperature dataset (4×-daily NMC reanalysis); the exercise selects Seattle by coordinates — one line — and plots two years of temperature. Note the longitude convention trap: the dataset stores 0–360°E, so Seattle is at 237.7, not −122.3 — coordinate conventions are metadata too. Implementation names for the notebook: NumPy for the mechanics, Xarray DataArray/Dataset for labels (reads netCDF and Zarr from Wednesday's formats lecture), and a first look at PyTorch tensors — same objects, built for gradients, for Chapter 4.
+2.5 in one slide; the lab today is 2.6, so 2.5 is the reading. The grid is the xarray tutorial file, pinned to one commit and SHA-256 in the notebook. Its own metadata say level_desc "Surface" and statistic "Individual Obs"; both are misleading: it is the lowest model level (Kalnay: "about 5 hPa from the surface", about 40 m by the hydrostatic estimate in the notebook) and an analysis, class B ("the model also has a very strong influence"). So it is not a 2 m thermometer reading, and over the Olympics, Puget Sound and the Cascades it is an average over a smoothed T62 terrain (about 210 km). The two traps students meet in part 3: latitude is stored north to south, so slice(40, 50) is empty; and nearest-neighbor selection without a tolerance always returns something, even on the wrong side of a continent. Part 5 is the first "Agent, then verify" exercise: an instructor-written function with three faults (no tolerance, units label left as degK, in-place subtraction that changes the input grid) fails a check table; students give the failures to an agent, verify the fix, and log it in AI_logs. Point out that the Atlantic cell passes the plausibility checks; only the coordinate check catches it.
+:::
+
+## Which cell is Seattle?
+
+![](figs/2.5_Arrays/reanalysis_grid_map_slide.png){.r-stretch}
+
+::: {.takeaway}
+On a copy converted to −180…180°, `sel(lon=237.7, method="nearest")` returns −30°, in the Atlantic, with no error. A tolerance of half a grid step turns it into an error.
+:::
+
+::: {.notes}
+One minute. Each colored square is one grid value; the coastline is drawn far finer than the data, which makes the grid look more precise than it is. The black box is Seattle's cell (47.5° N, 237.5° E). The X is what nearest-neighbor selection returns when the longitude convention changes under you: the grid's eastern edge, about 6,500 km away. In notebook part 5 that Atlantic cell even passes the plausibility checks (winter mean 9.9 °C against an upper bound of 10); only the coordinate check catches it. Figure: figscripts/reanalysis_grid_map.py, same pinned file and checksum as the notebook.
 :::
 
 ## Keep one sample a day — and the tide invents a fortnight {.smaller}
@@ -154,7 +168,7 @@ The lecture in one screen — leave it up for questions. Each row was a slide; t
 4. Wells: drop the 1/σ² weights — how much improvement survives? Which move carried the load?
 
 ::: {.dim}
-Wednesday: statistical considerations & spectral transforms (2.7–2.8) · HW1 due today
+Wednesday: statistical considerations & spectral transforms (2.7–2.8) · HW1 and the Ch 1 quiz on Wednesday Oct 14
 :::
 
 ::: {.notes}

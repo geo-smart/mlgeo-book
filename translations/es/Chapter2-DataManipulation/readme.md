@@ -12,7 +12,7 @@ Las lecciones se construyen en orden:
 2. **2.2 Formatos de datos** — práctica de lectura y escritura de CSV, GeoJSON, GeoTIFF, netCDF, HDF5, Parquet y Zarr; comparación del tamaño en disco.
 3. **2.3 DataFrames de Pandas** — series y *data frames*, manejo de fechas y horas, filtrado, agrupamiento, agregación y mapeo de metadatos de estaciones.
 4. **2.4 Preparación de DataFrames** — limpieza de una tabla de geoquímica de roca total: datos faltantes, valores centinela, valores censurados en un límite de detección, ausencias informativas, correlaciones y distribuciones por clase.
-5. **2.5 Arreglos** — arreglos de NumPy y Xarray, indexado y remodelado, dimensiones etiquetadas, y un primer vistazo a los tensores de PyTorch.
+5. **2.5 Datos en malla** — qué significa un valor de una malla de reanálisis, la suma de verificación del archivo y su empaquetado en disco, la selección de una celda por coordenadas sin las dos trampas silenciosas, unidades que siguen siendo correctas tras la conversión, y la revisión del código de malla escrito por un agente.
 6. **2.6 Remuestreo** — remuestreo estadístico (aleatorización, *bootstrap*, Monte Carlo) para la incertidumbre, y luego remuestreo de señales: diezmado con antisolapamiento de un registro de mareógrafo, interpolación con política de huecos de una serie GNSS degradada, agregación de una red irregular de pozos y el *block bootstrap* para ruido correlacionado — con datos GNSS sintéticos y reales en todo momento.
 7. **2.7 Consideraciones estadísticas** — momentos, distribuciones y la ley de Gutenberg-Richter, sobre datos geoquímicos sintéticos y reales.
 8. **2.8 Transformadas espectrales** — transformadas de Fourier y de ondículas (*wavelets*) de sismogramas y de campos 2D.

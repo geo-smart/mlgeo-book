@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="lec06_sampling_resampling_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link rel="stylesheet" href="lec06_sampling_resampling_files/libs/revealjs/dist/theme/quarto-5b332574619179445ab88806626e2cd7.css">
   <link href="lec06_sampling_resampling_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec06_sampling_resampling_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec06_sampling_resampling_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -200,18 +200,39 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="arrays-that-know-their-coordinates" class="slide level2">
+<section id="arrays-that-know-their-coordinates" class="slide level2 smaller">
 <h2>Arrays that know their coordinates</h2>
+<p><span class="gb src">🖥️ Model &amp; simulation</span> <span class="gb sys air">🌤️ Atmosphere</span> <span class="gb disc air">🌡️ Atmospheric &amp; climate science</span></p>
 <ul>
-<li>Geoscience arrays come with meaning attached: time, latitude, depth — not index 0, 1, 2</li>
-<li><strong>Labeled dimensions</strong>: ask for the grid cell nearest 47.6° N, 122.3° W — not for row 12</li>
-<li>Reanalysis air temperature: <strong>2,920 time steps × 25 × 53 grid</strong> — Seattle’s series is one labeled selection</li>
+<li><strong>NCEP/NCAR Reanalysis 1</strong>: air temperature at the lowest model level (sigma 0.995, about 40 m above the model’s ground), every 6 h, 2.5° grid, 2013–2014: <strong>2,920 × 25 × 53</strong> values</li>
+<li>One value is a model state pulled toward observations (Kalnay et al.&nbsp;1996, class B), at grid points about 280 × 190 km apart at Seattle, at 00/06/12/18 UTC</li>
+<li>The file’s own metadata say <code>level_desc: Surface</code> and <code>statistic: Individual Obs</code>; the provider’s documentation says otherwise</li>
 </ul>
 <div class="takeaway">
-<p>Units, coordinates, and provenance travel <em>with</em> the array — the first requirement of AI-ready gridded data.</p>
+<p>Before using a grid value, say what it stands for: level, area, time, and how much of it is model.</p>
 </div>
 <aside class="notes">
-<p>2.5 in one slide. NumPy arrays index by position; the moment data are geophysical, position should mean something — a labeled array carries coordinate vectors and units, so selection is by physical value (“nearest 47.6 N”) and errors like transposed axes become impossible to write. The example is the notebook’s real reanalysis air-temperature dataset (4×-daily NMC reanalysis); the exercise selects Seattle by coordinates — one line — and plots two years of temperature. Note the longitude convention trap: the dataset stores 0–360°E, so Seattle is at 237.7, not −122.3 — coordinate conventions are metadata too. Implementation names for the notebook: NumPy for the mechanics, Xarray DataArray/Dataset for labels (reads netCDF and Zarr from Wednesday’s formats lecture), and a first look at PyTorch tensors — same objects, built for gradients, for Chapter 4.</p>
+<p>2.5 in one slide; the lab today is 2.6, so 2.5 is the reading. The grid is the xarray tutorial file, pinned to one commit and SHA-256 in the notebook. Its own metadata say level_desc “Surface” and statistic “Individual Obs”; both are misleading: it is the lowest model level (Kalnay: “about 5 hPa from the surface”, about 40 m by the hydrostatic estimate in the notebook) and an analysis, class B (“the model also has a very strong influence”). So it is not a 2 m thermometer reading, and over the Olympics, Puget Sound and the Cascades it is an average over a smoothed T62 terrain (about 210 km). The two traps students meet in part 3: latitude is stored north to south, so slice(40, 50) is empty; and nearest-neighbor selection without a tolerance always returns something, even on the wrong side of a continent. Part 5 is the first “Agent, then verify” exercise: an instructor-written function with three faults (no tolerance, units label left as degK, in-place subtraction that changes the input grid) fails a check table; students give the failures to an agent, verify the fix, and log it in AI_logs. Point out that the Atlantic cell passes the plausibility checks; only the coordinate check catches it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="which-cell-is-seattle" class="slide level2">
+<h2>Which cell is Seattle?</h2>
+<img data-src="figs/2.5_Arrays/reanalysis_grid_map_slide.png" class="r-stretch">
+<div class="takeaway">
+<p>On a copy converted to −180…180°, <code>sel(lon=237.7, method="nearest")</code> returns −30°, in the Atlantic, with no error. A tolerance of half a grid step turns it into an error.</p>
+</div>
+<aside class="notes">
+<p>One minute. Each colored square is one grid value; the coastline is drawn far finer than the data, which makes the grid look more precise than it is. The black box is Seattle’s cell (47.5° N, 237.5° E). The X is what nearest-neighbor selection returns when the longitude convention changes under you: the grid’s eastern edge, about 6,500 km away. In notebook part 5 that Atlantic cell even passes the plausibility checks (winter mean 9.9 °C against an upper bound of 10); only the coordinate check catches it. Figure: figscripts/reanalysis_grid_map.py, same pinned file and checksum as the notebook.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -410,7 +431,7 @@
 <li>Wells: drop the 1/σ² weights — how much improvement survives? Which move carried the load?</li>
 </ol>
 <div class="dim">
-<p>Wednesday: statistical considerations &amp; spectral transforms (2.7–2.8) · HW1 due today</p>
+<p>Wednesday: statistical considerations &amp; spectral transforms (2.7–2.8) · HW1 and the Ch 1 quiz on Wednesday Oct 14</p>
 </div>
 <aside class="notes">
 <p>Timing for the 80-minute block (10:00–11:20): pulse talks begin this week — two talks ~10 min, deck ~20 min, guided notebook ~40 min on the four tasks (task 2 is the conceptual test: the folding formula does not care which hour you keep, so the artifact stays at 14.8 days — students who expect it to move are still thinking in the time domain), synthesis ~10 min. Implementation names live here: scipy.signal.decimate (anti-alias, zero-phase), pandas resample(‘D’).mean() and interpolate(method=‘time’), groupby-transform for per-well anomalies, sklearn.utils.resample for the bootstrap; the block bootstrap is a ten-line loop in the notebook. If time is short, sections 1–2 (randomization, bootstrap, Monte Carlo, the real P395 velocity fit) are self-study; Level 3 is the in-class core. Remind: HW1 due tonight; Wednesday needs 2.7–2.8 unread but downloaded.</p>

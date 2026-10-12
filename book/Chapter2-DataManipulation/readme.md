@@ -12,7 +12,7 @@ The lessons build in order:
 2. **2.2 Data Formats** — hands-on reading and writing of CSV, GeoJSON, GeoTIFF, netCDF, HDF5, Parquet, and Zarr; comparing file sizes on disk.
 3. **2.3 Pandas DataFrames** — series and data frames, datetime handling, filtering, grouping, aggregating, and mapping station metadata.
 4. **2.4 Preparing DataFrames** — cleaning a whole-rock geochemistry table: missing data, sentinel values, censored values at a detection limit, informative missingness, correlations, and per-class distributions.
-5. **2.5 Arrays** — NumPy and Xarray arrays, indexing and reshaping, labeled dimensions, and a first look at PyTorch tensors.
+5. **2.5 Gridded data** — what one value in a reanalysis grid means, the file's checksum and packing on disk, selecting a cell by coordinate without the two silent traps, units that stay true after conversion, and checking an agent's grid code.
 6. **2.6 Resampling** — statistical resampling (randomization, bootstrap, Monte Carlo) for uncertainty, then signal resampling: anti-alias decimation of a tide-gauge record, gap-policy interpolation of a degraded GNSS series, aggregation of an irregular multi-well network, and the block bootstrap for correlated noise — synthetic and real GNSS throughout.
 7. **2.7 Statistical Considerations** — moments, distributions, and the Gutenberg-Richter law, on synthetic and real geochemical data.
 8. **2.8 Spectral Transforms** — Fourier and wavelet transforms of seismograms and 2D fields.
