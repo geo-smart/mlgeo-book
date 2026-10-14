@@ -31,7 +31,8 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 BOOK = ROOT / "book"
 DATA_SUFFIXES = {".csv", ".json", ".txt", ".py", ".nc", ".parquet", ".h5", ".hdf5", ".npz", ".npy",
-                 ".yaml", ".yml", ".mseed", ".sac", ".gz", ".zip", ".dat", ".tsv", ".xml"}
+                 ".yaml", ".yml", ".mseed", ".sac", ".gz", ".zip", ".dat", ".tsv", ".xml",
+                 ".geojson"}
 SKIP_DIRS = {"data", "_build", ".ipynb_checkpoints", "__pycache__"}
 
 

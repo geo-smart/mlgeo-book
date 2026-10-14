@@ -22,6 +22,8 @@ The lessons build in order:
 12. **2.12 Dimensionality Reduction** — PCA, EOFs on climate fields, ICA, and t-SNE.
 13. **2.13 AI-Ready Data (Capstone)** — the operational checklist: data cards, benchmark splits, the raster-to-station join for gridded covariates, leakage-by-preprocessing, and correct splits for autocorrelated data.
 
+The **Session 7 lab** ([lab_s07_reading_data](lab_s07_reading_data.ipynb)), placed after 2.6, applies lessons 2.2 to 2.6 to five dated snapshots (a river gauge, a weather station, an earthquake catalog, a seismogram with its StationXML, and a reanalysis grid): pairs fill one data card per file by hand, then give a table to a coding agent and grade both cards with the same checker.
+
 The chapter closes with the **final project assignment for this pillar (2.20)**: build an AI-ready dataset for your own project, with a data card and benchmark splits, following the 2.13 checklist.
 
 ### Learning Outcomes

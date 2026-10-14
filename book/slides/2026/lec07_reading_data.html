@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+<script src="lec07_reading_data_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lec07_reading_data_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lec07_reading_data_files/libs/quarto-html/popper.min.js"></script>
+<script src="lec07_reading_data_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lec07_reading_data_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lec07_reading_data_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="lec07_reading_data_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
+
+  <meta name="author" content="">
+  <title>Reading data by hand, then with an agent</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="lec07_reading_data_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lec07_reading_data_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="lec07_reading_data_files/libs/revealjs/dist/theme/quarto-ce7acf391a23033b2e12d95eea4aebc9.css">
+  <link href="lec07_reading_data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lec07_reading_data_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lec07_reading_data_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lec07_reading_data_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
+  <h1 class="title">Reading data by hand,<br>then with an agent</h1>
+  <p class="subtitle">Session 7 · Wed Oct 14 · Lab notebook lab_s07_reading_data · Reading: book sections 2.7–2.8</p>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="section" class="slide level2" data-background-color="#faf7f2">
+<h2></h2>
+<style>
+.reveal .snip pre { font-size: 0.5em; line-height: 1.35; max-height: none; box-shadow: none; margin: 0.2em 0; }
+.reveal .snip pre code { max-height: none; overflow: visible; white-space: pre-wrap; word-break: break-all; tab-size: 4; }
+.reveal .snip.small pre { font-size: 0.72em; }
+.reveal .snip.l pre { font-size: 0.54em; }
+.reveal .snip.xl pre { font-size: 0.75em; }
+.reveal .code-small pre { font-size: 0.66em; max-height: none; margin: 0.15em 0; }
+.reveal .code-small pre code { max-height: none; overflow: visible; }
+.vote { border-left: 0.18em solid #eb6834; padding-left: 0.5em; font-size: 0.8em; font-weight: 600; margin-top: 0.4em; }
+.timer { float: right; font-size: 1.5em; font-weight: 800; color: #116b66; font-variant-numeric: tabular-nums;
+         cursor: pointer; border: 0.08em solid #116b66; border-radius: 0.2em; padding: 0 0.25em; line-height: 1.2; }
+.timer.done { color: #b3402a; border-color: #b3402a; }
+.mode { display: inline-block; font-size: 0.62em; font-weight: 700; padding: 0.08em 0.45em; border-radius: 0.3em;
+        border: 2px solid #26241f; margin: 0 0 0.25em 0; }
+.reveal .mid table { font-size: 0.72em; }
+.reveal .mid table th, .reveal .mid table td { padding: 0.1em 0.45em; }
+.reveal .audit li { margin: 0.12em 0; }
+.reveal .smallnum { font-size: 0.62em; }
+.big-due { font-size: 1.15em; font-weight: 800; color: #b3402a; margin: 0.3em 0; }
+</style>
+<p><span class="lecture-icon">📂</span></p>
+<h3 id="todays-question">Today’s question</h3>
+<p>Five stations: a river gauge, a weather table and an earthquake catalog from the Pacific Northwest, a seismogram of an Alaska Peninsula earthquake recorded near Seattle, and a reanalysis grid over North America.</p>
+<p><strong>What does one number in each file mean, and can an agent read it as well as you can?</strong></p>
+<div class="dim">
+<p>In class: the lab notebook <code>lab_s07_reading_data.ipynb</code> · Reading: <a href="https://geo-smart.github.io/mlgeo-book/statistical-considerations">2.7 Statistical considerations</a> · <a href="https://geo-smart.github.io/mlgeo-book/data-spectral-transforms">2.8 Spectral transforms</a>, with the <a href="lec07_statistics_spectra.html">companion slides</a></p>
+</div>
+<aside class="notes">
+<p>10:00 to 10:08: two pulse talks first (existing routine), then this slide at 10:08 for 30 seconds. Today is a lab, not a lecture: three rounds of reading real files, two by hand and one with a coding agent, all graded by the same checker. Every file is a snapshot committed in the book with a provenance record and a SHA-256 (Secure Hash Algorithm, 256-bit) checksum, so every pair reads the same bytes. Statistics and spectra (2.7 and 2.8) are now the reading; the old Session 7 deck stays online as their companion. The geoscience: a 77-year weather record at Seattle-Tacoma airport; 26 years of Puget Sound earthquakes including Nisqually 2001 and the Mount St Helens dome building of 2004 to 2008; the Mww 8.2 Chignik, Alaska earthquake recorded 2,627 km away at Rattlesnake Lake; two years of a global reanalysis over North America; and the November 2021 atmospheric-river flood on the Nooksack River.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="todays-plan-and-why-we-work-this-way" class="slide level2 smaller">
+<h2>Today’s plan, and why we work this way</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="mid">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Time</th>
+<th>What</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10:00</td>
+<td>Pulse talks</td>
+</tr>
+<tr class="even">
+<td>10:11</td>
+<td>What is this file? Five snippets, vote</td>
+</tr>
+<tr class="odd">
+<td>10:17</td>
+<td>Worked example: Nooksack River</td>
+</tr>
+<tr class="even">
+<td>10:22</td>
+<td>Round 1, by hand: a table (A or B)</td>
+</tr>
+<tr class="odd">
+<td>10:40</td>
+<td>Round 2, by hand: an array (D or E)</td>
+</tr>
+<tr class="even">
+<td>10:55</td>
+<td>Which moment, which spectrum</td>
+</tr>
+<tr class="odd">
+<td>10:59</td>
+<td>Round 3: an agent reads your table, then you verify</td>
+</tr>
+<tr class="even">
+<td>11:13</td>
+<td>Key, computed live; scoreboard; exit</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div><div class="column" style="width:48%;">
+<div class="lit-card">
+<p><span class="lit-num">0.47 SD</span></p>
+<p><span class="lit-msg">Higher exam scores, in standard deviations (SD), with active learning across 158 STEM studies; lecture-only students were 1.5 times as likely to fail.</span></p>
+<p><span class="lit-cite">Freeman et al.&nbsp;(2014), <em>PNAS</em> 111, 8410–8415, <a href="https://doi.org/10.1073/pnas.1319030111">doi:10.1073/pnas.1319030111</a></span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num">33% and 45%</span></p>
+<p><span class="lit-msg">Narrower gaps in exam scores and pass rates for underrepresented students, only with high-intensity active learning.</span></p>
+<p><span class="lit-cite">Theobald et al.&nbsp;(2020), <em>PNAS</em> 117, 6476–6483, <a href="https://doi.org/10.1073/pnas.1916903117">doi:10.1073/pnas.1916903117</a></span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num bad">Learned more, felt less</span></p>
+<p><span class="lit-msg">In a randomized physics trial, students in active sections learned more but rated their learning lower.</span></p>
+<p><span class="lit-cite">Deslauriers et al.&nbsp;(2019), <em>PNAS</em> 116, 19251–19257, <a href="https://doi.org/10.1073/pnas.1821936116">doi:10.1073/pnas.1821936116</a></span></p>
+</div>
+</div></div>
+<aside class="notes">
+<p>10:08 to 10:11, three minutes. Say the third card out loud first: today will feel harder than a lecture, and that feeling is not evidence that you are learning less. Deslauriers et al.&nbsp;randomized students in a large introductory physics course between lecture and active sections; the active group scored higher on the test and still rated their learning lower, because they read the extra effort as poor learning. The authors recommend telling students early why the class runs this way, which is what this slide is for. Freeman et al.&nbsp;is a meta-analysis of 225 studies: exam and concept-inventory scores rose by 0.47 standard deviations (158 studies), and students in lecture sections were 1.5 times as likely to fail. Theobald et al.&nbsp;found that active learning narrowed achievement gaps for underrepresented students by 33% on exams and 45% in pass rates, but only in courses that spent a large share of class time on activities. All three numbers are from the abstracts, read on 2026-10-12. Setup was announced on Canvas on Tuesday: git pull, a personal copy of the notebook, the check cell printing 10 of 10 data files OK. Show the seat-block slide from 09:55 so pairs sit in the block of their round-1 table as they arrive. Rules for today: work only in your personal copy of the lab notebook inside your mlgeo-book clone. Do not touch your HW1 repository; HW1 is due tonight at 11:59 pm. Predictions go into the card before any cell runs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-is-this-file-1-of-5" class="slide level2">
+<h2>What is this file? 1 of 5</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys air">🌤️ Atmosphere</span> <span class="gb disc air">🌡️ Atmospheric &amp; climate science</span></p>
+<div class="snip l">
+<pre><code>date,TMAX,TMAX_M,TMAX_Q,TMAX_S,TMIN,TMIN_M,TMIN_Q,TMIN_S,PRCP,PRCP_M,PRCP_Q,PRCP_S,AWND,AWND_M,AWND_Q,AWND_S
+1948-01-16,11,,,X,-22,,,X,0,T,,X,,,,
+1975-01-12,83,,,0,-11,,,0,330,,,0,,,,
+1975-01-13,61,,,0,39,,,0,297,,,0,,,,
+1975-01-14,50,,,0,17,,,0,18,,,0,,,,</code></pre>
+</div>
+<p><span class="credit">Lines 1, 17 and 9,875 to 9,877 of the station A snapshot, unedited.</span></p>
+<div class="vote">
+<p>Vote: table or array? Which reader? Is the number you see the physical value?</p>
+</div>
+<aside class="notes">
+<p>10:11, about 70 seconds per snippet, six minutes for five. Routine for each: hands up for table (one finger) or array (two fingers), then one minute with a neighbour, then vote again. Resolve aloud only the first two questions: table or array, and which reader. Leave the third open: “is the number you see the physical value?” Every card asks for the unit and the document that states it, and the answers come with the key at 11:13, after the pairs and the agents have read the files. Snippet 1 is GHCN-Daily (Global Historical Climatology Network, daily) for Seattle-Tacoma airport, station USW00024233, 1948 to 2024: a table, one row per observation day, read with pandas read_csv. The rows are three wet days of January 1975 and one day of January 1948. Ask the room what the letter T beside a 0 could mean, and what the X and 0 at the end of each element could be. Do not answer.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-is-this-file-2-of-5" class="slide level2">
+<h2>What is this file? 2 of 5</h2>
+<p><span class="gb src">🗂️ Catalog &amp; compiled product</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="snip xl">
+<pre><code>time,latitude,longitude,depth,mag,magType,net,id
+2003-06-01T06:03:14.170Z,47.4865,-122.7215,23.469,1.5,md,uw,uw10581508
+2018-05-03T18:56:16.280Z,46.1983333,-122.1931667,-0.43,0.13,ml,uw,uw61384256</code></pre>
+</div>
+<p><span class="credit">Lines 1, 3,851 and 35,995 of the station B snapshot, unedited.</span></p>
+<div class="vote">
+<p>Vote: table or array? Which reader? Is the number you see the physical value?</p>
+</div>
+<aside class="notes">
+<p>About 70 seconds. The USGS ANSS (Advanced National Seismic System) Comprehensive Earthquake Catalog, ComCat, queried for a box around Puget Sound, 2000 to 2025. Table, but an event catalog: one row per earthquake, irregular in time, read with read_csv and parse_dates on time. The time ends in Z, so it is UTC (Coordinated Universal Time); Seattle is 7 or 8 hours behind. The second row is a magnitude 0.13 event under the crater of Mount St Helens with a depth of −0.43 km. Ask what a negative depth could mean, and what md and ml in the magType column could be. Leave both open: station B pairs look them up in the provenance record.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-is-this-file-3-of-5" class="slide level2">
+<h2>What is this file? 3 of 5</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="snip">
+<pre><code>00000000: 3030 3030 3031 4d20 5241 5454 2020 2048  000001M RATT   H
+00000010: 485a 5557 07e5 00d2 060f 0000 0000 1412  HZUW............
+00000020: 0064 0001 0000 0002 0000 0000 0040 0030  .d...........@.0
+00000030: 03e9 0038 0001 0000 03e8 0000 0b01 0c00  ...8............
+
+&gt;&gt;&gt; print(st)
+1 Trace(s) in Stream:
+UW.RATT..HHZ | 2021-07-29T06:15:00.000001Z - 2021-07-29T08:15:00.000001Z | 100.0 Hz, 720001 samples</code></pre>
+</div>
+<p><span class="credit"><code>xxd -l 64</code> of the station D waveform file (its first 64 bytes), then ObsPy’s summary of the same file.</span></p>
+<div class="vote">
+<p>Vote: table or array? Which reader? Is the number you see the physical value?</p>
+</div>
+<aside class="notes">
+<p>About 70 seconds. MiniSEED, the binary format every seismic data centre serves. Array: one trace of 720,001 samples at 100 per second, read with obspy.read. Bytes you can read by eye: the record sequence number 000001, the station RATT, the channel HHZ and the network UW. In the channel code the first H is the SEED band code for high broadband (sampled at 80 to 250 Hz, corner period 10 s or longer), the second H means a high-gain seismometer, and Z is vertical. Bytes 20 and 21 are the year (0x07e5 = 2021), 22 and 23 the day of year (0x00d2 = 210, 29 July), then 06:15:00. The samples are Steim-2 compressed integers in 4,096-byte records, so no number on screen is ground motion. Leave the physical-value question open: station D pairs find the conversion in the StationXML. UW.RATT is at Rattlesnake Lake in the Cascade foothills, part of the Pacific Northwest Seismic Network (doi:10.7914/SN/UW).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-is-this-file-4-of-5" class="slide level2">
+<h2>What is this file? 4 of 5</h2>
+<p><span class="gb src">🖥️ Model &amp; simulation</span> <span class="gb sys air">🌤️ Atmosphere</span> <span class="gb disc air">🌡️ Atmospheric &amp; climate science</span></p>
+<div class="snip xl">
+<pre><code>dimensions:
+    lat = 25 ;
+    time = 2920 ;
+    lon = 53 ;
+variables:
+    float lat(lat) ;
+    short air(time, lat, lon) ;
+        air:units = "degK" ;
+        air:scale_factor = 0.01 ;
+    float lon(lon) ;</code></pre>
+</div>
+<p><span class="credit">Lines of <code>ncdump -h</code> on the station E file that describe the grid and the variable air, unedited; other attribute lines omitted.</span></p>
+<div class="vote">
+<p>Vote: table or array? Which reader? Is the number you see the physical value?</p>
+</div>
+<aside class="notes">
+<p>About 70 seconds. NetCDF, the self-describing array format of climate and ocean science. Array: a grid of 2,920 times by 25 latitudes by 53 longitudes, read with xarray open_dataset. Ask what “short” and “scale_factor” do to the number you print, and leave it open: station E pairs open the file twice, decoded and as stored, to find out. The grid is NCEP/NCAR Reanalysis 1 (Kalnay et al.&nbsp;1996, BAMS 77, 437–471), 6-hourly air temperature at the lowest model level (sigma 0.995), 2013 to 2014, the same file as notebook 2.5. A reanalysis value is a model state pulled toward observations, not a thermometer reading.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-is-this-file-5-of-5" class="slide level2">
+<h2>What is this file? 5 of 5</h2>
+<p><span class="gb src">🗂️ Catalog &amp; compiled product</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="snip l">
+<pre><code>{"type":"Feature","properties":{"mag":8.2,"place":"2021 Chignik, Alaska Earthquake","time":1627539349188,
+"geometry":{"type":"Point","coordinates":[-157.8876,55.3635,35]},"id":"ak0219neiszm"}</code></pre>
+</div>
+<p><span class="credit">The first 105 and the last 85 of the 162,483 characters of the station D event file, which is one line long; the middle is omitted, nothing is edited.</span></p>
+<div class="vote">
+<p>Vote: table or array? Which reader? Is the number you see the physical value?</p>
+</div>
+<aside class="notes">
+<p>About 70 seconds, then move on at 10:17 even if the vote is split. GeoJSON from the USGS event page of the 2021 Chignik earthquake: neither a table nor an array, one nested document describing one event, read with json.load. ObsPy’s read_events does not read this file; that is a fact about the file the pairs at D will meet. Two numbers that are not what they look like: time is milliseconds since 1970-01-01 UTC (1627539349188 is 2021-07-29 06:15:49.188), and coordinates are longitude first, then latitude, then depth in km, the GeoJSON order, the reverse of how we say “lat, lon”. Everything between the two fragments is about 160 kB of product metadata from the contributing networks. Chignik, Mww 8.2, ruptured the Alaska-Aleutian megathrust, where the Pacific plate subducts beneath North America.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="worked-example-nooksack-river-november-2021" class="slide level2 smaller">
+<h2>Worked example: Nooksack River, November 2021</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys water">💧 Land water</span> <span class="gb disc water">💧 Hydrology &amp; land-surface modeling</span></p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>Predict.</strong> Discharge every 15 minutes for the 30 days of November. How many rows?</p>
+<div class="fragment">
+<p><strong>Observe.</strong> <code>pd.read_csv(p).shape</code> gives <strong>(2915, 5)</strong>, not 2,880.</p>
+</div>
+<div class="fragment">
+<p><strong>Explain.</strong></p>
+<ul>
+<li>30 daily means in the same file</li>
+<li>4 local times on Nov 7 occur twice, PDT then PST</li>
+<li>1 reading off the 15-min grid, 07:52 on Nov 16, at the flood peak</li>
+</ul>
+</div>
+</div><div class="column" style="width:60%;">
+<div class="snip small">
+<pre><code>   1: product,time_local,tz,discharge_cfs,approval
+   2: instantaneous,2021-11-01 00:00,PDT,5310.0,A
+ 582: instantaneous,2021-11-07 01:00,PDT,6460.0,A
+ 583: instantaneous,2021-11-07 01:00,PST,6390.0,A
+1477: instantaneous,2021-11-16 07:45,PST,55600.0,A
+1478: instantaneous,2021-11-16 07:52,PST,56300.0,A
+1479: instantaneous,2021-11-16 08:00,PST,55500.0,A
+2887: daily_mean,2021-11-01,local day,4680.0,A</code></pre>
+</div>
+<p><span class="credit">Line number, then the exact line of the station 0 snapshot. USGS site 12213100, Nooksack River at Ferndale, WA; <a href="https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits">public domain</a>.</span></p>
+</div></div>
+<div class="takeaway">
+<p>2,880 + 30 + 4 + 1 = 2,915 rows; the peak, 56,300 cfs, is 1,594 m³/s.</p>
+</div>
+<aside class="notes">
+<p>10:17 to 10:22, five minutes, instructor at the keyboard with the station 0 card projected. Ask for a number before running anything; most will say 30 × 96 = 2,880. Run the cell: 2,915. Let the room explain the 35 extra rows before showing the third fragment. The product column says two products share one file: 2,885 instantaneous readings and 30 USGS daily means. On 7 November 2021 the clocks fell back, so 01:00 to 01:45 happen twice, first in PDT then in PST; the tz column keeps them apart (2,301 PST rows, 584 PDT rows). They are different instants, not duplicates, and removing them deletes an hour of river. The last extra row is 07:52 on 16 November, an extra reading between 07:45 and 08:00 at the peak of the flood: 56,300 cubic feet per second, 1,594 m³/s. The geoscience: the atmospheric river of mid-November 2021 brought heavy rain to the North Cascades; the Nooksack overtopped its banks near Everson and the water flowed north through Sumas into the Sumas Prairie of British Columbia. Show the card fields as you fill them: data_model, reader, shape, units with their source (cfs, from USGS parameter code 00060 in the provenance record), time_base (local time with a tz column, not regular). Then run lab.check_card(“0”, card_0) to show what a pass looks like, and change one entry to show a FAIL with its hint. Numbers printed by figscripts/lec07_reading_data.py.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="five-files-four-seat-blocks" class="slide level2 smaller">
+<h2>Five files, four seat blocks</h2>
+<p><img data-src="figs/lec07_reading_data/station_map.png" height="480"></p>
+<div class="mid">
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Seat block</th>
+<th>Round 1, by hand (table)</th>
+<th>Round 2, by hand (array)</th>
+<th>Round 3, agent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1, front left</td>
+<td>A · GHCN-Daily SeaTac</td>
+<td>D · RATT seismogram</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>2, front right</td>
+<td>A · GHCN-Daily SeaTac</td>
+<td>E · NCEP air grid</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<td>3, back left</td>
+<td>B · ComCat Puget Sound</td>
+<td>D · RATT seismogram</td>
+<td>B</td>
+</tr>
+<tr class="even">
+<td>4, back right</td>
+<td>B · ComCat Puget Sound</td>
+<td>E · NCEP air grid</td>
+<td>B</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="vote">
+<p>The notebook picks your agent prompt from the driver’s NetID: W-bare, the task only, or W-full, the task plus a context block (read the provenance record first, never clean a value).</p>
+</div>
+<aside class="notes">
+<p>Show from 09:55 as people arrive, then again at 10:21 for anyone still moving. Pairs sit in the block of their round-1 table; one laptop per pair drives, and it must run the book’s pixi environment. At any moment the instructor supports only two datasets: A and B in round 1, D and E in round 2. The map places every file: (left) the Nooksack gauge, SeaTac airport, Rattlesnake Lake and the ComCat query box (45.5 to 49.0 N, 124 to 121 W); (right) the NCEP grid (15 to 75 N, 160 to 30 W) and the Chignik epicentre off the Alaska Peninsula, 2,627 km (23.6°) from RATT along the great circle. Coordinates come from the provenance records: the USGS site file, ghcnd-stations.txt, the ComCat query, the StationXML and the USGS event. The prompt split: the notebook assigns W-bare or W-full from a hash of the driver’s NetID, so about half the pairs get each and no seat sheet is needed. W-bare is the task and the card, and the agent may read only the data file. W-full adds a context block written like an AGENTS.md file, the plain-text instruction file that coding agents read in a repository: read the provenance record first, never clean a value, give the source of each unit, state every choice that changes a number. In the test runs on 13 October (Claude Code, before the W-bare scope line was added), both W-bare agents found and read the provenance record on their own, so the difference is expected mainly for chat-only tools; Friday’s plot keeps code-running rows apart from chat-only rows. Green sticky note on the lid means working, red means stuck. Stuck order: the FAQ cell in the notebook, then the pair beside you at the same station, then a red note.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="round-1-by-hand-a-table" class="slide level2 smaller">
+<h2>Round 1 · by hand · a table</h2>
+<p><span class="timer" data-min="17">17:00</span> <span class="mode">🔒 By hand</span></p>
+<ol type="1">
+<li>Done before class: <code>git pull</code>, your copy <code>lab_s07_&lt;netid&gt;.ipynb</code> open in <code>book/Chapter2-DataManipulation/</code>, the check cell printing <code>10 of 10 data files OK</code>.</li>
+<li>2 min: bounds and predictions, then <code>stamp</code> them, before any cell reads the file.</li>
+<li>3 min: order the Parsons lines. 9 min: explore. 3 min: fill <code>card_A</code> (or <code>card_B</code>) and run <code>lab.check_card</code>.</li>
+</ol>
+<div class="mid">
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Card key</th>
+<th>What you write</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>data_model</code>, <code>reader</code>, <code>shape</code></td>
+<td>what one row is; the read call; rows × columns</td>
+</tr>
+<tr class="even">
+<td><code>units</code>, <code>time_base</code></td>
+<td>each unit and the document that states it; zone, start, end, step</td>
+</tr>
+<tr class="odd">
+<td><code>missing_and_flags</code></td>
+<td>how many, how encoded, what each flag means</td>
+</tr>
+<tr class="even">
+<td><code>physical_bounds</code>, <code>min_max_si</code></td>
+<td>bounds with a reason, before looking (revise only with what you saw); then min and max in SI and where</td>
+</tr>
+<tr class="odd">
+<td><code>real_or_error</code>, <code>question10</code></td>
+<td>one surprising but real value, one error, each with a reason; your station’s question</td>
+</tr>
+</tbody>
+</table>
+</div>
+<aside class="notes">
+<p>10:22 to 10:39, seventeen minutes. Click the clock to start it; click again to reset. A pair that did not set up before class does it now with the pair beside them: git pull, copy, check cell. Station A pairs read GHCN-Daily SeaTac; station B pairs read the ComCat Puget Sound catalog. The personal copy matters: the provided notebook stays untouched, so a later git pull never conflicts, and your copy is yours to keep. Nothing today goes into the HW1 repository. The checker, check_card, recomputes the truth from the snapshot file every time it runs and prints pass, FAIL or unfilled for each check with the tolerance it used; it never prints the true value, and its FAIL notes name common slips without giving the value. A Parsons block is the reader code with its lines shuffled; putting them in order is faster than writing the code and teaches the same reading. The bounds row is the judgment step: write the plausible range of daily maximum temperature at SeaTac, or of earthquake depth under Puget Sound, with a physical reason, before you see the data. The stamp keeps those first values; a pair may revise a bound after looking only with a reason that names what they saw, and the scoreboard line reports whether they did. Walk the room by block: at 10:25 every pair should have predictions written; at 10:30 a shape and dtypes; at 10:36 a check_card table. Swap driver and navigator at 10:39.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="round-2-by-hand-an-array" class="slide level2 smaller">
+<h2>Round 2 · by hand · an array</h2>
+<p><span class="timer" data-min="15">15:00</span> <span class="mode">🔒 By hand</span></p>
+<ol type="1">
+<li>Swap driver and navigator. Same notebook copy, same ten card keys.</li>
+<li><strong>D, RATT:</strong> three files, one event. The waveform is stored as integers; the StationXML holds the sensitivity; the GeoJSON holds the origin.</li>
+<li><strong>E, NCEP:</strong> open the grid twice, decoded and as stored, and compare one value.</li>
+<li>The reader cells have blanks: the function names are given, the file names and options are yours.</li>
+</ol>
+<div class="code-small">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a>st <span class="op">=</span> obspy.read(<span class="bu">str</span>(SNAP <span class="op">/</span> EVENT))                  <span class="co"># D: EVENT, RESPONSE, ORIGIN</span></span>
+<span id="cb7-2"><a href=""></a>inv <span class="op">=</span> obspy.read_inventory(<span class="bu">str</span>(SNAP <span class="op">/</span> RESPONSE))    <span class="co">#    are your three file names</span></span>
+<span id="cb7-3"><a href=""></a>quake <span class="op">=</span> json.load(<span class="bu">open</span>(SNAP <span class="op">/</span> ORIGIN))</span>
+<span id="cb7-4"><a href=""></a>raw <span class="op">=</span> xr.open_dataset(SNAP <span class="op">/</span> GRID, mask_and_scale<span class="op">=</span>DECODE)   <span class="co"># E: GRID and DECODE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<aside class="notes">
+<p>10:40 to 10:55, fifteen minutes; swap roles at 10:39. Blocks 1 and 3 do D, blocks 2 and 4 do E. D: the Mww 8.2 Chignik earthquake of 29 July 2021, recorded at UW.RATT, a broadband seismometer at Rattlesnake Lake, 2,627 km from the epicentre. The P wave arrives a few minutes after the 06:15:49 UTC origin and the surface waves follow for tens of minutes. The question10 noise spectrum uses the two hours before the event (the file ending 0415-0615); ask pairs what shakes the ground when no earthquake is happening. Three readers, three formats: obspy.read for MiniSEED, obspy.read_inventory for StationXML, json.load for GeoJSON. E: the NCEP/NCAR Reanalysis 1 grid from notebook 2.5. Two things to discover by hand: the order in which latitudes are stored, and the longitude convention. If a pair finishes early, they help the pair beside them at the same station rather than starting the agent. Stop at 10:55 even if cards are incomplete; unfilled is a valid checker result.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="which-moment" class="slide level2 smaller">
+<h2>Which moment</h2>
+<div class="dim">
+<p>The figure and its numbers are shown in class at 10:55, after the by-hand rounds, and posted here after Friday’s session.</p>
+</div>
+<div class="takeaway">
+<p>Which summer days count and which kurtosis definition you use move the SeaTac numbers; Mc and the bin width move the b-value.</p>
+</div>
+<aside class="notes">
+<p>10:55 to 10:59. The figure and the numbers are in the instructor build of this deck.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="which-spectrum" class="slide level2 smaller">
+<h2>Which spectrum</h2>
+<div class="dim">
+<p>The figure and its numbers are shown in class at 10:55, after the by-hand rounds, and posted here after Friday’s session.</p>
+</div>
+<div class="takeaway">
+<p>The segment length sets what a Welch spectrum can resolve; the sampling step sets the shortest period a grid series can show.</p>
+</div>
+<aside class="notes">
+<p>10:55 to 10:59. The figure and the numbers are in the instructor build of this deck.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="round-3-an-agent-reads-your-table" class="slide level2 smaller">
+<h2>Round 3 · an agent reads your table</h2>
+<p><span class="timer" data-min="7">7:00</span> <span class="mode">🔍 Agent, then verify</span></p>
+<ol type="1">
+<li>Set <code>DRIVER_NETID</code>, <code>MY_TABLE</code> and <code>RUN</code>; hash the snapshots.</li>
+<li>Start the agent in <code>mlgeo-book</code>, never in <code>MLGEO2026_UWNETID</code>. In VS Code, close your notebook tab first. Paste the printed prompt exactly.</li>
+<li>Code-running agents write <code>agent_A.py</code> and <code>agent_A.json</code>. UW Purple: set the chat mode, paste the printout, run its code yourself.</li>
+<li>Answer questions only with “use the files”. Export the chat to <code>agent_A_transcript.md</code>.</li>
+<li>At 7 minutes, stop and record <code>"timeout"</code>; that run still gets a scoreboard line.</li>
+</ol>
+<aside class="notes">
+<p>10:59 to 11:13, fourteen minutes: one minute to hash, seven for the agent, four to check, two to score. Click the clock when the agent receives the prompt. One partner drives the agent; the other fills the RUN record (tool, model and version if shown, mode: agent runs code, or chat writes and we run; wall time; number of turns) and starts the transcript file. B pairs use agent_B in every file name. The prompt carries the full path of the pair’s book folder and tells the agent to stop if it was started anywhere else: HW1 is graded as MLGEO2026_UWNETID stands tonight, and an agent started there could write into it. In VS Code, Copilot adds the open editor file to the chat by default, so a pair with its notebook copy open would hand the agent its hand card. Exporting the transcript: Claude Code, type /export; VS Code Copilot Chat, Command Palette, “Chat: Export Chat…”; any other tool, select the whole conversation and paste it. Hashing first is the integrity check: hash_snapshots records the SHA-256 of every snapshot file, and the notebook also hashes the checker module. UW Purple does not open files or run code; its pairs set RUN mode to “chat writes, we run” before printing the prompt (that version tells Purple it cannot run anything and must not predict output), paste the printout, save the code it writes and run it once from a terminal; their rows are kept apart on the scoreboard. If its code never writes the JSON file, the pair copies its answers into a card by hand and says so in the transcript. If a pair has no agent at all, they join the pair beside them and audit that run. Both prompts allow the agent to stop and write “unanswerable:” with a reason; the checker counts that as declined, apart from FAIL. Cut order if the room runs late: (1) score S1 to S5 only; (2) cold call two pairs instead of one per station; (3) give the round 2 reader line instead of the blanks; (4) stop any agent still running at 7 minutes and record the timeout.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="audit-the-same-checks-for-the-agent-and-for-you" class="slide level2 smaller">
+<h2>Audit: the same checks for the agent and for you</h2>
+<div class="code-small">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a>agent_card <span class="op">=</span> lab.load_agent_card(<span class="st">"agent_A.json"</span>)</span>
+<span id="cb8-2"><a href=""></a>lab.compare(<span class="st">"A"</span>, card_A, agent_card)                 <span class="co"># one checker, two cards</span></span>
+<span id="cb8-3"><a href=""></a>lab.compare_hashes(before, lab.hash_snapshots())     <span class="co"># a: raw data unchanged?</span></span>
+<span id="cb8-4"><a href=""></a>lab.audit_agent_script(<span class="st">"agent_A.py"</span>, <span class="st">"A"</span>)            <span class="co"># b: values typed in? every file write</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="audit">
+<p>Answer yes or no, each with its evidence:</p>
+<ol type="a">
+<li>Snapshot files unchanged</li>
+<li>No number seen in the data typed into the script, no import of the checker; bounds typed from physics are allowed</li>
+<li>No invented column, unit, file, DOI or citation</li>
+<li>Every dropped, filled or “cleaned” value reported, with counts in and out</li>
+<li>Every claim in the chat (a number, a command, a file read) appears in the printed output or the tool calls</li>
+<li>Ambiguity flagged where a careful person would hesitate</li>
+<li>Bounds set from physics before the data were read; the checker and the notebooks never opened</li>
+</ol>
+</div>
+<div class="dim">
+<p>22 professional analysts checked AI-generated analyses in 52 workflows, 39 with errors; 44 of 52 followed the AI’s procedure and 25 of 52 inspected the data (Gu et al.&nbsp;2024, CHI, section 6.1, <a href="https://doi.org/10.1145/3613904.3642497">doi:10.1145/3613904.3642497</a>).</p>
+</div>
+<aside class="notes">
+<p>11:07 to 11:13, inside round 3: four minutes to run these cells, answer a to g in the AUDIT cell with evidence for each, and run git status –short in a terminal (only new files may appear), then two minutes to score S1 to S8. compare runs check_card on both cards and prints them side by side, so the person and the agent are graded by the same checks and tolerances; its summary counts passes over the entries each card filled. audit_agent_script lists imports of the checker, every call that writes a file, and any value from the file or the key typed into the code, by line number only; the hash comparison is the authority on raw data. Gu et al.&nbsp;(2024) watched 22 professional analysts verify AI-generated analyses in 52 workflows, 39 of which involved errors. Most participants (18 of 22) followed all or part of the AI’s procedure (44 of 52 workflows), and most (18 of 22) also inspected the data (25 of 52 workflows); the authors found data, code and the AI’s explanation each pivotal for noticing an issue. That is why this audit has a data check (a and compare) and a process check (b to g). Pairs are graded on how complete their audit is, not on the agent’s score: a complete audit of a bad run, with evidence for each item, earns full marks, and a “no” with its evidence is a finding.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-key-computed-from-the-files-live" class="slide level2">
+<h2>The key, computed from the files, live</h2>
+<div class="code-small">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a>lab.reveal_key(<span class="st">"A"</span>)    <span class="co"># run by the instructor at 11:13, with the key file</span></span>
+<span id="cb9-2"><a href=""></a>lab.reveal_key(<span class="st">"B"</span>)    <span class="co"># kept outside the book repository</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>The true values are recomputed from the snapshot files when the key runs</li>
+<li>Which values are real and which are errors sits in the checker only as hashes; the key text stays on the instructor’s laptop</li>
+<li>For each item, tick in the scoreboard form: caught by hand, caught by the agent, or missed</li>
+</ul>
+<div class="takeaway">
+<p>The answers appear only in the output projected at 11:13; these slides, the notebook and the checker hold none as text.</p>
+</div>
+<aside class="notes">
+<p>11:13 to 11:18, five minutes. Before class, set the environment variable LAB_S07_KEY to the path of the key file, or pass key_file= to reveal_key. Run reveal_key for A and for B in the provided notebook and project the output; do not paste it into the slides. While pairs tick their items, cold call one pair per station: “What did the agent get wrong that your card caught?” and “What did the agent catch that you missed?” If time is short, take only two pairs. Point to the physical reason behind each item the key lists as real: a value that is extreme but explained by the process (a heat dome, a swarm under a volcano) stays in the record with a flag if needed; an error is a value that the process cannot produce or a label that does not describe the data. The same function exists for D and E; their keys are used on Friday, when the agent works on a planted copy of the array file.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="scoreboard-and-exit" class="slide level2 smaller">
+<h2>Scoreboard and exit</h2>
+<ol type="1">
+<li><strong>Scoreboard:</strong> paste the line the notebook prints (NetID, station, prompt, tool and model, mode, wall time or timeout, checks passed by hand and by the agent, hashes, audit, S1 to S8, failed checks) into the class form, linked on Canvas.</li>
+<li><strong>Exit ticket</strong> on Canvas, 2 minutes: one check on which your card and the agent’s disagreed, and what in the file decides it. None differ? One thing the checker passed that your audit or the key shows is wrong or unsourced.</li>
+<li>Keep your notebook copy and the <code>agent_*</code> files until Friday.</li>
+</ol>
+<div class="big-due">
+<p>HW1 and the Chapter 1 quiz are due tonight 11:59 pm.</p>
+</div>
+<div class="dim">
+<p>Friday: an agent on a planted copy of your array file, then register your table in your HW1 repository · Reading: 2.7 and 2.8 with the <a href="lec07_statistics_spectra.html">companion slides</a></p>
+</div>
+<aside class="notes">
+<p>11:18 to 11:20, two minutes. The scoreboard collects one line per pair, so Friday opens with the class numbers: how often people and agents caught each trap, whether W-full did better than W-bare, and how much two pairs with the same tool agreed. Each comparison will have a small n per tool; we will show n beside every bar. The scoreboard line also lists the names of the failed checks for each card, so Friday’s per-trap counts come straight from the form; a run that timed out still has a line, with the agent marked n/a. The exit ticket asks for one check on which the pair’s card and the agent’s card disagreed, which of the two the file supports, and what in the file or its documentation decides it; pairs whose cards agree name one thing the checker passed that their audit or the key shows is wrong or unsourced. The transcript in agent_A_transcript.md (or agent_B) goes into AI_logs/ of the course repository only after the HW1 deadline. Remind twice: HW1 and the Chapter 1 quiz close tonight at 11:59 pm, and nothing from today goes into the HW1 repository before then. Friday’s registration step happens after the HW1 deadline.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<script>
+(function () {
+  function fmt(s) { var m = Math.floor(s / 60), r = s % 60; return m + ":" + (r < 10 ? "0" : "") + r; }
+  document.querySelectorAll(".timer").forEach(function (el) {
+    var id = null, total = parseInt(el.dataset.min, 10) * 60;
+    el.title = "Click to start; click again to reset";
+    el.addEventListener("click", function (ev) {
+      ev.stopPropagation();
+      if (id) { clearInterval(id); id = null; el.classList.remove("done"); el.textContent = fmt(total); return; }
+      var end = Date.now() + total * 1000;
+      id = setInterval(function () {
+        var s = Math.max(0, Math.round((end - Date.now()) / 1000));
+        el.textContent = fmt(s);
+        if (s === 0) { clearInterval(id); el.classList.add("done"); }
+      }, 250);
+    });
+  });
+})();
+</script>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>ESS 469/569 · Machine Learning in the Geosciences · Autumn 2026</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="lec07_reading_data_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="lec07_reading_data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lec07_reading_data_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lec07_reading_data_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lec07_reading_data_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lec07_reading_data_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="lec07_reading_data_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lec07_reading_data_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lec07_reading_data_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lec07_reading_data_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 4.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
