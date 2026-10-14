@@ -21,8 +21,8 @@ from functools import lru_cache
 import numpy as np
 import pandas as pd
 
-from lab_s07_soil_synthetic import (DEPTHS_CM, PROBLEM_TYPES, REAL_FILE, check_findings, rain_response,
-                                    read_uscrn_daily, score_findings)
+from lab_s07_soil_synthetic import (DEPTHS_CM, PROBLEM_TYPES, REAL_FILE, USCRN_NAMES, check_findings,
+                                    rain_response, read_uscrn_daily, score_findings)
 
 # Quoted from https://www.ncei.noaa.gov/access/crn/measurements.html (retrieved 2026-10-14):
 # "a total of 15 Stevens Water Monitoring Systems, Inc., Hydra Probe II (SDI-12) units are placed in the
@@ -32,6 +32,9 @@ DOC_PROBES_PER_DEPTH = 15 // 5
 DOC_READING_INTERVAL_MIN = 2
 # Daily file README note J: "an average of the day's hourly soil measurements".
 DOC_FILE_INTERVAL_HOURS = 24
+# Sensing volume of one Hydra Probe, from the manufacturer (https://stevenswater.com/products/hydraprobe/):
+# a cylinder 5.7 cm long and 3.0 cm across.
+PROBE_LENGTH_CM, PROBE_DIAMETER_CM = 5.7, 3.0
 
 
 def _blank(x):
@@ -94,6 +97,146 @@ def _gaps(series):
     runs = (m != m.shift()).cumsum()
     out = [(grp.index[0], len(grp)) for _, grp in series[m].groupby(runs[m])]
     return sorted(out, key=lambda g: -g[1])
+
+
+# ----------------------------------------------------------------------------- Your-turn cells
+# Reference results for the "Your turn" cells, computed from the course copy each time they are asked for.
+# A given cell that needs a student's result calls use_or_reference(): when the student's object is
+# missing or has the wrong type or shape, the notebook continues with the reference result, and the
+# summary block does not count that answer as the student's.
+_USED_REFERENCE = set()
+
+
+@lru_cache(maxsize=1)
+def _raw_as_read():
+    raw = pd.read_csv(REAL_FILE, sep=r"\s+", header=None, names=USCRN_NAMES,
+                      dtype={"CRX_VN": str, "LST_DATE": str})
+    raw.index = pd.to_datetime(raw["LST_DATE"], format="%Y%m%d")
+    raw.index.name = "date"
+    return raw
+
+
+def reference_raw():
+    return _raw_as_read().copy()
+
+
+def reference_df():
+    return real().copy()
+
+
+def reference_sm5():
+    return real()["SOIL_MOISTURE_5_DAILY"].copy()
+
+
+def reference_miss():
+    return reference_sm5().isna()
+
+
+def reference_steps():
+    return real().index.to_series().diff().value_counts()
+
+
+def reference_monthly():
+    s = reference_sm5()
+    return s.groupby(s.index.month).mean()
+
+
+def reference_sm():
+    import xarray as xr
+    d = real()
+    return xr.DataArray(np.vstack([d[f"SOIL_MOISTURE_{z}_DAILY"].values for z in DEPTHS_CM]),
+                        dims=("depth_cm", "time"), coords={"depth_cm": DEPTHS_CM, "time": d.index.values},
+                        name="soil_moisture")
+
+
+def reference_one_year():
+    return reference_sm().sel(time=slice("2021-08-01", "2022-07-31"))
+
+
+def _anomaly(x):
+    """Each day minus the 31-day smoothed mean of its calendar day (the notebook's anomaly())."""
+    doy = x.index.dayofyear
+    clim = x.groupby(doy).mean()
+    clim = pd.concat([clim.iloc[-15:], clim, clim.iloc[:15]]).rolling(31, center=True).mean().iloc[15:-15]
+    return x - clim.reindex(doy).values
+
+
+def reference_anomalies():
+    d = real()
+    return _anomaly(d["T_DAILY_MEAN"]), _anomaly(d["SOIL_MOISTURE_5_DAILY"])
+
+
+def reference_Ta():
+    return reference_anomalies()[0]
+
+
+def reference_Sa():
+    return reference_anomalies()[1]
+
+
+def reference_r_anomaly():
+    return float(reference_Ta().corr(reference_Sa()))
+
+
+def reference_split():
+    d = real()
+    return pd.Series(np.select([d.index.year <= 2020, d.index.year <= 2022], ["train", "validation"], "test"),
+                     index=d.index)
+
+
+def reference_threshold():
+    return real()["SOIL_MOISTURE_20_DAILY"][reference_split() == "train"].quantile(0.10)
+
+
+def reference_dry():
+    s20 = real()["SOIL_MOISTURE_20_DAILY"]
+    return (s20 < reference_threshold()).astype(float).where(s20.notna())
+
+
+def reference_dry_share():
+    return reference_dry().groupby(reference_split()).mean()
+
+
+def reference_y_reg():
+    s = real()["SOIL_MOISTURE_5_DAILY"]
+    return s.shift(-1) - s
+
+
+def _same_kind(value, ref):
+    """True when `value` can stand in for `ref` in the given cells: same type, shape and labels."""
+    if value is None or value is ...:
+        return False
+    if isinstance(ref, (pd.Series, pd.DataFrame)):
+        if not isinstance(value, type(ref)) or value.shape != ref.shape or not value.index.equals(ref.index):
+            return False
+        return not isinstance(ref, pd.DataFrame) or list(value.columns) == list(ref.columns)
+    if hasattr(ref, "dims"):                                   # xarray DataArray
+        return getattr(value, "dims", None) == ref.dims and value.shape == ref.shape
+    if isinstance(ref, (int, float, np.floating)):
+        return _num(value) is not None
+    return isinstance(value, type(ref))
+
+
+def use_or_reference(value, reference_fn, name):
+    """Return the student's `value` when it has the expected type and shape, else the reference result."""
+    ref = reference_fn()
+    if _same_kind(value, ref):
+        _USED_REFERENCE.discard(name)
+        return value
+    _USED_REFERENCE.add(name)
+    print(f"`{name}` is blank or not the expected shape. Using the reference result so you can continue; "
+          "compare with yours.")
+    return ref
+
+
+def _close(a, b, rtol=1e-6, atol=1e-9):
+    """Element-wise comparison of two array-likes of the same length, blanks equal to blanks."""
+    try:
+        a = np.asarray(getattr(a, "values", a), dtype=float).ravel()
+        b = np.asarray(getattr(b, "values", b), dtype=float).ravel()
+    except (TypeError, ValueError):
+        return False
+    return a.shape == b.shape and bool(np.allclose(a, b, rtol=rtol, atol=atol, equal_nan=True))
 
 
 # ----------------------------------------------------------------------------- Part 0
@@ -170,7 +313,71 @@ def check_processing_text(text):
               "value, and what happens to a reading the provider flags")
 
 
+def check_probe(v_probe, n_readings_max, n_readings_min):
+    if any(_blank(x) for x in (v_probe, n_readings_max, n_readings_min)):
+        return _todo()
+    v = np.pi * (PROBE_DIAMETER_CM / 2) ** 2 * PROBE_LENGTH_CM
+    n_max = DOC_PROBES_PER_DEPTH * DOC_FILE_INTERVAL_HOURS * 60 // DOC_READING_INTERVAL_MIN
+    n_min = DOC_PROBES_PER_DEPTH * DOC_FILE_INTERVAL_HOURS
+    msgs = []
+    if _num(v_probe) is None or not np.isclose(_num(v_probe), v, rtol=0.01):
+        msgs.append("v_probe: the volume of a cylinder is pi r**2 L, and r is half the diameter")
+    if _num(n_readings_max) != n_max:
+        msgs.append("n_readings_max: probes per depth, times readings per hour for one probe, times hours in a day")
+    if _num(n_readings_min) != n_min:
+        msgs.append("n_readings_min: probes per depth, times one reading per hour, times hours in a day")
+    if msgs:
+        for m in msgs:
+            _hint(m)
+    else:
+        _ok(f"One probe senses about {v:.0f} cm3, the three together about {3 * v:.0f} cm3, a handful of soil, "
+            "and one daily value rests on "
+            f"somewhere between {n_min} and {n_max} readings.")
+
+
 # ----------------------------------------------------------------------------- Part 2
+def check_raw(raw):
+    if _blank(raw):
+        return _todo()
+    ref = _raw_as_read()
+    if not isinstance(raw, pd.DataFrame):
+        return _hint("raw should be the DataFrame that pd.read_csv returns")
+    if raw.shape[0] != ref.shape[0]:
+        return _hint("one row per line of the file: with header=None the first line is data, not names")
+    if "LST_DATE" not in raw.columns and (isinstance(raw.index, pd.DatetimeIndex) or raw.index.name == "LST_DATE"):
+        return _hint("keep LST_DATE as a column too: set_index and index_col move it into the index; "
+                     "write raw.index = pd.to_datetime(raw['LST_DATE'], format='%Y%m%d')")
+    if raw.shape[1] != ref.shape[1] or list(raw.columns) != list(ref.columns):
+        return _hint("sep=r'\\s+' splits the fields on runs of spaces, and names=names gives the 28 column names")
+    if not isinstance(raw.index, pd.DatetimeIndex) or not raw.index.equals(ref.index):
+        return _hint("set raw.index to pd.to_datetime(raw['LST_DATE'], format='%Y%m%d')")
+    if not _close(raw["SOIL_MOISTURE_5_DAILY"], ref["SOIL_MOISTURE_5_DAILY"]):
+        return _hint("read the file as it is; the missing-value codes are replaced in a later step")
+    _ok(f"{raw.shape[0]} days and {raw.shape[1]} fields, indexed by the local date.")
+
+
+def check_blanks(df, n_blank):
+    if _blank(df) or _blank(n_blank):
+        return _todo()
+    ref = real()
+    if not isinstance(df, pd.DataFrame) or df.shape != ref.shape:
+        return _hint("df should be raw with the codes replaced: the same rows and columns as raw")
+    codes = [c for c in ref.select_dtypes("number").columns if c != "LST_DATE"]
+    left = int(df[codes].isin([-99.0, -9999.0]).sum().sum())
+    if left:
+        return _hint(f"{left} values still hold a code: replace both codes of Question 2.3, "
+                     "in a list, with .replace([..., ...], np.nan)")
+    if not all(_close(df[c], ref[c]) for c in codes):
+        return _hint("only the two codes become blanks; every other value stays as read")
+    expected = ref.isna().sum()
+    if isinstance(n_blank, pd.Series) and len(n_blank) < df.shape[1]:
+        return _hint("n_blank keeps every column, zeros included; show the filtered version without assigning it")
+    if not isinstance(n_blank, pd.Series) or not _close(n_blank.reindex(expected.index), expected):
+        return _hint("n_blank: df.isna() marks each blank, and .sum() counts them column by column")
+    _ok("The 5 cm soil moisture is blank far more often than the 5 cm soil temperature: Part 3 asks why.")
+
+
+# ----------------------------------------------------------------------------- Part 2 questions
 def check_row_meaning(text):
     if _blank(text):
         return _todo()
@@ -248,6 +455,54 @@ def check_extremes(hottest_is_real, sm5_min_as_read_is_real):
 
 
 # ----------------------------------------------------------------------------- Part 3
+def check_sm5(sm5, miss, steps):
+    if any(_blank(x) for x in (sm5, miss, steps)):
+        return _todo()
+    ref = reference_sm5()
+    msgs = []
+    if not isinstance(sm5, pd.Series) or len(sm5) != len(ref) or not _close(sm5, ref):
+        msgs.append("sm5: the SOIL_MOISTURE_5_DAILY column of df, the table with the codes as blanks")
+    if not isinstance(miss, pd.Series) or len(miss) != len(ref) or not _close(miss.astype(float),
+                                                                              ref.isna().astype(float)):
+        msgs.append("miss: True on each day sm5 is blank, False otherwise (.isna())")
+    ref_steps = reference_steps()
+    if not isinstance(steps, pd.Series) or not _close(steps.sort_index(), ref_steps.sort_index()) \
+            or not steps.sort_index().index.equals(ref_steps.sort_index().index):
+        msgs.append("steps: the differences between consecutive dates, df.index.to_series().diff(), "
+                    "then .value_counts()")
+    if msgs:
+        for m in msgs:
+            _hint(m)
+    else:
+        _ok("Now find when the blank days fall.")
+
+
+def check_monthly(monthly, days_with_value, sm5_monthly):
+    if any(_blank(x) for x in (monthly, days_with_value, sm5_monthly)):
+        return _todo()
+    s = reference_sm5()
+    msgs = []
+    if not isinstance(monthly, pd.Series) or list(monthly.index) != list(range(1, 13)) \
+            or not _close(monthly, reference_monthly()):
+        msgs.append("monthly: 12 values indexed 1 to 12; group sm5 by sm5.index.month and take the mean")
+    count = s.groupby(s.index.month).count()
+    if not isinstance(days_with_value, pd.Series) or not _close(days_with_value, count):
+        if isinstance(days_with_value, pd.Series) and _close(days_with_value, s.groupby(s.index.month).size()):
+            msgs.append("days_with_value: .size() counts every day; .count() counts only days with a value")
+        else:
+            msgs.append("days_with_value: the same grouping as monthly, with .count()")
+    ref_m = s.resample("MS").mean()
+    if not isinstance(sm5_monthly, pd.Series) or len(sm5_monthly) != len(ref_m) or not _close(sm5_monthly, ref_m):
+        msgs.append(f"sm5_monthly: one value per month of the record ({len(ref_m)} months): sm5.resample('MS').mean()")
+    if msgs:
+        for m in msgs:
+            _hint(m)
+    else:
+        n_blank_months = int(ref_m.isna().sum())
+        _ok(f"{n_blank_months} months of the record have no 5 cm value at all and stay blank in sm5_monthly. "
+            "Compare days_with_value in winter and in summer: frozen days are blank.")
+
+
 def check_interval(days):
     if _blank(days):
         return _todo()
@@ -305,6 +560,41 @@ def check_prediction_vs_data(wettest_month, driest_month):
 
 
 # ----------------------------------------------------------------------------- Part 4
+def check_one_year(one_year, profile_mean):
+    if _blank(one_year) or _blank(profile_mean):
+        return _todo()
+    ref = reference_one_year()
+    msgs = []
+    if getattr(one_year, "dims", None) != ref.dims or one_year.shape != ref.shape \
+            or not _close(one_year, ref):
+        msgs.append("one_year: sm.sel(time=slice(first day, last day)), August 2021 to July 2022, "
+                    "both ends included")
+    own = one_year.mean("time") if hasattr(one_year, "mean") and "time" in getattr(one_year, "dims", ()) else None
+    if not _close(profile_mean, ref.mean("time")) and not (msgs and own is not None and _close(profile_mean, own)):
+        msgs.append("profile_mean: one value per depth, the mean of one_year over the time dimension "
+                    "(.mean('time'))")
+    if msgs:
+        for m in msgs:
+            _hint(m)
+    else:
+        _ok("Each depth averages only the days it has a value: blank (frozen) days near the surface "
+            "leave part of the winter out of the shallow means.")
+
+
+def check_change_by_depth(change_by_depth):
+    if _blank(change_by_depth):
+        return _todo()
+    ref = reference_sm()
+    expected = abs(ref.diff("time")).mean("time")
+    vals = list(change_by_depth.values()) if isinstance(change_by_depth, dict) else change_by_depth
+    if _close(vals, expected):
+        _ok("Compare the five values from top to bottom for Question 4.3.")
+    elif _close(vals, ref.diff("time").mean("time")):
+        _hint("take the absolute value of the day-to-day change before the mean, or rises and falls cancel")
+    else:
+        _hint("one value per depth: sm.diff('time'), its absolute value with abs(), then .mean('time')")
+
+
 def check_axes(depth_spacing_uniform, time_step_days):
     if depth_spacing_uniform is ... or _blank(time_step_days):
         return _todo()
@@ -377,6 +667,70 @@ def check_expected_problems(text):
               "logger's clock, the rain gauge in a storm, and the step that writes the table")
     else:
         _ok("Now hunt for them in your twin.")
+
+
+_SM_COLS = [f"sm_{z}cm" for z in DEPTHS_CM]
+
+
+def check_first_checks(n_duplicated_dates, out_of_range, twin):
+    if _blank(n_duplicated_dates) or _blank(out_of_range):
+        return _todo()
+    obs = twin.observed
+    n_dup = int(obs["date"].duplicated().sum())
+    oor = ((obs[_SM_COLS] < 0) | (obs[_SM_COLS] > 1)).sum()
+    msgs = []
+    if _num(n_duplicated_dates) != n_dup:
+        msgs.append("n_duplicated_dates: .duplicated() on the date column marks each repeat of a date; .sum() counts them")
+    if not isinstance(out_of_range, pd.Series) or not _close(out_of_range.reindex(oor.index), oor):
+        msgs.append("out_of_range: per soil moisture column (obs[sm_cols]), values < 0 OR > 1, combined with |, "
+                    "each comparison in parentheses, then .sum()")
+    if msgs:
+        for m in msgs:
+            _hint(m)
+    else:
+        _ok("These checks need no physics. Each count above zero is a finding to record, with its dates.")
+
+
+def _basic_reference(table):
+    b = table.drop_duplicates("date")
+    b[_SM_COLS] = b[_SM_COLS].where(b[_SM_COLS] >= 0)
+    b.loc[b["st_5cm"] < 0, "sm_5cm"] = np.nan
+    return b
+
+
+def check_basic_clean(basic, r_basic, twin):
+    if _blank(basic) or _blank(r_basic):
+        return _todo()
+    obs = twin.observed
+    if not isinstance(basic, pd.DataFrame) or not set(_SM_COLS + ["date", "st_5cm"]) <= set(basic.columns):
+        return _hint("basic should be a DataFrame with the twin's columns, built from obs")
+    others = [c for c in obs.columns if c not in _SM_COLS]
+    if basic[[c for c in others if c in basic.columns]].isna().sum().sum() > obs[others].isna().sum().sum():
+        return _hint("step 2 blanked the other columns too: apply .where to basic[sm_cols] only and assign it "
+                     "back to basic[sm_cols]")
+    msgs = []
+    if basic["date"].duplicated().any():
+        msgs.append("step 1: each date once, with .drop_duplicates('date')")
+    elif len(basic) != obs["date"].nunique():
+        msgs.append("step 1: keep one row for every date; drop only the repeats, not the rows with blanks")
+    if (basic[_SM_COLS] < 0).any().any():
+        msgs.append("step 2: negative soil moisture blank in every sm_ column, for example with "
+                    ".where(basic[sm_cols] >= 0)")
+    if (basic["sm_5cm"].notna() & (basic["st_5cm"] < 0)).any():
+        msgs.append("step 3: sm_5cm blank on the rows where st_5cm is below 0, with .loc[condition, 'sm_5cm'] = np.nan")
+    expected = rain_response(_basic_reference(obs))[0]
+    if not msgs and (_num(r_basic) is None or not np.isclose(_num(r_basic), expected, rtol=0.02)):
+        msgs.append("r_basic: rain_response(basic)[0]")
+    if msgs:
+        for m in msgs:
+            _hint(m)
+    else:
+        delivered = rain_response(obs)[0]
+        _ok(f"Response to rain as delivered {delivered:.4f}, after these three steps {expected:.4f} m3/m3 per "
+            "10 mm. The steps need no dates, so they fit every twin; clean() below adds the steps that need "
+            "your findings.")
+        if np.isclose(delivered, expected, rtol=0.005):
+            print("In your twin these steps do not move the response; the problems that do need dates.")
 
 
 def check_three_values(r_truth, r_contaminated, r_cleaned, twin, clean_fn):
@@ -460,27 +814,47 @@ def check_lag(lag_of_max, second_lag):
         _hint("the pearson column of the lag table: the largest value, then the second largest")
 
 
-def check_seasonal_trap(r_raw, r_anomaly, r_raw_expected, r_anom_expected):
+def _reference_correlations():
+    """Raw and anomaly Pearson r of daily mean air temperature with 5 cm soil moisture, and n_eff."""
+    d = real()
+    T, S = d["T_DAILY_MEAN"], d["SOIL_MOISTURE_5_DAILY"]
+    Ta, Sa = reference_anomalies()
+    r1, r2 = Ta.autocorr(1), Sa.autocorr(1)
+    n = int((Ta.notna() & Sa.notna()).sum())
+    return T.corr(S), Ta.corr(Sa), n * (1 - r1 * r2) / (1 + r1 * r2)
+
+
+def check_seasonal_trap(r_raw, r_anomaly, r_raw_expected=None, r_anom_expected=None):
     if _blank(r_raw) or _blank(r_anomaly):
         return _todo()
-    if np.isclose(_num(r_raw), r_raw_expected, atol=0.01) and np.isclose(_num(r_anomaly), r_anom_expected, atol=0.01):
+    if r_raw_expected is None or r_anom_expected is None:
+        r_raw_expected, r_anom_expected, _ = _reference_correlations()
+    ok_raw = _num(r_raw) is not None and np.isclose(_num(r_raw), r_raw_expected, atol=0.01)
+    ok_anom = _num(r_anomaly) is not None and np.isclose(_num(r_anomaly), r_anom_expected, atol=0.01)
+    if ok_raw and ok_anom:
         _ok("Most of the raw correlation is the shared seasonal cycle, not day-to-day coupling.")
+    elif not ok_raw:
+        _hint("r_raw: Pearson r of T and S as they are, T.corr(S); .corr() skips days where either is blank")
     else:
-        _hint("Pearson r of temperature and 5 cm moisture before and after removing the day-of-year means")
+        _hint("r_anomaly: the same correlation on anomaly(T) and anomaly(S), after removing the day-of-year means")
 
 
-def check_neff(n_eff, expected):
+def check_neff(n_eff, expected=None):
     if _blank(n_eff):
         return _todo()
+    if expected is None:
+        expected = _reference_correlations()[2]
     if _num(n_eff) is not None and abs(_num(n_eff) - expected) <= 0.05 * expected:
         _ok("Thousands of days, but only a few hundred independent pieces of information.")
     else:
         _hint("n_eff = n (1 - r1 r2) / (1 + r1 r2) with the lag-1 autocorrelations of the two anomaly series")
 
 
-def check_significance(differs_from_zero, r_anomaly, n_eff_expected):
+def check_significance(differs_from_zero, r_anomaly=None, n_eff_expected=None):
     if differs_from_zero is ... or _blank(differs_from_zero):
         return _todo()
+    if r_anomaly is None or n_eff_expected is None:
+        _, r_anomaly, n_eff_expected = _reference_correlations()
     truth = abs(r_anomaly) > 2 / np.sqrt(n_eff_expected)
     if bool(differs_from_zero) == truth:
         _ok(f"|r| = {abs(r_anomaly):.2f} against 2/sqrt(n_eff) = {2 / np.sqrt(n_eff_expected):.2f}: "
@@ -517,6 +891,58 @@ def check_pipeline(steps):
             _hint(m)
     else:
         _ok("Every step has a place; check that each also has a reason.")
+
+
+def check_dry_target(threshold, dry, dry_share):
+    if any(_blank(x) for x in (threshold, dry, dry_share)):
+        return _todo()
+    s20 = real()["SOIL_MOISTURE_20_DAILY"]
+    ref_t = reference_threshold()
+    msgs = []
+    if _num(threshold) is None or not np.isclose(_num(threshold), ref_t, rtol=1e-6):
+        if _num(threshold) is not None and np.isclose(_num(threshold), s20.quantile(0.10), rtol=1e-6):
+            msgs.append("threshold: you used every year; take the quantile on the training rows only "
+                        "(split == 'train'), or the test years shape the target")
+        else:
+            msgs.append("threshold: s20 on the training rows, s20[split == 'train'], then .quantile(0.10)")
+    ref_d = reference_dry()
+    if not isinstance(dry, pd.Series) or len(dry) != len(ref_d):
+        msgs.append("dry: a Series with one value per day, like s20")
+    elif not _close(dry.astype(float), ref_d):
+        if dry.isna().sum() < ref_d.isna().sum():
+            msgs.append("dry: blank on the days s20 is blank (.where(s20.notna())); a day without a value is "
+                        "neither dry nor wet")
+        else:
+            msgs.append("dry: 1.0 where s20 is below the threshold, 0.0 where it is not")
+    ref_share = ref_d.groupby(reference_split()).mean()
+    own_share = dry.groupby(reference_split()).mean() if isinstance(dry, pd.Series) and len(dry) == len(ref_d) else None
+    follows_own = msgs and own_share is not None and isinstance(dry_share, pd.Series) \
+        and _close(dry_share.reindex(own_share.index), own_share)
+    if not follows_own and (not isinstance(dry_share, pd.Series)
+                            or not _close(dry_share.reindex(ref_share.index), ref_share)):
+        msgs.append("dry_share: the mean of dry in each split, dry.groupby(split).mean(); the mean skips blanks")
+    if msgs:
+        for m in msgs:
+            _hint(m)
+    else:
+        _ok("The dry share is not the same in the three splits. Question 7.3 asks for the training one.")
+
+
+def check_reg_target(y_reg):
+    if _blank(y_reg):
+        return _todo()
+    ref = reference_y_reg()
+    s = real()["SOIL_MOISTURE_5_DAILY"]
+    if not isinstance(y_reg, pd.Series) or len(y_reg) != len(ref):
+        _hint("y_reg: a Series with one value per day")
+    elif _close(y_reg, ref):
+        _ok(f"Most days barely change and a few storms make large rises: skewness {ref.skew():.1f}.")
+    elif _close(y_reg, s.diff()):
+        _hint("that is today minus yesterday; the target is tomorrow minus today: .shift(-1) brings tomorrow onto today's row")
+    elif _close(y_reg, -ref):
+        _hint("the sign: tomorrow minus today")
+    else:
+        _hint("tomorrow's 5 cm value moved onto today's row with .shift(-1), minus today's value")
 
 
 def check_task(task, target):
@@ -594,16 +1020,20 @@ def check_wrapup(answers):
 # variables hold something other than the placeholder.
 PARTS = {
     "P0": [("predict_wettest_month", "predict_driest_month")],
-    "P1": [("n_days_expected",), ("my_copy_matches",), ("native",), ("processing_steps",)],
-    "P2": [("row_meaning",), ("sm_units", "units_source"), ("sm_missing_code", "t_missing_code"), ("limits",),
-           ("hottest_is_real", "sm5_min_as_read_is_real")],
-    "P3": [("sampling_interval_days",), ("n_missing_sm5", "longest_gap_days"),
-           ("winter_gaps_cause", "gap_2023_cause"), ("prediction_note",)],
-    "P4": [("depth_spacing_uniform", "time_step_days"), ("delay_5_to_100_days",), ("change_decreases_with_depth",)],
-    "P5": [("expected_problems",), ("findings",), ("r_truth", "r_contaminated", "r_cleaned"), ("reflection_part5",)],
+    "P1": [("n_days_expected",), ("my_copy_matches",), ("v_probe", "n_readings_max", "n_readings_min"),
+           ("native",), ("processing_steps",)],
+    "P2": [("raw",), ("row_meaning",), ("sm_units", "units_source"), ("sm_missing_code", "t_missing_code"),
+           ("df", "n_blank"), ("limits",), ("hottest_is_real", "sm5_min_as_read_is_real")],
+    "P3": [("sm5", "miss", "steps"), ("monthly", "days_with_value", "sm5_monthly"), ("sampling_interval_days",),
+           ("n_missing_sm5", "longest_gap_days"), ("winter_gaps_cause", "gap_2023_cause"), ("prediction_note",)],
+    "P4": [("one_year", "profile_mean"), ("change_by_depth",), ("depth_spacing_uniform", "time_step_days"),
+           ("delay_5_to_100_days",), ("change_decreases_with_depth",)],
+    "P5": [("expected_problems",), ("n_duplicated_dates", "out_of_range"), ("findings",), ("basic", "r_basic"),
+           ("r_truth", "r_contaminated", "r_cleaned"), ("reflection_part5",)],
     "P6": [("rain_vs_change_sign", "temp_vs_moisture_sign"), ("lag_of_max", "second_lag"), ("r_raw", "r_anomaly"),
            ("n_eff", "anomaly_r_differs_from_zero")],
-    "P7": [("pipeline_steps",), ("ml_task", "ml_target"), ("balance",)],
+    "P7": [("pipeline_steps",), ("ml_task", "ml_target"), ("threshold", "dry", "dry_share"), ("y_reg",),
+           ("balance",)],
     "P8": [("ai_findings",), ("ai_comparison",)],
 }
 
@@ -619,40 +1049,51 @@ def _filled(x):
     return True
 
 
+def _getter(ns):
+    """ns.get, except that a result the notebook replaced by the reference counts as not answered."""
+    return lambda name, default=None: default if name in _USED_REFERENCE else ns.get(name, default)
+
+
 def _self_checks(ns):
     """(label, function) for every graded self-check, called on the student's own answers."""
-    g = ns.get
-
-    def neff_expected():
-        r1, r2 = g("Ta").autocorr(1), g("Sa").autocorr(1)
-        return int(g("both_a").sum()) * (1 - r1 * r2) / (1 + r1 * r2)
+    g = _getter(ns)
     return [
         ("1.1", lambda: check_n_rows(g("n_days_expected", ...))),
+        ("1.yt", lambda: check_probe(g("v_probe"), g("n_readings_max"), g("n_readings_min"))),
         ("1.3", lambda: check_native(g("native", ...))),
         ("1.4", lambda: check_processing_text(g("processing_steps", ""))),
+        ("2.yt-a", lambda: check_raw(g("raw"))),
         ("2.1", lambda: check_row_meaning(g("row_meaning", ""))),
         ("2.2", lambda: check_units(g("sm_units", ""), g("units_source", ""))),
         ("2.3", lambda: check_missing_codes(g("sm_missing_code", ...), g("t_missing_code", ...))),
+        ("2.yt-b", lambda: check_blanks(g("df"), g("n_blank"))),
         ("2.4", lambda: check_limits(g("limits", ...))),
         ("2.5", lambda: check_extremes(g("hottest_is_real", ...), g("sm5_min_as_read_is_real", ...))),
+        ("3.yt-a", lambda: check_sm5(g("sm5"), g("miss"), g("steps"))),
+        ("3.yt-b", lambda: check_monthly(g("monthly"), g("days_with_value"), g("sm5_monthly"))),
         ("3.1", lambda: check_interval(g("sampling_interval_days", ...))),
         ("3.2", lambda: check_gaps(g("n_missing_sm5", ...), g("longest_gap_days", ...))),
         ("3.3", lambda: check_gap_causes(g("winter_gaps_cause", ""), g("gap_2023_cause", ""))),
+        ("4.yt-a", lambda: check_one_year(g("one_year"), g("profile_mean"))),
+        ("4.yt-b", lambda: check_change_by_depth(g("change_by_depth"))),
         ("4.1", lambda: check_axes(g("depth_spacing_uniform", ...), g("time_step_days", ...))),
         ("4.2", lambda: check_arrival(g("delay_5_to_100_days", ...))),
         ("4.3", lambda: check_variability(g("change_decreases_with_depth", ...))),
         ("5a", lambda: check_expected_problems(g("expected_problems", ""))),
+        ("5.yt-a", lambda: check_first_checks(g("n_duplicated_dates"), g("out_of_range"), g("twin"))),
+        ("5.yt-b", lambda: check_basic_clean(g("basic"), g("r_basic"), g("twin"))),
         ("5c", lambda: check_three_values(g("r_truth", ...), g("r_contaminated", ...), g("r_cleaned", ...),
                                           g("twin"), g("clean"))),
         ("5d", lambda: check_reflection(g("reflection_part5", ""))),
         ("6.1", lambda: check_signs(g("rain_vs_change_sign", ""), g("temp_vs_moisture_sign", ""))),
         ("6.2", lambda: check_lag(g("lag_of_max", ...), g("second_lag", ...))),
-        ("6.3", lambda: check_seasonal_trap(g("r_raw", ...), g("r_anomaly", ...), g("r_raw_true"), g("r_anom_true"))),
-        ("6.4", lambda: check_neff(g("n_eff", ...), neff_expected())),
-        ("6.4b", lambda: check_significance(g("anomaly_r_differs_from_zero", ...), g("r_anom_true"),
-                                            neff_expected())),
+        ("6.3", lambda: check_seasonal_trap(g("r_raw", ...), g("r_anomaly", ...))),
+        ("6.4", lambda: check_neff(g("n_eff", ...))),
+        ("6.4b", lambda: check_significance(g("anomaly_r_differs_from_zero", ...))),
         ("7.1", lambda: check_pipeline(g("pipeline_steps", []))),
         ("7.2", lambda: check_task(g("ml_task", ""), g("ml_target", ""))),
+        ("7.yt-a", lambda: check_dry_target(g("threshold"), g("dry"), g("dry_share"))),
+        ("7.yt-b", lambda: check_reg_target(g("y_reg"))),
         ("7.3", lambda: check_balance(g("balance", ...), float(g("y_train").mean()))),
         ("wrap-up", lambda: check_wrapup(g("wrapup", []))),
     ]
@@ -663,17 +1104,33 @@ def _short(text, n=300):
     return t[:n] if t else "not answered"
 
 
+# The Your-turn questions added on 14 October (afternoon). A notebook of the earlier version has none of their
+# placeholders; its summary leaves them out, so it reads as it did before the update.
+YOUR_TURN_QUESTIONS = {("v_probe", "n_readings_max", "n_readings_min"), ("raw",), ("df", "n_blank"),
+                       ("sm5", "miss", "steps"), ("monthly", "days_with_value", "sm5_monthly"),
+                       ("one_year", "profile_mean"), ("change_by_depth",), ("n_duplicated_dates", "out_of_range"),
+                       ("basic", "r_basic"), ("threshold", "dry", "dry_share"), ("y_reg",)}
+_NEW_VERSION_NAMES = ("n_readings_max", "n_blank", "days_with_value", "profile_mean", "change_by_depth",
+                      "out_of_range", "r_basic", "n_both", "dry_share")
+
+
+def _is_new_version(ns):
+    return any(k in ns for k in _NEW_VERSION_NAMES)
+
+
 def print_summary(ns):
     """Print the Session 7 summary block from the notebook's variables (pass globals())."""
-    g = ns.get
+    g = _getter(ns)
+    new = _is_new_version(ns)
     parts = []
     for p, questions in PARTS.items():
         # no download to compare: the question about your copy does not apply and is left out of the count
-        asked = [q for q in questions if not (q == ("my_copy_matches",) and g("comparison") is None)]
+        asked = [q for q in questions if not (q == ("my_copy_matches",) and g("comparison") is None)
+                 and (new or q not in YOUR_TURN_QUESTIONS)]
         done = sum(all(_filled(g(v, ...)) for v in q) for q in asked)
         parts.append(f"{p} {done}/{len(asked)}")
 
-    checks = _self_checks(ns)
+    checks = [(label, fn) for label, fn in _self_checks(ns) if new or ".yt" not in label]
     passed = 0
     for _, fn in checks:
         _STATUS["last"] = None

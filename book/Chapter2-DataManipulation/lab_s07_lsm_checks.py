@@ -1,7 +1,9 @@
 """Self-checks and the session summary for lab_s07_land_surface_model.ipynb (Session 7, land-surface track).
 
 ``check(qid, answer)`` prints "correct", a hint (never the answer) or "not answered yet", and remembers the
-result. ``score_findings`` scores your Part 5 findings against your twin and remembers the count.
+result. The "Your turn" cells, where you write a few lines of analysis, are checked the same way, and
+``use_or_reference`` lets the cells after them run on a reference result when yours is missing or has the wrong
+form. ``score_findings`` scores your Part 5 findings against your twin and remembers the count.
 ``print_summary(NETID)`` prints the block the instructor reads on Canvas.
 
 Expected values are computed from the course copies in snapshots/ each time a check runs; no answer is typed
@@ -11,9 +13,11 @@ opening a solution never changes your summary.
 from __future__ import annotations
 
 import re
+import sys
 
 import numpy as np
 import pandas as pd
+import xarray as xr
 
 import lab_s07_lsm_synthetic as lab
 from lab_s07_lsm_synthetic import GRID_FILE, NOT_ANSWERED, W_MAX, open_grid, spokane_anomalies, spokane_table
@@ -22,18 +26,32 @@ TRACK = "lsm"
 PARTS = {
     0: ["q0_peak_month"],
     1: ["q1_same_bytes", "q1_demo", "q1_cell_km", "q1_gauges", "q1_raw_or_derived"],
-    2: ["q2_limits", "q2_extreme", "q2_sentinel"],
-    3: ["q3_interval", "q3_frozen"],
-    4: ["q4_lat_order", "q4_cell", "q4_region", "q4_bad_cell"],
-    5: ["q5a", "q5b", "q5c", "q5d"],
-    6: ["q6_sign", "q6_lag", "q6_neff", "q6_meaning"],
-    7: ["q7_pipeline", "q7_task", "q7_leak"],
+    2: ["q2_limits", "p2_table", "p2_driest", "q2_extreme", "q2_sentinel"],
+    3: ["p3_series", "q3_interval", "q3_frozen", "p3_monthly"],
+    4: ["q4_lat_order", "q4_cell", "p4_clim", "q4_region", "q4_bad_cell"],
+    5: ["q5a", "p5_counts", "q5b", "q5c", "q5d"],
+    6: ["q6_sign", "p6_anom", "p6_leads", "q6_lag", "q6_neff", "q6_meaning"],
+    7: ["q7_pipeline", "q7_task", "p7_split", "q7_leak"],
     8: ["q8a", "q8"],
 }
 # Questions with a right answer; the others (lists, findings, free text) count as answered or not.
-SELF_CHECKED = [q for p in (0, 1, 2, 3, 4, 6, 7) for q in PARTS[p]]
+SELF_CHECKED = [q for p in (0, 1, 2, 3, 4, 6, 7) for q in PARTS[p]] + ["p5_counts"]
+
+# The Your-turn checks added on 14 October (afternoon). A copy of the earlier notebook never runs them; after
+# git pull it imports this module, and its summary counts the earlier parts and checks, so a finished copy reads
+# as it did before the update (see _is_new_version).
+YOUR_TURN_QIDS = ("p2_table", "p2_driest", "p3_series", "p3_monthly", "p4_clim", "p5_counts", "p6_anom",
+                  "p6_leads", "p7_split")
+PARTS_EARLIER = {p: [q for q in qs if q not in YOUR_TURN_QIDS] for p, qs in PARTS.items()}
+SELF_CHECKED_EARLIER = [q for q in SELF_CHECKED if q not in YOUR_TURN_QIDS]
+# Set in the first code cell of the updated notebook only.
+VERSION_MARKER = "LAB_VERSION"
+# Names that only the updated notebook defines (Your-turn placeholders and given cells).
+_NEW_VERSION_NAMES = ("n_missing", "precip_total", "sm5_monthly", "n_valid", "rows_per_month", "rate_test",
+                      "my_clean_example", "r_lead")
 
 _ANSWERED, _PASSED = {}, {}
+_PASSED_EARLIER = {}   # the earlier rule, for the two checks whose tolerance was tightened on 14 October
 _STATE = {"found": None, "derived": None, "wrap": None}
 
 
@@ -168,9 +186,10 @@ def _c_q1_raw(a):
 
 def _c_q1_gauges(a):
     v0, v1 = lab.gauge_totals()
-    if abs(a[0] - v0) <= 0.05 * v0 + 1 and abs(a[1] - v1) <= 0.05 * v1 + 1:
+    if abs(a[0] - v0) <= 0.005 * v0 + 0.5 and abs(a[1] - v1) <= 0.005 * v1 + 0.5:
         return _ok()
-    return _hint("average static['gauges_total'] over the months of 1991-1996, then over 1997-2020.")
+    return _hint("average static['gauges_total'] over the months of 1991-1996, then over 1997-2020; both "
+                 "periods include their first and last year (year <= 1996, year >= 1997).")
 
 
 def _c_q2_limits(a):
@@ -213,7 +232,7 @@ def _c_q2_sentinel(a):
 
 def _c_q3_interval(a):
     return _ok() if tuple(sorted(a)) == (28, 31) else _hint(
-        "take the differences between consecutive dates in days (np.diff on the dates), then min and max.")
+        "steps should be numbers of days: dates.diff().dt.days, then .min() and .max().")
 
 
 def _c_q3_frozen(a):
@@ -349,9 +368,18 @@ def _c_q7_task(a):
         ok_task = True
     if not ok_task:
         return _hint("the target is 'drought month or not'. Which task has a yes or no target?")
-    if abs(float(rate) - r) > 1.0:
-        return _hint("compute the mean of the drought labels over land cells in 2011-2020, in percent.")
-    return _ok()
+    rate = float(rate)
+    if abs(rate - r) <= 0.3:
+        return _ok()
+    if abs(100 * rate - r) <= 0.3:
+        return _hint("the mean of 0/1 labels is a fraction; give the rate in percent (multiply by 100).")
+    y, _ = lab.real_drought_labels()
+    g = open_grid(GRID_FILE)
+    ok = (xr.open_dataset(lab.STATIC_FILE)["landperc"] >= 50) & (g["soilw"].max("time") >= 1)
+    if abs(rate - float(100 * y.where(ok).sel(time=slice("2011", "2020")).mean())) <= 0.3:
+        return _hint("that is the rate over cells with at least 50 % land. The question asks for all model land "
+                     "cells: use labels as they are, without the land-percent filter.")
+    return _hint("compute the mean of the drought labels over all model land cells in 2011-2020, in percent.")
 
 
 def _c_q7_leak(a):
@@ -367,6 +395,214 @@ def _c_wrap(a):
     return _hint("three answers, two to four sentences each (at least 20 words).")
 
 
+# --------------------------------------------------------------------------------------------------
+# "Your turn" cells: the reference results, their expected form, and the checks
+# --------------------------------------------------------------------------------------------------
+USING_REFERENCE = "Using the reference result so you can continue; compare with yours."
+TABLE_COLUMNS = ("month", "cell_lat", "cell_lon_east", "soilw_mm", "precip_mm_per_day", "soilw_ltm_1991_2020_mm")
+ANOM_COLUMNS = ["soilw_mm", "precip_mm_per_day"]
+
+
+def _ref_series():
+    t = spokane_table()
+    dates = pd.to_datetime(t["month"])
+    return dates, t["precip_mm_per_day"] * dates.dt.days_in_month
+
+
+def _ref_clim():
+    clim = open_grid(GRID_FILE)["soilw"].groupby("time.month").mean()
+    return clim, clim.max("month") - clim.min("month")
+
+
+def _ref_split(yy, test_blocks):
+    year, inside = yy["time"].dt.year, yy["block"].isin(test_blocks)
+    train, test = yy[(year <= 2010) & ~inside], yy[(year >= 2011) & inside]
+    return train, test, float((train["drought"] == 0).sum() / train["drought"].sum())
+
+
+def _is_table(x, cols, n=None):
+    return isinstance(x, pd.DataFrame) and all(c in x.columns for c in cols) and (n is None or len(x) == n)
+
+
+def _form_series(x):
+    dates, total = x
+    return (isinstance(dates, pd.Series) and pd.api.types.is_datetime64_any_dtype(dates) and len(dates) == 360
+            and len(total) == 360 and np.isfinite(np.asarray(total, dtype=float)).all())
+
+
+def _form_clim(x):
+    clim, srange = x
+    return (isinstance(clim, xr.DataArray) and set(clim.dims) == {"month", "lat", "lon"}
+            and clim.sizes["month"] == 12 and isinstance(srange, xr.DataArray) and set(srange.dims) == {"lat", "lon"})
+
+
+def _form_split(x):
+    train, test, w1 = x
+    return (_is_table(train, ["drought", "time", "block"]) and _is_table(test, ["drought", "time", "block"])
+            and len(train) > 0 and len(test) > 0 and np.isfinite(float(w1)) and float(w1) > 0)
+
+
+_FORM = {
+    "t": lambda x: _is_table(x, TABLE_COLUMNS, 360),
+    "p3_series": _form_series,
+    "p4_clim": _form_clim,
+    "a": lambda x: _is_table(x, ANOM_COLUMNS, 360),
+    "p7_split": _form_split,
+}
+_REFERENCE = {
+    "t": lambda: spokane_table(),
+    "p3_series": _ref_series,
+    "p4_clim": _ref_clim,
+    "a": lambda: spokane_anomalies()[ANOM_COLUMNS],
+    "p7_split": _ref_split,
+}
+
+
+def use_or_reference(value, name, *context):
+    """Return your result when it has the expected form; otherwise say so and return the reference result."""
+    try:
+        ok = bool(_FORM[name](value))
+    except Exception:  # noqa: BLE001  None, a wrong type or a wrong shape all mean "use the reference"
+        ok = False
+    if ok:
+        return value
+    print(USING_REFERENCE)
+    return _REFERENCE[name](*context)
+
+
+def _c_p2_table(a):
+    t, n = a
+    ref = spokane_table()
+    if not isinstance(t, pd.DataFrame):
+        return _hint("t should be the DataFrame that pd.read_csv returns.")
+    if t.shape != ref.shape:
+        return _hint(f"your t has shape {t.shape}; read the whole file with pd.read_csv(lab.TABLE_FILE) and no "
+                     "other arguments.")
+    if not isinstance(n, pd.Series):
+        return _hint("n_missing should be a Series with one count per column: t.isna() marks the missing "
+                     "values and .sum() counts them in each column.")
+    if not n.reindex(ref.columns).equals(ref.isna().sum()):
+        return _hint("count per column on the table as read: t.isna().sum().")
+    return _ok()
+
+
+def _c_p2_driest(a):
+    if str(a)[:7] == _driest_month():
+        return _ok()
+    return _hint("t['soilw_mm'].idxmin() gives the row label of the smallest value; read the 'month' column at "
+                 "that row with t.loc[i, 'month'].")
+
+
+def _c_p3_series(a):
+    dates, total = a
+    rd, rp = _ref_series()
+    if not isinstance(dates, pd.Series) or not pd.api.types.is_datetime64_any_dtype(dates):
+        return _hint("dates should be a Series of datetimes: pd.to_datetime(t['month']).")
+    if len(dates) != len(rd) or not (dates.values == rd.values).all():
+        return _hint("one date per row of t, in the same order.")
+    if total is None or len(total) != len(rp):
+        return _hint("precip_total needs one value per month: the rate (mm/day) times the days in that month.")
+    if not np.allclose(np.asarray(total, dtype=float), rp.values, rtol=1e-6):
+        return _hint("multiply each month's rate by its own number of days, dates.dt.days_in_month, not by a "
+                     "fixed number.")
+    return _ok()
+
+
+def _c_p3_monthly(a, u):
+    monthly, n = a
+    col = u["SOIL_MOISTURE_5_DAILY"]
+    r_mean, r_n = col.resample("MS").mean(), col.resample("MS").count()
+    if not isinstance(monthly, pd.Series) or len(monthly) != len(r_mean):
+        return _hint("sm5_monthly needs one value per calendar month of u: resample('MS') groups the days by "
+                     "month start, then .mean().")
+    if not np.allclose(np.asarray(monthly, dtype=float), r_mean.values, equal_nan=True, atol=1e-6):
+        return _hint("average the 5 cm column (SOIL_MOISTURE_5_DAILY) of u, the table with the codes already NaN.")
+    if not isinstance(n, pd.Series) or len(n) != len(r_n) or not (np.asarray(n) == r_n.values).all():
+        return _hint("n_valid: the same resample with .count(), which counts the days that have a value.")
+    return _ok()
+
+
+def _c_p4_clim(a):
+    clim, srange = a
+    rc, rs = _ref_clim()
+    if not isinstance(clim, xr.DataArray) or "month" not in clim.dims or clim.sizes["month"] != 12:
+        return _hint("clim should hold 12 maps, one per calendar month: grid['soilw'].groupby('time.month').mean().")
+    if set(clim.dims) != {"month", "lat", "lon"}:
+        return _hint("average over time only, so that lat and lon stay.")
+    if not np.allclose(clim.transpose(*rc.dims).values, rc.values, equal_nan=True, atol=1e-3):
+        return _hint("average each calendar month over all 30 years of grid['soilw'].")
+    if not isinstance(srange, xr.DataArray) or set(srange.dims) != {"lat", "lon"}:
+        return _hint("srange is one map: reduce clim over the 'month' dimension.")
+    if not np.allclose(srange.transpose(*rs.dims).values, rs.values, equal_nan=True, atol=1e-3):
+        return _hint("the seasonal range at each cell is the largest of the 12 monthly means minus the smallest.")
+    return _ok()
+
+
+def _c_p5_counts(a, d):
+    rows, dups, med = a
+    dd = d.copy()
+    dd["time"] = pd.to_datetime(dd["time"])
+    r_rows = dd.groupby("time").size()
+    if not isinstance(rows, pd.Series) or len(rows) != len(r_rows) or not (rows.values == r_rows.values).all():
+        return _hint("rows_per_month: group the rows of d by 'time' and count them with .size().")
+    n_dup = int(dd.duplicated(["time", "lat", "lon"], keep=False).sum())
+    if not isinstance(dups, pd.DataFrame) or len(dups) != n_dup:
+        return _hint("dups: d.duplicated(['time', 'lat', 'lon'], keep=False) is True for every copy of a repeated "
+                     "row; select those rows of d.")
+    r_med = dd.groupby("time")["soil_moisture_mm"].median()
+    if not isinstance(med, pd.Series) or len(med) != len(r_med) or not np.allclose(
+            np.asarray(med, dtype=float), r_med.values, equal_nan=True):
+        return _hint("med: group by 'time' and take the median of 'soil_moisture_mm'.")
+    return _ok("correct. Now read them against what you expect of a monthly grid")
+
+
+def _c_p6_anom(a):
+    ref = spokane_anomalies()[ANOM_COLUMNS]
+    if not _is_table(a, ANOM_COLUMNS):
+        return _hint("a should be a DataFrame with the columns soilw_mm and precip_mm_per_day.")
+    if len(a) != len(ref):
+        return _hint("one row per month of t (360 rows).")
+    if np.allclose(a[ANOM_COLUMNS].values, ref.values, atol=1e-6):
+        return _ok()
+    t = spokane_table()[ANOM_COLUMNS]
+    if np.allclose(a[ANOM_COLUMNS].values, (t - t.mean()).values, atol=1e-6):
+        return _hint("you removed one overall mean. Remove the mean of each calendar month instead: group by the "
+                     "month number, 1 to 12.")
+    return _hint("from each value subtract the mean of all values in the same calendar month: "
+                 "t[cols].groupby(cal).transform('mean') gives that mean on every row.")
+
+
+def _c_p6_leads(a):
+    _, ref = _best_lag()
+    r = [float(x) for x in a]
+    if len(r) != 4:
+        return _hint("four correlations, for leads of 0, 1, 2 and 3 months.")
+    if np.allclose(r, ref, atol=0.005):
+        return _ok()
+    an = spokane_anomalies()
+    back = [an["soilw_mm"].corr(an["precip_mm_per_day"].shift(-k)) for k in range(4)]
+    if np.allclose(r, back, atol=0.005):
+        return _hint("the shift goes the other way: .shift(k) with k = 0, 1, 2, 3 puts the precipitation of k "
+                     "months earlier on each row.")
+    return _hint("correlate the anomalies a['soilw_mm'] and a['precip_mm_per_day'].shift(k), not the raw series.")
+
+
+def _c_p7_split(a, yy, test_blocks):
+    train, test, w1 = a
+    rt, rs, rw = _ref_split(yy, test_blocks)
+    if not isinstance(train, pd.DataFrame) or not isinstance(test, pd.DataFrame):
+        return _hint("train and test should be DataFrames: rows of yy selected with a True/False condition.")
+    if len(train) != len(rt):
+        return _hint("train: rows with a year up to 2010 AND a block not in test_blocks (combine with & and ~).")
+    if len(test) != len(rs):
+        return _hint("test: rows with a year from 2011 AND a block in test_blocks.")
+    if abs(float(w1) - rw) > 1e-6 * rw:
+        if abs(float(w1) - 1 / rw) < 1e-6:
+            return _hint("the weight should raise the rare class: non-drought rows divided by drought rows.")
+        return _hint("count drought (1) and non-drought (0) rows in train only, then divide.")
+    return _ok()
+
+
 _CHECKS = {
     "q0_peak_month": _c_q0, "q1_same_bytes": _c_q1_same, "q1_demo": _c_q1_demo, "q1_cell_km": _c_q1_km,
     "q1_raw_or_derived": _c_q1_raw, "q1_gauges": _c_q1_gauges, "q2_limits": _c_q2_limits,
@@ -375,33 +611,58 @@ _CHECKS = {
     "q4_bad_cell": _c_q4_bad, "q5a": _c_q5a, "q5c": _c_q5c, "q5d": _c_text, "q6_sign": _c_q6_sign,
     "q6_lag": _c_q6_lag, "q6_neff": _c_q6_neff, "q6_meaning": _c_q6_meaning, "q7_pipeline": _c_q7_pipeline,
     "q7_task": _c_q7_task, "q7_leak": _c_q7_leak, "q8": _c_text, "wrap": _c_wrap,
+    "p2_table": _c_p2_table, "p2_driest": _c_p2_driest, "p3_series": _c_p3_series, "p3_monthly": _c_p3_monthly, "p4_clim": _c_p4_clim,
+    "p5_counts": _c_p5_counts, "p6_anom": _c_p6_anom, "p6_leads": _c_p6_leads, "p7_split": _c_p7_split,
 }
 
 
-def _run(qid, answer):
-    if _blank(answer):
+def _earlier_q1_gauges(a):
+    v0, v1 = lab.gauge_totals()
+    return abs(a[0] - v0) <= 0.05 * v0 + 1 and abs(a[1] - v1) <= 0.05 * v1 + 1
+
+
+def _earlier_q7_task(a):
+    task, rate = a
+    w = _first_word(task)
+    return (w.startswith("class") or w.startswith("regress")) and abs(float(rate) - _real_test_rate()) <= 1.0
+
+
+# The rules of the earlier version, kept silently: they only count in the summary of an earlier copy.
+_EARLIER_RULES = {"q1_gauges": _earlier_q1_gauges, "q7_task": _earlier_q7_task}
+
+
+def _run(qid, answer, *context):
+    if _blank(answer) or (isinstance(answer, tuple) and all(x is None for x in answer)):
         print(NOT_ANSWERED)
         return None
     try:
-        return _CHECKS[qid](answer)
+        return _CHECKS[qid](answer, *context)
     except Exception as e:  # noqa: BLE001  a malformed answer should give a hint, not a traceback
         return _hint(f"the answer has an unexpected form ({type(e).__name__}: {e}). Look at the example "
                      "format in the cell.")
 
 
-def check(qid, answer):
-    """Self-check for question `qid`: prints 'correct', a hint or 'not answered yet', and records the result."""
-    res = _run(qid, answer)
+def check(qid, answer, *context):
+    """Self-check for question `qid`: prints 'correct', a hint or 'not answered yet', and records the result.
+
+    `context` passes what a Your-turn check needs besides your result (your twin's table, the test blocks).
+    """
+    res = _run(qid, answer, *context)
     _ANSWERED[qid] = res is not None
     _PASSED[qid] = bool(res)
+    if qid in _EARLIER_RULES:
+        try:
+            _PASSED_EARLIER[qid] = res is not None and bool(_EARLIER_RULES[qid](answer))
+        except Exception:  # noqa: BLE001  a malformed answer did not pass the earlier rule either
+            _PASSED_EARLIER[qid] = False
     if qid == "wrap" and _blank(answer):
         _STATE["wrap"] = None
 
 
-def check_worked(qid, answer):
+def check_worked(qid, answer, *context):
     """The same check for the worked solutions: prints, records nothing."""
     saved = dict(_STATE)
-    _run(qid, answer)
+    _run(qid, answer, *context)
     _STATE.update(saved)
 
 
@@ -429,11 +690,27 @@ def _short(s, n=300):
     return s[:n] if s else "not answered"
 
 
+def _is_new_version(ns):
+    """True for the updated notebook: its first cell sets LAB_VERSION, it defines a Your-turn name, or it ran
+    a Your-turn check. A copy of the earlier notebook does none of these."""
+    return (ns.get(VERSION_MARKER) is not None or any(k in ns for k in _NEW_VERSION_NAMES)
+            or any(q in _ANSWERED for q in YOUR_TURN_QIDS))
+
+
+def _caller_globals():
+    try:
+        return sys._getframe(2).f_globals   # the notebook that called print_summary
+    except (AttributeError, ValueError):
+        return {}
+
+
 def print_summary(netid=""):
     """Print the Session 7 summary block from the answers and self-checks run so far."""
     netid = str(netid or "").strip()
-    parts = " | ".join(f"P{p} {sum(_ANSWERED.get(q, False) for q in qs)}/{len(qs)}" for p, qs in PARTS.items())
-    passed = sum(_PASSED.get(q, False) for q in SELF_CHECKED)
+    new = _is_new_version(_caller_globals())
+    parts_def, checked = (PARTS, SELF_CHECKED) if new else (PARTS_EARLIER, SELF_CHECKED_EARLIER)
+    parts = " | ".join(f"P{p} {sum(_ANSWERED.get(q, False) for q in qs)}/{len(qs)}" for p, qs in parts_def.items())
+    passed = sum((_PASSED if new else {**_PASSED, **_PASSED_EARLIER}).get(q, False) for q in checked)
     seed = lab.seed_from_netid(netid)
     found = _STATE["found"]
     found_s = f"{found[0]} of {found[1]}" if found else "not answered"
@@ -449,7 +726,9 @@ def print_summary(netid=""):
         f"track: {TRACK}",
         f"netid: {netid or 'not answered'}",
         f"parts answered: {parts}",
-        f"self-checks passed: {passed} of {len(SELF_CHECKED)}",
+        f"self-checks passed: {passed} of {len(checked)}",
+    ] + ([] if new else ["notebook version: earlier (before 14 October, afternoon); parts and self-checks "
+                         "counted as in that version"]) + [
         f"planted problems found: {found_s} (seed {seed})",
         f"derived quantity (truth / as given / after cleaning): {der_s}",
     ] + [f"reflection {i + 1}: {_short(w)}" for i, w in enumerate(wrap)] + ["==== END SUMMARY ===="]

@@ -92,20 +92,22 @@ Any Python environment with numpy, pandas, scipy, matplotlib, xarray, netCDF4, o
 
 | Part | What you do | Rough time (min) |
 |---|---|---|
-| 0 | The system and the question: the physical process, a map, the guiding question | 3 |
-| 1 | Pull the raw data; check your file against the course copy; native resolution and processing | 10 |
-| 2 | A table: what a row records, units, missing values and flags, limits, one real extreme and one error | 8 |
-| 3 | A 1D array: a time series, its sampling, gaps and one real sensor problem | 8 |
-| 4 | A 2D array: axes, coordinates, resolution, the structure the physics predicts (*if you have time*) | 8 |
-| 5 | A synthetic twin with planted problems: list, hunt, clean, measure the damage, reflect | 15 |
-| 6 | Correlations on the real data, with the trap that matters in your system | 8 |
-| 7 | From data to a learning problem: the chain of steps, the task and target, balancing | 10 |
+| 0 | The system and the question: the physical process, a map, the guiding question | 3 to 6 |
+| 1 | Pull the raw data; check your file against the course copy; native resolution and processing | 11 to 15 |
+| 2 | A table: what a row records, units, missing values and flags, limits, one real extreme and one error | 11 to 16 |
+| 3 | A 1D array: a time series, its sampling, gaps and one real sensor problem | 12 to 18 |
+| 4 | A 2D array: axes, coordinates, resolution, the structure the physics predicts (*if you have time*) | 10 to 13 |
+| 5 | A synthetic twin with planted problems: list, hunt, clean, measure the damage, reflect | 25 to 30 |
+| 6 | Correlations on the real data, with the trap that matters in your system | 10 to 15 |
+| 7 | From data to a learning problem: the chain of steps, the task and target, balancing | 12 to 15 |
 | 8 | A short comparison with an AI tool on your twin, and a start on the Friday files (*if you have time*) | 7 |
-| Wrap-up | Three written answers, then the summary cell | 3 |
+| Wrap-up | Three written answers, then the summary cell | 3 to 5 |
 
-The times are rough estimates of how long each part takes, not a schedule. Parts 4 and 8 are optional; skip them if you want more time for Part 5.
+The times are rough estimates of how long each part takes, not a schedule, and they differ by track: the opening cell of each notebook gives its own. Without Parts 4 and 8 and the steps marked *if you have time*, a track takes about 90 to 105 minutes. Parts 4 and 8 are optional; skip them if you want more time for Part 5. You have until Friday 9:00 to finish.
 
 **How a question works.** Replace the empty answer (`None`, `...` or `""`) in an answer cell and run it. The self-check prints `correct`, a hint (never the answer), or `not answered yet`. The collapsed cell below it, "Worked solution, open after you tried", shows one way to the answer.
+
+**How a Your-turn cell works.** In the cells marked **Your turn** you write a few lines (1 to 6) of the analysis yourself: the text says what to compute and what to name the result, and a one-line hint names the function to use. Replace each `None` with your code and run the cell; the self-check works as above. If you leave a Your-turn cell as `None`, the notebook continues with the reference result. If your code raises an error, put the cell back to `None` before Restart and Run All.
 
 **Downloads.** If you have no network or the provider does not answer, the cell says so and you continue with the course copy, which holds the same data. PSL's subset service refused every request while the lab was built (HTTP error 429, too many requests), so the land-surface notebook downloads the whole files in the background (about 545 MB, about 18 minutes) while you work on the course copy.
 

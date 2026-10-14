@@ -1,6 +1,6 @@
 """Session 7, planetary science track: reading the real files, the provider queries, and the self-checks.
 
-Used by lab_s07_planetary.ipynb, next to lab_s07_planetary_synthetic.py (the synthetic twin). Three groups:
+Used by lab_s07_planetary.ipynb, next to lab_s07_planetary_synthetic.py (the synthetic twin). Four groups:
 
 1. Reading the real data without astropy: ``read_fits`` reads the FITS files that NASA's TESS mission
    delivers (headers are plain text, tables are big-endian binary), ``read_lightcurve``, ``read_pixels``,
@@ -9,6 +9,8 @@ Used by lab_s07_planetary.ipynb, next to lab_s07_planetary_synthetic.py (the syn
    Space Telescopes (MAST) for the same files as the course copies, and ``file_facts`` gives the size,
    counts, first and last records and SHA-256 fingerprint of each copy.
 3. Self-checks (``check``): they print "correct" or a hint; they never print an answer.
+4. "Your turn" cells: ``use_or_reference`` lets the notebook continue with a reference result, computed here
+   from the course data, when a cell you write is still empty or has an unexpected form.
 
 Nothing here downloads when the environment variable CI is set or MLGEO_OFFLINE=1.
 """
@@ -416,12 +418,17 @@ def _text_ok(a, min_words, hint, *need):
     return _ok("thanks: compare your words with the worked solution below once you are done")
 
 
+def _empty(v):
+    """None or an empty string (a table or an array is never 'empty' here, even with no rows)."""
+    return v is None or (isinstance(v, str) and v == "")
+
+
 def check(qid, answer):
     """Self-check for question `qid`. Prints 'correct' or a hint; never prints the answer."""
     if answer is None or (isinstance(answer, (str, list, dict, tuple)) and len(answer) == 0):
         print(NOT_ANSWERED)
         return None
-    if isinstance(answer, dict) and all(v is None or v == "" for v in answer.values()):
+    if isinstance(answer, dict) and all(_empty(v) for v in answer.values()):
         print(NOT_ANSWERED)
         return None
     try:
@@ -510,13 +517,19 @@ def _c2_missing(a):
     exp = {"no_mass": int(p["pl_bmasse"].isna().sum()), "no_radius": int(p["pl_rade"].isna().sum()),
            "mass_from_radius": int((p["pl_bmassprov"] == "M-R relationship").sum()),
            "mass_is_a_limit": int((p["pl_bmasselim"].fillna(0) != 0).sum())}
+    if any(a.get(k) is None for k in exp):
+        return _hint("fill all four counts, then rerun the cell.")
     bad = [k for k, v in exp.items() if int(a.get(k, -1)) != v]
     if not bad:
         return _ok()
     tips = {"no_mass": "count empty cells: planets['pl_bmasse'].isna().sum()",
             "no_radius": "count empty cells in pl_rade",
-            "mass_from_radius": "value_counts() of pl_bmassprov: one category is not in the column definition",
-            "mass_is_a_limit": "count rows where pl_bmasselim is not 0 (1 or -1: the number is a bound)"}
+            "mass_from_radius": ("a count of 0 means no row matched: spell the category exactly as the value_counts() "
+                                 "printout above shows it, capitals and spaces included"
+                                 if int(a.get("mass_from_radius", -1)) == 0 else
+                                 "count the rows of pl_bmassprov equal to the category for masses computed from the "
+                                 "radius, spelled as in the value_counts() printout above"),
+            "mass_is_a_limit": "count rows where pl_bmasselim is 1 or -1 (the number is a bound): .isin([1, -1])"}
     return _hint("; ".join(tips[k] for k in bad))
 
 
@@ -526,6 +539,7 @@ def _c2_limits(a):
     if None in (lo, hi, mhi):
         print(NOT_ANSWERED)
         return None
+    remember(bounds_2d={"pl_rade_low": float(lo), "pl_rade_high": float(hi), "pl_bmasse_high": float(mhi)})
     off = [name for name, good in [("lower radius bound", 0 < float(lo) < 1),
                                    ("upper radius bound", 20 <= float(hi) <= 40),
                                    ("upper mass bound", 3000 <= float(mhi) <= 12000)] if not good]
@@ -635,6 +649,8 @@ def _c6_corr(a):
            "spearman_all": stats.spearmanr(allr["pl_bmasse"], allr["pl_rade"])[0],
            "pearson_measured": stats.pearsonr(np.log10(meas["pl_bmasse"]), np.log10(meas["pl_rade"]))[0],
            "spearman_measured": stats.spearmanr(meas["pl_bmasse"], meas["pl_rade"])[0]}
+    if any(a.get(k) is None for k in exp):
+        return _hint("fill all four correlations, then rerun the cell.")
     bad = [k for k, v in exp.items() if not _close(a.get(k, 9), v, rel=0, abs_=0.01)]
     if not bad:
         return _ok()
@@ -749,13 +765,446 @@ _CHECKS = {
 
 
 # --------------------------------------------------------------------------------------------------
-# 4. The summary block for Canvas
+# 4. "Your turn" cells: reference results so the notebook continues, and their self-checks
 # --------------------------------------------------------------------------------------------------
-PARTS = [("P0", ["0"]), ("P1", ["1a", "1b", "1c", "1d"]), ("P2", ["2a", "2b", "2c", "2d", "2e"]),
-         ("P3", ["3a", "3b", "3c", "3d"]), ("P4", ["4a", "4b", "4c"]), ("P5", ["5a", "5b", "5c", "5d"]),
-         ("P6", ["6a", "6b", "6c"]), ("P7", ["7chain", "7a", "7b", "7c", "7d"]), ("P8", ["8tool", "8"])]
-_VARS = {"0": "answer_0", "5b": "my_findings", "7chain": "my_chain", "8tool": "ai_findings", "8": "answer_8"}
+REFERENCE_NOTE = "Using the reference result so you can continue; compare with yours."
+_REFERENCE_OBJ = {}             # name -> the reference object handed out, to tell it from your own result
+REF_BOUNDS = {"pl_rade_low": 0.3, "pl_rade_high": 25.0, "pl_bmasse_high": 30 * 317.83}   # the worked solution's
+TIME_SPLIT = "2023-01-01"       # Part 7: TOIs created before this date train, the others test
+CLASSES = {"CP": "planet", "KP": "planet", "FP": "false_positive", "FA": "false_alarm"}
+
+
+def _is_num(x):
+    return isinstance(x, (int, float, np.integer, np.floating)) and not isinstance(x, bool) and np.isfinite(x)
+
+
+def _is_df(x, *cols):
+    return isinstance(x, pd.DataFrame) and all(c in x.columns for c in cols)
+
+
+def _is_series(x, n=None):
+    return isinstance(x, pd.Series) and (n is None or len(x) == n)
+
+
+def _is_image(x):
+    import xarray as xr
+    return isinstance(x, xr.DataArray) and set(x.dims) == {"row", "column"}
+
+
+_VALID = {
+    "hd": lambda x: isinstance(x, pd.Series) and x.name == TARGET and "pl_orbper" in x.index,
+    "flux_ratio": _is_num,
+    "transit_share": _is_num,
+    "out": lambda x: _is_df(x, "pl_name", "pl_rade", "pl_bmasse"),
+    "bkg_6h": lambda x: _is_series(x) and isinstance(x.index, pd.DatetimeIndex) and len(x) > 10,
+    "peak_btjd": _is_num,
+    "one, rel, rel_30min": lambda v: (_is_df(v[0], "TIME", "PDCSAP_FLUX") and len(v[0]) > 50
+                                      and _is_series(v[1], len(v[0])) and _is_series(v[2], len(v[0]))),
+    "img": _is_image,
+    "diff": _is_image,
+    "basic": lambda x: _is_df(x, "time_btjd", "cadenceno", "flux", "background") and len(x) > 1000,
+    "all_rows": lambda x: _is_df(x, "pl_bmasse", "pl_rade", "tran_flag", "pl_bmassprov") and len(x) > 100,
+    "lab": lambda x: _is_series(x, len(read_toi())),
+    "train, test": lambda v: _is_df(v[0], "label", "tid") and _is_df(v[1], "label", "tid")
+                             and len(v[0]) > 0 and len(v[1]) > 0,
+}
+
+
+def use_or_reference(value, reference_fn, name, valid=None):
+    """Your result if it has the expected form; otherwise the reference result, with one line saying so.
+
+    value: what you computed (a tuple for several names, e.g. (train, test) with name "train, test");
+    reference_fn: a function without arguments that returns the reference result;
+    name: the variable name(s) as written in the notebook; valid: an optional test of the form.
+    """
+    parts = value if isinstance(value, tuple) else (value,)
+    test = valid or _VALID.get(name)
+    ok = all(p is not None for p in parts)
+    if ok and test is not None:
+        try:
+            ok = bool(test(value))
+        except Exception:  # noqa: BLE001  any surprise in the form means: use the reference
+            ok = False
+    names = [n.strip() for n in name.split(",")]
+    if ok:
+        for n in names:
+            _REFERENCE_OBJ.pop(n, None)
+        return value
+    print(f"{name}: {REFERENCE_NOTE}")
+    ref = reference_fn()
+    for n, r in zip(names, ref if isinstance(ref, tuple) else (ref,)):
+        _REFERENCE_OBJ[n] = r
+    return ref
+
+
+def is_reference(name, value):
+    """True when `value` is the reference object handed out for `name`, not your own result."""
+    return name in _REFERENCE_OBJ and _REFERENCE_OBJ[name] is value
+
+
+# Reference results, computed from the course data when called.
+def ref_flux_ratio(lc):
+    return float(lc["PDCSAP_FLUX"].median() / lc["SAP_FLUX"].median())
+
+
+def ref_target_row():
+    return read_planets().set_index("pl_name").loc[TARGET]
+
+
+def ref_transit_share():
+    p = read_planets()
+    return float((p["discoverymethod"] == "Transit").mean() * 100)
+
+
+def ref_out_of_bounds(bounds=None):
+    b = dict(REF_BOUNDS)
+    b.update({k: float(v) for k, v in (bounds or {}).items() if v is not None})
+    p = read_planets()
+    return p[(p["pl_rade"] < b["pl_rade_low"]) | (p["pl_rade"] > b["pl_rade_high"])
+             | (p["pl_bmasse"] > b["pl_bmasse_high"])]
+
+
+def btjd_to_dates(time_btjd):
+    """BTJD (days) to dates: BTJD + 2457000 is a Julian date (TDB, about 69 s ahead of UTC in 2022)."""
+    return pd.to_datetime(np.asarray(time_btjd, float) + 2457000, unit="D", origin="julian")
+
+
+def ref_6h(lc, column="SAP_BKG"):
+    return lc.set_index(btjd_to_dates(lc["TIME"]))[column].resample("6h").mean()
+
+
+def ref_peak_btjd(lc):
+    return float(lc.loc[lc["SAP_BKG"].idxmax(), "TIME"])
+
+
+def ref_one_transit(lc, t_mid, half_width=0.3):
+    one = lc[(lc["TIME"] - t_mid).abs() < half_width]
+    rel = one["PDCSAP_FLUX"] / one["PDCSAP_FLUX"].median()
+    return one, rel, rel.rolling(15, center=True).mean()
+
+
+def ref_median_image(px):
+    return px["flux"].median("time")
+
+
+def ref_difference_image(px, out_of_transit, in_transit):
+    return (px["flux"].isel(time=np.asarray(out_of_transit)).mean("time")
+            - px["flux"].isel(time=np.asarray(in_transit)).mean("time"))
+
+
+def ref_basic_clean(lc5):
+    c = lc5.drop_duplicates("cadenceno")
+    return c[c["flux"] > 0]
+
+
+def ref_all_rows():
+    p = read_planets()
+    return p[(p["pl_bmasse"] > 0) & (p["pl_rade"] > 0)]
+
+
+def ref_labels():
+    return read_toi()["tfopwg_disp"].map(CLASSES)
+
+
+def ref_time_split(labelled):
+    older = pd.to_datetime(labelled["toi_created"]) < TIME_SPLIT
+    return labelled[older], labelled[~older]
+
+
+def target_orbit():
+    """Period (days), mid-transit time (BTJD) and duration (days) of HD 209458 b, from the archive geometry."""
+    import lab_s07_planetary_synthetic as syn
+    hd = ref_target_row()
+    P, T0 = float(hd["pl_orbper"]), float(hd["pl_tranmid"]) - 2457000
+    return P, T0, float(syn.transit_duration(P, hd["pl_ratror"], hd["pl_ratdor"], hd["pl_orbincl"]))
+
+
+def _spearman(s):
+    return float(s["pl_bmasse"].corr(s["pl_rade"], method="spearman"))
+
+
+def _missing(a, *names):
+    gone = [n for n in names if a.get(n) is None]
+    return _hint(f"{', '.join(gone)} still empty: replace None and rerun the cell.") if gone else None
+
+
+def _y0(a):
+    m = _missing(a, "hd", "transit_share")
+    if m is not None:
+        return m
+    hd = a["hd"]
+    if isinstance(hd, pd.DataFrame):
+        return _hint("hd is a table; .loc[name] on a table indexed by pl_name returns one row as a Series.")
+    if not (isinstance(hd, pd.Series) and hd.name == TARGET):
+        return _hint("index the table by pl_name with .set_index('pl_name'), then .loc[ck.TARGET].")
+    share, exp = a["transit_share"], ref_transit_share()
+    if _is_num(share) and _close(share * 100, exp, rel=0.001):
+        return _hint("transit_share is a fraction; the question asks for a percentage.")
+    if not (_is_num(share) and _close(share, exp, rel=0.001)):
+        return _hint("compare discoverymethod with 'Transit' (a True/False column); its mean is the fraction of True.")
+    return _ok()
+
+
+def _y1(a):
+    lc, _ = read_lightcurve()
+    er = ref_flux_ratio(lc)
+    if isinstance(a, (pd.Series, pd.DataFrame, np.ndarray)):
+        return _hint("flux_ratio is one number: take the .median() of each column, then divide.")
+    if _is_num(a) and _close(a, er, rel=1e-6):
+        return _ok()
+    if _is_num(a) and _close(1 / a, er, rel=1e-6):
+        return _hint("flux_ratio is upside down: PDCSAP_FLUX on top.")
+    if _is_num(a) and _close(a, (lc["PDCSAP_FLUX"] / lc["SAP_FLUX"]).median(), rel=1e-6):
+        return _hint("this is the median of the row-by-row ratio; the question asks for the ratio of the two medians.")
+    if not (_is_num(a) and _close(a, er, rel=1e-6)):
+        return _hint("flux_ratio is the median of PDCSAP_FLUX divided by the median of SAP_FLUX, one number.")
+    return _ok()
+
+
+def _y2d(a):
+    b = _LAST.get("bounds_2d")
+    if b is None:
+        return _hint("fill answer_2d and run its cell first: your selection uses those bounds.")
+    if not _is_df(a, "pl_name"):
+        return _hint("out is a DataFrame: planets[condition], with the conditions on pl_rade and pl_bmasse.")
+    exp = ref_out_of_bounds(b)
+    if set(a["pl_name"]) == set(exp["pl_name"]):
+        return _ok()
+    if len(a) < len(exp):
+        return _hint("some rows outside your bounds are missing: combine the three conditions with | (or), "
+                     "each in parentheses.")
+    return _hint("your table holds rows inside the bounds: | means or, & means and; compare with the bounds in "
+                 "answer_2d: rerun the 2d cell, then this one.")
+
+
+def _y2e(a):
+    names = ["Kepler-37 e", "Kepler-51 b"]
+    if not isinstance(a, pd.Series):
+        return _hint("density is a Series indexed by planet name: compute it from two columns of the two-row table.")
+    if not all(n in a.index for n in names):
+        return _hint("the index of density should be the planet names: select the rows with "
+                     "planets.set_index('pl_name').loc[[...]].")
+    p = read_planets().set_index("pl_name").loc[names]
+    exp = EARTH_DENSITY * p["pl_bmasse"] / p["pl_rade"] ** 3
+    got = a.loc[names].astype(float)
+    if np.allclose(got, exp, rtol=0.01):
+        return _ok()
+    if np.allclose(got, exp / EARTH_DENSITY, rtol=0.01):
+        return _hint("this is the density relative to Earth; multiply by Earth's 5.514 g/cm3.")
+    return _hint("density = 5.514 x mass / radius**3, mass in pl_bmasse and radius in pl_rade (cubed).")
+
+
+def _y3a(a):
+    m = _missing(a, "dt_s", "pdc_gap")
+    if m is not None:
+        return m
+    lc, _ = read_lightcurve()
+    dt_s = np.asarray(a["dt_s"], float)
+    if dt_s.shape != (len(lc) - 1,):
+        return _hint("dt_s holds one value per pair of consecutive rows: np.diff(lc['TIME']).")
+    if _close(np.nanmedian(dt_s), 120 / 86400, rel=0.01):
+        return _hint("dt_s is still in days: one day is 86400 s.")
+    if not _close(np.nanmedian(dt_s), 120, rel=0.01):
+        return _hint("np.diff of the TIME column, converted from days to seconds.")
+    exp = lc["PDCSAP_FLUX"].isna() & lc["SAP_FLUX"].notna()
+    gap = a["pdc_gap"]
+    if not (isinstance(gap, pd.Series) and gap.dtype == bool and len(gap) == len(lc)):
+        return _hint("pdc_gap is a True/False Series, one value per row: combine .isna() and .notna() with &.")
+    if int(gap.sum()) != int(exp.sum()):
+        return _hint("pdc_gap should be True where PDCSAP_FLUX is empty AND SAP_FLUX has a value.")
+    return _ok()
+
+
+def _y3d(a):
+    m = _missing(a, "bkg_6h", "peak_btjd")
+    if m is not None:
+        return m
+    lc, _ = read_lightcurve()
+    s = a["bkg_6h"]
+    if not (isinstance(s, pd.Series) and isinstance(s.index, pd.DatetimeIndex)):
+        return _hint("bkg_6h comes from lc_dated['SAP_BKG'], whose index holds dates; then .resample('6h').mean().")
+    exp = ref_6h(lc)
+    if len(s) != len(exp):
+        return _hint("one value per 6 hours: .resample('6h') on the dated Series, then .mean().")
+    if not np.allclose(s.to_numpy(float), exp.to_numpy(float), rtol=1e-4, equal_nan=True):
+        return _hint("use .mean() of each 6-hour bin of SAP_BKG (not the sum, not another column).")
+    if not (_is_num(a["peak_btjd"]) and abs(a["peak_btjd"] - ref_peak_btjd(lc)) < 0.01):
+        return _hint("peak_btjd is the TIME of the row where SAP_BKG is largest: .idxmax() gives that row.")
+    return _ok()
+
+
+def _y3z(a):
+    m = _missing(a, "one", "rel", "rel_30min")
+    if m is not None:
+        return m
+    lc, _ = read_lightcurve()
+    P, T0, _D = target_orbit()
+    t_mid = T0 + P * np.ceil((lc["TIME"].min() - T0) / P)
+    one, rel, r30 = ref_one_transit(lc, t_mid)
+    if not (_is_df(a["one"], "TIME") and len(a["one"]) == len(one)):
+        return _hint("one: the rows of lc whose TIME is less than 0.3 days from t_mid, before or after: "
+                     "(lc['TIME'] - t_mid).abs() < 0.3.")
+    if not (_is_series(a["rel"], len(one)) and np.allclose(a["rel"].to_numpy(float), rel.to_numpy(float),
+                                                           rtol=1e-5, equal_nan=True)):
+        return _hint("rel: PDCSAP_FLUX of these rows divided by its own median (values near 1).")
+    if not (_is_series(a["rel_30min"], len(one)) and np.allclose(a["rel_30min"].to_numpy(float), r30.to_numpy(float),
+                                                                 rtol=1e-5, equal_nan=True)):
+        return _hint("rel_30min: a centred running mean of rel over 15 values: .rolling(15, center=True).mean().")
+    return _ok()
+
+
+def _y4a(a):
+    m = _missing(a, "img", "brightest")
+    if m is not None:
+        return m
+    px = read_pixels()
+    exp = ref_median_image(px)
+    if not (_is_image(a["img"]) and np.allclose(a["img"].transpose("row", "column").values, exp.values,
+                                                rtol=1e-5, equal_nan=True)):
+        return _hint("img: the median of px['flux'] over the time dimension: .median('time').")
+    r, c = (int(v) for v in a["brightest"])
+    er, ec = (int(v) for v in exp.to_series().idxmax())
+    if (r, c) == (er, ec):
+        return _ok()
+    if 0 <= r < 20 and 0 <= c < 20:
+        return _hint("brightest should hold CCD coordinates (values of px['row'] and px['column']), not 0-based "
+                     "positions: img.to_series().idxmax() returns them.")
+    return _hint("brightest: the (row, column) of the largest value of img, e.g. img.to_series().idxmax().")
+
+
+def _y4c(a):
+    px = read_pixels()
+    P, T0, D = target_orbit()
+    ph = np.abs(phase_days(px["time"].values, P, T0))
+    exp = ref_difference_image(px, ph > 0.75 * D, ph < 0.25 * D)
+    if not _is_image(a):
+        return _hint("diff is a 2D image (row, column): average each set of times with .mean('time'), then subtract.")
+    got = a.transpose("row", "column").values
+    if np.allclose(got, exp.values, rtol=1e-4, atol=1e-3):
+        return _ok()
+    if np.allclose(got, -exp.values, rtol=1e-4, atol=1e-3):
+        return _hint("the sign is reversed: out of transit minus in transit, so that missing light is positive.")
+    return _hint("select times with px['flux'].isel(time=out_of_transit) and .isel(time=in_transit), "
+                 "average each over time, then subtract.")
+
+
+def _y5c(a):
+    twin = _LAST.get("twin")
+    if twin is None:
+        return _hint("run the cell that builds the twin (syn.make_twin) first.")
+    if not _is_df(a, "cadenceno", "flux"):
+        return _hint("basic is a DataFrame: start from lc5 and keep its columns.")
+    msg = []
+    if a["cadenceno"].duplicated().any():
+        msg.append("some cadences still appear twice: .drop_duplicates('cadenceno')")
+    if not (a["flux"] > 0).all():
+        msg.append("some rows still have a flux that is zero, negative or empty: keep rows with flux > 0")
+    if not msg and len(a) != len(ref_basic_clean(twin.lc)):
+        msg.append("you removed more than the two steps ask for: keep the first copy of each cadence, and every "
+                   "row with a positive flux")
+    if msg:
+        return _hint("; ".join(msg) + ".")
+    if not twin.lc["cadenceno"].duplicated().any():
+        return _ok("correct (your twin has no repeated cadences, so the first step changes nothing here; "
+                   "keep it for real files)")
+    return _ok()
+
+
+def _y6c(a):
+    m = _missing(a, "rho_small", "rho_giants")
+    if m is not None:
+        return m
+    meas = measured_mass_and_radius(read_planets())
+    exp_s = _spearman(meas[meas["pl_bmasse"] < 20])
+    exp_g = _spearman(meas[meas["pl_bmasse"] >= 130])
+    bad = []
+    if not _close(a["rho_small"], exp_s, rel=0, abs_=0.01):
+        bad.append("rho_small: measured planets with pl_bmasse below 20")
+    if not _close(a["rho_giants"], exp_g, rel=0, abs_=0.01):
+        bad.append("rho_giants: measured planets with pl_bmasse of 130 or more")
+    if bad:
+        return _hint("; ".join(bad) + "; Spearman of mass with radius: .corr(..., method='spearman').")
+    return _ok()
+
+
+def _y7b(a):
+    m = _missing(a, "lab", "shares")
+    if m is not None:
+        return m
+    exp = ref_labels()
+    lab = a["lab"]
+    if not _is_series(lab, len(exp)):
+        return _hint("lab has one value per TOI: toi['tfopwg_disp'].map(classes).")
+    if not lab.fillna("none").equals(exp.fillna("none")):
+        return _hint("map the verdict column tfopwg_disp with the dictionary classes; TOIs without a verdict stay empty.")
+    sh, es = a["shares"], exp.value_counts(normalize=True) * 100
+    if not (isinstance(sh, pd.Series) and all(k in sh.index for k in es.index)):
+        return _hint("shares is a Series indexed by label: lab.value_counts(normalize=True), then x 100.")
+    if np.allclose(sh[es.index].to_numpy(float) * 100, es.to_numpy(float), rtol=1e-3):
+        return _hint("shares is in fractions; multiply by 100 for percent.")
+    if not np.allclose(sh[es.index].to_numpy(float), es.to_numpy(float), rtol=1e-3):
+        return _hint("percent among labelled TOIs only: value_counts(normalize=True) skips the empty labels.")
+    return _ok()
+
+
+def _y7s(a):
+    m = _missing(a, "train", "test")
+    if m is not None:
+        return m
+    tr, te = a["train"], a["test"]
+    if _is_df(tr, "toi_created") and _is_df(te, "toi_created") and not (_is_df(tr, "label") and _is_df(te, "label")):
+        return _hint("start from labelled, not toi: a TOI without a verdict cannot be trained or tested on.")
+    if not (_is_df(tr, "toi_created", "label") and _is_df(te, "toi_created", "label")):
+        return _hint("train and test are rows of labelled (a DataFrame each), with all its columns.")
+    lab = ref_labels()
+    n_lab = int(lab.notna().sum())
+    if len(tr) + len(te) != n_lab or set(tr.index) & set(te.index):
+        return _hint("every labelled TOI goes to exactly one of the two sets: use a condition and its opposite (~).")
+    ctr, cte = pd.to_datetime(tr["toi_created"]), pd.to_datetime(te["toi_created"])
+    if (ctr >= TIME_SPLIT).any() or (cte < TIME_SPLIT).any():
+        if (ctr >= TIME_SPLIT).all() and (cte < TIME_SPLIT).all():
+            return _hint("train and test are swapped: train on the older TOIs.")
+        return _hint("compare pd.to_datetime(labelled['toi_created']) with '2023-01-01'.")
+    return _ok()
+
+
+_CHECKS.update({"y0": _y0, "y1": _y1, "y2d": _y2d, "y2e": _y2e, "y3a": _y3a, "y3d": _y3d, "y3z": _y3z, "y4a": _y4a,
+                "y4c": _y4c, "y5c": _y5c, "y6c": _y6c, "y7b": _y7b, "y7s": _y7s})
+
+
+# --------------------------------------------------------------------------------------------------
+# 5. The summary block for Canvas
+# --------------------------------------------------------------------------------------------------
+PARTS = [("P0", ["y0", "0"]), ("P1", ["1a", "1b", "y1", "1c", "1d"]),
+         ("P2", ["2a", "2b", "2c", "2d", "y2d", "y2e", "2e"]),
+         ("P3", ["y3a", "3a", "3b", "3c", "y3z", "y3d", "3d"]), ("P4", ["4a", "y4a", "4b", "y4c", "4c"]),
+         ("P5", ["5a", "5b", "y5c", "5c", "5d"]), ("P6", ["6a", "6b", "y6c", "6c"]),
+         ("P7", ["7chain", "7a", "y7b", "7b", "y7s", "7c", "7d"]), ("P8", ["8tool", "8"])]
+_VARS = {"0": "answer_0", "5b": "my_findings", "7chain": "my_chain", "8tool": "ai_findings", "8": "answer_8",
+         # Your-turn cells: the variables you write (a reference result handed out by use_or_reference
+         # does not count as yours)
+         "y0": ("hd", "transit_share"), "y1": "flux_ratio", "y2d": "out", "y2e": "density", "y3a": ("dt_s", "pdc_gap"),
+         "y3d": ("bkg_6h", "peak_btjd"), "y3z": ("one", "rel", "rel_30min"), "y4a": ("img", "brightest"),
+         "y4c": "diff", "y5c": "basic",
+         "y6c": ("rho_small", "rho_giants"), "y7b": ("lab", "shares"), "y7s": ("train", "test")}
 _NO_CHECK = {"5b", "8tool"}     # findings are counted, not checked
+
+# A notebook of the version before the 14 October update has no Your-turn cells. After git pull it imports this
+# module, so its summary counts only its own questions and self-checks and reads as it did before the update.
+OLD_PARTS = [(part, [q for q in qids if not q.startswith("y")]) for part, qids in PARTS]
+# names that only the updated notebook defines: Your-turn placeholders of Parts 0, 1, 3 and 6
+_NEW_VERSION_NAMES = ("transit_share", "flux_ratio", "pdc_gap", "bkg_6h", "peak_btjd", "rel_30min",
+                      "rho_small", "rho_giants")
+OLD_VERSION_NOTE = ("notebook version: earlier (before the 14 October update); "
+                    "parts and self-checks count its own questions")
+
+
+def _is_new_version(ns):
+    """True for the updated notebook. Its first code cell defines its own check(); the earlier one has
+    check = ck.check, this module's function."""
+    c = ns.get("check")
+    old_check = callable(c) and getattr(c, "__module__", None) == __name__ and getattr(c, "__name__", "") == "check"
+    return not old_check or any(k in ns for k in _NEW_VERSION_NAMES)
 
 
 def _quiet(fn, *args, **kw):
@@ -770,7 +1219,7 @@ def _quiet(fn, *args, **kw):
 def _given(a):
     if a is None or (isinstance(a, (str, list, dict, tuple)) and len(a) == 0):
         return False
-    if isinstance(a, dict) and all(v is None or v == "" for v in a.values()):
+    if isinstance(a, dict) and all(_empty(v) for v in a.values()):
         return False
     if isinstance(a, list) and all(not str(x.get("what", "") if isinstance(x, dict) else x).strip() for x in a):
         return False
@@ -781,14 +1230,31 @@ def print_summary(ns):
     """Print the Session 7 summary block from the answers in the notebook. Call: ck.print_summary(globals())."""
     import lab_s07_planetary_synthetic as syn
     twin = ns.get("twin")
+    if twin is not None:
+        remember(twin=twin)          # the Part 5 Your-turn checks compare with your twin
+    new = _is_new_version(ns)
     answered, passed, n_checks = [], 0, 0
     a5 = syn.assess_cleaning(ns.get("my_clean"), twin, ns.get("my_st_rad")) if twin is not None else None
-    for part, qids in PARTS:
+    mc = ns.get("my_clean")
+    only_basic = (new and twin is not None and isinstance(mc, pd.DataFrame)   # the two Your-turn 5.1 steps only
+                  and mc.reset_index(drop=True).equals(ref_basic_clean(twin.lc).reset_index(drop=True)))
+    if a5 is not None and only_basic and "basic" in _REFERENCE_OBJ:     # ... and not even those written by you
+        a5 = dict(a5, cleaned_ppm=None, passed=None)
+    for part, qids in (PARTS if new else OLD_PARTS):
         n = 0
         for q in qids:
             if q == "5c":
-                ok = a5 is not None and (a5["cleaned_ppm"] is not None or ns.get("my_st_rad") is not None)
+                ok = a5 is not None and ((a5["cleaned_ppm"] is not None and not only_basic)
+                                         or ns.get("my_st_rad") is not None)
                 res = a5["passed"] if a5 is not None else None
+            elif isinstance(_VARS.get(q), tuple) or q.startswith("y"):
+                names = _VARS[q] if isinstance(_VARS[q], tuple) else (_VARS[q],)
+                vals = {nm: ns.get(nm) for nm in names}
+                ok = all(not _empty(v) and not is_reference(nm, v) for nm, v in vals.items())
+                if ok:
+                    res = _quiet(check, q, vals if len(names) > 1 else vals[names[0]])
+                else:
+                    res = None
             else:
                 a = ns.get(_VARS.get(q, "answer_" + q))
                 ok = _given(a)
@@ -817,6 +1283,8 @@ def print_summary(ns):
     print(f"netid: {netid}")
     print("parts answered: " + " | ".join(answered))
     print(f"self-checks passed: {passed} of {n_checks}")
+    if not new:
+        print(OLD_VERSION_NOTE)
     print(f"planted problems found: {planted}")
     print(f"derived quantity (truth / as given / after cleaning): {derived}")
     for i, w in enumerate(wraps, 1):
