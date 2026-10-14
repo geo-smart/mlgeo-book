@@ -67,6 +67,27 @@ Nothing today touches your HW1 repository `MLGEO2026_UWNETID` (due tonight, 11:5
 
 Do not commit, push or stash anything in the book clone.
 
+## Download your track without git
+
+If you do not use `git pull`, download your track as one zip. Each zip holds the notebook, its two helper files, this page, the templates and the course data in `snapshots/`, laid out as the notebook expects.
+
+| Track | Download |
+|---|---|
+| Volcano | [lab_s07_volcano.zip](https://geo-smart.github.io/mlgeo-book/downloads/lab_s07_volcano.zip) (about 4 MB) |
+| Soil moisture | [lab_s07_soil_moisture.zip](https://geo-smart.github.io/mlgeo-book/downloads/lab_s07_soil_moisture.zip) (about 1 MB) |
+| Land-surface model | [lab_s07_land_surface_model.zip](https://geo-smart.github.io/mlgeo-book/downloads/lab_s07_land_surface_model.zip) (about 4 MB) |
+| Planetary science | [lab_s07_planetary.zip](https://geo-smart.github.io/mlgeo-book/downloads/lab_s07_planetary.zip) (about 3 MB) |
+
+1. Unzip it anywhere. You get a folder `lab_s07_TRACK/`.
+2. Start Jupyter with the course environment from your book clone, pointed at that folder:
+
+        cd mlgeo-book
+        pixi run jupyter lab --notebook-dir /path/to/lab_s07_TRACK
+
+3. Copy the notebook to a copy with your NetID in its name inside that folder, and work there.
+
+Any Python environment with numpy, pandas, scipy, matplotlib, xarray, netCDF4, obspy and requests also works. Single course data files can be opened one by one on GitHub: <https://github.com/geo-smart/mlgeo-book/tree/main/book/Chapter2-DataManipulation/snapshots>.
+
 ## The parts
 
 | Part | What you do | Rough time (min) |

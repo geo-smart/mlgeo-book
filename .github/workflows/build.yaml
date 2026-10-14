@@ -118,6 +118,9 @@ jobs:
           cp -R book/slides/2026 book/_build/html/slides/2026
           cp book/slides/*.pdf book/_build/html/slides/ 2>/dev/null || true
 
+      - name: Publish Session 7 track downloads under /downloads/
+        run: pixi run python tools/make_lab_bundles.py --out book/_build/html/downloads
+
       # Advisory and slow (about 2.5 min): weekly and manual full runs only.
       - name: Link check
         if: github.event_name == 'schedule' || inputs.full
