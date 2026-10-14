@@ -2,7 +2,7 @@
 title: "Session 7: explore your system's data"
 ---
 
-**Wednesday 14 October 2026, 10:00 to 11:20.** Today is self-guided: the instructor is away and there is no TA. You work alone or with your project team through one notebook, in the track that matches your project's domain. Each question has a self-check that answers at once, and a worked solution, collapsed, to open after you have tried.
+**Wednesday 14 October 2026.** Today is self-guided: the instructor is away and there is no TA. You work alone or with your project team through one notebook, in the track that matches your project's domain. Each question has a self-check that answers at once, and a worked solution, collapsed, to open after you have tried.
 
 ## Learning outcomes
 
@@ -15,7 +15,7 @@ After this session you will be able to:
 
 ## Objectives for today
 
-In 80 minutes you will:
+In this session you will:
 
 - pull your track's raw data from the provider and compare it with the course copy;
 - read one table, one time series and one 2D array of your system: units, missing values, sampling, gaps, one real extreme against one error;
@@ -38,7 +38,7 @@ Take the track of your project's domain. If your domain is not one of these four
 
 All four tracks have the same parts in the same order, so teammates on different tracks can compare part by part.
 
-## Set up before 10:00 (5 minutes)
+## Set up before you start (about 5 minutes)
 
 Nothing today touches your HW1 repository `MLGEO2026_UWNETID` (due tonight, 11:59 pm) or changes the pixi environment.
 
@@ -67,22 +67,22 @@ Nothing today touches your HW1 repository `MLGEO2026_UWNETID` (due tonight, 11:5
 
 Do not commit, push or stash anything in the book clone.
 
-## The 80 minutes
+## The parts
 
-| Part | What you do | Minutes | Clock |
-|---|---|---|---|
-| 0 | The system and the question: the physical process, a map, the guiding question | 3 | 10:00 to 10:03 |
-| 1 | Pull the raw data; check your file against the course copy; native resolution and processing | 10 | 10:03 to 10:13 |
-| 2 | A table: what a row records, units, missing values and flags, limits, one real extreme and one error | 8 | 10:13 to 10:21 |
-| 3 | A 1D array: a time series, its sampling, gaps and one real sensor problem | 8 | 10:21 to 10:29 |
-| 4 | A 2D array: axes, coordinates, resolution, the structure the physics predicts (*if you have time*) | 8 | 10:29 to 10:37 |
-| 5 | A synthetic twin with planted problems: list, hunt, clean, measure the damage, reflect | 15 | 10:37 to 10:52 |
-| 6 | Correlations on the real data, with the trap that matters in your system | 8 | 10:52 to 11:00 |
-| 7 | From data to a learning problem: the chain of steps, the task and target, balancing | 10 | 11:00 to 11:10 |
-| 8 | A short comparison with an AI tool on your twin, and a start on the Friday files (*if you have time*) | 7 | 11:10 to 11:17 |
-| Wrap-up | Three written answers, then the summary cell | 3 | 11:17 to 11:20 |
+| Part | What you do | Rough time (min) |
+|---|---|---|
+| 0 | The system and the question: the physical process, a map, the guiding question | 3 |
+| 1 | Pull the raw data; check your file against the course copy; native resolution and processing | 10 |
+| 2 | A table: what a row records, units, missing values and flags, limits, one real extreme and one error | 8 |
+| 3 | A 1D array: a time series, its sampling, gaps and one real sensor problem | 8 |
+| 4 | A 2D array: axes, coordinates, resolution, the structure the physics predicts (*if you have time*) | 8 |
+| 5 | A synthetic twin with planted problems: list, hunt, clean, measure the damage, reflect | 15 |
+| 6 | Correlations on the real data, with the trap that matters in your system | 8 |
+| 7 | From data to a learning problem: the chain of steps, the task and target, balancing | 10 |
+| 8 | A short comparison with an AI tool on your twin, and a start on the Friday files (*if you have time*) | 7 |
+| Wrap-up | Three written answers, then the summary cell | 3 |
 
-Start Part 5 by 10:37 even if Part 4 is not done, and the wrap-up by 11:17 even if Part 8 is not done. Take the time Part 5 needs from Parts 4 and 8.
+The times are rough estimates of how long each part takes, not a schedule. Parts 4 and 8 are optional; skip them if you want more time for Part 5.
 
 **How a question works.** Replace the empty answer (`None`, `...` or `""`) in an answer cell and run it. The self-check prints `correct`, a hint (never the answer), or `not answered yet`. The collapsed cell below it, "Worked solution, open after you tried", shows one way to the answer.
 
