@@ -21,7 +21,7 @@ In 80 minutes you will:
 - read one table, one time series and one 2D array of your system: units, missing values, sampling, gaps, one real extreme against one error;
 - hunt the problems planted in a synthetic twin of your data, clean them, and compute your track's derived quantity three ways (truth, as given, after cleaning);
 - test one correlation against the physics, and write the chain of steps from raw file to a learning problem;
-- start the two instruction files you submit on Friday.
+- start the two agent skill files you submit on Friday.
 
 Each notebook states the same outcomes and objectives for its own system.
 
