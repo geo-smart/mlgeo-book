@@ -99,6 +99,70 @@ for conda-forge packages, `pixi add --pypi <package>` for PyPI-only ones, and
 commit `pixi.toml` and `pixi.lock` together every time. You may rename
 `name = "mlgeo-student"` under `[workspace]` to your repository's name.
 
+## Run the notebooks in VS Code
+
+JupyterLab (`pixi run jupyter lab`) always uses the course environment. VS Code
+does not: it runs a notebook in whatever Python you select, and your computer
+probably has several (system Python, Homebrew, Anaconda, older course
+environments). Almost every `ModuleNotFoundError` in this course comes from
+running a notebook in one of those instead of the pixi environment. The
+packages are there; the notebook is talking to the wrong Python.
+
+1. Install [VS Code](https://code.visualstudio.com) and its **Python** and
+   **Jupyter** extensions (both published by Microsoft). When you open the book
+   folder, VS Code offers to install them for you.
+2. Run `pixi install` in a terminal first. VS Code can only find the
+   environment once it exists in `.pixi/envs/default/`.
+3. Open the **top folder** of your repository, the one that contains
+   `pixi.toml`: **File → Open Folder…**, or `code .` from a terminal in that
+   folder. Do not open `book/` or a single notebook file on its own; VS Code
+   then looks for the environment in the wrong place.
+4. Open a notebook and click **Select Kernel** (top right) →
+   **Python Environments…**, and pick the entry whose path ends in
+   `.pixi/envs/default/bin/python`. Do not pick entries named "base",
+   "Python 3 (ipykernel)", or any conda environment.
+   If the pixi environment is not listed, open the Command Palette
+   (<kbd>Cmd/Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>), run
+   **Python: Select Interpreter → Enter interpreter path…**, type
+   `.pixi/envs/default/bin/python`, then run **Developer: Reload Window** and
+   select the kernel again.
+5. Check the kernel. Run this in a cell; the path printed must end in
+   `.pixi/envs/default/bin/python`:
+
+   ```python
+   import sys; print(sys.executable)
+   ```
+
+The book repository ships a `.vscode/settings.json` that makes the pixi
+environment the default for the folder. In your own repository (Option B), add
+the same file:
+
+```sh
+mkdir -p .vscode
+curl -fsSL https://raw.githubusercontent.com/geo-smart/mlgeo-book/main/.vscode/settings.json -o .vscode/settings.json
+```
+
+On Windows, open the folder from the Ubuntu (WSL2) terminal with `code .`;
+VS Code then connects to WSL and every step above works the same. In a GitHub
+Codespace, run `pixi install` in the Codespace terminal and follow steps 4–5.
+
+### If a notebook cannot import a package
+
+- Run `import sys; print(sys.executable)`. If the path does not end in
+  `.pixi/envs/default/bin/python`, switch kernels (step 4) and restart. This
+  fixes nearly every case.
+- Do not add `!pip install` or `%pip install` cells. The pixi environment
+  has no `pip` of its own, so `!pip` runs whichever `pip` comes first on your
+  `PATH` and installs into a different Python: the import still fails, or the
+  notebook works only on your computer. If a package really is missing, run
+  `pixi add <package>` in a terminal, restart the kernel, and commit
+  `pixi.toml` and `pixi.lock`.
+- After `git pull` changes `pixi.lock`, run `pixi install` again and restart
+  the kernel.
+- If you moved or renamed the repository folder, delete its `.pixi/` folder,
+  run `pixi install` again, and reselect the kernel. The environment stores
+  absolute paths, so a moved copy points at a folder that no longer exists.
+
 ## Make this book yours
 
 The book is CC BY 4.0 and the code is MIT. Fork it, retarget it, teach it. We
