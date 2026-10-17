@@ -131,7 +131,7 @@
 
 <section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
   <h1 class="title">Repairing real records</h1>
-  <p class="subtitle">Session 8 · Fri Oct 16 · Book section 2.9</p>
+  <p class="subtitle">Session 8 · Book section 2.9</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -141,13 +141,13 @@
 <h2></h2>
 <p><span class="lecture-icon">🩹</span></p>
 <h3 id="todays-question">Today’s question</h3>
-<p>The archive hands you a broken record.</p>
-<p><strong>What may you repair — and what must stay broken?</strong></p>
+<p>Archived records arrive with filter effects, gaps and timing errors.</p>
+<p><strong>Which repairs can you check against the data, and which damage must stay marked as missing?</strong></p>
 <div class="dim">
 <p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/filtering-data">2.9 Filtering data</a></p>
 </div>
 <aside class="notes">
-<p>Frame the session: real records arrive with injuries — dropouts, timing errors — and every filter we apply adds artifacts of its own. Today’s discipline: break a healthy record on purpose, so the unbroken record is the ground truth and every repair gets graded with a number. Three pathologies on one real waveform: the filter that moves an onset, the gap that rings, the clock that lies. Ask the room: who has downloaded data with gaps? What did you do about them?</p>
+<p>One minute with the title. Frame the session: three problems of real records, each shown first on the course’s own seismogram (UW.RATT, the same record as 2.8), then in published work from other fields, then in a real archive where the problem was not planted. The three: filter phase (a filter can move or decorate an onset), gaps (a zero-filled gap makes a filter ring), clock errors (a timing error shifts every time and leaves the waveform intact). On the RATT record we damage a copy on purpose, so the intact record grades every repair with a number. Ask the room: who has downloaded data with gaps, and what did you do about them?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -160,54 +160,26 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="this-lecture-in-the-literature" class="slide level2">
-<h2>This lecture in the literature</h2>
-<!-- Literature anchors for lecture 8. Edit THIS file to update the papers;
-     the deck includes it verbatim. Keep 2-4 entries: at least one where the
-     concept was applied well (✓), one where its absence misled a field (✗).
-     Format: verdict + bold message on one line; full citation on its own
-     line below (blank line between them — they must be separate paragraphs). -->
-<div class="ref-item">
-<p><span class="ref-verdict note">📖</span> <span class="ref-msg">The textbook: what filters and instrument responses actually do to a seismogram.</span></p>
-<p><span class="ref-cite">Scherbaum, F. (1996). <em>Of Poles and Zeros: Fundamentals of Digital Seismology</em>. Kluwer Academic Publishers.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict good">✓</span> <span class="ref-msg">Doing it right: how filter and baseline choices change the ground-motion numbers engineers build on.</span></p>
-<p><span class="ref-cite">Boore, D. M. &amp; Bommer, J. J. (2005). Processing of strong-motion accelerograms: needs, options and consequences. <em>Soil Dynamics and Earthquake Engineering</em>, 25, 93–115.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">A celebrated earthquake precursor, undone two decades later — the anomaly lived in the instrument, not the Earth.</span></p>
-<p><span class="ref-cite">Fraser-Smith, A. C., et al.&nbsp;(1990). Low-frequency magnetic field measurements near the epicenter of the Ms 7.1 Loma Prieta earthquake. <em>Geophysical Research Letters</em>, 17, 1465–1468. — Thomas, J. N., Love, J. J. &amp; Johnston, M. J. S. (2009). On the reported magnetic precursor of the 1989 Loma Prieta earthquake. <em>Physics of the Earth and Planetary Interiors</em>, 173, 207–215.</span></p>
-</div>
-<div class="takeaway">
-<p>Processing choices are science choices — the literature has celebrated artifacts and retracted precursors to prove it.</p>
-</div>
-<aside class="notes">
-<p>Two minutes. Scherbaum is the deep reference: what a filter’s poles and zeros do to phase and amplitude — the book behind today’s causal/zero-phase story. Boore &amp; Bommer: for strong-motion records, the choice of filter corners and baseline correction changes peak ground motions and response spectra — the numbers building codes use; processing done right, documented, consequential. The Loma Prieta pair is today’s cautionary tale: a low-frequency magnetic precursor reported before the 1989 earthquake became one of the most cited precursor claims ever; two decades later a re-analysis showed the anomaly came from the instrument and its processing, not the Earth. Keep it in mind at the P-wave zoom: artifacts near onsets get interpreted as physics. Refs update monthly; bring candidates.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="one-healthy-record-injured-on-purpose" class="slide level2">
-<h2>One healthy record, injured on purpose</h2>
+<section id="zero-phase-and-causal-filters-at-a-step" class="slide level2 smaller">
+<h2>Zero-phase and causal filters at a step</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><img data-src="figs/2.9_filtering_data/causal_vs_zerophase_slide.png" height="600"></p>
+</div><div class="column" style="width:40%; font-size:0.8em">
 <ul>
-<li>Station UW.RATT (Washington), 100 Hz vertical — the M8.2 Chignik, Alaska earthquake, 2021-07-29</li>
-<li>We add the injuries ourselves: a zero-filled gap, a 0.5 s clock error</li>
-<li>The unbroken record stays as ground truth — <strong>every repair gets graded</strong></li>
+<li>UW.RATT: M8.2 Chignik, Alaska, 2021, 2,620 km away; P at 357 s</li>
+<li>Raw record: 8 steps of 1,600 to 3,600 counts; the first at 755.09 s</li>
+<li>Zero-phase: output starts 0.52 s early, 1,718 counts against a 45-count background</li>
+<li>Causal: nothing before the step; peak 0.06 s after</li>
 </ul>
+</div></div>
+<p><span class="credit">Data: UW.RATT HHZ via EarthScope FDSN, <a href="https://doi.org/10.7914/SN/UW">doi:10.7914/SN/UW</a>. Figure: figscripts/ratt_repairs.py; 1–10 Hz, 2-pole Butterworth; P and S from the iasp91 model.</span></p>
 <div class="takeaway">
-<p>Same pattern as the synthetic twin of Session 7: plant the truth, then grade the method.</p>
+<p>A zero-phase filter keeps the step at 755.09 s but spreads energy 0.5 s ahead of it; a causal filter puts nothing ahead of it and delays and reshapes what follows.</p>
 </div>
 <aside class="notes">
-<p>Recall the 2.8 reading: this is the same record whose spectrum picked the 1–10 Hz band. Two hours of data, 720,000 samples, kept in raw digitizer counts (no response removal today — the repairs do not need it). The experimental design is the lecture’s real lesson: never test a repair on data whose truth you do not know. We take the intact record, injure a copy, repair it, and measure repair error against the intact original. The notebook’s phrase: “every repair gets graded.” Note the notebook also opens with a synthetic climate series showing that filtering recovers a frequency band, not a physical component — worth a sentence here as a reminder that filters are band tools, not physics tools.</p>
+<p>Two minutes. Panel (a): the raw counts from 06:15 UTC on 29 July 2021. The P wave arrives at about 357 s (iasp91, 23.6°, 32 km depth: 307.7 s travel time plus 49.2 s from 06:15:00 to the origin time); S at about 609 s (dashed line); the surface waves, 2 million counts peak, arrive after 650 s. Correction to notebook 2.9: its “zoom on the P-wave onset” at 750 to 762 s is not the P wave. It is the first of 8 steps in the raw record (755.09, 767.00, 782.96, 792.25, 804.97, 814.11, 825.34 and 832.12 s). Sizes from figscripts/ratt_repairs.py (cubic fit to 0.3 s of raw samples on each side, rerun 17 October 2026): +3,563, −3,571, +2,961, −2,954, +3,284, −2,676, +2,526 and −1,649 counts, each completed within two or three samples. All eight occur on steep swings, at raw values between −367,000 and −635,000 counts and slopes of 208,000 to 540,000 counts/s, each jump opposing the motion; cause not identified, likely instrument or digitizer. The step is useful here because its true time is in the raw data, so we can measure what each filter does. Panel (b): gray dashed is the raw record with the pre-step trend removed (clipped at the top). Blue, zero-phase (sosfiltfilt): the filter runs forward then backward, so phase delays cancel and the step stays at the right time, but the output is symmetric and starts 0.52 s early, reaching 1,718 counts before the step against a 45-count background. Orange, causal (sosfilt): output depends only on the past, so nothing appears before the step (112 counts, below its 166-count background), but every frequency is delayed differently and the waveform after the step changes shape. Causal is the only option in real time (earthquake early warning) and whenever energy before an onset matters; zero-phase suits offline work where timing alignment matters, with the rule from the notebook: do not interpret small wiggles just before a sharp onset. The zero-phase filter applies the 2-pole filter twice, so its stopband falls off twice as fast. Ask: if you trained a phase picker on zero-phase filtered data, where would it learn to put the pick?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -220,62 +192,28 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="two-filters-one-p-wave" class="slide level2">
-<h2>Two filters, one P wave</h2>
-<img data-src="figs/2.9_filtering_data/causal_vs_zerophase_slide.png" class="r-stretch">
-<div class="takeaway">
-<p>Causal filtering pushes the onset later (phase delay). Zero-phase keeps the time but leaks energy <em>before</em> the onset. Neither is wrong — each answers a different need.</p>
-</div>
-<aside class="notes">
-<p>Walk the zoom panel. Blue, zero-phase: the filter runs forward then backward, phase delays cancel — onset time preserved, but energy smears backward in time, so a sharp onset grows a small precursor that is pure artifact. Orange, causal: output at time t depends only on data up to t — nothing appears before it happens, but every frequency is delayed by a different amount, so the onset arrives late and distorted. When each: causal is the only option in real time — earthquake early warning — and whenever precursory energy matters; zero-phase for offline work where timing alignment matters, like phase picks feeding tomography. The rule the notebook states verbatim: do not interpret small precursory wiggles near sharp onsets — they can be filter artifacts. That is the Loma Prieta lesson at waveform scale.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-gap-that-rings" class="slide level2">
-<h2>The gap that rings</h2>
-<img data-src="figs/2.9_filtering_data/gap_ringing_slide.png" class="r-stretch">
-<div class="takeaway">
-<p>Zero-filling creates two step discontinuities. A step is broadband — the filter answers with its own ringing, and inside the gap it draws plausible-looking wiggles that are pure artifact.</p>
-</div>
-<aside class="notes">
-<p>Top: a 20 s telemetry dropout delivered zero-filled — which is how many archives (and a careless merge) deliver gaps. It looks harmless. Middle: band-pass straight across it, and the filter rings at both edges — compare against the gray truth from the intact record. Emphasize the danger inside the gap: the naive output contains oscillations at the filter’s corner frequencies that look like signal. An ML pipeline windowing this record would happily learn from them. Bottom: the repair — filter each contiguous segment separately, leave the gap as NaN. The gap stays declared missing rather than silently invented. Connect back to 2.6: fabricating samples by interpolation has the same ethics; here even “just filtering” fabricates.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-repair-graded" class="slide level2">
-<h2>The repair, graded</h2>
-<div class="big-number">
-<p>185× <span class="unit">edge ringing vs local in-band signal — filtered across the gap</span></p>
-</div>
-<div class="big-number">
-<p>1.7× <span class="unit">same measure after segment-wise filtering</span></p>
-</div>
+<section id="filtered-accelerogram-and-gps-norcia-2016" class="slide level2 smaller">
+<h2>Filtered accelerogram and GPS, Norcia 2016</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span> <span class="gb disc solid">📐 Geodesy</span></p>
+<div class="columns">
+<div class="column" style="width:44%;">
+<p><img data-src="figs/lit_lec08/schiappapietra2021_geosciences_fig5.png" height="600"></p>
+</div><div class="column" style="width:56%; font-size:0.8em">
+<ul>
+<li>M<sub>w</sub> 6.5 Norcia, Italy, 2016: accelerometer IV.T1214 and GPS station RIFP, 2.67 km apart</li>
+<li>Green, Engineering Strong Motion (ESM) database processing: low frequencies removed; all three components end near 0 cm</li>
+<li>Black, eBASCO (baseline correction, no high-pass): vertical matches GPS (red), normalized cross-correlation (NCC) 0.99</li>
+</ul>
 <div class="dim">
-<p>Measured 0–2 s from the gap edges against the intact-record truth: ringing of 12,998 counts over a local signal of 70 counts RMS. Beyond 2 s, the segment-wise error falls to ~0.</p>
+<p>NCC above 1 on the north component is as published.</p>
 </div>
+</div></div>
+<p><span class="credit">Schiappapietra, Felicetta &amp; D’Amico (2021), <em>Geosciences</em> 11, 67, Fig. 5, <a href="https://doi.org/10.3390/geosciences11020067">doi:10.3390/geosciences11020067</a>. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</span></p>
 <div class="takeaway">
-<p>Two orders of magnitude, and the residual damage is confined to ~2 s of filter memory — flag that guard interval in your metadata.</p>
+<p>GPS records permanent offsets of −14, −10 and −40 cm (north, east, up); the high-pass filtered accelerogram ends near 0 cm on all three.</p>
 </div>
 <aside class="notes">
-<p>The grading only exists because we kept the intact record. Naive filtering: error 185× the local signal in the first two seconds from each gap edge — the “signal” there is coda at ~70 counts RMS, the ringing is ~13,000 counts. Segment-wise: 1.75× at the edge, 0.0005× at 2–5 s, zero beyond. Why ~2 s: a few periods of the lowest passband frequency (1 Hz) — the memory of the filter. Practice: repair means confining the damage, then declaring it — a guard interval of a couple of seconds at each segment edge, recorded in metadata so downstream feature extraction (2.11) can skip it. Ask: what is the guard interval if your band goes down to 0.1 Hz? (Tens of seconds — it scales with the longest period.)</p>
+<p>One and a half minutes. Displacement from one accelerogram (30 October 2016) processed two ways, with GPS as an independent check (the bridge from seismology to geodesy). The ESM trace is “processed following the standard procedure … that removes the low-frequency content of the signal”, so the permanent offset (the fling step) is gone. eBASCO (extended baseline correction) “does not apply any filtering to remove the low-frequency content”; it still applies an acausal low-pass Butterworth and tapers, so say “no high-pass”, not “unfiltered”. On north, eBASCO ends near −5 cm against −13.97 cm from GPS, so the recovery is not perfect; the authors call only the east and up matches noteworthy. The north NCC values printed in the figure, 1.26 and 2.69, are as published; a normalized correlation above 1 points to a plotting or definition issue in the original, so do not quote them. A filter-phase reading, ours and not the authors’: on the vertical, the green trace already sits at about +8 cm where it starts (about 2 s) and climbs to about +15 cm before the onset at about 5 s, while black and red are flat at zero; that is what an acausal filter does ahead of a sharp arrival, the same as the RATT step. The ML point, from their Fig. 6 and section 4.1, across about 600 records of 65 earthquakes: “PGAs are insensitive to the different low-frequency treatment of the signal”, while peak ground displacement (PGD) from the filtered flat-file (the database’s table of one peak value per record) is lower than eBASCO’s, by 10 times or more for dozens of records; most records fall within 3 times. eBASCO’s PGD is larger “because eBASCO preserves the information related to both the static and dynamic displacement”. The flat-file values (NESS) used a second-order acausal Butterworth on zero-padded records. A model trained on a flat-file label such as PGD learns the processing along with the ground motion. Background: Boore and Bommer (2005) on how filter and baseline choices change strong-motion parameters. Ask: which label in your project’s training table depends on a filter someone else chose?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -288,14 +226,28 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-clock-that-lies" class="slide level2">
-<h2>The clock that lies</h2>
-<img data-src="figs/2.9_filtering_data/clock_shift_slide.png" class="r-stretch">
+<section id="energy-before-sharp-onsets-in-egypt-and-greenland" class="slide level2 smaller">
+<h2>Energy before sharp onsets in Egypt and Greenland</h2>
+<div class="columns">
+<div class="column" style="width:47%;">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<p><img data-src="figs/lit_lec08/ali2025_ieeeaccess_fig3.png" height="500"></p>
+<div class="dim">
+<p>Local M<sub>L</sub> 1.9 event, 10.2 km away, at 50, 100 and 200 samples/s; spectra of the ramp peak at 22, 44 and 90 Hz.</p>
+</div>
+</div><div class="column" style="width:53%;">
+<p><span class="gb src">🧪 Sample &amp; laboratory</span> <span class="gb sys ice">🧊 Cryosphere</span> <span class="gb disc air">🌡️ Atmospheric &amp; climate science</span></p>
+<p><img data-src="figs/lit_lec08/zeeden2020_scirep_fig2.png" height="500"></p>
+<div class="dim">
+<p>Greenland δ¹⁸O, 0 to 120 ka (age increases to the right), raw at the bottom, low-passed with cut-off periods of 1 to 14 kyr upward.</p>
+</div>
+</div></div>
+<p><span class="credit">Left: Ali et al.&nbsp;(2025), <em>IEEE Access</em> 13, 54383–54393, Fig. 3, <a href="https://doi.org/10.1109/ACCESS.2025.3550167">doi:10.1109/ACCESS.2025.3550167</a>. Right: Zeeden et al.&nbsp;(2020), <em>Scientific Reports</em> 10, 5455, Fig. 2, <a href="https://doi.org/10.1038/s41598-020-61528-8">doi:10.1038/s41598-020-61528-8</a>. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</span></p>
 <div class="takeaway">
-<p>A 0.5 s timing error leaves the waveform perfect and corrupts only the timestamps — invisible to the eye, fatal for phase picks. Cross-correlation reads it back exactly: +0.50 s.</p>
+<p>In both records a sharp change acquires a lead-in: about 20 samples of ramp before the P wave at every sampling rate, and smooth rises that begin before each abrupt warming.</p>
 </div>
 <aside class="notes">
-<p>The third pathology is the sneakiest: GPS clock failures drift station time by fractions of a second. Nothing in the waveform shape changes — plot either record alone and it looks perfect. But every arrival time, every pick-derived ML label, every cross-correlation measurement is now wrong by half a second — at 100 Hz, 50 samples. The repair: cross-correlate a 60 s window spanning the P arrival against a reference; the correlation peak sits at the lag that best aligns them — +0.50 s, exactly the injected offset. Sub-sample precision: fit a parabola through the three points around the peak. Real-world references: a co-located sensor, a neighboring station corrected for predicted travel-time difference, or for ambient-noise methods the long-term average of the noise correlation itself. mlgeo_synth.degrade_series injects the same pathology at daily cadence for their projects.</p>
+<p>One and a half minutes, two fields. Left: Egyptian National Seismic Network, site NADB (New Abu Dabbab, Red Sea coast). A “ramping” oscillation grows into the impulsive P onset; its spectrum peaks at 22 Hz at 50 samples/s, 44 Hz at 100 and 90 Hz at 200, always just below the Nyquist frequency, so it moves with the sampling rate and not with the Earth. The authors attribute it to “the finite impulse response (FIR) filter in the analog-to-digital conversion stage of the digitizer”, and state that both digitizers use linear-phase filters: the same symmetric, zero-delay behavior as the zero-phase filter at the RATT step, built into the hardware. “These ramping patterns deceive automatic P-wave arriving picking algorithms, which choose the arrival before them”. Our reading of the panels: the ramp lasts about 20 samples at each rate (0.4, 0.2 and 0.1 s), as expected from a fixed-length FIR. Caveat: the three rates come from two digitizers (a permanent Trident at 100, a temporary Centaur at 50 and 200), so rate and instrument are confounded. ML link: they trained classifiers on 6,945 labeled segments (4,040 with a ramp, 2,905 without); the CNN reached 97.67% accuracy. Background reference: Scherbaum and Bouin (1997, GJI) on FIR filter effects and “nucleation phases” that were digitizer artifacts. Right: the Greenland oxygen-isotope record, a proxy for air temperature, low-passed with Taner filters (astrochron, R) as comparison targets for European loess. The paper does not say the filters are zero-phase; that is our inference from the symmetric bumps. Each Dansgaard-Oeschger warming is a step of a few decades in the raw record; after filtering it is a symmetric bump whose rise begins on the older side, that is to the right on this plot (our reading). The authors name the edge effect at the young end: filters “suggest rather low values at the young end of the dataset, which is clearly not suggested by the dataset itself.” They filter on purpose, so this is not an error in their paper; it is what the filter does to a step. Ask: in a paleoclimate record, which way does “before” point on the plot?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -308,19 +260,28 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="repair-means-confining-the-damage" class="slide level2">
-<h2>Repair means confining the damage</h2>
+<section id="gps-common-mode-and-a-reported-precursor" class="slide level2 smaller">
+<h2>GPS common mode and a reported precursor</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📐 Geodesy</span></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/lit_lec08/bletery2024_seismica_fig4.png" height="565"></p>
+</div><div class="column" style="width:50%; font-size:0.8em">
 <ul>
-<li>Filter artifacts near onsets: <strong>know your filter</strong> — never interpret precursory wiggles</li>
-<li>Gaps: filter segment-wise, leave the gap <code>NaN</code> — declared missing, not repaired</li>
-<li>Guard intervals at segment edges, written into the metadata</li>
-<li>Clock errors: measure with cross-correlation, correct the timestamps, log the correction</li>
+<li>GPS positions stacked over 48 h before 31 large earthquakes, stations over 200 km away</li>
+<li>Panel (a), raw: a rise in the last 2 h; (b) common mode removed: no rise; (c) common mode alone: the rise</li>
+<li>A synthetic signal planted in the data is also removed by this filter</li>
 </ul>
+<div class="dim">
+<p>Common mode: motion shared by all stations of a network, such as reference-frame or orbit error.</p>
+</div>
+</div></div>
+<p><span class="credit">Bletery &amp; Nocquet (2024), <em>Seismica</em> 3(2), Fig. 4, <a href="https://doi.org/10.26443/seismica.v3i2.1383">doi:10.26443/seismica.v3i2.1383</a>. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</span></p>
 <div class="takeaway">
-<p>An honest record carries its scars and its repair log — that log becomes the data card in 2.13.</p>
+<p>One spatial filtering step decides whether the 2-hour precursor appears in the stack, and the authors’ synthetic test shows that this step also removes a signal known to be there.</p>
 </div>
 <aside class="notes">
-<p>The synthesis before the table. The common thread: never silently invent data. A gap interpolated over is invented data; ringing inside a gap is invented data; a precursor from a zero-phase filter is invented data. Every repair we accepted either confines damage (segment-wise filtering, guard intervals) or is exactly measurable (the clock lag). And every one leaves a paper trail. Forward pointer: in 2.13, the data card has fields for missing-data policy and processing provenance — today generated the content that belongs in them. For ML: gaps and guard intervals must be masked out of training windows, or the network learns filter artifacts.</p>
+<p>One and a half minutes; an open debate where processing is the crux. Bletery and Nocquet (2023, Science) reported an exponential acceleration of slip in the 2 hours before large earthquakes, from a stack of 5-minute high-rate GPS positions (Nevada Geodetic Laboratory solutions). The claim is contested: critics (Bradley and Hubbard 2023, Earthquake Insights blog) showed that correcting for common-mode noise “makes the signal vanish”. This 2024 paper confirms that, then shows the filter “may inadvertently remove an existing tectonic signal”: with a known signal planted in synthetic data (their Fig. 6), the common-mode filtering “performs poorly at separating the imposed signal from noise”, with a misfit 20% larger than the common mode alone. The likelihood that common-mode noise alone produces the rise is “well below 1 %” by their estimate, and they conclude the signal “is not robust to common-mode filtering” and that their tests “do not irrefutably demonstrate” a precursory phase. The y axis is an unlabeled dot-product amplitude. Filter-phase link in the same paper: NGL’s kinematic solutions use a forward-backward smoother that can, in principle, carry the coseismic offset into earlier epochs; the authors judge its constraint too small to matter but say it “could be tested in future studies”. Same lesson as RATT: test the processing on synthetic data with a known answer before interpreting what survives. Ask: who decides which version, (a) or (b), goes into a training set for precursor detection?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -333,49 +294,429 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="three-pathologies-three-repairs" class="slide level2">
-<h2>Three pathologies, three repairs</h2>
+<section id="a-20-s-zero-filled-gap-filtered-two-ways" class="slide level2 smaller">
+<h2>A 20 s zero-filled gap, filtered two ways</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p><img data-src="figs/2.9_filtering_data/gap_ringing_slide.png" height="590"></p>
+</div><div class="column" style="width:48%; font-size:0.8em">
+<ul>
+<li>850 to 870 s set to zero inside the surface waves: steps of about 96,000 and 156,000 counts</li>
+<li>RMS error against the intact record, 0–2 s from the edges; local 1–10 Hz signal 70 counts RMS:</li>
+</ul>
 <table class="caption-top">
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Error</th>
+<th>× signal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>filter across the gap</td>
+<td>12,998 counts</td>
+<td>185</td>
+</tr>
+<tr class="even">
+<td>each segment alone</td>
+<td>123 counts</td>
+<td>1.75</td>
+</tr>
+<tr class="odd">
+<td>each segment, 2–5 s</td>
+<td>0.04 counts</td>
+<td>0.0005</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Guard interval: about 2 s, two periods of the 1 Hz corner</li>
+</ul>
+</div></div>
+<p><span class="credit">Data: UW.RATT HHZ via EarthScope FDSN, <a href="https://doi.org/10.7914/SN/UW">doi:10.7914/SN/UW</a>. Figure: figscripts/ratt_repairs.py; numbers rerun from the same record as notebook 2.9.</span></p>
+<div class="takeaway">
+<p>Filtering across the zero-filled gap gives an edge error 185 times the local signal; filtering each segment alone gives 1.75 times, confined to 2 s from each edge.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Panel (a): a 20 s dropout delivered zero-filled, which is how a careless merge delivers gaps. The record at the edges is 95,903 and 156,410 raw counts (95,994 and 156,500 after detrending), so zero-filling makes two steps that size. Panel (b): the band-pass run straight across it rings at both edges, because a step contains all frequencies and the filter answers at its corner frequencies; inside the gap the output shows oscillations that look like signal. An ML pipeline cutting windows from this record would train on them. Panel (c), on its own zoomed axis: the repair, filter each contiguous segment on its own and leave the gap as NaN, so it stays declared as missing. The residual 1.75 times the signal within 2 s of each edge is the filter’s memory (the spike at 870 s): a few periods of the lowest passband frequency, 1 Hz. Write a guard interval of about 2 s at each segment edge into the metadata so feature extraction (2.11) can skip it. The numbers: 185.1 and 1.75 times RMS over 0 to 2 s, and 0.038 counts RMS from 2 to 5 s, 2-pole zero-phase filter, rerun on 17 October 2026 by figscripts/ratt_repairs.py, same as the notebook output. Ask: what guard interval would a 0.1 to 1 Hz band need? (About 20 s: it scales with the longest period.)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-real-40-s-telemetry-gap-at-ratt-2021" class="slide level2 smaller">
+<h2>A real 40 s telemetry gap at RATT, 2021</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="columns">
+<div class="column" style="width:67%;">
+<p><img data-src="figs/lec08_real/seismic_gap_ratt.png" height="585"></p>
+</div><div class="column" style="width:33%; font-size:0.8em">
+<ul>
+<li>21 January 2021, 17:48:03.67 UTC: two archived segments 40.00 s apart</li>
+<li>Merged with zeros: a step from the mean level, about −264 counts</li>
+<li>Peak edge error 194 counts, 13 times the 14.6-count local signal; above it for 0.7 s before and 1.0 s after</li>
+</ul>
+</div></div>
+<p><span class="credit">Data: UW.RATT HHZ via EarthScope FDSN, <a href="https://doi.org/10.7914/SN/UW">doi:10.7914/SN/UW</a>; daily gap metrics from EarthScope MUSTANG (max_gap, num_gaps). Figure: figscripts/lec08_real_seismic_gap.py.</span></p>
+<div class="takeaway">
+<p>In 2021, 73 of 352 archived days at RATT have a gap and 9 have one longer than 10 s; at this 40 s gap, zero-filling gives a peak edge error 13 times the local signal for about 1 s.</p>
+</div>
+<aside class="notes">
+<p>One minute; same station as the notebook, a gap nobody planted. Panel (a) comes from EarthScope’s daily data-quality metrics (MUSTANG): the largest gap and the number of gaps per day (max_gap, num_gaps); the EarthScope availability service has been retired. Panel (b): the archive delivers two segments, 2021-01-21 17:48:03.67 UTC, 40.00 s apart; a merge that fills with zeros (orange) creates steps from the record’s mean level, about −264 counts. Panel (c): band-pass 1–10 Hz, 4 poles, zero-phase. Peak edge error 194 counts against a local RMS of 14.6 counts, 13 times, with error above the local RMS for 0.7 s before and 1.0 s after the gap: the guard interval measured on real data. Why 13 and not 185? The two numbers are not the same measurement. The planted gap uses the RMS error over 0 to 2 s, a 2-pole filter, graded against the intact record. Here the 13 times is a peak, with a 4-pole ObsPy filter, graded against the segment-wise result, because no intact record exists. On the planted gap’s metric this gap gives 2.8 times (40.8 counts RMS over 0 to 2 s, printed by figscripts/lec08_real_seismic_gap.py, rerun 17 October 2026). The rest of the difference is physical: here the step is only 264 counts on a quiet microseism day, while the planted gap sat in surface waves of 100,000 counts; the step size sets the damage. Ask: how would you find every gap in a year of your own data before filtering?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="spectra-with-a-50-gap-untapered-and-tapered" class="slide level2 smaller">
+<h2>Spectra with a 50% gap, untapered and tapered</h2>
+<p><span class="gb src">🖥️ Model &amp; simulation</span> <span class="gb sys planet">🪐 Planets &amp; exoplanets</span> <span class="gb disc planet">🪐 Planetary science &amp; astrobiology</span> <span class="dim">synthetic test signal; method applied to Venus Express magnetometer data</span></p>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p><img data-src="figs/lit_lec08/munteanu2016_angeo_fig2.png" height="283"></p>
+<p><img data-src="figs/lit_lec08/munteanu2016_angeo_fig3.png" height="283"></p>
+</div><div class="column" style="width:48%; font-size:0.8em">
+<ul>
+<li>Four sines (10–40 Hz) plus noise, 10 s; the central 5 s removed</li>
+<li>Top, gap bridged by a line: FFT peaks halve and a false rise appears near 0 Hz</li>
+<li>Bottom, each segment tapered: the false rise is gone</li>
+<li>Peaks stay at 0.5 because half the samples are missing</li>
+</ul>
+<div class="dim">
+<p>FFT: fast Fourier transform; DFT: discrete Fourier transform; ZTR: Z-transform; LST: Lomb-Scargle periodogram.</p>
+</div>
+</div></div>
+<p><span class="credit">Munteanu, Negrea, Echim &amp; Mursula (2016), <em>Annales Geophysicae</em> 34, 437–449, Figs. 2 and 3 (200 dpi renders of the publisher PDFs), <a href="https://doi.org/10.5194/angeo-34-437-2016">doi:10.5194/angeo-34-437-2016</a>. <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</span></p>
+<div class="takeaway">
+<p>Tapering each segment removes the false low-frequency energy from the gap edges; amplitudes stay at half because half the samples are missing.</p>
+</div>
+<aside class="notes">
+<p>One minute; the frequency-domain view of the RATT gap. A space-physics methods paper with a synthetic signal, so the answer is known: four unit-amplitude sines at 10, 20, 30 and 40 Hz plus white noise, 100 samples/s. Panels (b) to (e) are four spectral estimators: FFT on the series with the gap linearly interpolated; DFT and ZTR evaluated on the samples that exist; LST, built for uneven sampling. Verbatim: the FFT “provides a Fourier spectrum whose amplitude is half of the original spectrum at all four eigen-frequencies”, and FFT with linearly interpolated gaps “can lead to an underestimation of high-frequency amplitudes and an overestimation of low-frequency amplitudes”. In Fig. 2 the DFT background sits above 1, from the offset at the gap edges: “If at least one end point has a value different from the mean value of the signal … then the results are distorted.” Fig. 3 applies a Tukey (tapered cosine) window to each segment, “which cancels the offset on either side of the gap”, and the DFT then matches the FFT. The peaks stay at 0.5 because the transform divides by 1,000 points, of which 500 are data. ZTR and LST keep peaks near 1 but raise the background from about 0.01 to 0.03. Rescaling by the fraction of samples kept (here 2) is our inference, not a statement in the paper. The same paper applies the methods to Venus Express magnetometer data (Fig. 13), hence the planetary badges. Ask: which estimator would you use for a series with irregular gaps, and what would you report with it?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="apollo-12-record-with-bad-frames-removed" class="slide level2 smaller">
+<h2>Apollo 12 record with bad frames removed</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys planet">🪐 Planets &amp; exoplanets</span> <span class="gb disc planet">🪐 Planetary science &amp; astrobiology</span></p>
+<div class="columns">
+<div class="column" style="width:71%;">
+<p><img data-src="figs/lit_lec08/nunn2022_psj_fig6.jpg" style="width:100.0%"></p>
+</div><div class="column" style="width:29%; font-size:0.8em">
+<ul>
+<li>Apollo 12 mid-period vertical (XA.S12 MHZ), 7 February 1971, 10-bit samples</li>
+<li>Top, from tape: damaged frames pinned near 1023 or dropped to 0</li>
+<li>Bottom: damaged frames removed; the gap near 00:48 stays open</li>
+<li>Archive fill value −1: 894 samples in 52 runs, longest 58 s</li>
+</ul>
+</div></div>
+<p><span class="credit">Nunn, Nakamura, Kedar &amp; Panning (2022), <em>The Planetary Science Journal</em> 3, 219, Fig. 6, <a href="https://doi.org/10.3847/PSJ/ac87af">doi:10.3847/PSJ/ac87af</a>. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Sample counts: XA.S12.00.MHZ via EarthScope FDSN, <a href="https://doi.org/10.7914/SN/XA_1969">doi:10.7914/SN/XA_1969</a>.</span></p>
+<div class="takeaway">
+<p>The archive rejects 0.3% of the Apollo data as damaged and marks each missing sample −1, while the trace sits near 512; read naively, every gap is a step of about 512 units.</p>
+</div>
+<aside class="notes">
+<p>One minute; the Moon. The Apollo Passive Seismic Experiment sent data to Earth in frames, each starting with a Barker code, a fixed bit pattern that marks the frame boundary. A damaged code means the frame was not transmitted correctly. Samples are 10-bit integers, 0 to 1023. Verbatim: “Transmission errors usually occurred in blocks”, and “We felt that entirely excluding the damaged data … was the best solution”; “We rejected all data with damaged Barker codes (approximately 0.3% of all the available data).” The block near 1023 is bad frames at the top of the 10-bit range, not instrument saturation; single spikes were also cleaned. Gaps are kept at their true length: “we inserted the correct number of empty samples between frames”. The trap for students: “We substitute a value of –1 for each of these missing values”, and “users should read the traces and replace the –1 values with masks or interpolate the data.” We reran the query (EarthScope dataselect, XA.S12.00.MHZ, 00:40:25 to 01:45:26 UTC): 25,844 samples at 6.625 samples/s, 894 equal to −1 in 52 runs, longest 384 samples (57.96 s) from 00:48:11.29, the gap visible in the figure; valid values span 448 to 571. Same lesson as zero-fill, with a different fill value. The figure caption names no event; the next figure in the paper gives a P arrival at 00:45:45. Ask: which fill values does your own data provider use for missing data (−1, −999, 0, NaN)?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="outages-and-an-antenna-offset-on-mount-st.-helens" class="slide level2 smaller">
+<h2>Outages and an antenna offset on Mount St.&nbsp;Helens</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📐 Geodesy</span> <span class="gb disc solid">🌋 Volcanology</span></p>
+<div class="columns">
+<div class="column" style="width:68%;">
+<p><img data-src="figs/lec08_real/gnss_steps_tgua.png" height="585"></p>
+</div><div class="column" style="width:32%; font-size:0.8em">
+<ul>
+<li>Station TGUA: 6,915 daily positions over 8,018 days since 2004; longest outages 164 and 128 days</li>
+<li>9 entries in the Nevada Geodetic Laboratory (NGL) step list; 2012 antenna-mount change: −93 mm east, +218 mm north, +79 mm up</li>
+<li>MIDAS (median interannual difference adjusted for skewness): pairs one year apart, with NGL’s step list</li>
+</ul>
+</div></div>
+<p><span class="credit">Data: Nevada Geodetic Laboratory, IGS20 daily positions, steps.txt, llh.out (Blewitt et al.&nbsp;2018, <a href="https://doi.org/10.1029/2018EO104623">doi:10.1029/2018EO104623</a>); MIDAS (Blewitt et al.&nbsp;2016, <a href="https://doi.org/10.1002/2015JB012552">doi:10.1002/2015JB012552</a>). Figure: figscripts/lec08_real_gnss_steps.py.</span></p>
+<div class="takeaway">
+<p>A straight line through all 6,915 days gives +6.8 mm/yr north; NGL’s MIDAS velocity is −7.1 ± 0.2 mm/yr, because a +218 mm offset at the 2012 antenna-mount change dominates the line.</p>
+</div>
+<aside class="notes">
+<p>One and a half minutes; gaps and steps in a daily series. TGUA sits on Mount St.&nbsp;Helens at 1,618 m ellipsoidal height (coordinates from NGL’s llh.out). From 21 October 2004 to 3 October 2026 NGL has 6,915 daily positions out of 8,018 days; 33 outages last 7 days or more, the longest 164 days from 15 May 2023, then 128 days from 12 December 2017 and 70 days from 28 March 2024. The files we used do not record why the station stopped; do not guess a cause. NGL’s steps.txt has 9 entries for TGUA on 7 dates: 5 elevation-cutoff changes (processing, not hardware), 2 receiver changes, 1 antenna and radome change, and the 2012-08-15 antenna-mount change. That mount change moves the station by −93 mm east, +218 mm north and +79 mm up (computed in the script with a line plus step fit over ±90 days); the volcano did not move 22 cm in a day. MIDAS, from the Blewitt et al.&nbsp;(2016) abstract: it “selects data pairs separated by 1 year” to mitigate seasonality and steps, and because “slopes from data pairs spanning a step function produce one-sided outliers”, it “removes outliers and recomputes the median”. NGL’s MIDAS file lists 9 steps assumed for TGUA, “determined from our steps database” (NGL MIDAS readme, checked 17 October 2026); how those steps enter the estimate we did not confirm in the paper text. The provider’s value is −7.1 ± 0.2 mm/yr north (−7.14 ± 0.23), while a straight line through everything gets the sign wrong (+6.81). The repair, as for RATT, is segment by segment: estimate offsets at known equipment dates, leave outages missing. Ask: would a model trained on this series to detect volcanic inflation learn the antenna change?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="estimated-discharge-under-ice-on-the-tanana-river" class="slide level2 smaller">
+<h2>Estimated discharge under ice on the Tanana River</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys water">💧 Land water</span> <span class="gb sys ice">🧊 Cryosphere</span> <span class="gb disc water">💧 Hydrology &amp; land-surface modeling</span></p>
+<div class="columns">
+<div class="column" style="width:64%;">
+<p><img data-src="figs/lec08_real/river_ice_tanana.png" height="585"></p>
+</div><div class="column" style="width:36%; font-size:0.8em">
+<ul>
+<li>Discharge comes from stage (water level) through a rating curve measured in open water</li>
+<li>Under ice: discharge withheld for 4,453 stage records; stage missing for 145 days, December to April</li>
+<li>In its place: estimates flagged “e”, twice a day, provisional</li>
+</ul>
+</div></div>
+<p><span class="credit">Data: USGS Water Services, site 15515500 instantaneous values and NWISweb rating table, water year 2026, provisional; <a href="https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits">public domain</a>. Figure: figscripts/lec08_real_river_ice.py.</span></p>
+<div class="takeaway">
+<p>From 25 October 2025 to 8 May 2026 USGS publishes 391 estimated values flagged “e”; the open-water rating applied to ice-affected stage gives a median 2.5 times, at most 4.2 times, the estimate.</p>
+</div>
+<aside class="notes">
+<p>One minute; a gap filled by the provider. The Tanana drains 66,200 km² of interior Alaska above Nenana. USGS computes discharge from water level (stage) through a rating curve measured in open water. Ice changes the channel: at freeze-up the stage jumps while flow falls, so the rating no longer applies. USGS withholds the computed values (4,453 stage records with discharge withheld) and publishes an estimate twice a day, flagged “e”, built from winter field measurements and records at other gauges. Stage itself stops from 3 December 2025 to 28 April 2026 (145 days), when the sensor is under ice. Panel (c): the estimates (orange) fall far to the left of the rating curve. Whoever downloads this record without the qualifier column trains on 195 days of estimates as if they were measurements. Water year 2026 data are provisional and may be revised. Ask: in your provider’s files, which column says whether a value was measured, estimated or filled?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-0.5-s-clock-shift-recovered-by-correlation" class="slide level2 smaller">
+<h2>A 0.5 s clock shift recovered by correlation</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="columns">
+<div class="column" style="width:62%;">
+<p><img data-src="figs/2.9_filtering_data/clock_shift_slide.png" height="610"></p>
+</div><div class="column" style="width:38%; font-size:0.8em">
+<ul>
+<li>Record shifted by 50 samples (0.5 s): waveforms unchanged, every time wrong</li>
+<li>Correlation of the P wave train (355–415 s) with the correct record: peak at +0.50 s; parabola +0.500 s</li>
+<li>Real references: a co-located sensor, a neighbor station, or noise correlation over time</li>
+</ul>
+</div></div>
+<p><span class="credit">Data: UW.RATT HHZ via EarthScope FDSN, <a href="https://doi.org/10.7914/SN/UW">doi:10.7914/SN/UW</a>. Figure: figscripts/ratt_repairs.py.</span></p>
+<div class="takeaway">
+<p>A 0.5 s timing error changes no waveform; correlation against the correctly timed record recovers +0.50 s.</p>
+</div>
+<aside class="notes">
+<p>One minute. GPS clock failures shift station time by fractions of a second to minutes. Plot either record alone and it looks perfect, but every arrival time, every pick-derived ML label, every cross-correlation travel time is wrong by 0.5 s, 50 samples at 100 Hz. The repair measures the lag against a reference and corrects the timestamps, and logs the correction. Be honest about this test: the recovery is exact by construction, because we correlate a record with a shifted copy of itself, so the waveforms match perfectly. It shows the method, not its accuracy. The next two slides are the real tests, where the reference is a different station. With a neighbor station, remove the predicted travel-time difference first. The correlation window here is the P wave train (355 to 415 s); the notebook uses 740 to 800 s, which is in the surface waves and includes the 755 s step, so the window description there needs correcting (see the first RATT slide). Sub-sample precision: fit a parabola through the correlation maximum and its two neighbors. mlgeo_synth.degrade_series injects the same problem at daily cadence for the projects. Ask: what reference would you use for an ocean-bottom seismometer, where GPS does not reach?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="seafloor-clock-drift-from-ambient-noise" class="slide level2 smaller">
+<h2>Seafloor clock drift from ambient noise</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb sys ocean">🌊 Ocean</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="columns">
+<div class="column" style="width:63%;">
+<p><img data-src="figs/lit_lec08/naranjo2024_seismica_fig11.png" style="width:100.0%"></p>
+</div><div class="column" style="width:37%; font-size:0.8em">
+<ul>
+<li>Noise correlations, seafloor station O01 with land station RET, 0.2–0.4 Hz; each trace averages 100 days</li>
+<li>Panel (a), uncorrected; (b) line from 0 at deployment to the skew (clock difference measured at recovery): overcorrected; (c) offset plus drift fitted by OCloC, the authors’ code: aligned</li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>O01</th>
+<th>skew line</th>
+<th>fitted</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>drift (s/yr)</td>
+<td>−1.01</td>
+<td>−0.73</td>
+</tr>
+<tr class="even">
+<td>error at deployment (s)</td>
+<td>0</td>
+<td>−0.31</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<p><span class="credit">Naranjo et al.&nbsp;(2024), <em>Seismica</em> 3(1), Fig. 11, <a href="https://doi.org/10.26443/seismica.v3i1.367">doi:10.26443/seismica.v3i1.367</a>. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</span></p>
+<div class="takeaway">
+<p>O01’s clock was already 0.31 s off at deployment, so a straight line from zero to the recovery skew (−1.02 s) overcorrects; fitting offset and drift aligns all four correlations.</p>
+</div>
+<aside class="notes">
+<p>One and a half minutes. Ocean-bottom seismometers (OBS) cannot see GNSS satellites: “GNSS signals do not reach the sea bottom.” Their clocks are synchronized before deployment and compared again at recovery (the skew); the usual correction is a straight line between the two. The traces span 2014 to 2015. The noise correlation between two stations has a causal and an acausal side that should be symmetric; a clock error shifts both the same way and breaks that symmetry (their Fig. 1). RET is a land station on the Reykjanes peninsula, GNSS-timed, “devoid of clock errors”. Verbatim: “Before correction, the later lapse cross-correlations shift monotonically to an earlier time”; after the skew-based correction they “shift monotonically to a later time”. Table 1, row O01: OCloC (Ocean bottom seismometer Clock Correction) drift −0.734739 s/yr (σ 0.042760), skew-based drift −1.011740 s/yr, clock error at deployment −0.312892 s, at recovery −1.055899 s, measured skew −1.023125 s. Data from the IMAGE project (Integrated Methods for Advanced Geothermal Exploration). GEOFON serves the IMAGE Reykjanes network as 4L, with seafloor stations BS01 to BS23 (station service query, 17 October 2026); we have not matched the paper’s O01 to a 4L code, so there is no figure script yet. Ask: what does fitting only a drift assume about the clock on the day of deployment?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-270-s-timing-error-at-us.hdil-illinois" class="slide level2 smaller">
+<h2>A 270 s timing error at US.HDIL, Illinois</h2>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="columns">
+<div class="column" style="width:63%;">
+<p><img data-src="figs/lec08_real/clock_error_hdil.png" height="572"></p>
+</div><div class="column" style="width:37%; font-size:0.8em">
+<ul>
+<li>Timing quality: 10% from October, 0% from 17 December 2022 to 5 March 2023</li>
+<li>Noise correlation with N4.N41A, 133 km away: 0 s until 10 December, +230 s in mid-January, +270 s from 29 January, +268 s by late February</li>
+<li>Kahramanmaraş P wave, correlation 0.91 with N41A at both P43A and HDIL</li>
+</ul>
+<div class="dim">
+<p>Dots: daily lag; filled where the correlation exceeds 0.5, open from 0.3 to 0.5.</p>
+</div>
+</div></div>
+<p><span class="credit">Data: US and N4 networks via EarthScope FDSN (<a href="https://doi.org/10.7914/SN/US">doi:10.7914/SN/US</a>, <a href="https://doi.org/10.7914/SN/N4">doi:10.7914/SN/N4</a>); MUSTANG timing_quality and percent_availability; USGS ComCat us6000jllz. Figure: figscripts/lec08_real_clock_error.py.</span></p>
+<div class="takeaway">
+<p>GPS timing was lost from 3 October 2022 to 6 March 2023; noise correlation reaches +270 s by February, and the Kahramanmaraş P wave gives +269.9 s at HDIL, against +1.2 s at P43A.</p>
+</div>
+<aside class="notes">
+<p>Two and a half minutes; a real clock error in the archive today. US.HDIL (Hopedale, Illinois) lost GPS timing on 3 October 2022 according to MUSTANG timing_quality, a daily metric EarthScope computes from the timing flags in the station’s own data headers: 10% from 4 October to 11 December 2022, 0% from 17 December 2022 to 5 March 2023, 100% before and from 7 March. Panel (b): daily noise correlation with N4.N41A, 133 km away, 0.05 to 0.2 Hz, measured against a reference stack of the days before 10 December. Data arrived intermittently from 11 December to 31 January (percent_availability from 0 to 100% day by day; 100% on 10, 11 and 16 January), and the error grew at each restart while the clock had no GPS. Daily lags from figscripts/lec08_real_clock_error.py, rerun 17 October 2026 (correlation in brackets): near 0 s to 10 December; +115 and +118 s on 19 and 20 December (0.24 to 0.25); about +202 s on 28 to 31 December (0.38 to 0.47); +229.4 to +230.2 s on 10 to 16 January (0.40 to 0.57); +270.0 s from 29 January easing to +269.1 s by 11 February; +267.6 to +268.8 s from 12 to 25 February (0.31 to 0.67); +266.3 to +267.8 s on 2 to 6 March; −0.2 s on 7 March, the day lock returned. Panel (c): the M7.8 Kahramanmaraş, Türkiye, earthquake of 6 February 2023, 88° away, each trace aligned on its own predicted P time: N4.P43A arrives within 1.2 s (correlation 0.91 with N41A), HDIL 269.9 s late (correlation 0.91). Two independent measurements, the same answer for February. A trap in panel (b): from 11 to 23 March most days read −69 to −78 s (open dots, correlation 0.27 to 0.46), yet HDIL was back on time. Independent check, rerun 17 October 2026 with the same P-wave method: the M6.8 Ecuador earthquake of 18 March 2023, 44° away, gives an HDIL lag of 0 s against N41A (correlation 0.91; P43A 0 s, 0.89). The −69 to −78 s values are about twice the 35 to 38 s surface-wave lag between the stations: when the noise comes mostly from one side, the daily correlation locks onto the wrong lobe of the reference. The same lobe swap explains the +199 to +202 s days in February (5, 7 and 24 February, about 268 − 69). What EarthScope serves today still carries the error; whether it was ever corrected elsewhere we did not verify. For comparison, Hable et al.&nbsp;(2018, GJI) found timing errors of up to several minutes at 4 of 10 La Réunion land stations, whose RefTek RT 130 data loggers lost GPS synchronization through a software failure. Ask the room: why does the noise correlation say −77 s in mid-March while the earthquake says 0 s, and which would you trust? Then: if HDIL picks from January 2023 entered a training catalog, what would the model learn about Illinois?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="clock-drift-on-the-moon-and-at-a-flux-tower" class="slide level2 smaller">
+<h2>Clock drift on the Moon and at a flux tower</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys planet">🪐 Planets &amp; exoplanets</span> <span class="gb disc planet">🪐 Planetary science &amp; astrobiology</span></p>
+<p><img data-src="figs/lit_lec08/nunn2022_psj_fig8.jpg" style="width:100.0%"></p>
+<div class="dim">
+<p>Apollo stations S12, S14, S15 and S16 on 30 June 1973: sample time minus recorded timestamp; each sampler ran at a slightly different, varying rate.</p>
+</div>
+</div><div class="column" style="width:45%;">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys air">🌤️ Atmosphere</span> <span class="gb sys bio">🌱 Biosphere</span> <span class="gb disc bio">🦠 Biogeosciences</span></p>
+<p><img data-src="figs/lit_lec08/fratini2018_bg_fig9.png" height="490"></p>
+<div class="dim">
+<p>One sonic anemometer’s wind logged twice, digitally and through an analog-to-digital converter; lag measured on 30-minute chunks.</p>
+</div>
+</div></div>
+<p><span class="credit">Left: Nunn, Nakamura, Kedar &amp; Panning (2022), <em>The Planetary Science Journal</em> 3, 219, Fig. 8, <a href="https://doi.org/10.3847/PSJ/ac87af">doi:10.3847/PSJ/ac87af</a>. Right: Fratini et al.&nbsp;(2018), <em>Biogeosciences</em> 15, 5473–5487, Fig. 9, <a href="https://doi.org/10.5194/bg-15-5473-2018">doi:10.5194/bg-15-5473-2018</a>. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</span></p>
+<div class="takeaway">
+<p>After 24 h the Apollo samplers were off by between −0.55 s (S12) and +4.5 s (S14), read from the plot; two copies of one 20 Hz wind record drifted 12.3 s apart in 68 h, 50 µs per second.</p>
+</div>
+<aside class="notes">
+<p>One minute; drift, the clock error that grows with time. Left: sample time minus recorded timestamp for the Apollo stations S12, S14, S15 and S16 over 30 June 1973. “Each of the data samplers controlling the sampling on the seismometers had a slightly different sampling rate that varied over time”, and “There can be a positive or negative time shift of up to a few seconds after 24 h”. The archive’s ATT channel (time the signal was recorded on Earth) lets a figure script rebuild this from EarthScope. Right: eddy covariance measures fluxes of heat, water and CO₂ by correlating fast wind and gas records; timing errors between them bias the flux. Fratini et al.&nbsp;logged the same sonic-anemometer wind component twice, digitally and through an analog-to-digital converter, on one computer; the lag between the copies, measured by correlation on 30-minute chunks, grows linearly: “a fairly constant STE of about 50 µs s−1” (STE, systematic timing error). Our check: 12.25 s over 68 h is 50 µs/s. The abstract reports flux underestimates “as large as 10 %”. The common method across the Moon, the seafloor, Illinois and a flux tower: correlate the record against a reference and measure the lag through time; a constant lag is an offset, a growing lag is drift, and both are corrected segment by segment between clock resets. Ask: in your project’s data, which instrument keeps its own clock?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="problems-of-real-records-and-their-repairs" class="slide level2 smaller">
+<h2>Problems of real records and their repairs</h2>
+<table class="caption-top" style="width:100%;">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Pathology</th>
+<th>Problem</th>
 <th>What it does</th>
-<th>The repair</th>
-<th>Where you’ll meet it</th>
+<th>Repair</th>
+<th>What to record</th>
+<th>Measured today</th>
+<th>Also seen in</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Filter phase</td>
-<td>moves or decorates the onset</td>
-<td>pick causal vs zero-phase for the task</td>
-<td>early warning vs tomography picks</td>
+<td>zero-phase spreads energy ahead of an onset; causal delays it</td>
+<td>choose causal or zero-phase for the task</td>
+<td>filter type, corners, poles, causal or zero-phase</td>
+<td>RATT step: zero-phase output 0.52 s early</td>
+<td>Norcia offset lost; digitizer ramp, Egypt; Greenland δ¹⁸O; GPS precursor</td>
 </tr>
 <tr class="even">
-<td>Zero-filled gap</td>
-<td>edge ringing 185× local signal</td>
-<td>segment-wise filtering + guard interval</td>
-<td>telemetry dropouts, careless merges</td>
+<td>Gaps</td>
+<td>zero or −1 fill makes steps; filters ring at the edges</td>
+<td>filter each segment, leave the gap missing, mark a guard</td>
+<td>gap start and end, fill value, guard interval</td>
+<td>planted, RMS: 185× → 1.75×; real 40 s gap, peak: 13×, 1 s guard</td>
+<td>Apollo −1 samples; TGUA outages and offsets; Tanana ice estimates</td>
 </tr>
 <tr class="odd">
-<td>Clock error</td>
-<td>timestamps lie, waveform looks fine</td>
-<td>cross-correlation lag, then correct + log</td>
-<td>GPS clock failures, ocean-bottom sensors</td>
+<td>Clock errors</td>
+<td>waveform intact, every time shifted</td>
+<td>measure the lag against a reference; fit offset and drift</td>
+<td>reference, lag, drift, correction applied</td>
+<td>planted: +0.50 s; HDIL: +230 to +270 s</td>
+<td>Iceland seafloor; Apollo; flux tower</td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>The unbroken record graded every number in this table — plant truth before you trust a repair.</p>
+<p>Every RATT number was graded against the intact record: 185× to 1.75× at gap edges, +0.50 s recovered, a 0.52 s zero-phase lead at a step of known time.</p>
 </div>
 <aside class="notes">
-<p>Stands alone for review. Row 1: the choice is per-use, not per-taste — real-time and precursor studies need causal; offline alignment wants zero-phase. Row 2: the 185× is today’s flagship number; students reproduce it in the notebook and then move the gap into the surface-wave train to see the damage scale with local amplitude. Row 3: ocean-bottom seismometers are the classic clock-drift setting — no GPS underwater; whole re-timing literatures exist. If a student asks about repairing the gap contents themselves: that is imputation, and for ML the honest move is masking, not inventing — Chapter 4’s training lab returns to this.</p>
+<p>One minute, then leave this up for questions; it replaces the synthesis slide. Each row combines the RATT test (where truth is known), the literature, and a real archive. Row 1: the choice is made per use; real-time and precursor studies need causal filters, offline alignment wants zero-phase, and either way the filter goes in the metadata. Row 2: gaps stay declared as missing; the guard interval scales with the longest period in the band; and every provider has its own fill value (zero after a merge, −1 in the Apollo archive, “e” estimates at USGS). The planted and real gap numbers are different measurements: 185× is an RMS over 0 to 2 s against the intact record; 13× is a peak against the segment-wise result (2.8× on the RMS metric). Row 3: ocean-bottom sensors are the classic setting, but HDIL shows land stations drift too. For ML: mask gaps, guard intervals and periods of bad timing out of training windows, or the network learns filter artifacts and shifted labels. Forward pointer: in 2.13 the metadata for an ML-ready dataset has fields for missing-data policy and processing history; the “What to record” column is their content.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -388,20 +729,20 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="now-run-it-yourself-open-2.9" class="slide level2">
-<h2>Now run it yourself — open 2.9</h2>
+<section id="open-notebook-2.9" class="slide level2">
+<h2>Open notebook 2.9</h2>
 <ol type="1">
 <li><code>pixi run jupyter lab</code> → <code>2.9_filtering_data.ipynb</code></li>
-<li>Reproduce the gap experiment; then move the gap under the surface waves and re-grade the ringing</li>
+<li>Reproduce the gap experiment; then move the gap into the P wave train (360 to 420 s) and grade the ringing again</li>
 <li>Change the band to 0.1–1 Hz: how long does the guard interval get?</li>
-<li>Add sub-sample precision to the clock recovery (parabola through the correlation peak)</li>
-<li>Your team’s data and your Session 7 track: which of the three pathologies applies? Write the one-line repair policy.</li>
+<li>Plot the raw record at 750 to 762 s: the notebook’s “P-wave onset” is a step at 755.09 s. Redo the filter comparison at the P wave (357 s)</li>
+<li>Your team’s data and your Session 7 track: which of the three problems applies? Write the one-line repair policy</li>
 </ol>
 <div class="dim">
-<p>Monday: synthetic data with known truth, the detection floor (2.10–2.11) · Reading-arc stage 1 due Wed Oct 21</p>
+<p>Today: pulse talks 10 min · slides 22 min · notebook 38 min · synthesis 10 min. Next session: synthetic data with known truth and the detection floor (2.10–2.11)</p>
 </div>
 <aside class="notes">
-<p>Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, deck ~20 min, notebook ~40 min, synthesis ~10 min collecting task-5 answers — every team should name a pathology and a policy; hydrology teams have gauge gaps during floods, GNSS teams have offsets and outages, climate teams have station moves. Implementation names for the notebook, not the slides: scipy.signal.butter with output=‘sos’ (numerically stable second-order sections), sosfilt (causal) vs sosfiltfilt (zero-phase), np.flatnonzero/np.split for segment bookkeeping, scipy.signal.correlate + correlation_lags. The task-3 answer: guard interval scales with the longest period — 0.1 Hz means tens of seconds, which for short records may consume the segment; that pain is the point.</p>
+<p>Timing for the 80-minute block (10:00 to 11:20): pulse talks about 10 min; slides about 22 min (the per-slide times in these notes add to 22: 1, 2, 1.5, 1.5, 1.5, 2, 1, 1, 1, 1.5, 1, 1, 1.5, 2.5, 1, 1 for slides 1 to 17, counting the title and question slides together); notebook about 38 min on tasks 2 to 4; synthesis about 10 min collecting task-5 answers, every team naming a problem and a policy. If the slides run long, skip the Munteanu spectra and the drift slide with one sentence each. Hydrology teams have gauge gaps during floods and ice, GNSS teams have offsets and outages, climate teams have station moves. Task 4 is new: the notebook’s zoom at 750 to 762 s, labeled as the P-wave onset, shows the first of 8 steps in the raw record during the surface waves; the P wave arrives at about 357 s after 06:15 UTC (iasp91). Students should find this by plotting the raw counts, which is the habit the session teaches. Other fixes the notebook needs: it calls 850 to 870 s “the coda”, but that window is in the surface waves; and it says the 740 to 800 s correlation window “spans the P arrival”, but that window is also in the surface waves and contains the 755 s step. Implementation names for the notebook, not the slides: scipy.signal.butter with output=‘sos’ (second-order sections, numerically stable), sosfilt (causal) versus sosfiltfilt (zero-phase), np.flatnonzero and np.split for segment bookkeeping, scipy.signal.correlate with correlation_lags, obspy.taup for predicted arrival times. Task 3 answer: the guard interval scales with the longest period, about 20 s at 0.1 Hz, which can consume a short segment. Check the course calendar for the next due date: the session dates moved.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
