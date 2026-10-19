@@ -51,7 +51,7 @@ Nothing today touches your HW1 repository `MLGEO2026_UWNETID` (due tonight, 11:5
 
         pixi run python book/Chapter2-DataManipulation/snapshots/check_snapshots.py
 
-   The script recomputes the size and the SHA-256 fingerprint of each course data file and compares them with the values recorded at download. The last line should read `All 26 data files match their recorded fingerprints: none was changed or damaged.`
+   The script recomputes the size and the SHA-256 fingerprint of each course data file and compares them with the values recorded at download. The last line should read `All 27 data files match their recorded fingerprints: none was changed or damaged.`
 
 3. Copy your track's notebook to a personal copy with your NetID in its name, in the same folder. Replace `TRACK` with `volcano`, `soil_moisture`, `land_surface_model` or `planetary`, and `UWNETID` with your NetID:
 
