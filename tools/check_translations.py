@@ -6,6 +6,9 @@ Verifies, for every entry in translations/*/MANIFEST.yml:
     edition, and markdown cell counts match — unless the entry carries a
     `localization:` field (e.g. the GNSS notebook 1.7), in which case only
     structure is checked;
+  - .ipynb (not data-localized): no more than a quarter of the markdown
+    cells longer than 40 characters are identical to the English source
+    (catches prose that was never translated);
   - .md: the sequence of fenced code blocks is identical to the English
     source (code is never translated).
 Also checks that every file in each translation's myst.yml toc has a
@@ -25,6 +28,11 @@ ROOT = Path(__file__).resolve().parent.parent
 TRANSLATIONS = ROOT / "translations"
 
 FENCE_RE = re.compile(r"^```[^\n]*\n.*?^```\s*$", re.M | re.S)
+
+# A translated notebook fails when more than this fraction of its markdown
+# cells longer than MIN_PROSE_CHARS are byte-identical to the English source.
+MIN_PROSE_CHARS = 40
+MAX_UNTRANSLATED_FRACTION = 0.25
 
 
 def code_fences(text: str) -> list:
@@ -51,6 +59,23 @@ def check_ipynb(src: Path, dst: Path, localized: bool, errors: list) -> None:
                 f"outputs are identical to {src} — the localization was lost"
             )
         return
+    # Untranslated prose: an injection from the wrong file, or a rebuild from
+    # the English notebook that never got its translated cells, leaves code
+    # identical (so every check below passes) while the reader sees English.
+    # Short cells (headings, a single link or name) may legitimately match.
+    long_md = [
+        i for i, c in enumerate(a)
+        if c["cell_type"] == "markdown"
+        and len("".join(c["source"]).strip()) > MIN_PROSE_CHARS
+    ]
+    same = [i for i in long_md if a[i]["source"] == b[i]["source"]]
+    if long_md and len(same) > MAX_UNTRANSLATED_FRACTION * len(long_md):
+        errors.append(
+            f"{dst}: {len(same)} of {len(long_md)} markdown cells longer than "
+            f"{MIN_PROSE_CHARS} characters are identical to English "
+            f"(cells {', '.join(map(str, same[:10]))}"
+            f"{', ...' if len(same) > 10 else ''}); prose not translated"
+        )
     for i, (ca, cb) in enumerate(zip(a, b)):
         if ca["cell_type"] != "code":
             continue

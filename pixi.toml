@@ -74,3 +74,31 @@ mystmd = ">=1.3"
 tsfel = "*"
 seisbench = "*"
 torchinfo = "*"
+
+# A lean environment for the Chapter 2 notebooks and the Session 7 labs: the
+# scientific Python core, xarray/netCDF and ObsPy, without PyTorch, the GIS
+# stack or the build tools (about 850 MB against 2.3 GB). numpy and Python are
+# pinned to the versions of the full environment, and the other shared packages
+# resolve to the same versions, so a notebook gives the same numbers in both.
+#   pixi run -e core jupyter lab
+[feature.core.dependencies]
+python = "==3.12.15"
+numpy = "==2.5.3"
+pandas = ">=2.2"
+scipy = ">=1.15"
+scikit-learn = ">=1.6"
+matplotlib = ">=3.9"
+xarray = "*"
+netcdf4 = "*"
+obspy = ">=1.4"
+requests = "*"
+pooch = "*"
+pyyaml = "*"
+jupyterlab = "*"
+ipykernel = "*"
+
+[feature.core.pypi-dependencies]
+mlgeo-synth = { path = ".", editable = true }
+
+[environments]
+core = { features = ["core"], no-default-feature = true }
