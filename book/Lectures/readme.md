@@ -16,7 +16,7 @@ The course meets three times a week, and the sessions draw on the book out of ch
 | 6 | Mon Oct 12 | [Sampling, resampling, and irregular data](lec06_sampling_resampling.md) | [2.5](../Chapter2-DataManipulation/2.5_Arrays.ipynb) · [2.6](../Chapter2-DataManipulation/2.6_resampling.ipynb) |
 | 7 | Wed Oct 14 | [Statistics and spectra of geoscience signals](lec07_statistics_spectra.md) | [2.7](../Chapter2-DataManipulation/2.7_statistical_considerations.ipynb) · [2.8](../Chapter2-DataManipulation/2.8_data_spectral_transforms.ipynb) |
 | 8 | Fri Oct 16 | [Manipulating real data streams](lec08_repairing_records.md) | [2.9](../Chapter2-DataManipulation/2.9_filtering_data.ipynb) |
-| 9 | Mon Oct 19 | [Synthetic data with known truth](lec09_synthetic_truth.md) | [2.10](../Chapter2-DataManipulation/2.10_synthetic_noise.ipynb) · [2.11](../Chapter2-DataManipulation/2.11_feature_engineering.ipynb) |
+| 9 | Wed Oct 21 | [Noise, signal and synthetic data](lec09_synthetic_truth.md) | [2.10](../Chapter2-DataManipulation/2.10_synthetic_noise.ipynb) |
 | 10 | Wed Oct 21 | [AI-ready data](lec10_ai_ready_data.md) | [2.12](../Chapter2-DataManipulation/2.12_dimensionality_reduction.ipynb) · [2.13](../Chapter2-DataManipulation/2.13_MLready_data.ipynb) |
 | 11 | Fri Oct 23 | [Verify, then trust: interrogating AI output](lec11_verify_then_trust.md) | [6.2](../Chapter6-AgenticAI/6.2_critical_evaluation.ipynb) |
 | 12 | Mon Oct 26 | [What supervises the learning? Labels, structure, or feedback](lec12_supervision_concepts.md) | [3.1](../Chapter3-MachineLearning/3.1_concepts_supervision.md) · [3.2](../Chapter3-MachineLearning/3.2_classification_regression.ipynb) |
