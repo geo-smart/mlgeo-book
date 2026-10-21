@@ -23,39 +23,57 @@ Readings: [1.1](https://geo-smart.github.io/mlgeo-book/open-reproducible-science
 Open by naming the unfinished work from Wednesday. Today does not start a new topic. The class finishes the paper sprint, extracts evidence from it, and uses that evidence to write a rubric. The hardware and workbench material then answers one rubric question: what would another person need to rerun this result on another machine? The session produces two reusable artifacts rather than a page of notes: rubric version 0.1 and each student's course repository. Suggested 80-minute allocation: framing 2 minutes; evidence and literature 8; paper sprint 12; matrix, strong result, and rubric construction 16; computing concepts 14; compute-choice activity 7; workbench lab 16; exit ticket 5. If time runs short, compress the CPU/GPU and HPC slides to their takeaways; they are covered in 1.4.
 :::
 
-## Measured reproducibility of published research {.smaller}
+## Literature example: where aftershocks occur {.smaller}
 
-| Study | Tested | Outcome |
-|---|---|---|
-| Begley & Ellis 2012 | 53 landmark cancer studies | **6** confirmed |
-| Open Science Collab. 2015 | 100 psychology experiments | **36%** replicated (97% originally) |
-| Stodden et al. 2018 | 204 computational *Science* papers | **26%** reproduced |
-| Stagge et al. 2019 | 360 hydrology articles | **1.6%** reproduced |
-| Konkol et al. 2019 | R code of 41 geoscience papers | **2** ran cleanly; **46 of 97** figures differ |
-| Massonnet et al. 2020 | one Earth system model, two HPC systems | different climates |
-
-::: {.dim}
-Baker 2016 survey, recomputed from the raw data: 64% of 95 Earth and environmental scientists had failed to reproduce another group's result.
+::: {.badge-row}
+[🗂️ Catalog & compiled product]{.gb .src} [🪨 Solid Earth]{.gb .sys .solid} [📈 Seismology]{.gb .disc .solid}
 :::
 
+:::: {.columns}
+::: {.column width="36%"}
+::: {.lit-card}
+[A neural network with 13,451 parameters located aftershocks better than Coulomb stress change (AUC 0.849 against 0.583). A logistic regression on one stress metric, with 2 parameters, scores the same AUC.]{.lit-msg}
+
+[DeVries, Viégas, Wattenberg & Meade (2018). *Nature*, 560, 632–634 · Mignan & Broccardo (2019). *Nature*, 574, E1–E3.]{.lit-cite}
+:::
+
+**One data sample is one 5 km cell** (slip model 1999CHICHI01MAxx, test set)
+
+::: {.records}
+| lon °E | lat °N | depth km | max shear MPa | ΔCFS MPa | network p | aftershocks |
+|---:|---:|---:|---:|---:|---:|---:|
+| 120.92 | 24.26 | 7.5 | 7.45 | 1.71 | 0.90 | 1 |
+| 120.93 | 24.12 | 7.5 | 8.36 | 1.81 | 0.90 | 1 |
+| 120.77 | 24.30 | 7.5 | 7.34 | −0.24 | 0.90 | 0 |
+| 120.01 | 23.25 | 7.5 | 0.02 | −0.01 | 0.22 | 1 |
+:::
+
+[Train and test sets are split by slip model: 142 and 57. Six test models share a year and region code with a training model, such as Colfiorito 1997.]{.dim}
+:::
+
+::: {.column width="64%"}
+![](figs/lit_aftershock_2018/aftershock_rerun.png){width="100%"}
+:::
+::::
+
 ::: {.takeaway}
-Where reproducibility has been measured, most published computational results could not be regenerated. The geoscience studies report rates comparable to, or lower than, those in other fields.
+Our rerun of the authors' open data and weights: network 0.849, Coulomb 0.583, maximum shear stress change alone 0.847.
 :::
 
 ::: {.notes}
-Two minutes. Read the bottom two rows aloud: they are our field. Stagge et al. sampled 360 of 1,989 articles published in 2017 in six hydrology and water-resources journals and could regenerate results for 1.6% of those tested; their 95% confidence interval for all 1,989 is 0.6 to 6.8%. The main bottleneck was not secrecy: 44% had only some artifacts, and most had no directions to run them. Massonnet et al. (Geoscientific Model Development, 2020) ran the older EC-Earth3 version on two HPC systems and obtained statistically distinguishable climates, traced to the treatment of Antarctic river runoff; the newer version passed. Konkol, Kray and Pfeiffer (IJGIS, 2019) reran, in a clean rocker/geospatial container, the R code of 41 open-access papers: 31 Copernicus geoscience articles from 2016–2017 plus the 10 most-cited Journal of Statistical Software R-package papers. 2 ran without issues, 33 ran after fixes, 2 ran partially, and 4 could not be run; 15 required contacting the authors (11 helped, 3 never replied). They logged 173 issues in 39 papers, the most common being a missing library (49 cases) and hard-coded directories (34). Of 97 figures regenerated from 28 papers, 78 had a different aspect ratio (cosmetic) and 46 differed in content: different curves, missing or different key numbers. Massonnet's conclusion is worth quoting: the default assumption should be that Earth system models are not replicable under a change of HPC environment until shown otherwise. The Baker number is not in the article itself; it is recomputed from the raw survey file Nature posted on figshare (doi:10.6084/m9.figshare.3394951). Earth and environmental scientists were 95 of 1,576 respondents; 61 had failed to reproduce someone else's result, 39 their own. Ask: which row would your sprint paper fall into?
+Four minutes; this is the one paper the lecture tells in full, and it walks across Wednesday's table. Geoscience first: after a large earthquake, where will the aftershocks be? The classic physical answer is the Coulomb failure stress change (ΔCFS): faults that the mainshock pushed toward failure host more aftershocks. DeVries, Viégas, Wattenberg and Meade (Nature, 2018) took 199 published fault slip models of 118 mainshocks (SRCMOD database), cut the volume within 100 km of each rupture and down to 50 km depth into 5 km cells, computed the static stress change at each cell center, and labeled a cell 1 if the ISC catalog lists an aftershock in it between one second and one year after the mainshock. The map is one test case, the 1999 Chi-Chi earthquake in Taiwan, at the 5–10 km depth slice the authors also plot: gold is the fault model, red dots the 348 cells with aftershocks at that depth, gray the network's probability. Then the table: each data sample is a cell with its position, its stress-change features, and a 0/1 label; the slip model it belongs to is the metadata column that decides the train/test split. The paper: a network with six hidden layers of 50 units and 13,451 parameters, trained on 142 slip models and tested on 57, reached AUC 0.849, against 0.583 for ΔCFS (abstract: more than 131,000 training and more than 30,000 test mainshock–aftershock pairs). Mignan and Broccardo (Nature, 2019, comment) showed that one input, the summed absolute stress, maximum shear, or von Mises stress, in a logistic regression with 2 parameters also gives AUC 0.85, and that distance to the rupture plus mainshock mean slip gives 0.86; the scalar metrics had already been ranked by the same group (Meade et al., 2017, GRL 44, doi:10.1002/2017GL075875). Our rerun, figscripts/aftershock_auc_rerun.py: the authors posted their code on GitHub (phoebemrdevries/Learning-aftershock-location-patterns) and the data and trained weights on a public Google Drive folder. The script downloads the 57 test CSV files (about 400 MB), rewrites the network's forward pass in numpy from TheBestWeights.h5 (the original is Python 2.7 with Keras on Theano), and reproduces 0.849 and 0.583 exactly on 1,378,120 test cells, 15,472 (1.1%) with aftershocks. Maximum shear, von Mises, and summed absolute stress each give 0.847; a one-input logistic regression is a monotonic function of its input, so its AUC is the AUC of that input. The 2-parameter distance-and-slip result (0.86) was not rebuilt here because it needs the SRCMOD slip models. One design question for the rubric: the split is by slip model, and six test models (Colfiorito 1997, Kagoshima 1997 twice, Hyuganada 1996, Nahanni 1985, and one 2010 event) share a year and region code with a training model, so nearby aftershock zones can sit on both sides of the split; the data scientist Rajiv Shah raised a related concern about overlap between training and test earthquakes, which the authors disputed. In the four-cell table: reproducible, yes; robust to a simpler baseline, no gain over it.
 :::
 
-## This lecture in the literature
+## Measured reproducibility in four geoscience fields {.smaller}
 
 {{< include refs/lec02_refs.qmd >}}
 
 ::: {.takeaway}
-A rerun did not establish whether any of these results was correct; it allowed other researchers to examine and test them.
+Where geoscience reproducibility has been measured, a minority of results could be rerun: 1.6% of tested hydrology articles and 2 of 41 papers with open R code.
 :::
 
 ::: {.notes}
-Six minutes, four stories. Stagge et al. is the hydrology study from the previous slide. Ireland et al. (Seismica, 2023) is our closest field: 200 geophysics articles and 20 journal policies; about 86% had a data availability statement but the original data were reachable for 54% and the software was named for 49%. A data availability statement does not guarantee access to the data. DeVries et al. (Nature, 2018) trained a 13,451-parameter network on more than 131,000 mainshock–aftershock pairs and reported AUC 0.849 against 0.583 for Coulomb stress change. Mignan and Broccardo (Nature, 2019) matched it with logistic regression on two parameters, AUC 0.85. A data scientist, Rajiv Shah, also argued that the same earthquakes appeared in training and test sets; the authors disputed it and Nature did not act. The number reproduced; the interpretation that deep learning found physics a simple model misses did not survive a baseline. The hockey stick is the success story: Mann, Bradley and Hughes (1998, 1999); McIntyre and McKitrick (GRL, 2005) challenged the principal-component centering; Wahl and Ammann (Climatic Change, 2007) reimplemented the method and found the result robust to those criticisms; PAGES 2k (Nature Geoscience, 2013 and 2019) used 692 new proxy records and seven methods and reached the same conclusion. That walk across the table is on the next slides. If time allows, add Resplandy et al. (Nature, 2018): an outside reader, Nicholas Lewis, found that systematic errors had been treated as random; uncertainty grew about fourfold and the paper was retracted in 2019.
+Two minutes, one sentence per card. Stagge et al. (Scientific Data, 2019) sampled 360 of the 1,989 articles published in 2017 by six hydrology and water-resources journals and reproduced results for 1.6% of the tested articles; their 95% confidence interval for all 1,989 is 0.6 to 6.8%. The bottleneck was not secrecy: 44% had only some artifacts and 89% had no directions. Ireland et al. (Seismica, 2023), our closest field: 200 articles in 20 geophysics journals; about 86% had a data availability statement, the original data were reachable for 54%, and 49% named the software used. A statement is not access. Konkol, Kray and Pfeiffer (IJGIS, 2019) reran, in a clean container, the R code of 41 open-access papers (Copernicus geoscience journals plus Journal of Statistical Software): 2 ran without issues, 33 after fixes; they logged 173 technical issues; of 97 figures regenerated from 28 papers, 46 differed in results. Massonnet et al. (Geoscientific Model Development, 2020) ran the older EC-Earth3 version on two HPC systems and obtained statistically distinguishable climates, traced to the treatment of river runoff along the Antarctic coast; the newer version passed, and the consortium adopted the test. Their conclusion: assume Earth system models are not replicable under a change of HPC environment until shown otherwise. That is the hardware slide's argument. Context from outside the geosciences, if asked: Begley and Ellis (2012) confirmed 6 of 53 landmark cancer studies; the Open Science Collaboration (2015) replicated 36% of 100 psychology experiments; Stodden et al. (2018) reproduced 26% of 204 computational papers in Science. Baker's 2016 Nature survey, recomputed from the raw file on figshare (doi:10.6084/m9.figshare.3394951): 61 of 95 Earth and environmental scientists had failed to reproduce another group's result. Ask: which card would your sprint paper fall under?
 :::
 
 ## Paper sprint completion {.smaller}
@@ -92,7 +110,7 @@ Resume the paper-to-project activity without repeating the introduction. Each pa
 | **Different analysis** | **Robust** | **Generalisable** |
 
 ::: {.dim}
-Hold the research question fixed. The Turing Way definitions (book 1.1). The National Academies (2019) use the top row; some fields swap the two words. State the operational test, not the label.
+Hold the research question fixed. The Turing Way definitions (book 1.1). The National Academies (2019) use the top row; some fields swap the two words, so the rubric names the test that was run.
 :::
 
 ::: {.takeaway}
@@ -113,11 +131,11 @@ This is the table from Wednesday's slide, now with all four cells. Read each cel
 | Generalisable | dependence on one data set and pipeline | nothing is settled for good |
 
 ::: {.takeaway}
-A conclusion gains support as it persists across these tests. A complete report also states the conditions under which the result is expected to fail.
+The aftershock network passed the reproducible test (AUC 0.849 on rerun). Its advantage over a simple baseline failed the robust test: maximum shear stress alone scores 0.847.
 :::
 
 ::: {.notes}
-Point out that reproducibility is necessary and not sufficient; the Turing Way lists "being reproducible does not mean the answer is right" among its barriers to reproducible research. A bug reproduces perfectly. Map the two cases: the aftershock network passed reproducible and failed robust once a baseline was added. The hockey stick passed all four, over two decades, by other groups. Then map the course: homework is graded on reproducible; hidden-test leaderboards in Chapter 3 test a form of replicable; the final project should report robustness (seeds, split designs, baseline) and one replication on held-out locations or periods. Ask students to add one robustness criterion to the rubric on the next slide.
+Point out that reproducibility is necessary and not sufficient; the Turing Way lists "being reproducible does not mean the answer is right" among its barriers to reproducible research. A bug reproduces perfectly. Map the two cases: the aftershock network passed reproducible (the literature slide: 0.849 again from the authors' files) and failed robust once a baseline was added (0.847 for maximum shear stress alone). The success story is the Northern Hemisphere temperature reconstruction, the hockey stick: Mann, Bradley and Hughes (1998, 1999); McIntyre and McKitrick (GRL, 2005) challenged the principal-component centering; Wahl and Ammann (Climatic Change 85, 33–69, 2007) reimplemented the method and found the reconstruction insensitive to those criticisms (robust); PAGES 2k (Nature Geoscience 12, 643–649, 2019) used a new multiproxy database and seven reconstruction methods and found the same multidecadal shape (replicable and generalisable). It passed all four, over two decades, by other groups. If time allows, add Resplandy et al. (Nature, 2018): an outside reader, Nicholas Lewis, found that systematic errors had been treated as random; the uncertainty grew about fourfold and the paper was retracted in 2019. Then map the course: homework is graded on reproducible; hidden-test leaderboards in Chapter 3 test a form of replicable; the final project should report robustness (seeds, split designs, baseline) and one replication on held-out locations or periods. Ask students to add one robustness criterion to the rubric on the next slide.
 :::
 
 ## Class rubric v0.1 {.smaller}
@@ -156,7 +174,7 @@ Disagreement may reveal ambiguous wording, missing evidence, or a substantive di
 Introduce inter-rater agreement as a design problem rather than a statistic to calculate today. A rubric can look precise while allowing different interpretations of “documented,” “available,” or “verified.” Ask two pairs to score the same evidence and explain any difference. The class should revise criteria that produce disagreement because the expected evidence is unclear. Preserve disagreements that reflect legitimate scientific judgment, such as whether an evaluation metric matches the intended use.
 :::
 
-## Hardware resources
+## Hardware resources {.compact}
 
 **Hardware** is the physical machinery that executes and stores the work.
 
@@ -169,11 +187,11 @@ Introduce inter-rater agreement as a design problem rather than a statistic to c
 | **Network** | moves data between systems | bandwidth, latency, access rules |
 
 ::: {.takeaway}
-A computational requirement should identify the relevant resource, its scale, and the evidence used to estimate it.
+The aftershock rerun reads 57 files (400 MB, 1.38 million cells): 2 min 40 s on a laptop the first time, 25 s once cached, with about 13 s of CPU time.
 :::
 
 ::: {.notes}
-Use one concrete comparison. A pandas join on a moderate table usually needs CPU and RAM; a convolutional neural network often benefits from a GPU; neither helps if the data cannot move from storage quickly enough. A GPU is not a generally faster CPU. It accelerates workloads that expose large amounts of parallel work and use supported software. Ask students which resource limited the largest computation they have already attempted.
+Start from the literature slide. figscripts/aftershock_auc_rerun.py downloads 57 CSV files (about 400 MB on disk), runs a 13,451-parameter network on 1,378,120 cells, and computes five ROC curves. Timed on 2026-10-09 on an Apple M1 Max laptop with 64 GB of RAM: 2 min 39 s wall time on the first run, 25 s on a second run with the files cached, of which about 13 s were CPU time. The data fit in RAM many times over and a GPU would save almost nothing; storage and network decided the run time. A larger case changes the answer: a year of continuous waveforms from a regional network is terabytes, and then the data location decides where the computation runs (compute-choice activity). Then one general comparison. A pandas join on a moderate table usually needs CPU and RAM; a convolutional neural network often benefits from a GPU; neither helps if the data cannot move from storage quickly enough. A GPU is not a generally faster CPU. It accelerates workloads that expose large amounts of parallel work and use supported software. Ask students which resource limited the largest computation they have already attempted.
 :::
 
 ## CPU and GPU execution models
@@ -206,15 +224,15 @@ A **computing center** operates shared hardware, storage, networking, schedulers
 Demystify remote computing. A server is a computer that provides resources over a network. A back-end Linux server may be one powerful machine or a service entry point. A cloud server is still physical hardware in a data center, but the user rents a virtual machine or managed service. An HPC system combines many nodes and uses a scheduler so users request resources rather than taking them directly. A computing center is the organization and facility that operates these systems. Ask students which context they have used, even indirectly through a web service.
 :::
 
-## How an HPC job reaches hardware
+## How an HPC job reaches hardware {.compact}
 
 | Stage | What happens |
 |---|---|
-| Login | the user connects to a login node and prepares code, data references, and a job request |
-| Resource request | the job specifies cores, memory, GPUs, wall time, and sometimes node type |
-| Scheduling | the scheduler waits until a compatible allocation is available |
-| Execution | the job runs on one or more compute nodes, usually without an interactive desktop |
-| Persistence | logs, checkpoints, and results must be written to approved storage before the allocation ends |
+| Login | connect to a login node; prepare code, data paths, and a job request |
+| Resource request | cores, memory, GPUs, wall time, sometimes node type |
+| Scheduling | the scheduler waits for a matching allocation |
+| Execution | the job runs on compute nodes, usually without a desktop |
+| Persistence | logs, checkpoints, and results go to approved storage before the allocation ends |
 
 Requesting substantially more resources can increase queue time and allocation cost. Requesting too little can terminate the job.
 
@@ -280,18 +298,24 @@ There is no single correct platform. Grade the reasoning. The 4 GB case often fi
 
 Open [1.9](https://geo-smart.github.io/mlgeo-book/workbench-setup-hw1) and produce evidence for the rubric:
 
-1. Start `pixi install` for the book environment
-2. Create `MLGEO2026_UWNETID` and add `pixi.toml` plus `pixi.lock`
-3. Record the tested operating system and machine type in the README
-4. Add one smoke test and name its `pixi run` command in the README
-5. Review the diff, commit with a real message, and push
+1. Start `pixi install` for the book environment (1.9 Step 4)
+2. In `MLGEO2026_UWNETID`, copy the student `pixi.toml` and `pixi.lock`
+3. Add a smoke test; record its command and the tested machine in the README
+4. Review the diff, commit with a real message, and push
+
+```bash
+cp ../mlgeo-book/environments/student/pixi.toml ../mlgeo-book/environments/student/pixi.lock .
+pixi install
+pixi task add smoke "python smoke_test.py"
+pixi run smoke                     # last line printed: smoke test passed
+```
 
 ::: {.takeaway}
 The repository should specify a runnable target, the environment that supports it, and an observable success condition.
 :::
 
 ::: {.notes}
-Allow about 18 minutes. Start the large install first, then complete git and GitHub steps while packages download. Unfinished steps continue as HW1 through 1.9. Watch for one known failure: the book's `pixi.toml` installs the book itself (`mlgeo-synth`, path `.`), so a copied file fails in a student repository until `pixi remove --pypi mlgeo-synth` is run; 1.9 Step 6 gives the command. The smoke test matters on Monday: the peer rerun runs the command named in each README, so a repository without one gives the peer nothing to execute. Circulate with rubric language: ask students to show evidence, not say that setup “worked.” Common failures separate cleanly using today's vocabulary: command not found is a shell or PATH problem; dependency resolution is an environment problem; permission denied may be a sandbox or filesystem problem; killed processes often indicate memory limits. Students who finish should exchange repository URLs and attempt a fresh-clone check.
+Allow about 16 minutes. Start the large book install first (a few gigabytes), then complete the git and GitHub steps while packages download. Unfinished steps continue as HW1 through 1.9. The code block is 1.9 Step 6, run from inside the student repository. Watch for one known failure: a student who copies the book's top-level `pixi.toml` instead of `environments/student/pixi.toml` gets "does not appear to be a Python project" on every `pixi run`, because the book manifest installs `mlgeo_synth` from the book's own folder. The student manifest and lockfile pin the same package versions, install `mlgeo_synth` from a GitHub snapshot of the book, and leave out the book-building tools; because pixi reuses the packages from the book install, the second install takes a minute or two. `smoke_test.py` itself is printed in 1.9 Step 6; its first line reports the operating system and machine type, which go in the README. The smoke test matters on Monday: the peer rerun runs the command named in each README, so a repository without one gives the peer nothing to execute. Circulate with rubric language: ask students to show evidence, not say that setup “worked.” Common failures separate cleanly using today's vocabulary: command not found is a shell or PATH problem; dependency resolution is an environment problem; permission denied may be a sandbox or filesystem problem; killed processes often indicate memory limits. Students who finish should exchange repository URLs and attempt a fresh-clone check.
 :::
 
 ## Exit ticket: input for rubric v0.2

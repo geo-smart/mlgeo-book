@@ -31,8 +31,74 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="lec04_meet_the_data_files/libs/revealjs/dist/theme/quarto-0c0bb623db655821208cac898ba7f7c8.css">
+  <link rel="stylesheet" href="lec04_meet_the_data_files/libs/revealjs/dist/theme/quarto-5b332574619179445ab88806626e2cd7.css">
   <link href="lec04_meet_the_data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec04_meet_the_data_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec04_meet_the_data_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -188,8 +254,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="from-reproducible-code-to-curated-data" class="slide level2 smaller compact">
-<h2>From reproducible code to curated data</h2>
+<section id="curation-questions-session-by-session" class="slide level2 smaller compact">
+<h2>Curation questions, session by session</h2>
 <p><strong>Data curation</strong>: selecting, documenting, checking, versioning, and licensing data so that someone else can find, understand, and reuse it. It is the rubric’s <em>data and provenance</em> dimension, and the data rules in your AGENTS.md.</p>
 <table class="caption-top">
 <colgroup>
@@ -264,34 +330,80 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="this-lecture-in-the-literature" class="slide level2">
-<h2>This lecture in the literature</h2>
-<!-- Literature anchors for lecture 4. Edit THIS file to update the papers;
-     the deck includes it verbatim. Keep 2-4 entries: at least one where the
-     concept was applied well (✓), one where its absence misled a field (✗).
-     Format: verdict + bold message on one line; full citation on its own
-     line below (blank line between them; they must be separate paragraphs). -->
-<div class="ref-item">
-<p><span class="ref-verdict note">📖</span> <span class="ref-msg">The playbook: data that are findable, accessible, interoperable, and reusable, the base that “AI-ready” builds on.</span></p>
-<p><span class="ref-cite">Wilkinson, M. D., et al.&nbsp;(2016). The FAIR Guiding Principles for scientific data management and stewardship. <em>Scientific Data</em>, 3, 160018.</span></p>
+<section id="literature-example-drought-seen-by-gnss" class="slide level2 smaller">
+<h2>Literature example: drought seen by GNSS</h2>
+<div class="badge-row">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb sys water">💧 Land water</span> <span class="gb disc solid">📐 Geodesy</span> <span class="gb disc water">💧 Hydrology &amp; land-surface modeling</span></p>
 </div>
-<div class="ref-item">
-<p><span class="ref-verdict good">✓</span> <span class="ref-msg">Doing it right: a geoscience paper whose data, provenance, and methods a reader, or a machine, can retrace.</span></p>
-<p><span class="ref-cite">Gil, Y., et al.&nbsp;(2016). Toward the Geoscience Paper of the Future: Best practices for documenting and sharing research from data to software to provenance. <em>Earth and Space Science</em>, 3, 388–415.</span></p>
+<div class="columns">
+<div class="column" style="width:36%;">
+<div class="lit-card">
+<p><span class="lit-msg">GNSS stations built to measure plate motion rose by a median of 5 mm, and by up to 15 mm in California’s mountains, as the 2013–2014 drought removed about 240 Gt of water.</span></p>
+<p><span class="lit-cite">Borsa, Agnew &amp; Cayan (2014). <em>Science</em>, 345, 1587–1590.</span></p>
 </div>
-<div class="ref-item">
-<p><span class="ref-verdict good">✓</span> <span class="ref-msg">Open daily positions for thousands of GNSS stations, the archive today’s P395 series comes from.</span></p>
-<p><span class="ref-cite">Blewitt, G., Hammond, W. C., &amp; Kreemer, C. (2018). Harnessing the GPS data explosion for interdisciplinary science. <em>Eos</em>, 99, doi:10.1029/2018EO104623.</span></p>
+<p><strong>One data sample is one station-day</strong> (NGL file P140.tenv3)</p>
+<div class="records">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>site</th>
+<th>YYMMMDD</th>
+<th style="text-align: right;">yyyy.yyyy</th>
+<th style="text-align: right;">u0 (m)</th>
+<th style="text-align: right;">up (m)</th>
+<th style="text-align: right;">ant (m)</th>
+<th style="text-align: right;">sig_u (m)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P140</td>
+<td>13MAR14</td>
+<td style="text-align: right;">2013.1992</td>
+<td style="text-align: right;">1079</td>
+<td style="text-align: right;">0.215989</td>
+<td style="text-align: right;">0.0083</td>
+<td style="text-align: right;">0.003620</td>
+</tr>
+<tr class="even">
+<td>P140</td>
+<td>13MAR15</td>
+<td style="text-align: right;">2013.2019</td>
+<td style="text-align: right;">1079</td>
+<td style="text-align: right;">0.216928</td>
+<td style="text-align: right;">0.0083</td>
+<td style="text-align: right;">0.003592</td>
+</tr>
+<tr class="odd">
+<td>P140</td>
+<td>14MAR14</td>
+<td style="text-align: right;">2014.1985</td>
+<td style="text-align: right;">1079</td>
+<td style="text-align: right;">0.228624</td>
+<td style="text-align: right;">0.0083</td>
+<td style="text-align: right;">0.005518</td>
+</tr>
+<tr class="even">
+<td>P140</td>
+<td>14MAR15</td>
+<td style="text-align: right;">2014.2012</td>
+<td style="text-align: right;">1079</td>
+<td style="text-align: right;">0.226236</td>
+<td style="text-align: right;">0.0083</td>
+<td style="text-align: right;">0.005562</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="ref-item">
-<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">A default file format silently rewrote gene names as dates, corrupting supplementary data across roughly a fifth of surveyed genomics papers.</span></p>
-<p><span class="ref-cite">Ziemann, M., Eren, Y., &amp; El-Osta, A. (2016). Gene name errors are widespread in the scientific literature. <em>Genome Biology</em>, 17, 177.</span></p>
-</div>
+<p><span class="dim">Dates appear as a two-digit-year code and as a decimal year; height is split into whole meters (u0) and the rest (up). March median of up: 0.2150 m in 2013, 0.2285 m in 2014.</span></p>
+</div><div class="column" style="width:64%;">
+<p><img data-src="figs/lit_drought_uplift_2014/drought_uplift_2014.png" style="width:100.0%"></p>
+</div></div>
 <div class="takeaway">
-<p>Data stewardship is cited science, and format defaults have corrupted literatures.</p>
+<p>NGL positions today, 300 stations: median rise 4.6 mm by March 2014; the paper found 5 mm at 771.</p>
 </div>
 <aside class="notes">
-<p>Two minutes. Wilkinson/FAIR: the 2016 principles (findable, accessible, interoperable, reusable) are the vocabulary funders and journals now require; chapter 2.13’s “AI-ready” checklist is FAIR plus benchmark splits and leakage controls. Gil: what it looks like when a geoscience paper documents data, software, and provenance so the analysis can be retraced, the standard the final project is graded against. Blewitt: the Nevada Geodetic Laboratory processes thousands of permanent GNSS stations and publishes daily positions openly; today’s P395 series is one file of that archive; cite it when you use it. Ziemann: the cautionary tale. Spreadsheet software auto-converted gene names like SEPT2 to dates, and the errors sat in the published supplements of roughly a fifth of surveyed genomics papers. A format default, not a scientist, rewrote the data. Refs file updates monthly; bring candidates.</p>
+<p>Four minutes; this is the one paper the lecture tells in full, and it uses the same archive and file format as today’s P395 dataset. Geoscience first: from 2013 the western United States was in severe drought. Water in snow, soil, reservoirs, and shallow aquifers is a load on the elastic lithosphere; remove it and the ground rises. Borsa, Agnew and Cayan (2014) measured that rise with 771 continuous GNSS stations, mostly from the EarthScope Plate Boundary Observatory (PBO), a network built to measure tectonic deformation. They detrended and deseasoned each vertical series and found a median uplift of 5 mm by March 2014, up to 15 mm in California’s mountains, which they inverted for a water deficit of about 240 Gt, a 10 cm layer over the whole region, comparable to the annual mass loss of the Greenland ice sheet. They excluded the Central Valley (aquifer pumping) and the Long Valley caldera. The data-stewardship point: this result needed nothing new in the field. It came from openly archived daily positions in a documented format, recorded for another purpose and reused by hydrologists. The table: each data sample is one station-day in an NGL tenv3 file. Point at the conventions a reader must know: the date as 13MAR14 (two-digit year) and as 2013.1992 (decimal year; the file also has MJD and GPS week), and height split into an integer part u0 and a fraction up, both in meters. The antenna-height column is metadata that changes when equipment changes. P140 sits at 1,079 m on the west slope of the Sierra Nevada (38.83°N, 120.69°W). The figure is our reconstruction from NGL’s current IGS20 reprocessing, with a simplified method (figscripts/drought_uplift_2014.py): 411 PBO stations west of 109°W with data from before 2007 to after mid-2015; Central Valley aquifer system (USGS principal aquifers map), Long Valley area, stations subsiding faster than 3 mm/yr, stations with a step in 2013 to mid-2014, and noisy stations excluded, leaving 300; trend, annual and semiannual terms and NGL’s listed steps fit over 2006–2012 and removed; March 2014 median residual mapped. Result: median 4.6 mm, middle half 3.2 to 7.0 mm, maximum 13.4 mm (P305, on the eastern edge of the San Joaquin Valley), 13.2 mm at P140, and 96% of stations rising; P395 rose 2.8 mm. The paper’s 5 mm and 15 mm came from a different processing (2014, older reference frame) and 771 stations; the archive is living data, so today’s files give slightly different numbers, which is why an analysis records which version it read. Ask the room: what in the bottom panel happens in 2011? (The wet winter of 2010–2011 loaded the crust and the median went down.)</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -304,8 +416,57 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="three-data-streams-run-through-this-course" class="slide level2 smaller">
-<h2>Three data streams run through this course</h2>
+<section id="archives-and-formats-behind-other-results" class="slide level2 smaller">
+<h2>Archives and formats behind other results</h2>
+<!-- Literature anchors for lecture 4, second literature slide (the first,
+     Borsa et al. 2014, is told in full in the deck). Edit THIS file to
+     update the papers; the deck includes it verbatim. Keep four cards:
+     a number or term first, one sentence, then the citation.
+     DOIs checked on Crossref 2026-10-09: 10.1126/science.1108339,
+     10.1175/BAMS-D-11-00094.1, 10.1029/2018EO104623, 10.1186/s13059-016-1044-7. -->
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="lit-card">
+<p><span class="lit-num">30 days</span></p>
+<p><span class="lit-msg">One month of continuous records from 62 California stations, recorded for earthquake monitoring and kept in open archives, gave surface-wave maps from ambient noise.</span></p>
+<p><span class="lit-cite">Shapiro, N. M., Campillo, M., Stehly, L., &amp; Ritzwoller, M. H. (2005). High-resolution surface-wave tomography from ambient seismic noise. <em>Science</em>, 307, 1615–1618.</span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num">&gt; 3 PB</span></p>
+<p><span class="lit-msg">CMIP5 output from about 20 modeling groups, expected to exceed 3 PB, is written in one common format, so one analysis can read every model.</span></p>
+<p><span class="lit-cite">Taylor, K. E., Stouffer, R. J., &amp; Meehl, G. A. (2012). An overview of CMIP5 and the experiment design. <em>Bulletin of the American Meteorological Society</em>, 93, 485–498.</span></p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="lit-card">
+<p><span class="lit-num">17,000</span></p>
+<p><span class="lit-msg">NGL collects GNSS data from more than 130 archives, processes every station the same way, and publishes the positions as plain text files.</span></p>
+<p><span class="lit-cite">Blewitt, G., Hammond, W. C., &amp; Kreemer, C. (2018). Harnessing the GPS data explosion for interdisciplinary science. <em>Eos</em>, 99, doi:10.1029/2018EO104623.</span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num bad">19.6%</span></p>
+<p><span class="lit-msg">Spreadsheet defaults turned gene names into dates in 704 of 3,597 genomics papers with gene lists in Excel supplements.</span></p>
+<p><span class="lit-cite">Ziemann, M., Eren, Y., &amp; El-Osta, A. (2016). Gene name errors are widespread in the scientific literature. <em>Genome Biology</em>, 17, 177.</span></p>
+</div>
+</div></div>
+<div class="takeaway">
+<p>Continuous seismic archives and a common climate-model format made new analyses possible; a spreadsheet default altered gene lists in 19.6% of the genomics papers screened.</p>
+</div>
+<aside class="notes">
+<p>Two minutes, one sentence per card. Shapiro et al.&nbsp;(2005): 30 quiet days (August–September 2004) of continuous 1-sample-per-second records from 62 California stations, mostly permanent regional network stations recording for earthquake monitoring, were cross-correlated to build 7.5 s and 15 s Rayleigh-wave group-speed maps; low speeds outline the sedimentary basins and high speeds the mountain cores. The method only works because the networks archived continuous records, in a standard format (SEED, at the IRIS and regional data centers), and not just earthquake snippets. Taylor et al.&nbsp;(2012): CMIP5 asked roughly 20 modeling groups to write their output in a common way (CF-compliant netCDF), served from a federated archive; the paper estimated more than 3 PB, nearly 100 times CMIP3, and the common format is what lets one script read every model. Blewitt et al.&nbsp;(2018, Eos): NGL gathers data from more than 130 archives and more than 17,000 stations, processes them with one strategy, and publishes positions as plain text files, updating the daily positions of about 10,000 stations every week; today’s P395 file is one of them, and the paper is the citation to use. Ziemann et al.&nbsp;(2016) is genomics, kept because it is the best-quantified case of a file-format default changing published data: Excel, with default settings, converted gene symbols such as SEPT2 to dates, in 704 of 3,597 papers (19.6%) whose supplements had gene lists. The geoscience equivalents are quieter: CSV drops types and units, and two-digit years like 13MAR14 must be parsed with the right convention. Two references for the vocabulary, not on cards: the FAIR principles (Wilkinson et al., 2016, Scientific Data) and the Geoscience Paper of the Future (Gil et al., 2016, Earth and Space Science), the documentation standard the final project is graded against.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="three-data-streams-in-this-course" class="slide level2 smaller">
+<h2>Three data streams in this course</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 25%">
@@ -343,10 +504,10 @@
 </tbody>
 </table>
 <div class="takeaway">
-<p>The three get equal treatment in Chapter 2, because every project ends up handling at least two of them.</p>
+<p>Chapter 2 gives each stream equal time, because most projects combine at least two of them.</p>
 </div>
 <aside class="notes">
-<p>This is the chapter’s organizing principle. Walk one example per row: a seismogram is clocked: the instrument fixes the sampling and never misses on purpose; a satellite field is a grid over a region, often with a time axis stacked on; a groundwater network is measured where the wells are and when the crew visits, with nothing regular about it. Ask teams to place their project data: most place two streams, which is the point. Preview: sessions 5 and 6 take tables and series/grids in turn; the irregular stream returns Monday with the multi-well network.</p>
+<p>This is the chapter’s organizing principle. Walk one example per row: a seismogram is clocked; the instrument fixes the sampling and never misses on purpose; a satellite field is a grid over a region, often with a time axis stacked on; a groundwater network is measured where the wells are and when the crew visits, with nothing regular about it. Ask teams to place their project data: most place two streams, which is the point. Preview: sessions 5 and 6 take tables and series/grids in turn; the irregular stream returns Monday with the multi-well network.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -359,15 +520,15 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="two-containers" class="slide level2">
-<h2>Two containers</h2>
+<section id="arrays-and-data-frames" class="slide level2">
+<h2>Arrays and data frames</h2>
 <ul>
 <li><strong>Arrays</strong>: values on a grid; the dimensions carry the meaning (time, latitude, depth)</li>
 <li><strong>Data frames</strong>: one data sample per row, one variable per column; mixed types welcome</li>
 <li>Most projects need both: a gridded field of covariates <em>and</em> a table of observations</li>
 </ul>
 <div class="takeaway">
-<p>Choose the container from the data’s structure, not from the software you opened first.</p>
+<p>A grid whose position encodes time and location belongs in an array; one record per observation, with mixed types, belongs in a data frame.</p>
 </div>
 <aside class="notes">
 <p>Define both aloud with a physical example: a 3D array of temperature over latitude, longitude, and time, where position in the array IS the coordinate; versus the earthquake catalog, where each row is one event, columns of time, position, magnitude, text description. Mention modality vocabulary from 2.1 without dwelling: in-situ, remote sensing, model output, geophysical (indirect subsurface). The 2.13 capstone joins the two containers (extracting raster covariates at station locations), so both matter to every team. Implementation names for the notebook, not the slide: NumPy/Xarray for arrays, pandas for data frames.</p>
@@ -383,8 +544,11 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-same-field-on-disk" class="slide level2 smaller">
-<h2>The same field, on disk</h2>
+<section id="one-temperature-field-stored-as-csv-and-as-parquet" class="slide level2 smaller">
+<h2>One temperature field stored as CSV and as Parquet</h2>
+<div class="badge-row">
+<p><span class="gb src">🖥️ Model &amp; simulation</span> <span class="gb sys air">🌤️ Atmosphere</span> <span class="gb disc air">🌡️ Atmospheric &amp; climate science</span></p>
+</div>
 <div class="big-number">
 <p>133 kB <span class="unit">as CSV: every number spelled out in text</span></p>
 </div>
@@ -395,10 +559,10 @@
 <p>One 40 × 80 temperature-anomaly field, 3,200 grid cells; synthetic (mlgeo_synth), measured in the executed 2.2 notebook.</p>
 </div>
 <div class="takeaway">
-<p>Text formats store digits; binary formats store numbers. The gap grows with dataset size.</p>
+<p>CSV writes each value as text characters; Parquet stores typed 8-byte numbers by column and compresses them, four times smaller here.</p>
 </div>
 <aside class="notes">
-<p>These are the notebook’s own measured numbers; students reproduce them in the exercise. Why the factor of four: CSV writes “9.932382” as eight characters plus separators; Parquet stores an 8-byte float, columnwise, then compresses. At 3,200 cells the gap is 100 kB and nobody cares; at a decade of satellite fields it is the difference between an archive that is usable and one that is not. Also name what CSV throws away: the dtype (everything is text until re-parsed) and the metadata (units live in a README, if anywhere). CSV remains fine for small, human-inspected tables, and the course data gallery uses it deliberately.</p>
+<p>These are the notebook’s own measured numbers; students reproduce them in the exercise. The badges describe what the field imitates (model output for the atmosphere); it is synthetic and has no real coordinates, so no map. Why the factor of four: CSV writes “9.932382” as eight characters plus separators; Parquet stores an 8-byte float, columnwise, then compresses. At 3,200 cells the gap is 100 kB and nobody cares; at a decade of satellite fields it is the difference between an archive that is usable and one that is not. Also name what CSV throws away: the dtype (everything is text until re-parsed) and the metadata (units live in a README, if anywhere). CSV remains fine for small, human-inspected tables, and the course data gallery uses it deliberately.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -411,8 +575,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="a-format-is-a-set-of-promises" class="slide level2">
-<h2>A format is a set of promises</h2>
+<section id="four-formats-for-the-same-field" class="slide level2 smaller">
+<h2>Four formats for the same field</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -449,11 +613,15 @@
 </tr>
 </tbody>
 </table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a>table.to_csv(<span class="st">'data/temperature_anomaly.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-2"><a href=""></a>table.to_parquet(<span class="st">'data/temperature_anomaly.parquet'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-3"><a href=""></a>ds.to_netcdf(<span class="st">'data/temperature_anomaly.nc'</span>)</span>
+<span id="cb1-4"><a href=""></a>ds.to_zarr(<span class="st">'data/temperature_anomaly.zarr'</span>, mode<span class="op">=</span><span class="st">'w'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="takeaway">
-<p>The binary formats tie at this size; they differ in what they promise.</p>
+<p>Parquet, netCDF and Zarr store this field in 30 to 34 kB; netCDF and Zarr also keep units and coordinates, and Zarr splits the array into chunks read separately.</p>
 </div>
 <aside class="notes">
-<p>Read the column, then the promises. netCDF: built by the climate community; the file carries its own dimensions, units, and attributes, so open it anywhere and it explains itself; netCDF4 is HDF5 underneath (the notebook opens the same file with both libraries). Zarr: not one file but a directory of compressed chunks plus small metadata, so a cloud object store can serve a thousand parallel readers each grabbing only their chunk, which is exactly the access pattern netCDF/HDF5 are slow at. Honorable mentions from 2.1 for the notes-curious: GeoTIFF/COG for rasters (the notebook’s Natural Earth relief map, real data), GeoJSON/GeoParquet for vector geometries (the four Cascade volcanoes), STAC for catalogs. Rule of thumb: tables → CSV small / Parquet large; arrays → netCDF local / Zarr cloud.</p>
+<p>Read the size column, then the ‘built for’ column. The code is from the 2.2 notebook: table is the field flattened to one data sample per grid cell, ds the labeled array. netCDF: built by the climate community; the file carries its own dimensions, units, and attributes, so open it anywhere and it explains itself; netCDF4 is HDF5 underneath (the notebook opens the same file with both libraries). Zarr: not one file but a directory of compressed chunks plus small metadata, so a cloud object store can serve a thousand parallel readers each grabbing only their chunk, which is exactly the access pattern netCDF/HDF5 are slow at. Honorable mentions from 2.1 for the notes-curious: GeoTIFF/COG for rasters (the notebook’s Natural Earth relief map, real data), GeoJSON/GeoParquet for vector geometries (the four Cascade volcanoes), STAC for catalogs. Rule of thumb: tables → CSV small / Parquet large; arrays → netCDF local / Zarr cloud.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -466,8 +634,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="where-the-first-dataset-comes-from" class="slide level2 smaller">
-<h2>Where the first dataset comes from</h2>
+<section id="gnss-stations-p395-and-p563-location-and-velocity" class="slide level2 smaller">
+<h2>GNSS stations P395 and P563: location and velocity</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><img data-src="figs/1.7_get_geodetic_gnss/gnss_stations_map_slide.png" height="700"></p>
@@ -482,7 +650,7 @@
 </div>
 </div></div>
 <div class="takeaway">
-<p>The same instrument records different processes at the two sites: plate-boundary deformation at both, and land subsidence at P563.</p>
+<p>Both stations record plate-boundary motion; P563 also subsides 7.2 mm/yr above a pumped aquifer.</p>
 </div>
 <aside class="notes">
 <p>Two minutes; every dataset in this course is shown with its place and its physics. P395 (45.02°N, 123.86°W): MIDAS east +6.9 ± 0.2, north +10.7 ± 0.2, up +0.2 ± 0.4 mm/yr relative to stable North America; the northeast motion is commonly attributed to elastic loading of the coast while the megathrust is locked, with a contribution from rotation of the Oregon forearc (McCaffrey et al., 2013). P563 (35.42°N, 119.42°W): east −11.9, north +14.3, up −7.2 mm/yr; the northwest motion reflects shear across the Pacific–North America plate boundary zone, and the subsidence is consistent with groundwater extraction from the Central Valley aquifer system. Point back to Monday’s coupling of systems: at P563 the land-water system moves the solid Earth, so one GNSS record carries two system labels (<span class="gb sys water">💧 Land water</span> as well). All values come from NGL’s files (llh.out and midas.NA.txt), fetched by figscripts/gnss_stations_map.py.</p>
@@ -498,17 +666,17 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-first-real-dataset" class="slide level2">
-<h2>The first real dataset</h2>
+<section id="daily-east-positions-of-p395-and-p563-2006-to-2026" class="slide level2">
+<h2>Daily east positions of P395 and P563, 2006 to 2026</h2>
 <div class="badge-row">
 <p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📐 Geodesy</span></p>
 </div>
-<img data-src="figs/1.7_get_geodetic_gnss/fig_01.png" class="r-stretch">
+<img data-src="figs/lec04_gnss_series/p395_p563_east_slide.png" class="r-stretch">
 <div class="takeaway">
-<p>Plate motion measured daily to a few millimeters: 7,496 daily positions at P395 since 2006 (NGL, IGS20 frame).</p>
+<p>7,496 daily positions at P395 and 7,555 at P563; in the IGS20 frame they move east at −6.4 and −23.5 mm/yr (NGL MIDAS).</p>
 </div>
 <aside class="notes">
-<p>The course’s first real dataset; savor it. Each point is one daily position solution; the y-axis is east displacement relative to the first day. The smooth drift is plate motion in the IGS20 global reference frame (define: the current international terrestrial reference frame; positions are relative to the whole Earth, so trends are real plate velocities). At P395, NGL’s MIDAS solution gives an east rate of −6.4 ± 0.2 mm/yr in this IGS20 frame (westward), and +6.9 mm/yr relative to stable North America, as on the map slide; students fit it themselves, with honest error bars, in section 2.6 on Monday Oct 12, and compare with NGL’s value. Look closer: seasonal wiggles from water and snow loading, and small offsets from equipment changes or earthquakes; every later lesson (trend fitting, gap repair, splits) returns to this station. Credit aloud: Nevada Geodetic Laboratory, Blewitt et al.&nbsp;2018.</p>
+<p>The course’s first real dataset. Each point is one daily position solution; the y-axis is east position relative to the first day, in millimeters. The smooth drift is plate motion in the IGS20 global reference frame (define: the current international terrestrial reference frame; positions are relative to the whole Earth, so trends are real plate velocities). At P395, NGL’s MIDAS solution gives an east rate of −6.4 ± 0.2 mm/yr in this IGS20 frame (westward), and +6.9 mm/yr relative to stable North America, as on the map slide; P563 moves east at −23.5 ± 0.2 mm/yr in IGS20 and −11.9 mm/yr relative to North America; students fit it themselves, with honest error bars, in section 2.6 on Monday Oct 12, and compare with NGL’s value. Look closer: seasonal wiggles from water and snow loading, and small offsets from equipment changes or earthquakes; every later lesson (trend fitting, gap repair, splits) returns to this station. Credit aloud: Nevada Geodetic Laboratory, Blewitt et al.&nbsp;2018. Counts and rates were refetched on 2026-10-09 from NGL’s tenv3 files (P395.tenv3 last modified 2026-10-04) and midas.IGS.txt; the figure is regenerated by figscripts/gnss_east_series.py, a lecture-scale replot of the 1.7 notebook’s first figure.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -521,18 +689,21 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="frozen-data-living-data" class="slide level2">
-<h2>Frozen data, living data</h2>
+<section id="checksums-for-a-released-file-and-for-an-updated-file" class="slide level2">
+<h2>Checksums for a released file and for an updated file</h2>
 <ul>
-<li><strong>Frozen file</strong> (a released dataset): pin its checksum, so every future run verifies it got the same bytes</li>
-<li><strong>Living file</strong> (NGL appends a new solution daily): pin nothing, and <em>log</em> the checksum you actually received</li>
-<li>Publishing or grading? Freeze a snapshot and pin <em>that</em></li>
+<li><strong>Released file</strong> (Natural Earth basemap): pin its checksum, so every run verifies the same bytes</li>
+<li><strong>Updated file</strong> (NGL tenv3, rewritten as new days arrive): log the checksum of the copy you received</li>
+<li>For a publication or a grade, freeze a snapshot and pin its checksum</li>
 </ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a>path <span class="op">=</span> pooch.retrieve(url<span class="op">=</span>BASE_URL.<span class="bu">format</span>(station<span class="op">=</span>station), known_hash<span class="op">=</span><span class="va">None</span>,  <span class="co"># updated file</span></span>
+<span id="cb2-2"><a href=""></a>                      fname<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>station<span class="sc">}</span><span class="ss">.tenv3"</span>, path<span class="op">=</span>DATA_DIR)</span>
+<span id="cb2-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>station<span class="sc">}</span><span class="ss">.tenv3 sha256:</span><span class="sc">{</span>pooch<span class="sc">.</span>file_hash(path)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="takeaway">
-<p>Either way, your analysis names its exact input: that is provenance, and it costs one line.</p>
+<p>Each run records the checksum of the exact file it read; P395.tenv3 last changed on 4 October 2026, so a copy from September is a different file.</p>
 </div>
 <aside class="notes">
-<p>This is 1.6/1.7’s quiet lesson and the habit HW1 grades. Define checksum aloud: a fingerprint of the file’s bytes; if one bit changes, the fingerprint changes. The download tool (pooch, named in the notebook) fetches, caches, and verifies in three lines. The subtlety students hit: a pinned hash on a living file <em>fails tomorrow by design</em>: the file really changed; that failure is information, not a bug. Second habit from 1.6: every dataset carries a license and a citation; carry both forward into your repository. Ask: who can name the license of the data they plan to use? Most cannot, and that is this week’s homework moment.</p>
+<p>This is the habit from 1.6 and 1.7 that HW1 grades; the code is notebook 1.7’s fetch_tenv3, and the drought example showed why it matters: today’s NGL files give 4.6 mm where the 2014 processing gave 5 mm. Define checksum aloud: a fingerprint of the file’s bytes; if one bit changes, the fingerprint changes. The download tool (pooch, named in the notebook) fetches, caches, and verifies in three lines. The subtlety students hit: a pinned hash on an updated file fails the next time NGL rewrites it, because the file really changed; read that failure as a record of a new version. Second habit from 1.6: every dataset carries a license and a citation; carry both forward into your repository. Ask: who can name the license of the data they plan to use? Most cannot, and that is this week’s homework moment.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -545,8 +716,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="where-each-stream-lives" class="slide level2 smaller compact">
-<h2>Where each stream lives</h2>
+<section id="stream-container-and-format-for-todays-datasets" class="slide level2 smaller compact">
+<h2>Stream, container, and format for today’s datasets</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 25%">
@@ -584,10 +755,10 @@
 </tbody>
 </table>
 <div class="takeaway">
-<p>Naming your streams and formats is the first line of your project’s data card; start it today.</p>
+<p>The first section of a project data card names each stream, its container, and its file format.</p>
 </div>
 <aside class="notes">
-<p>The lecture in one screen; leave it up for questions. Each row: the stream (from slide 3), the dataset the students touched or will touch today, the container (slide 4), and format choices with their size/promise trade-offs (slides 5–6). Connect forward: chapter 2 ends with the AI-ready checklist (2.13) and the final-project data assignment (2.20), a data card documenting exactly these choices plus provenance and licensing. The vocabulary students leave with: stream, container, format, checksum, data card.</p>
+<p>The lecture in one screen; leave it up for questions. Each row: the stream, the dataset the students touched or will touch today, the container, and format choices with their size and feature trade-offs. Connect forward: chapter 2 ends with the AI-ready checklist (2.13) and the final-project data assignment (2.20), a data card documenting exactly these choices plus provenance and licensing. The vocabulary students leave with: stream, container, format, checksum, data card.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -609,7 +780,7 @@
 <li>Browse the data gallery (1.6): pick one dataset near your project; find its license and citation, and give it its three labels</li>
 </ol>
 <div class="dim">
-<p>Friday: cleaning tables without rewriting the geology (2.3–2.4) · Ch 1 quiz closes Thu Oct 8 · HW1 due Mon Oct 12</p>
+<p>Friday: cleaning tabular data (2.3–2.4) · Ch 1 quiz closes Thu Oct 8 · HW1 due Mon Oct 12</p>
 </div>
 <aside class="notes">
 <p>Timing for the 80-minute block (10:00–11:20): no pulse talks yet this week. Intro and admin about 5 minutes, peer rerun 10, deck 20 (including the curation map and the station map), guided notebook 35, synthesis 10 collecting task-4 answers: each team names one dataset, its stream, its license, and its three labels. Implementation names live here and in the notebook: pandas read_csv/to_parquet, rasterio for GeoTIFF, geopandas for GeoJSON, xarray to_netcdf/to_zarr, h5py to peek inside HDF5, pooch.retrieve with known_hash. The Natural Earth raster is a 50 MB download that unpacks to about 170 MB; have neighbors share if the room’s wifi chokes. Remind: Ch 1 quiz closes tomorrow; HW1 (workbench) due Monday; paper-pulse sign-ups are open on Canvas.</p>

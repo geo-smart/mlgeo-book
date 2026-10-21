@@ -213,7 +213,131 @@
 <p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/ai-in-your-workflow">1.8 AI in your workflow</a> + <a href="https://geo-smart.github.io/mlgeo-book/llms-to-agents">6.1 From language models to agents</a></p>
 </div>
 <aside class="notes">
-<p>Continue the rubric thread from Friday. The session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first score the paper they found, then learn where an agent’s environment and sandbox fit, run a calibration experiment, and finish by writing an agent instruction file and checking whether an agent follows it. The class should leave with rubric version 0.2, an evidence-based AI policy, and a first AGENTS.md. The peer rerun moves to the start of Wednesday’s session, when more repositories will have a smoke test. Suggested 80-minute allocation: rubric checkpoint 8 minutes; executable claims and agent architecture 17; failure modes 10; calibration experiment, including the P395 context slide, 20; policy, governance, and rubric extension 10; instruction file and compliance check 10; synthesis 5.</p>
+<p>Continue the rubric thread from Friday. The session has one intellectual task: extend the class rubric so it covers AI-assisted work. Students first see one published test of a language model against expert ground truth, score the paper they found, then learn where an agent’s environment and sandbox fit, run a calibration experiment, and finish by writing an agent instruction file and checking whether an agent follows it. The class should leave with rubric version 0.2, an evidence-based AI policy, and a first AGENTS.md. The peer rerun moves to the start of Wednesday’s session, when more repositories will have a smoke test. Suggested 80-minute allocation: literature 6 minutes; rubric checkpoint 8; executable claims and agent architecture 13; failure modes 8; calibration experiment, including the P395 context slide, 20; policy, governance, and rubric extension 10; instruction file and compliance check 10; synthesis 5.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="literature-example-gpt-4-and-ipcc-confidence-labels" class="slide level2 smaller">
+<h2>Literature example: GPT-4 and IPCC confidence labels</h2>
+<div class="badge-row">
+<p><span class="gb src">🗂️ Catalog &amp; compiled product</span> <span class="gb sys air">🌤️ Atmosphere</span> <span class="gb disc air">🌡️ Atmospheric &amp; climate science</span></p>
+</div>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="lit-card">
+<p><span class="lit-msg">Given 300 statements from the IPCC Sixth Assessment Report, GPT-4 assigned the authors’ confidence level correctly 47% of the time and rated low-confidence statements as medium on average.</span></p>
+<p><span class="lit-cite">Lacombe, Wu &amp; Dilworth (2023). ClimateX. NeurIPS Workshop on Tackling Climate Change with Machine Learning, arXiv:2311.17107.</span></p>
+</div>
+</div><div class="column" style="width:60%;">
+<div class="records">
+<table class="caption-top">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 68%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>report</th>
+<th>page</th>
+<th>statement (one data sample, ClimateX test split)</th>
+<th>IPCC confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>WGI</td>
+<td>203</td>
+<td>Over the period 1982–2016, marine heatwaves have very likely doubled in frequency and are increasing in intensity</td>
+<td>very high</td>
+</tr>
+<tr class="even">
+<td>WGI</td>
+<td>154</td>
+<td>Future projections indicate continuing decline in seasonal snow duration, glacial mass, and permafrost area by mid-century</td>
+<td>high</td>
+</tr>
+<tr class="odd">
+<td>WGI</td>
+<td>101</td>
+<td>Global land precipitation has likely increased since 1950, with a faster increase since the 1980s</td>
+<td>medium</td>
+</tr>
+<tr class="even">
+<td>WGI</td>
+<td>122</td>
+<td>For global warming up to 2°C above 1850–1900 levels, paleoclimate records do not indicate abrupt changes in the carbon cycle</td>
+<td>low</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div>
+<img data-src="figs/lit_climatex/climatex_panels.png" class="r-stretch">
+<div class="takeaway">
+<p>With four labeled examples in the prompt, GPT-4 labeled 5 of the 50 low-confidence statements as low, and it answered all 300 prompts.</p>
+</div>
+<aside class="notes">
+<p>Four minutes; this is the one paper the lecture tells in full, because it is a published test of a language model against ground truth on Earth-science content, with the evaluation set open. Geoscience first: every statement in an IPCC assessment report carries a calibrated confidence level (low, medium, high, very high) that the author teams assign from the amount of evidence and the degree of agreement (Mastrandrea et al., 2010, the IPCC uncertainty guidance note). Confidence is a separate scale from likelihood: the medium-confidence row above says “likely”, which is a likelihood term. Lacombe, Wu and Dilworth (Stanford) extracted 8,094 sentences that end in a confidence label from the three AR6 Working Group reports and released them as ClimateX (Hugging Face rlacombe/ClimateX, CC BY 4.0). Then the table: one data sample is one sentence, with report, page, the sentence, and the IPCC label; the four rows are real WGI test statements. Left panel: low confidence is rare in the reports, 291 of 8,094 statements, so the 300-statement test split over-samples it (50 low, 100 medium, 100 high, 50 very high). The experiment: each statement went to GPT-3.5-turbo, GPT-4 and Cohere Command-XL with the instruction to return a confidence level, zero-shot and with four labeled examples drawn from the training split, one per class. Right panel, our re-plot of the class means in their Table 5: GPT-4 with examples gives low-confidence statements a mean label of 1.06 (medium) where the IPCC gives 0, and pulls very-high statements down to 1.98; the model compresses everything toward medium and high. Accuracy was 47.0% (Table 6), against 36.3% for three non-expert humans; recall on the low class was 0.10, that is 5 of 50. GPT-4 never answered “I don’t know” (support 300 of 300). The WGI curve (report released August 2021, before the GPT-3.5 training cutoff) is steeper than the WGII and WGIII curve (released 2022): the authors cannot tell memorization from skill, because the training data are not disclosed. Three points for today. The ground truth is an independent record written by experts, not another model. The model gave a confident answer to every item, so the confidence of an answer carries no evidence. And a test item the model may have read during training measures recall; the P395 velocity that students will request later in this session is published on the NGL website. Limitations to say aloud: this is a workshop paper, the per-statement model answers were not released, so the figure re-plots published class means and cannot be recomputed from the dataset; the dataset and the counts are rebuilt from the open file. Everything is regenerated by figscripts/climatex_ipcc_confidence.py, which parses Tables 5 and 6 from the arXiv HTML. No map: the statements are global assessments without coordinates.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tests-of-ai-assistants-against-independent-records" class="slide level2 smaller">
+<h2>Tests of AI assistants against independent records</h2>
+<!-- Literature anchors for lecture 3, second literature slide (the first,
+     Lacombe et al. 2023 / ClimateX, is told in full in the deck). Edit THIS
+     file to update the papers; the deck includes it verbatim. Keep four cards:
+     a number or term first, one sentence, then the citation. Liu, Sharma and
+     Zheng are the failure-mode anchors of book section 6.1 (references.bib:
+     liu2024lost, sharma2023sycophancy, zheng2023judging); Zheng is in the notes. -->
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="lit-card">
+<p><span class="lit-num">84 posts</span></p>
+<p><span class="lit-msg">Gemini 1.5 Pro rated shaking intensity from social-media posts about 7 earthquakes; most estimates fell inside the range of USGS Did You Feel It? reports, with the largest mismatch for the 2024 M 7.4 Hualien, Taiwan event.</span></p>
+<p><span class="lit-cite">Mousavi, S. M., et al.&nbsp;(2025). Gemini and physical world: Large language models can estimate the intensity of earthquake shaking from multimodal social media posts. <em>Geophysical Journal International</em>, 240, 1281–1294.</span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num bad">55% → 18%</span></p>
+<p><span class="lit-msg">Share of fabricated works among the citations in short papers written by GPT-3.5 (222 citations) and GPT-4 (414), on 42 topics.</span></p>
+<p><span class="lit-cite">Walters, W. H., &amp; Wilder, E. I. (2023). Fabrication and errors in the bibliographic citations generated by ChatGPT. <em>Scientific Reports</em>, 13, 14045.</span></p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="lit-card">
+<p><span class="lit-num bad">56.1%</span></p>
+<p><span class="lit-msg">With 20 or 30 documents in the prompt and the answer in the middle one, GPT-3.5-Turbo scored below its 56.1% with no documents at all.</span></p>
+<p><span class="lit-cite">Liu, N. F., Lin, K., Hewitt, J., et al.&nbsp;(2024). Lost in the middle: How language models use long contexts. <em>Transactions of the Association for Computational Linguistics</em>, 12, 157–173.</span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num bad">98%</span></p>
+<p><span class="lit-msg">Asked “Are you sure?” after a correct answer, Claude 1.3 wrongly admitted a mistake on 98% of questions.</span></p>
+<p><span class="lit-cite">Sharma, M., Tong, M., Korbak, T., et al.&nbsp;(2023). Towards understanding sycophancy in language models. arXiv:2310.13548 (ICLR 2024).</span></p>
+</div>
+</div></div>
+<div class="takeaway">
+<p>Each study scored model output against a record the model did not write: felt reports, bibliographic databases, the document that holds the answer, or the model’s own first answer.</p>
+</div>
+<aside class="notes">
+<p>Two minutes, one sentence per card. Mousavi et al.&nbsp;(2025, GJI): Gemini 1.5 Pro read about 84 YouTube, X and TikTok posts about seven earthquakes between 2011 and 2024 (Tohoku, Noto, Hualien, Lake Almanor, Malibu, Prague Oklahoma, Tewksbury New Jersey) and returned a modified Mercalli intensity; the estimates generally fell within the interquartile range of USGS Did You Feel It? reports for the same city, and the largest discrepancy was the M 7.4 Hualien event, which the authors attribute to uncertain post locations and sparse DYFI data in the region. Their posts and model outputs are not openly available, which is why this deck tells ClimateX in full instead. A geoscience extraction study in the same spirit: Agrawal, Hough, Mousavi et al.&nbsp;(2026, SRL, doi:10.1785/0220250362) used Gemini 2.5 Pro to pull addresses and the originally assigned intensities from the 1957 Daly City felt reports and produced more than 2,300 geocoded intensity reports. Walters and Wilder (2023): short literature reviews on 42 topics; 55% of 222 GPT-3.5 citations and 18% of 414 GPT-4 citations were fabricated, and 43% of the real GPT-3.5 citations had substantive errors (24% for GPT-4). Their review table lists Day (2023, The Professional Geographer, doi:10.1080/00330124.2023.2190373): 94% of 18 ChatGPT citations in geography papers were fabricated (we could not open Day’s paper to check it directly). Liu et al.&nbsp;(2024): with the answer document in the middle of 20 or 30 retrieved documents, GPT-3.5-Turbo did worse than with no documents (56.1%); this is the attention row on the error slide. Sharma et al.&nbsp;(2023): after a correct answer, the question “Are you sure?” made Claude 1.3 apologize and admit a mistake on 98% of questions (GPT-4: 42%); this is the agreement row. Zheng et al.&nbsp;(2023, NeurIPS Datasets and Benchmarks) on models grading models returns in the critical-evaluation lab (6.2, Oct 23).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -240,32 +364,7 @@
 <p>A score whose interpretation is uncertain indicates where the rubric needs a clearer criterion or additional evidence.</p>
 </div>
 <aside class="notes">
-<p>Give pairs eight minutes. Each score needs a URL, file, passage, or explicit absence. Ask for two challenged scores and let the room decide what evidence would move each score. This creates the need for the agent-specific criteria later. A paper can provide code and still score poorly if the environment, data version, or evaluation split cannot be reconstructed.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="from-available-artifacts-to-an-executable-claim" class="slide level2">
-<h2>From available artifacts to an executable claim</h2>
-<p>Code availability answers only one question: <strong>Can the files be inspected?</strong></p>
-<p>A computational claim also depends on:</p>
-<ul>
-<li>the data object and preprocessing state</li>
-<li>the software environment and external services</li>
-<li>the order of operations and configuration</li>
-<li>the evaluation target and tolerance for agreement</li>
-<li>the hardware or numerical behavior that may affect the result</li>
-</ul>
-<aside class="notes">
-<p>Distinguish an open repository from a reproducible result. A repository may omit large data, credentials, preprocessing steps, package versions, configuration files, or the command that produced the reported output. Conversely, a well-documented workflow may depend on restricted data and still support a transparent evaluation of what can and cannot be reproduced. Ask students to state the smallest executable claim for their paper, such as “recreate Figure 3 within the plotted uncertainty” rather than “reproduce the paper.”</p>
+<p>Give pairs eight minutes. Each score needs a URL, file, passage, or explicit absence. Ask for two challenged scores and let the room decide what evidence would move each score. This creates the need for the agent-specific criteria later. A paper can provide code and still score poorly if the environment, data version, or evaluation split cannot be reconstructed. Then make the step from available artifacts to an executable claim (this was a separate slide; it is now said aloud). Code availability answers one question: can the files be inspected? A computational claim also depends on the data object and its preprocessing state, the software environment and external services, the order of operations and configuration, the evaluation target and the tolerance for agreement, and the hardware or numerical behavior that may affect the result. Ask each pair to state the smallest executable claim for their paper, such as “recreate Figure 3 within the plotted uncertainty” rather than “reproduce the paper.” A well-documented workflow can depend on restricted data and still support a transparent account of what can and cannot be reproduced.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -280,42 +379,13 @@
 </section>
 <section id="agent-tools-environment-sandbox" class="slide level2">
 <h2>Agent, tools, environment, sandbox</h2>
-<p><strong>Agent = language model + tools + a loop over observations</strong></p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Layer</th>
-<th>Role in an agent run</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Tools</td>
-<td>actions such as reading files, running Python, or querying a catalog</td>
-</tr>
-<tr class="even">
-<td>Environment</td>
-<td>exact Python, packages, libraries, and command-line programs</td>
-</tr>
-<tr class="odd">
-<td>Sandbox</td>
-<td>allowed files, network destinations, tools, and write locations</td>
-</tr>
-<tr class="even">
-<td>Hardware</td>
-<td>CPU, GPU, memory, storage, and network underneath the run</td>
-</tr>
-</tbody>
-</table>
+<p><span class="dim">An agent is a language model, a set of tools, and a loop over observations (book section 6.1).</span></p>
+<img data-src="figs/lit_agents/agent_layers.png" class="r-stretch">
 <div class="takeaway">
-<p>The environment determines which software can execute. The sandbox constrains which resources that software may reach.</p>
+<p><code>ModuleNotFoundError</code> is an environment failure, <code>Permission denied</code> a sandbox failure, and <code>CUDA out of memory</code> a hardware failure; in all three the model’s code can be correct.</p>
 </div>
 <aside class="notes">
-<p>Connect directly to Friday’s vocabulary. An agent can write correct Python and still fail because the sandbox blocks the data path or network. It can have access but compute a different result because the package version changed. It can have the right environment and still exhaust memory. Ask students to classify three errors aloud: “permission denied,” “module not found,” and “CUDA out of memory.” This makes the layers usable rather than definitional. The assigned literature supplies measured examples for the failure-mode slide: Liu et al.&nbsp;on attention, Sharma et al.&nbsp;on agreement, and Zheng et al.&nbsp;on evaluation bias.</p>
+<p>Connect directly to Friday’s vocabulary. An agent can write correct Python and still fail because the sandbox blocks the data path or network. It can have access but compute a different result because the package version changed. It can have the right environment and still exhaust memory. Before revealing the red messages, ask students to classify three errors aloud: “permission denied,” “module not found,” and “CUDA out of memory.” Walk the diagram once with the P395 task: the model decides to read the CSV (action), the read-file tool runs inside the pixi environment, inside a sandbox that may or may not allow the network call to geodesy.unr.edu, on a laptop; the output or the error comes back as an observation, and the model chooses the next action. The environment determines which software can run; the sandbox determines which files, hosts and write locations that software may reach; the hardware sets memory and speed. Diagram: figscripts/agent_layers.py (a schematic, no data). The literature cards supply measured examples for the error slide: Liu et al.&nbsp;on attention and Sharma et al.&nbsp;on agreement.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -362,9 +432,11 @@
 </tr>
 </tbody>
 </table>
-<p>A complete execution log does not compensate for a scientific question that was underspecified at the start.</p>
+<div class="takeaway">
+<p>For P395 the specification decides the number: NGL MIDAS gives an east rate of −6.4 mm/yr in the IGS20 frame and +6.9 mm/yr relative to stable North America.</p>
+</div>
 <aside class="notes">
-<p>This distinction supports a more complete evaluation. Execution errors include wrong paths, package changes, or arithmetic bugs. Specification errors include an ambiguous component, date interval, or treatment of offsets. Interpretation errors include treating a seasonal signal as tectonic acceleration. Agent traces often document execution better than specification or interpretation. The rubric should therefore evaluate all three stages.</p>
+<p>This distinction supports a more complete evaluation. Execution errors include wrong paths, package changes, or arithmetic bugs. Specification errors include an ambiguous component, date interval, or treatment of offsets. Interpretation errors include treating a seasonal signal as tectonic acceleration. Agent traces often document execution better than specification or interpretation, and a complete execution log cannot repair a question that was underspecified at the start. The rubric should therefore evaluate all three stages. The two rates on the takeaway are from the MIDAS files midas.IGS.txt and midas.NA.txt (https://geodesy.unr.edu/gps_timeseries/IGS20/midas/), retrieved 2026-10-09: east −6.414 ± 0.186 and +6.882 ± 0.186 mm/yr.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -416,34 +488,10 @@
 </tbody>
 </table>
 <div class="takeaway">
-<p>The rubric evaluates evidence and decision quality rather than confidence, fluency, or length of explanation.</p>
+<p>Each countermeasure leaves evidence in the transcript: a cited file and line, an alternative hypothesis, a comparison with a known value, or a resolved DOI.</p>
 </div>
 <aside class="notes">
-<p>Keep this short. The goal is to generate testable rubric evidence. Long reasoning may make a failure more persuasive without making it less wrong. Tools improve arithmetic only when the agent uses them correctly. A successful command does not validate the scientific judgment that selected the command. Link each row to a later graded habit: file references, hypothesis checks, evaluation against known cases, and citation resolution.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="long-context-and-incomplete-evidence" class="slide level2">
-<h2>Long context and incomplete evidence</h2>
-<p>An agent may receive an entire repository while using only a small fraction of it effectively.</p>
-<ul>
-<li>Retrieval and attention determine which passages influence the next action</li>
-<li>Files listed in a trace may not have influenced the conclusion equally</li>
-<li>Summaries can omit exceptions, warnings, and negative results</li>
-<li>A long reasoning trace records a proposed path, not a guarantee of causal faithfulness</li>
-</ul>
-<p>An evaluation should test specific claims against source files and outputs rather than infer completeness from trace length.</p>
-<aside class="notes">
-<p>Connect this slide to Liu et al.’s “lost in the middle” result. The practical point is not that long contexts always fail. It is that nominal access to a file does not establish that relevant content influenced the answer. Ask students how they would test an agent’s claim that it “reviewed the whole repository.” Useful checks include requesting exact file and line references, sampling omitted files, and designing questions whose answers occur in different context positions.</p>
+<p>Keep this short. The goal is to generate testable rubric evidence. Long reasoning may make a failure more persuasive without making it less wrong. Tools improve arithmetic only when the agent uses them correctly. A successful command does not validate the scientific judgment that selected the command. Link each row to a later graded habit: file references, hypothesis checks, evaluation against known cases, and citation resolution. Attention (Liu et al., 2024, card on slide 3): an agent may receive an entire repository and use only part of it; files listed in a trace may not have influenced the conclusion equally, summaries can drop exceptions and negative results, and a long reasoning trace records a proposed path, not a guarantee that it caused the answer. Ask how to test an agent’s claim that it “reviewed the whole repository”: request exact file and line references, sample the files it did not cite, and ask questions whose answers sit at different positions in the context. Agreement (Sharma et al., 2023): a user’s framing, or a challenge such as “are you sure?”, moves the answer. Judgment: ClimateX on slide 2, where every answer was given with the same confidence. Hallucination: Walters and Wilder (2023), 55% fabricated citations for GPT-3.5.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -463,10 +511,10 @@
 </div>
 <img data-src="figs/1.7_get_geodetic_gnss/p395_context_slide.png" class="r-stretch">
 <div class="takeaway">
-<p>Relative to stable North America, the Oregon coast at P395 moves northeast at about 13 mm/yr while the Cascadia megathrust offshore is locked.</p>
+<p>P395 moves 12.7 mm/yr northeast relative to stable North America (NGL MIDAS).</p>
 </div>
 <aside class="notes">
-<p>Two minutes; this slide gives the experiment its physical meaning. The badges are the labels introduced in session 1. P395 sits in the Oregon Coast Range at 45.02°N, 123.86°W (NGL llh.out). NGL’s MIDAS solution, retrieved 2026-10-05, gives east +6.9 ± 0.2 and north +10.7 ± 0.2 mm/yr relative to stable North America, and up +0.2 ± 0.4 mm/yr, so no vertical rate is resolved. The northeast motion is commonly attributed to two contributions: elastic shortening of the upper plate while the subduction interface is locked between earthquakes, and clockwise rotation of the Oregon forearc (McCaffrey et al., 2013, JGR, doi:10.1029/2012JB009473). The annual oscillations in both components are seasonal signals, such as hydrological loading, that a velocity estimate must either model or average over. The class CSV is in the IGS20 frame, not the North-America-fixed frame drawn here; the next slide makes the frame part of the specification.</p>
+<p>Two minutes; this slide gives the experiment its physical meaning. The badges are the labels introduced in session 1. P395 sits in the Oregon Coast Range at 45.02°N, 123.86°W (NGL llh.out). NGL’s MIDAS solution (midas.NA.txt, retrieved 2026-10-09; the 2026-10-05 file gave the same values at this precision) gives east +6.9 ± 0.2 and north +10.7 ± 0.2 mm/yr relative to stable North America, 12.7 mm/yr in all, and up +0.2 ± 0.4 mm/yr, so no vertical rate is resolved. The motion is northeast while the Cascadia megathrust offshore is locked. The northeast motion is commonly attributed to two contributions: elastic shortening of the upper plate while the subduction interface is locked between earthquakes, and clockwise rotation of the Oregon forearc (McCaffrey et al., 2013, JGR, doi:10.1029/2012JB009473). The annual oscillations in both components are seasonal signals, such as hydrological loading, that a velocity estimate must either model or average over. The class CSV is in the IGS20 frame, not the North-America-fixed frame drawn here; the next slide makes the frame part of the specification. Figure: figscripts/p395_context.py fetches llh.out, midas.NA.txt and the P395 NA-fixed tenv3 series from NGL at run time and stamps the download date.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -488,9 +536,12 @@
 <li>regression model, units, and reported precision</li>
 <li>tolerance for agreement and an independently executed implementation</li>
 </ul>
-<p>Then record whether the assistant accessed the intended data, executed code, exposed warnings, and produced a value consistent with the reference.</p>
+<p>The provider’s value, as notebook 1.7 reads it (MIDAS files from NGL):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a>igs <span class="op">=</span> read_midas(fetch_living(<span class="ss">f"</span><span class="sc">{</span>NGL<span class="sc">}</span><span class="ss">/gps_timeseries/IGS20/midas/midas.IGS.txt"</span>, <span class="st">"midas.IGS.txt"</span>))</span>
+<span id="cb1-2"><a href=""></a>na <span class="op">=</span> read_midas(fetch_living(<span class="ss">f"</span><span class="sc">{</span>NGL<span class="sc">}</span><span class="ss">/gps_timeseries/IGS20/midas/midas.NA.txt"</span>, <span class="st">"midas.NA.txt"</span>))</span>
+<span id="cb1-3"><a href=""></a>igs.loc[<span class="st">"P395"</span>, <span class="st">"ve"</span>], na.loc[<span class="st">"P395"</span>, <span class="st">"ve"</span>]   <span class="co"># east, mm/yr: -6.4 (IGS20) and +6.9 (North America fixed)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <aside class="notes">
-<p>The point is not to catch a model making arithmetic mistakes. It is to show that a numerical answer depends on the specification and execution pathway. Two correct programs can disagree if one removes seasonal terms or uses a different interval. The reference frame matters most here: in the IGS20 frame of the class CSV, NGL’s MIDAS east rate for P395 is −6.4 ± 0.2 mm/yr, while relative to stable North America it is +6.9 ± 0.2 mm/yr (both from the MIDAS files retrieved 2026-10-05). The station has not changed; the specification has. Students should compare assumptions before comparing numbers. If the assistant uses a tool, preserve the code and output. If it produces a number without executing code, classify the result separately rather than combining it with tool-based estimates.</p>
+<p>The point is not to catch a model making arithmetic mistakes. It is to show that a numerical answer depends on the specification and execution pathway. Two correct programs can disagree if one removes seasonal terms or uses a different interval. The reference frame matters most here: in the IGS20 frame of the class CSV, NGL’s MIDAS east rate for P395 is −6.4 ± 0.2 mm/yr, while relative to stable North America it is +6.9 ± 0.2 mm/yr (both from the MIDAS files retrieved 2026-10-05, rechecked 2026-10-09: −6.414 ± 0.186 and +6.882 ± 0.186 mm/yr). The station has not changed; the specification has. The code block is copied from notebook 1.7 (cell that builds the station table; read_midas and fetch_living are defined there), with the last line added to pick out P395; it is Wednesday’s notebook, so show it as the reference calculation, not as an exercise. After the run, record whether the assistant accessed the intended data, executed code, exposed warnings, and produced a value within tolerance of the reference. Students should compare assumptions before comparing numbers. If the assistant uses a tool, preserve the code and output. If it produces a number without executing code, classify the result separately rather than combining it with tool-based estimates.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -536,7 +587,7 @@
 </tr>
 </tbody>
 </table>
-<p>A real citation can still fail the relevance or evidence test.</p>
+<p><span class="dim">Walters &amp; Wilder (2023): among the real works that GPT-3.5 cited, 43% carried substantive errors in authors, title, journal or publisher (GPT-4: 24%).</span></p>
 <aside class="notes">
 <p>This protocol separates fabrication from retrieval quality. A paper may exist but use a different data modality or make a different claim. A DOI may resolve while the assistant has altered the title or authors. Record each failure type rather than reporting a single “hallucination” count. This produces a more informative small eval set and reinforces the paper sprint’s evidence trail.</p>
 <style type="text/css">
@@ -562,10 +613,10 @@
 <li>Resolve every DOI and count unsupported citations</li>
 </ol>
 <div class="dim">
-<p>The class will report denominators, not anecdotes: number of attempts, valid tool executions, numerically consistent answers, and verified citations.</p>
+<p>The class reports counts with their denominators: attempts, valid tool executions, answers within tolerance of the MIDAS rate, and verified citations.</p>
 </div>
 <aside class="notes">
-<p>The P395 file is committed in the book repository, so every student who cloned it on Friday already has it; 1.7, which produces it, is not taught until Wednesday. The external reference is NGL’s MIDAS IGS20 solution, not an instructor calculation: east −6.417 ± 0.185 mm/yr, north −3.410 ± 0.158 mm/yr (https://geodesy.unr.edu/gps_timeseries/IGS20/midas/midas.IGS.txt, retrieved 2026-10-05; Blewitt et al., 2016, JGR, doi:10.1002/2015JB012552). Show students where that file is, and note that the CSV ends at 2026.505 while the MIDAS file runs to 2026.716, so small differences are expected. Do not announce a “correct” hallucination rate. Measure what happens in this room with the models students use. Record denominators. For the numeric task, note whether the assistant executed code, whether the environment contained the needed packages, and whether the final number matches the independent computation within a stated tolerance. For citations, distinguish a valid DOI with an irrelevant paper from a DOI that does not resolve.</p>
+<p>The P395 file is committed in the book repository, so every student who cloned it on Friday already has it; 1.7, which produces it, is not taught until Wednesday. The external reference is NGL’s MIDAS IGS20 solution, not an instructor calculation: east −6.414 ± 0.186 mm/yr, north −3.408 ± 0.158 mm/yr (https://geodesy.unr.edu/gps_timeseries/IGS20/midas/midas.IGS.txt, retrieved 2026-10-09; the 2026-10-05 file gave −6.417 ± 0.185 and −3.410 ± 0.158; Blewitt et al., 2016, JGR, doi:10.1002/2015JB012552). Show students where that file is. NGL updates it every week, so the third decimal moves; the committed CSV, refreshed on Oct 7, and the current MIDAS solution both span 2006.067 to 2026.735 (7,496 daily positions), so any difference between a student’s fit and the MIDAS rate comes from the method. Remember the ClimateX lesson from slide 2: the MIDAS rate is on a public web page, so an assistant that answers without running code may be recalling it rather than computing it. Do not announce a “correct” hallucination rate. Measure what happens in this room with the models students use. Record denominators. For the numeric task, note whether the assistant executed code, whether the environment contained the needed packages, and whether the final number matches the independent computation within a stated tolerance. For citations, distinguish a valid DOI with an irrelevant paper from a DOI that does not resolve.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -601,7 +652,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="sandbox-boundaries-and-research-data" class="slide level2">
+<section id="sandbox-boundaries-and-research-data" class="slide level2 smaller">
 <h2>Sandbox boundaries and research data</h2>
 <p>Before giving an agent access to research material, classify both the data and the action.</p>
 <table class="caption-top">
@@ -707,17 +758,17 @@
 <section id="from-rubric-to-agents.md" class="slide level2">
 <h2>From rubric to AGENTS.md</h2>
 <p>An <strong>instruction file</strong> is a plain-text file at the root of a repository that a coding agent reads at the start of every session. AGENTS.md is an open format read by Codex, the GitHub Copilot coding agent, Cursor, Gemini CLI, and others; Claude Code reads it when the project has no CLAUDE.md, and otherwise imports it with <code>@AGENTS.md</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href=""></a><span class="fu"># AGENTS.md for MLGEO2026_UWNETID</span></span>
-<span id="cb1-2"><a href=""></a><span class="fu">## Environment</span></span>
-<span id="cb1-3"><a href=""></a><span class="ss">- </span>Run all code through <span class="in">`pixi run`</span>; add packages only through pixi.toml.</span>
-<span id="cb1-4"><a href=""></a><span class="ss">- </span>Run <span class="in">`pixi run smoke`</span> before reporting any result.</span>
-<span id="cb1-5"><a href=""></a><span class="fu">## Data</span></span>
-<span id="cb1-6"><a href=""></a><span class="ss">- </span>Fetch values that a provider publishes (station coordinates, velocities,</span>
-<span id="cb1-7"><a href=""></a>  catalogs) and cite the URL and retrieval date; do not recompute or retype them.</span>
-<span id="cb1-8"><a href=""></a><span class="ss">- </span>Cite every dataset by DOI in the README.</span>
-<span id="cb1-9"><a href=""></a><span class="fu">## Reporting</span></span>
-<span id="cb1-10"><a href=""></a><span class="ss">- </span>State the reference frame, units, and time window of every number.</span>
-<span id="cb1-11"><a href=""></a><span class="ss">- </span>Mark AI-drafted commits: "AI-assisted: <span class="dt">&lt;</span><span class="kw">tool</span><span class="dt">&gt;</span>, <span class="dt">&lt;</span><span class="kw">what</span><span class="ot"> it drafted</span><span class="dt">&gt;</span>".</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href=""></a><span class="fu"># AGENTS.md for MLGEO2026_UWNETID</span></span>
+<span id="cb2-2"><a href=""></a><span class="fu">## Environment</span></span>
+<span id="cb2-3"><a href=""></a><span class="ss">- </span>Run all code through <span class="in">`pixi run`</span>; add packages only through pixi.toml.</span>
+<span id="cb2-4"><a href=""></a><span class="ss">- </span>Run <span class="in">`pixi run smoke`</span> before reporting any result.</span>
+<span id="cb2-5"><a href=""></a><span class="fu">## Data</span></span>
+<span id="cb2-6"><a href=""></a><span class="ss">- </span>Fetch values that a provider publishes (station coordinates, velocities,</span>
+<span id="cb2-7"><a href=""></a>  catalogs) and cite the URL and retrieval date; do not recompute or retype them.</span>
+<span id="cb2-8"><a href=""></a><span class="ss">- </span>Cite every dataset by DOI in the README.</span>
+<span id="cb2-9"><a href=""></a><span class="fu">## Reporting</span></span>
+<span id="cb2-10"><a href=""></a><span class="ss">- </span>State the reference frame, units, and time window of every number.</span>
+<span id="cb2-11"><a href=""></a><span class="ss">- </span>Mark AI-drafted commits: "AI-assisted: <span class="dt">&lt;</span><span class="kw">tool</span><span class="dt">&gt;</span>, <span class="dt">&lt;</span><span class="kw">what</span><span class="ot"> it drafted</span><span class="dt">&gt;</span>".</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="takeaway">
 <p>Each rule restates a rubric criterion as an instruction whose outcome can be checked in the agent’s output.</p>
 </div>
@@ -752,7 +803,7 @@
 <p>A disagreement between pairs means the rule is ambiguous or the evidence is missing; record which.</p>
 </div>
 <div class="takeaway">
-<p>Whether an agent follows a rule is an empirical question, answered from its output rather than from the instruction file.</p>
+<p>One run per pair gives one yes or no per rule; a compliance rate needs repeated trials, which stage 4 of the reading arc adds on Dec 10.</p>
 </div>
 <aside class="notes">
 <p>This is a preview of outcome 10, not its assessment. One run per pair cannot estimate a compliance rate, and two raters on one transcript cannot estimate agreement; say so explicitly. The full method arrives in stages: the critical-evaluation lab (6.2, Oct 23) adds bias controls for model graders; 6.3 (Nov 13) builds an eval set with planted cases and rule-by-rule binary scoring; reading-arc stage 4 (Dec 10) runs five trials per case and reports pass rates with binomial standard errors and Cohen’s kappa between raters. Expect the provider rule to fail often: many agents fit the CSV instead of citing NGL’s MIDAS file. Collect one disagreement for the rubric v0.2 discussion.</p>

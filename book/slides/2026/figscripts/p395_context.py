@@ -89,10 +89,10 @@ lat, lon = station_coords()
 vel = midas_na()
 t, east, north = positions_na()
 land, states, plates = basemap()
-retrieved = dt.date.today().isoformat()
+retrieved = dt.date.fromtimestamp(Path(fetch(f"{NGL}/gps_timeseries/IGS20/midas/midas.NA.txt", "midas.NA.txt")).stat().st_mtime).isoformat()  # download date of the cached MIDAS file
 
-fig = plt.figure(figsize=(16, 7.6))
-gs = fig.add_gridspec(2, 2, width_ratios=[1.0, 1.35], wspace=0.18, hspace=0.32)
+fig = plt.figure(figsize=(17, 6.6))
+gs = fig.add_gridspec(2, 2, width_ratios=[1.0, 1.75], wspace=0.2, hspace=0.36)
 ax = fig.add_subplot(gs[:, 0])
 extent = (-128.5, -119.0, 40.8, 49.3)
 box = dict(xmin=extent[0], xmax=extent[1], ymin=extent[2], ymax=extent[3])
@@ -113,12 +113,13 @@ ax.annotate("", xy=(lon + vel["ve"] * scale, lat + vel["vn"] * scale * np.cos(np
 ax.plot(lon, lat, marker="^", ms=17, color=SERIES, mec="white", mew=2, zorder=5)
 ax.text(lon + 0.25, lat - 0.45, STATION, fontsize=19, fontweight="bold", color=INK)
 ax.text(-127.9, 46.4, "Juan de Fuca\nplate", fontsize=15, color=MUTED, style="italic")
-ax.text(-122.6, 43.6, "North America\nplate", fontsize=15, color=MUTED, style="italic")
-ax.text(-126.15, 42.1, "Cascadia\nsubduction zone", fontsize=14, color=INK, rotation=83, ha="center")
+ax.text(-122.9, 43.4, "North America\nplate", fontsize=15, color=MUTED, style="italic")
+ax.text(-128.3, 44.3, "Cascadia\nsubduction\nzone", fontsize=14, color=INK, ha="left")
 ax.annotate("", xy=(-121.6 + 10 * scale, 41.3), xytext=(-121.6, 41.3),
             arrowprops=dict(arrowstyle="-|>", color=TREND, lw=3))
 ax.text(-121.6, 41.5, "10 mm/yr", fontsize=14, color=INK)
 ax.set_title("Location and velocity", loc="left")
+ax.set_xlabel(""); ax.set_ylabel("")
 
 for row, (y, v, s, comp) in enumerate([(east, vel["ve"], vel["se"], "East"),
                                        (north, vel["vn"], vel["sn"], "North")]):
