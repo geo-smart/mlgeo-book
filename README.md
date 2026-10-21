@@ -94,6 +94,27 @@ Check that the environment works:
 pixi run python -c "import numpy, torch, sklearn, obspy, mlgeo_synth; print('environment ok')"
 ```
 
+### Use this environment as a VS Code kernel (no browser JupyterLab)
+
+If you want notebooks to run inside VS Code instead of `jupyter lab`, register
+the pixi environment as a Jupyter kernel once:
+
+```sh
+# In the book repository:
+pixi run vscode-kernel
+
+# In a student repository that uses environments/student/pixi.toml:
+pixi run vscode-kernel
+```
+
+Then in VS Code:
+1. Open your notebook (`.ipynb`).
+2. Click the kernel picker (top-right of the notebook editor).
+3. Choose **Python (mlgeo-book pixi)** (book repo) or **Python (MLGeo student pixi)** (student repo).
+
+If it does not appear immediately, run **Developer: Reload Window** in VS Code
+and reopen the kernel picker.
+
 From then on, change the environment only through pixi: `pixi add <package>`
 for conda-forge packages, `pixi add --pypi <package>` for PyPI-only ones, and
 commit `pixi.toml` and `pixi.lock` together every time. You may rename
