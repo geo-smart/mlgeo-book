@@ -57,7 +57,15 @@ def main():
     for q in sorted(DECKS.glob("lec*.qmd")):
         fm = front_matter(q)
         title = re.sub(r"\s+", " ", fm["title"].replace("<br>", " ")).strip()
-        session, date, sections = [p.strip() for p in fm["subtitle"].split("·")]
+        parts = [p.strip() for p in fm["subtitle"].split("·")]
+        if len(parts) == 3:
+            session, date, sections = parts
+        else:
+            # Deck without a date on its title slide: keep the date its page already shows.
+            session, sections = parts
+            old = OUT / f"{q.stem}.md"
+            m = re.search(r"^\*\*(.+?), \d{4}\*\*", old.read_text(), re.M) if old.exists() else None
+            date = m.group(1) if m else ""
         nums = expand(sections)
         links = [f"[{n}](../{files[n]})" for n in nums if n in files]
         missing = [n for n in nums if n not in files]

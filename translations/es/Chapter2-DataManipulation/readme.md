@@ -20,9 +20,9 @@ Las lecciones se construyen en orden:
 10. **2.10 Datos sintéticos** — construcción de sismogramas sintéticos y de ruido con espectro ajustado; una medición resuelta del piso de detección STA/LTA con barras de error binomiales; cuándo los datos sintéticos son admisibles en ciencia.
 11. **2.11 Ingeniería de características** — características construidas a mano y automatizadas para series de tiempo, con un *benchmark* real de formas de onda sísmicas.
 12. **2.12 Reducción de dimensionalidad** — PCA, EOF sobre campos climáticos, ICA y t-SNE.
-13. **2.13 Datos listos para IA (lección de cierre)** — la lista de verificación operativa: fichas de datos, particiones de referencia, la unión ráster-estación para covariables en malla, la fuga por preprocesamiento y las particiones correctas para datos autocorrelacionados.
+13. **2.13 Datos listos para IA (lección de cierre)** — listo para el análisis frente a listo para la IA, una rúbrica de once criterios calificados 0/1/2, y particiones en conjuntos dentro y fuera del dominio a lo largo de ejes estadístico, espaciotemporal y físico.
 
-El capítulo cierra con la **tarea del proyecto final para este pilar (2.20)**: construir un conjunto de datos listo para IA para su propio proyecto, con una ficha de datos y particiones de referencia, siguiendo la lista de verificación de 2.13.
+El capítulo cierra con la **tarea del proyecto final para este pilar (2.20)**: construir un conjunto de datos listo para IA para su propio proyecto, con una descripción que viaje con él y particiones almacenadas, calificado con la rúbrica de 2.13.
 
 ### Resultados de aprendizaje
 
@@ -35,8 +35,8 @@ Al final de este capítulo, usted podrá:
 - Aplicar transformadas de Fourier y de ondículas y diseñar filtros digitales.
 - Generar datos sintéticos con responsabilidad y declarar su uso.
 - Construir características y reducir la dimensionalidad para tareas posteriores de ML.
-- Ensamblar un conjunto de datos listo para IA con procedencia documentada, una ficha de datos y particiones de referencia a prueba de fugas.
+- Ensamblar un conjunto de datos listo para IA con procedencia y homogeneización documentadas, y particionarlo para probar la generalización fuera del dominio de entrenamiento.
 
 ### Tareas
 
-- **Tarea final (2.20)**: Construya un conjunto de datos listo para IA para su proyecto final. Aplique la lista de verificación de 2.13: documente la procedencia y la licencia, escriba una ficha de datos, defina particiones de referencia y demuestre que su preprocesamiento no filtra información entre particiones.
+- **Tarea final (2.20)**: Construya un conjunto de datos listo para IA para su proyecto final. Califíquelo con la rúbrica de 2.13: documente la procedencia y la licencia, describa el conjunto de datos en un archivo que viaje con él, defina particiones dentro y fuera del dominio y demuestre que su preprocesamiento no filtra información entre ellas.

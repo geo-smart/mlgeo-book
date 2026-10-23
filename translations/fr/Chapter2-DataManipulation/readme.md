@@ -20,9 +20,9 @@ Les leçons s'enchaînent dans l'ordre :
 10. **2.10 Données synthétiques** — construction de sismogrammes synthétiques et de bruit à spectre ajusté ; une mesure travaillée du seuil de détection STA/LTA avec barres d'erreur binomiales ; quand les données synthétiques sont recevables en science.
 11. **2.11 Ingénierie des caractéristiques** — caractéristiques faites main et automatisées pour les séries temporelles, sur un jeu de référence de formes d'onde sismiques réelles.
 12. **2.12 Réduction de dimension** — ACP, EOF sur champs climatiques, ICA et t-SNE.
-13. **2.13 Données prêtes pour l'IA (synthèse)** — la liste de contrôle opérationnelle : fiches de données, découpages de référence, la jointure raster-station pour les covariables maillées, la fuite par prétraitement, et les découpages corrects pour des données autocorrélées.
+13. **2.13 Données prêtes pour l'IA (synthèse)** — préparation pour l'analyse et préparation pour l'IA, une grille d'évaluation de onze critères notés 0/1/2, et des partitions en ensembles dans le domaine et hors domaine selon des axes statistique, spatio-temporel et physique.
 
-Le chapitre se termine par le **devoir du projet final pour ce pilier (2.20)** : construire un jeu de données prêt pour l'IA pour votre propre projet, avec une fiche de données et des découpages de référence, en suivant la liste de contrôle de 2.13.
+Le chapitre se termine par le **devoir du projet final pour ce pilier (2.20)** : construire un jeu de données prêt pour l'IA pour votre propre projet, avec une description qui voyage avec lui et des partitions stockées, noté avec la grille d'évaluation de 2.13.
 
 ### Objectifs d'apprentissage
 
@@ -35,8 +35,8 @@ Le chapitre se termine par le **devoir du projet final pour ce pilier (2.20)** 
 - Appliquer les transformées de Fourier et en ondelettes et concevoir des filtres numériques.
 - Générer des données synthétiques de manière responsable et en déclarer l'usage.
 - Construire des caractéristiques et réduire la dimension pour des tâches de ML en aval.
-- Assembler un jeu de données prêt pour l'IA avec provenance documentée, fiche de données et découpages de référence sans fuite.
+- Assembler un jeu de données prêt pour l'IA dont la provenance et l'homogénéisation sont documentées, et le partitionner pour tester la généralisation hors du domaine d'entraînement.
 
 ### Devoirs
 
-- **Devoir final (2.20)** : construisez un jeu de données prêt pour l'IA pour votre projet final. Appliquez la liste de contrôle de 2.13 : documentez la provenance et la licence, rédigez une fiche de données, définissez des découpages de référence et démontrez que votre prétraitement ne fait fuir aucune information d'un découpage à l'autre.
+- **Devoir final (2.20)** : construisez un jeu de données prêt pour l'IA pour votre projet final. Notez-le avec la grille d'évaluation de 2.13 : documentez la provenance et la licence, décrivez le jeu de données dans un fichier qui voyage avec lui, définissez des partitions dans le domaine et hors domaine, et montrez que votre prétraitement ne fait fuir aucune information de l'une à l'autre.

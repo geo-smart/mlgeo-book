@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="lec10_ai_ready_data_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link rel="stylesheet" href="lec10_ai_ready_data_files/libs/revealjs/dist/theme/quarto-ce7acf391a23033b2e12d95eea4aebc9.css">
   <link href="lec10_ai_ready_data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec10_ai_ready_data_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec10_ai_ready_data_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -131,7 +131,7 @@
 
 <section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
   <h1 class="title">AI-ready data</h1>
-  <p class="subtitle">Session 10 · Wed Oct 21 · Book sections 2.12–2.13</p>
+  <p class="subtitle">Session 10 · Fri Oct 23 · Book section 2.13</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -141,13 +141,13 @@
 <h2></h2>
 <p><span class="lecture-icon">✅</span></p>
 <h3 id="todays-question">Today’s question</h3>
-<p>“AI-ready” is not a feeling.</p>
-<p><strong>Can your dataset prove it?</strong></p>
+<p>Chapter 2 taught you to read, clean, repair, and describe geoscience data.</p>
+<p><strong>When is a dataset ready to train a model, and to test whether the model works somewhere new?</strong></p>
 <div class="dim">
-<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/dimensionality-reduction">2.12 Dimensionality reduction</a> · <a href="https://geo-smart.github.io/mlgeo-book/mlready-data">2.13 AI-ready data</a></p>
+<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/mlready-data">2.13 AI-ready data</a></p>
 </div>
 <aside class="notes">
-<p>Frame the session: the capstone of the data pillar. Two weeks of skills — formats, statistics, spectra, repairs, synthetics, features — converge on one operational question: when is a dataset ready to hand to a model, or to another scientist? The answer is a checklist, and the checklist is graded (it is the project’s first milestone deliverable). First a short stop in dimensionality reduction — Monday’s 156 features are too many and too redundant — then the checklist, and the two ways we break it on purpose to see the damage in the metrics. Ask the room: what would you need to know before training on a stranger’s dataset?</p>
+<p>Closing session of Chapter 2. Twenty minutes to define a rubric for AI-ready data, then the rest of the class on notebook 2.13, where students score a dataset against it and run the partition experiments. Pose the question and separate its two halves: training a model asks whether the data are clean, consistent, and labeled; testing whether it works somewhere new asks whether the data can be split so that the test set is genuinely new. Most of today is about the second half, because it is the one geoscience datasets most often fail.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -160,34 +160,27 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="this-lecture-in-the-literature" class="slide level2">
-<h2>This lecture in the literature</h2>
-<!-- Literature anchors for lecture 10. Edit THIS file to update the papers;
-     the deck includes it verbatim. Keep 2-4 entries: at least one where the
-     concept was applied well (✓), one where its absence misled a field (✗).
-     Format: verdict + bold message on one line; full citation on its own
-     line below (blank line between them — they must be separate paragraphs). -->
-<div class="ref-item">
-<p><span class="ref-verdict good">✓</span> <span class="ref-msg">The data card’s ancestor: every dataset ships with its provenance, composition, and intended use.</span></p>
-<p><span class="ref-cite">Gebru, T., et al.&nbsp;(2021). Datasheets for datasets. <em>Communications of the ACM</em>, 64(12), 86–92.</span></p>
+<section id="literature-example-validating-a-forest-biomass-map" class="slide level2 smaller">
+<h2>Literature example: validating a forest biomass map</h2>
+<div class="badge-row">
+<p><span class="gb src">🛰️ Satellite &amp; airborne</span> <span class="gb sys bio">🌱 Biosphere</span> <span class="gb disc bio">🦠 Biogeosciences</span></p>
 </div>
-<div class="ref-item">
-<p><span class="ref-verdict note">📖</span> <span class="ref-msg">The playbook: findable, accessible, interoperable, reusable — where “AI-ready” starts.</span></p>
-<p><span class="ref-cite">Wilkinson, M. D., et al.&nbsp;(2016). The FAIR Guiding Principles for scientific data management and stewardship. <em>Scientific Data</em>, 3, 160018.</span></p>
+<div class="columns">
+<div class="column" style="width:34%;">
+<div class="lit-card">
+<p><span class="lit-msg">One random-forest map of central African forest biomass, scored two ways: R² = 0.53 when test plots are drawn at random, 0.14 when whole regions are held out, and close to zero beyond 100 km from the training plots.</span></p>
+<p><span class="lit-cite">Ploton, P., et al.&nbsp;(2020). Spatial validation reveals poor predictive performance of large-scale ecological mapping models. <em>Nature Communications</em>, 11, 4540. Figure 4, CC BY 4.0.</span></p>
 </div>
-<div class="ref-item">
-<p><span class="ref-verdict note">📖</span> <span class="ref-msg">Leakage formalized: how information from outside the training data sneaks into the model.</span></p>
-<p><span class="ref-cite">Kaufman, S., Rosset, S., Perlich, C. &amp; Stitelman, O. (2012). Leakage in data mining: Formulation, detection, and avoidance. <em>ACM Transactions on Knowledge Discovery from Data</em>, 6(4), 15.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">Leakage found in hundreds of published ML-for-science papers across 17 fields — inflated claims, then corrections.</span></p>
-<p><span class="ref-cite">Kapoor, S. &amp; Narayanan, A. (2023). Leakage and the reproducibility crisis in machine-learning-based science. <em>Patterns</em>, 4(9), 100804.</span></p>
-</div>
+<p><span class="dim">Inputs: satellite reflectance and climate layers. Target: field-measured aboveground biomass (Mg/ha). Same model, same data; only the partition changed.</span></p>
+</div><div class="column" style="width:66%;">
+<p><img data-src="figs/lec10_ai_ready/papers/ploton2020_fig04_random_vs_spatial_cv.png" style="width:100.0%"></p>
+<p><span class="dim">(a) random 10-fold cross-validation; (b) spatial 44-fold cross-validation. Ploton et al.&nbsp;(2020), Fig. 4, CC BY 4.0.</span></p>
+</div></div>
 <div class="takeaway">
-<p>Data documentation and leakage are now a literature of their own — including a documented reproducibility crisis.</p>
+<p>A random split of spatially correlated plots reported R² = 0.53; holding out regions gave 0.14, the skill the map actually has away from field plots.</p>
 </div>
 <aside class="notes">
-<p>Two minutes. Gebru: “datasheets for datasets” imported the electronics datasheet into ML — provenance, composition, collection process, intended use; our data card is its geoscience-sized descendant. Wilkinson: the FAIR principles are the data-stewardship frame funders now expect — the checklist operationalizes them for ML. Kaufman: the paper that formalized leakage, a decade before it was fashionable. Kapoor &amp; Narayanan is the ✗: a systematic survey finding leakage in hundreds of published ML-for-science papers across 17 fields — civil war prediction, medicine, bioinformatics — each with inflated claims later walked back. Chapter 3.8 (week 7) is this course’s full treatment; today installs the audit habit. Refs update monthly; bring candidates.</p>
+<p>Four minutes; the paper told in full. Geoscience first: forest biomass maps of central Africa feed carbon budgets and conservation decisions. They are built by training a model on field plots (trees measured and converted to aboveground biomass) and predicting everywhere from satellite reflectance and climate layers. Ploton et al.&nbsp;(2020) took one such random-forest map and validated it twice. Random 10-fold cross-validation, the usual practice, gives R² = 0.53 (RMSPE 56.5 Mg/ha, 19%). Spatial 44-fold cross-validation, holding out whole regions, gives R² = 0.14 (RMSPE 77.5 Mg/ha, 26%). With an exclusion buffer, R² falls to about 0.15 at 50 km from training plots and is virtually null beyond 100 km (their Fig. 5). Nearby plots share soils, climate and forest type, so a random split tests the model on near-copies of its training data. This is criterion B7 in one figure, and the reason the rubric asks which axis the test set lies outside. Numbers checked against the article text; figure reused under CC BY 4.0.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -200,14 +193,14 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="first-shrink-the-feature-space" class="slide level2">
-<h2>First, shrink the feature space</h2>
-<img data-src="figs/2.12_dimensionality_reduction/fig_09.png" class="r-stretch">
+<section id="ai-ready-data-in-publications-and-repositories" class="slide level2">
+<h2>AI-ready data in publications and repositories</h2>
+<img data-src="figs/lec10_ai_ready/bibliometrics.png" class="r-stretch">
 <div class="takeaway">
-<p>A 30-year gridded temperature field, synthetic (mlgeo_synth) with planted patterns: the first mode carries 95.5% of the variance and matches the planted seasonal pattern with correlation 1.00.</p>
+<p>Works using the phrase “AI-ready” went from 97 in 2024 to 966 in 2026 so far, but only 42 of this year’s are in Earth and Planetary Sciences.</p>
 </div>
 <aside class="notes">
-<p>Monday ended with 156 features, many near-duplicates. Dimensionality reduction finds the few directions that carry the variance. Two demonstrations in 2.12, both synthetic with planted truth. One: PCA on a geochemical table — the first component carries 78.2% of nine variables’ variance and is the igneous differentiation index, a physical axis the generator planted. Two, this figure: a gridded monthly temperature field decomposed into spatial patterns (EOFs — the geoscience name for principal components of a space-time field) and their time series. EOF1: 95.5% of variance, pattern correlation 1.00 with the planted seasonal mode; EOF2 recovers the zonal mode at −1.00 (sign is arbitrary — always check both signs). Caveats the notebook states: modes are forced orthogonal, real physics is not; trends dominate if you do not remove them; this is description, not causation. Wednesday’s point for today: a PCA basis is a preprocessing statistic — remember that phrase when we hit leakage.</p>
+<p>Two minutes. Left: OpenAlex works with “AI-ready” in the title or abstract, retrieved this morning (23 Oct 2026; 2026 is a partial year): 52 in 2023, 97 in 2024, 312 in 2025, 966 so far in 2026; Earth and Planetary Sciences 9 in 2025 and 42 in 2026, Environmental Science 8 and 25. The phrase is new in our field. The ESIP Data Readiness Cluster’s checklist for AI-readiness of open environmental datasets (2022, doi:10.6084/m9.figshare.19983722) has been cited only once or twice in OpenAlex. Right: datasets returned by a keyword search on Zenodo (full records, type dataset), Hugging Face (dataset names), and GitHub (repositories with a topic plus the word dataset). Climate returns 26,552 Zenodo datasets and 732 on Hugging Face; seismic 2,814 and 50. These are keyword counts on one date, not a census, and the three hosts search different fields, so compare within a host. Many datasets exist; few say whether they are AI-ready. Script: figscripts/ai_ready_bibliometrics.py.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -220,151 +213,107 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="a-dataset-is-ai-ready-when-it-passes-this-checklist" class="slide level2">
-<h2>A dataset is AI-ready when it passes this checklist</h2>
-<ol type="1">
-<li>Documented provenance, license, citation</li>
-<li>Machine-readable metadata — <strong>a data card</strong></li>
-<li>Tidy shapes</li>
-<li>Explicit units</li>
-<li>A missing-data policy</li>
-<li>Benchmark splits shipped with the data</li>
-<li><strong>Leakage controls</strong></li>
-<li>A class and event inventory</li>
-</ol>
-<div class="takeaway">
-<p>The plan for today: build a dataset that passes, then break rules 6 and 7 on purpose and watch the metrics lie.</p>
-</div>
-<aside class="notes">
-<p>Read the list slowly — it is the graded artifact. Item 2: a README written for humans is not enough; the card must be parseable (YAML), because scripts consume it. Item 6: splits ship WITH the data as a column, so every user evaluates on the same held-out samples — that is what makes a benchmark a benchmark. Item 7 has two halves: the split design respects the correlation structure (time, location, event membership), and every preprocessing statistic comes from the training split only. Item 8: rare-event problems look nothing like balanced ones, and users must know before they train. The demo dataset: ten years of synthetic daily river discharge with injected floods — 3,652 days, 312 flood days (8.5%), 33 distinct flood events, disclosed synthetic (item 1) with generator and seed in the card. Chronological splits: train 2015–2021, validation 2022, test 2023–2024. The card is written to disk next to the CSV and read back with a YAML parser to prove machine-readability.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="break-rule-7-watch-the-metric-lie" class="slide level2 smaller">
-<h2>Break rule 7, watch the metric lie</h2>
-<div class="big-number">
-<p>1.000 <span class="unit">average precision — rare-class oversampling <em>before</em> the split</span></p>
-</div>
-<div class="big-number">
-<p>0.848 <span class="unit">average precision — oversampling the training split only</span></p>
-</div>
-<div class="dim">
-<p>Average precision summarizes rare-event skill (1 = perfect). Same model, same flood data — duplicated flood days landed on both sides of the split.</p>
-</div>
-<div class="takeaway">
-<p>The perfect score is pure fiction. Leakage does not make models better — it makes evaluations wrong.</p>
-</div>
-<aside class="notes">
-<p>Walk the mechanism: floods are 8.5% of days, so we oversample the rare class — standard practice. Done before the split, duplicated copies of the same flood day land in both train and test; the model recognizes its own training samples and scores a perfect 1.000. Done after — training split only — the honest 0.848. Also run in the notebook, quieter: scaler fit on all data vs train only, 0.722 vs 0.722 — no visible gap here, and the notebook says do not take comfort: the gap grows when data are short, the test period drifts, or preprocessing is richer than a scaler — PCA bases (this morning!), imputation models, feature selection all leak far more than a mean. And the split-design ladder: random KFold 0.839 vs time-respecting 0.704 vs grouped-by-event 0.734 — random splitting flatters by ~0.1 because consecutive correlated days straddle the split. The audit question, verbatim from the book: could a test sample be trivially reconstructed from training samples? If yes, the split is wrong. That is the “what do my samples share?” audit — full treatment in 3.8, week 7.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-join-every-project-needs-raster-station" class="slide level2">
-<h2>The join every project needs: raster → station</h2>
-<img data-src="figs/2.13_MLready_data/fig_03.png" class="r-stretch">
-<div class="takeaway">
-<p>A gridded product and a gauge (star) that sits between cell centers, synthetic (mlgeo_synth). Extract at the location, then merge in time <em>without touching the future</em>.</p>
-</div>
-<aside class="notes">
-<p>The most requested workflow in project office hours: my measurements live at stations, my covariate lives on a grid — reanalysis precipitation onto a gauge, SST onto a buoy, soil moisture onto a borehole. Three steps. Space: the gauge is not at a cell center — nearest-cell snapping vs bilinear interpolation differ by 0.037 °C RMS here; bilinear for smooth fields, nearest is the only correct choice for categorical rasters (averaging “granite” and “basalt” is nonsense). The classic bug: longitude conventions — this grid runs 0–360, the gauge longitude 122.4 W must become 237.6 E; check the grid coordinates first. Time: monthly values joined to daily samples — linear interpolation between month centers uses the NEXT month, which is future information; the causal join takes the most recent available value and nothing from the future. Each choice — source grid, extraction method, join rule — becomes provenance in the data card (items 1 and 2). Real-data extras the synthetic spared us: CRS reprojection, grid cells being area averages not points, and timestamp semantics (does “2015-01” stamp the start or the end of the averaging interval?).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="an-honest-pipeline-may-return-no" class="slide level2 smaller">
-<h2>An honest pipeline may return “no”</h2>
-<div class="big-number">
-<p>0.722 <span class="unit">average precision — discharge features only</span></p>
-</div>
-<div class="big-number">
-<p>0.710 <span class="unit">average precision — plus the joined temperature covariate</span></p>
-</div>
-<div class="takeaway">
-<p>The covariate carried no information about the floods, and the honest pipeline said so. The deliverable was never the score — it is the leakage-safe, unit-labeled, reproducible join.</p>
-</div>
-<aside class="notes">
-<p>The result students least expect to see celebrated. The joined temperature field is synthetic with no causal connection to the injected floods — so a correctly joined, leakage-free covariate should not move the metric, and it does not (0.722 → 0.710, noise-level difference). This is the success case: the pipeline was honest enough to return a null. Contrast with the leaky world: had the join leaked future information, the score would have risen — a lie that later collapses in deployment. On real projects the same six lines of join code often DO carry skill (precipitation onto a gauge predicts floods). Message for their proposals, due Fri Oct 30: a well-audited “this covariate did not help” is a publishable, reusable finding; a leaky +0.05 is a retraction waiting to happen. This mindset returns Friday when they audit an AI’s claims in the 6.2 lab.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-checklist-is-the-capstone" class="slide level2">
-<h2>The checklist is the capstone</h2>
-<table class="caption-top">
+<section id="a-catalog-of-ai-ready-earth-science-datasets" class="slide level2 smaller compact">
+<h2>A catalog of AI-ready Earth-science datasets</h2>
+<table class="caption-top" style="width:100%;">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Checklist item</th>
-<th>The question it answers</th>
-<th>Today’s evidence</th>
+<th>Dataset</th>
+<th>System</th>
+<th>One sample</th>
+<th>Size</th>
+<th>Partition shipped</th>
+<th>Best shows</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Data card (1–5)</td>
-<td>can a stranger — or a script — use this safely?</td>
-<td>YAML card written, read back, parsed</td>
+<td>STEAD (Mousavi 2019)</td>
+<td>solid Earth</td>
+<td>3-component waveform: earthquake or noise</td>
+<td>~1.2 M traces</td>
+<td>none described</td>
+<td>B3 noise class</td>
 </tr>
 <tr class="even">
-<td>Shipped splits (6)</td>
-<td>is everyone graded on the same held-out data?</td>
-<td>split column: 2015–21 / 2022 / 2023–24</td>
+<td>INSTANCE (Michelini 2021)</td>
+<td>solid Earth</td>
+<td>3-component trace, 120 s at 100 Hz</td>
+<td>~1.2 M traces, 620 stations</td>
+<td>none described</td>
+<td>A2, B2</td>
 </tr>
 <tr class="odd">
-<td>Leakage controls (7)</td>
-<td>do my samples share time, location, or an event?</td>
-<td>1.000 vs 0.848; shuffled 0.839 vs temporal 0.704</td>
+<td>WeatherBench 2 (Rasp 2024)</td>
+<td>atmosphere</td>
+<td>global ERA5 state at one time</td>
+<td>1959 to 2023</td>
+<td>2020 held out</td>
+<td>B7 time</td>
 </tr>
 <tr class="even">
-<td>Class inventory (8)</td>
-<td>is my problem rare-event or balanced?</td>
-<td>312 flood days of 3,652 (8.5%), 33 events</td>
+<td>ClimateBench (Watson-Parris 2022)</td>
+<td>atmosphere</td>
+<td>annual maps given forcing</td>
+<td>Earth system model runs</td>
+<td>SSP245 scenario held out</td>
+<td>B7 physics</td>
+</tr>
+<tr class="odd">
+<td>CAMELS (Newman 2015, Addor 2017)</td>
+<td>land water</td>
+<td>one catchment’s daily series</td>
+<td>671 catchments</td>
+<td>none described</td>
+<td>B1 units</td>
+</tr>
+<tr class="even">
+<td>Sen1Floods11 (Bonafilia 2020)</td>
+<td>land water</td>
+<td>512 × 512 SAR chip, water mask</td>
+<td>4,831 chips, 11 floods</td>
+<td>Bolivia held out</td>
+<td>B5 labels</td>
+</tr>
+<tr class="odd">
+<td>BigEarthNet v2 (Clasen 2024)</td>
+<td>biosphere</td>
+<td>Sentinel-1/2 patch, land-cover labels</td>
+<td>549,488 patches</td>
+<td>geographic split</td>
+<td>B7 space</td>
+</tr>
+<tr class="even">
+<td>CaFFe (Gourmelon 2022)</td>
+<td>cryosphere</td>
+<td>SAR image, calving-front label</td>
+<td>681 images</td>
+<td>unseen glaciers</td>
+<td>B7 space</td>
+</tr>
+<tr class="odd">
+<td>OceanBench (Johnson 2023)</td>
+<td>ocean</td>
+<td>daily sea-surface-height map</td>
+<td>1 simulated year + real altimetry</td>
+<td>held-out months, one satellite</td>
+<td>B4 known truth</td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>“The split and the preprocessing are part of the dataset, not an afterthought of the model.”</p>
+<p>Six of these nine datasets ship a partition that holds out a period, a region, or a forcing scenario.</p>
 </div>
 <aside class="notes">
-<p>The takeaway line is the book’s closing sentence for the chapter, verbatim, and it is the single sentence to remember from the data pillar. Leave the table up for questions. Point at row 3 and forward-reference: week 7’s robust-training lecture (3.8) rebuilds that row into a full validation ladder on GNSS and spatial data — today’s audit habit is the seed. The checklist is graded twice: in the chapter assignment and at project check-in #1 (Nov 16), where each team presents their data against it, with their baseline and split design.</p>
+<p>Two minutes; do not read the table. Ask each team to find the row closest to its project and the criterion that row shows best; they will use one row for the rubric activity. DOIs, checked on Crossref or DataCite today: STEAD 10.1109/ACCESS.2019.2947848; INSTANCE 10.5194/essd-13-5509-2021 (data 10.13127/instance); WeatherBench 2 10.1029/2023MS004019; ClimateBench 10.1029/2021MS002954 (data 10.5281/zenodo.5196512); CAMELS 10.5194/hess-19-209-2015 and 10.5194/hess-21-5293-2017; Sen1Floods11 10.1109/CVPRW50498.2020.00113; reBEN 10.48550/arXiv.2407.03653; CaFFe 10.5194/essd-14-4287-2022; OceanBench 10.48550/arXiv.2309.15599. “None described” means no partition appeared in the paper or README we read, not proof that none exists. Data licenses for CAMELS, Sen1Floods11, OceanBench and the WeatherBench 2 copy of ERA5 were not verified. Also verified, not on the slide: Caravan (Kratzert et al.&nbsp;2023, 6,830 catchments, 10.1038/s41597-023-01975-w) and AI4Arctic sea ice (Stokholm et al.&nbsp;2024, 513 + 20 scenes with ice-service chart labels, 10.5194/tc-18-3471-2024). BigEarthNet v1 used a random split; v2 replaced it with a geographic one to reduce spatial correlation between partitions.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -377,20 +326,380 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="now-run-it-yourself-open-2.13-and-skim-2.12" class="slide level2">
-<h2>Now run it yourself — open 2.13 (and skim 2.12)</h2>
-<ol type="1">
-<li><code>pixi run jupyter lab</code> → <code>2.13_MLready_data.ipynb</code></li>
-<li>Write the data card, read it back with the YAML parser — item by item, what would a stranger still not know?</li>
-<li>Break rule 7 yourself: oversample before the split and reproduce AP = 1.000</li>
-<li>Run the three split designs; explain the 0.839 → 0.704 drop in one sentence</li>
-<li>Your team’s dataset against the eight items: which fail today? (Bring the list to check-in #1, Nov 16.)</li>
-</ol>
-<div class="dim">
-<p>Friday: the critical-evaluation lab (6.2) — Chapter 2’s capstone, your data skills vs an AI’s claims · Reading-arc stage 1 due today · Ch 2 quiz opens Mon</p>
+<section id="what-an-ai-ready-dataset-looks-like-instance" class="slide level2">
+<h2>What an AI-ready dataset looks like: INSTANCE</h2>
+<div class="badge-row">
+<p><span class="gb src">🗂️ Catalog &amp; compiled product</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+</div>
+<img data-src="figs/lec10_ai_ready/papers/instance2021_fig03_dataset_distributions.png" class="r-stretch">
+<p><span class="dim">Magnitude, epicentral distance, depth, back azimuth of about 1.2 million traces from about 50,000 Italian earthquakes. Michelini et al.&nbsp;(2021), <em>ESSD</em>, 13, 5509–5544, Fig. 3, CC BY 4.0.</span></p>
+<div class="takeaway">
+<p>The step at M 2 is deliberate: the authors kept most M ≥ 2 events and added 20,000 random M &lt; 2 events to counter the Gutenberg–Richter imbalance.</p>
 </div>
 <aside class="notes">
-<p>Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, deck ~20 min, notebook ~40 min, synthesis ~10 min on task 5 — a quick round-robin of failing items; most teams fail 2, 6, and 7 on day one, and hearing that normalizes fixing it rather than hiding it. Implementation names for the notebook, not slides: sklearn PCA / FastICA / TSNE for 2.12; xarray .sel(method=“nearest”) vs .interp(), pandas merge_asof(direction=“backward”), yaml.safe_load, sklearn KFold / TimeSeriesSplit / GroupKFold, make_pipeline(StandardScaler(), …) so preprocessing stays inside the training fold. Task-4 target sentence: “random folds let the model validate on days adjacent to its training days, so the score measures interpolation, not forecasting.” The 2.12 skim: scree plot, loadings, and the EOF verification cell are the three things to look at.</p>
+<p>Two minutes. INSTANCE, the Italian seismic dataset for machine learning, is a good picture of a dataset described for learning. One sample is a 3-component trace, 120 s at 100 Hz, shipped both in counts and in ground-motion units (A2 homogenization), with more than 100 source, station and trace parameters (A4), from 620 stations (B1), plus 132,288 noise traces (B3; signal-to-noise peaks near 10 dB on the horizontal components and 6 dB on the vertical, their Fig. 10). Panel (a) is criterion B2: the authors reshaped the magnitude distribution on purpose, and say so. Panels (b) to (d) show what a model trained on it has and has not seen: few traces beyond 400 km, two back-azimuth peaks from the geometry of Italian seismicity. What it does not ship is a partition (B7), which every user then has to design. Numbers read from the paper (Sect. 2.1.1, 2.3, 3.1).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="analysis-ready-and-ai-ready" class="slide level2 smaller">
+<h2>Analysis-ready and AI-ready</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<h3 id="analysis-ready">Analysis-ready</h3>
+<p>A scientist can compute with the data without redoing the provider’s work.</p>
+<ul>
+<li>provenance, version, license</li>
+<li>homogenized: one unit system, reference frame, time base</li>
+<li>quality flags, gaps, and censoring documented</li>
+<li>standard format with readable metadata</li>
+</ul>
+</div><div class="column" style="width:52%;">
+<h3 id="ai-ready">AI-ready</h3>
+<p>The data also support training a model <strong>and</strong> testing whether it generalizes.</p>
+<ul>
+<li>enough independent samples, diverse and with a known distribution</li>
+<li>noise characterized: instrument versus natural variability</li>
+<li>labels with known quality, or structure for self-supervision</li>
+<li>can be partitioned into within-domain and out-of-domain sets</li>
+</ul>
+</div></div>
+<div class="takeaway">
+<p>Analysis readiness is necessary for AI readiness but not sufficient: a clean, well-documented record from one station in one decade can still fail every generalization test.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Analysis-ready is the older idea: satellite agencies define analysis-ready data as products that need no further processing before use (CEOS CARD4L), and the analysis-ready, cloud-optimized movement (Abernathey et al.&nbsp;2021) applied it to large gridded archives. AI-ready adds requirements that only matter when a model will learn from the data and be judged on held-out data. Use the GNSS example: P395 is analysis-ready (NGL homogenizes the processing, flags steps, publishes the file), but one station cannot test whether a model trained on Cascadia generalizes to the San Andreas.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="analysis-readiness-with-this-quarters-examples" class="slide level2 smaller">
+<h2>Analysis readiness, with this quarter’s examples</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Criterion</th>
+<th>What to check</th>
+<th>Example from this course</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A1</strong> Provenance</td>
+<td>source, version or retrieval date, license, citation</td>
+<td>NGL tenv3 files change daily: record the retrieval date (Session 4)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>A2</strong> Homogenization</td>
+<td>units, reference frame, time base, instrument changes</td>
+<td>bucket versus engine-intake ship temperatures in 1945 (Session 5); P395 antenna steps (Session 1)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>A3</strong> Quality and gaps</td>
+<td>flags, gaps, sentinels, censoring and their cause</td>
+<td>density zeros versus MgO zeros; a 5 mm detection limit (Session 5)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>A4</strong> Structure and metadata</td>
+<td>tidy tables or labeled arrays; units a script can read</td>
+<td>CSV versus Parquet versus netCDF for the same field (Session 4)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>Every analysis-readiness criterion was already practiced in Chapter 2; the rubric collects them so a dataset can be scored.</p>
+</div>
+<aside class="notes">
+<p>One minute; this slide is a recap, not new material. Point at the example column and ask which session each came from. A2 is the one projects skip: homogenization means the same quantity measured the same way through the whole record, or a documented correction where it was not (the SST bucket correction, the GNSS equipment steps, mixing local and duration magnitudes in ComCat).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ai-readiness-what-the-samples-contain" class="slide level2 smaller">
+<h2>AI readiness: what the samples contain</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Criterion</th>
+<th>Question</th>
+<th>Geoscience example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>B1</strong> Diversity</td>
+<td>how many independent units: stations, events, regions, years?</td>
+<td>1.8 million QTM earthquakes, but one region and one network (Session 1)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>B2</strong> Distribution</td>
+<td>how are targets and inputs distributed; how rare is the class of interest?</td>
+<td>flood days are 1.3% to 6.3% of days at the four 2.13 gauges; granite to andesite 5.6 : 1; magnitudes follow a power law</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>B3</strong> Noise</td>
+<td>which variability is the instrument and which is signal for another question?</td>
+<td>ocean microseism is noise for earthquake detection and signal for wave climate (Session 9)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>Count independent units, not rows: 99% of the 36,518 Pacific Northwest earthquakes in Session 5 came from one network, so they say little about other networks.</p>
+</div>
+<aside class="notes">
+<p>Three minutes. B1: rows are cheap, independence is not. Daily samples from one gauge are correlated over weeks, events in one aftershock sequence share a source, pixels in one scene share an illumination. The number that matters for generalization is the number of independent units. B2: the distribution of the training data sets what the model learns to predict well; a power-law magnitude distribution means very few large events, which are often the ones that matter. B3: Session 9’s point returns: noise is defined by the question. Characterize the instrumental noise (sensor self-noise, processing scatter such as GNSS’s 1.8 mm daily scatter) separately from natural variability that another question would call signal.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ai-readiness-what-a-model-can-learn-from" class="slide level2 smaller">
+<h2>AI readiness: what a model can learn from</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Criterion</th>
+<th>Question</th>
+<th>Geoscience example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>B4</strong> Augmentation</td>
+<td>which transformations keep the physics?</td>
+<td>adding recorded noise to earthquake waveforms keeps the physics; time-reversing a flood hydrograph does not</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>B5</strong> Labels</td>
+<td>who labeled, how consistently; or can structure replace labels?</td>
+<td>analyst phase picks vary in quality; years of unlabeled continuous waveforms allow self-supervised training</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>B6</strong> Dimensionality</td>
+<td>samples versus features; input shape; intrinsic dimension</td>
+<td>STEAD: 3 components × 6,000 samples; first PCA mode of a temperature field: 95.5% of variance (2.12)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>An augmentation is valid only if the instrument could have recorded the transformed sample.</p>
+</div>
+<aside class="notes">
+<p>Three minutes. B4: the test for an augmentation is physical: could the instrument have recorded the transformed sample? Shifting a waveform window, adding recorded noise at the measured level, rotating horizontal components of a seismogram, synthetic events with known truth (Session 9) pass. Time reversal of a causal process, mirroring an image whose shadows encode sun azimuth, or adding white noise to data whose noise is red do not. B5: labels in geoscience are often analyst decisions (phase picks, landslide outlines, IPCC confidence levels in Session 3); their consistency bounds the score any model can reach. Where labels are scarce, abundant unlabeled data with structure (continuous waveforms, satellite archives) support self-supervised learning. B6: the number of features against the number of independent samples, the shape of each input, and the intrinsic dimension from PCA (2.12).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="b7-partitioning-into-within-domain-and-out-of-domain-sets" class="slide level2">
+<h2>B7: partitioning into within-domain and out-of-domain sets</h2>
+<img data-src="figs/lec10_ai_ready/partition_axes.png" class="r-stretch">
+<div class="takeaway">
+<p>Training and validation come from the same domain; the test set lies outside it along a stated axis: statistical, spatiotemporal, or physical.</p>
+</div>
+<aside class="notes">
+<p>Four minutes; this is the slide to slow down on. Left: statistical. In the space of input features, measure the distance of each new sample to the training set (here the nearest-neighbor distance, standardized with training statistics only). Samples farther than the training points are from each other are outside the domain, whatever their date or place; Meyer and Pebesma (2021) call the inside the area of applicability. Middle: spatiotemporal. Validation years are drawn at the training gauges; the test set is a later period and a gauge the model never saw. Right: physical. The test floods are larger than any flood in training: a different event size, and possibly different physics (overbank flow, dam operations). Ask: for your project, which axis matters most to the people who would use the model?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-each-partition-tests" class="slide level2 compact">
+<h2>What each partition tests</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Partition</th>
+<th>Drawn from</th>
+<th>Tests</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Training</td>
+<td>the domain</td>
+<td>the model can fit the relationships</td>
+<td>fitting parameters</td>
+</tr>
+<tr class="even">
+<td>Validation</td>
+<td>the same domain, independent units</td>
+<td>the model interpolates within the domain</td>
+<td>choosing hyperparameters, stopping training</td>
+</tr>
+<tr class="odd">
+<td>Test, statistical</td>
+<td>far from training in feature space</td>
+<td>extrapolation in the inputs</td>
+<td>reporting generalization</td>
+</tr>
+<tr class="even">
+<td>Test, spatiotemporal</td>
+<td>a later period or a new region</td>
+<td>transfer in space or time</td>
+<td>reporting generalization</td>
+</tr>
+<tr class="odd">
+<td>Test, physical</td>
+<td>a different process, event size, or physics</td>
+<td>transfer to conditions not sampled</td>
+<td>reporting generalization</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>In notebook 2.13 one flood classifier scores 0.74 within the domain, 0.70 on later years, and 0.20 at a gauge it never saw (average precision).</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Machine-learning models are good interpolators: the validation score tells you the model learned the training domain. Only an out-of-domain test tells you whether it generalizes, and only along the axis you held out, so state the axis. The notebook makes this concrete with four synthetic Washington gauges (coastal rain, snowmelt, mixed, semi-arid flash floods) and one random forest. Average precision is 0.740 on held-out months at the three training gauges and 0.736 on a random split: here a random split is barely more flattering. It drops to 0.703 on 2022 to 2024 and to 0.200 at the semi-arid gauge G4, which the model never saw. 36% of G4 samples lie beyond the 95th-percentile distance from the training set, against 6% of validation samples. Floods larger than the 80th percentile of training floods are estimated at a median 0.69 of their observed peak. A random split of strongly autocorrelated data (daily samples within one flood) can still put near-copies of training samples in the test set; the notebook’s cross-validation comparison at gauge G1 shows it: KFold 0.730, GroupKFold 0.707, TimeSeriesSplit 0.640. A published example of a partition error changing a conclusion: Frame et al.&nbsp;(2022, HESS, doi:10.5194/hess-26-3377-2022) tested a deep-learning runoff model on extreme floods; their 2023 corrigendum found a date error in the train/test split, and once corrected, the calibrated National Water Model beat the LSTM on events with return periods of 25 years or more. Connect forward: the week 7 robust-training session (3.8) builds the full validation ladder on these ideas.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="score-a-dataset-with-the-rubric" class="slide level2">
+<h2>Score a dataset with the rubric</h2>
+<p>Each criterion scores <strong>0</strong> missing · <strong>1</strong> present but incomplete · <strong>2</strong> another team can verify it</p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p><strong>Analysis readiness</strong></p>
+<ul>
+<li>A1 Provenance</li>
+<li>A2 Homogenization</li>
+<li>A3 Quality and gaps</li>
+<li>A4 Structure and metadata</li>
+</ul>
+</div><div class="column" style="width:55%;">
+<p><strong>AI readiness</strong></p>
+<ul>
+<li>B1 Diversity · B2 Distribution</li>
+<li>B3 Noise · B4 Augmentation</li>
+<li>B5 Labels · B6 Dimensionality</li>
+<li>B7 Partitioning</li>
+</ul>
+</div></div>
+<p><strong>Pairs, 8 minutes:</strong> pick one dataset from the catalog, ask your assistant to score it on the 11 criteria with evidence, then check two of its scores against the dataset’s own documentation.</p>
+<div class="takeaway">
+<p>A score counts only with its evidence: the file, page, or count that another team can check.</p>
+</div>
+<aside class="notes">
+<p>Five minutes including the activity setup; the activity runs at the start of the notebook time. The scale is the course rubric’s scale from Session 2, unchanged. The assistant step is deliberate (the schedule promised a rubric built with agents): agents are quick at reading documentation and slow to admit what the documentation does not say. Ask pairs to report one score the agent got wrong and how they found out. Collect two or three; the usual errors are claiming splits are shipped when they are not (B7) and treating a large number of rows as diversity (B1).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="run-notebook-2.13" class="slide level2">
+<h2>Run notebook 2.13</h2>
+<ol type="1">
+<li><code>pixi run jupyter lab</code> → <code>2.13_MLready_data.ipynb</code></li>
+<li>Analysis readiness: convert ft³/s to m³/s, find the 91-day jump in the time base, replace the −999 values, write the description of the dataset and read it back</li>
+<li>AI readiness: count gauges, years, and floods; flood-day fraction; noise level and signal-to-noise; one valid and one invalid augmentation</li>
+<li>Partitioning: distance to the training set; held-out years and gauge G4; floods larger than any in training</li>
+<li>Score the dataset on the 11 criteria, then list what your project dataset needs before check-in #1 (Nov 16)</li>
+</ol>
+<div class="dim">
+<p>Monday: supervision concepts, classification and regression (3.1–3.2) · Chapter 2 quiz opens Monday</p>
+</div>
+<aside class="notes">
+<p>Timing for the 80-minute block (10:00–11:20): paper-pulse talks about 10 minutes, deck about 20, rubric activity 8, notebook about 35, closing 5 on task 5: each team names the criterion its project dataset scores lowest on. Most teams will name B7: their data come from a few stations or one period, so an out-of-domain test needs a plan now, not after training.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

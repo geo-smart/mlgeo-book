@@ -55,8 +55,7 @@ geosciences.
    real records from the data table (data samples as rows, the key columns,
    including the metadata columns that matter); and the figure where the
    problem shows. Rebuild every visual from the open data behind the paper with
-   a figscript; never paste screenshots or figures from the publisher (the repo
-   is CC BY and publisher figures are not). If today's data no longer
+   a figscript, or show a figure the paper published under CC BY, with its citation, figure number and license on the slide. Never paste figures under other licenses (the repo is CC BY). If today's data no longer
    reproduce the published number, say so on the slide and in the notes.
    Example: lecture 5, sea surface temperatures in the 1940s
    (figscripts/sst_1945_discontinuity.py).

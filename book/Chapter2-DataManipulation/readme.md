@@ -20,11 +20,11 @@ The lessons build in order:
 10. **2.10 Synthetic Data** — building synthetic seismograms and spectrum-matched noise; a worked STA/LTA detection-floor measurement with binomial error bars; when synthetic data is admissible in science.
 11. **2.11 Feature Engineering** — hand-built and automated features for time series, with a real seismic waveform benchmark.
 12. **2.12 Dimensionality Reduction** — PCA, EOFs on climate fields, ICA, and t-SNE.
-13. **2.13 AI-Ready Data (Capstone)** — the operational checklist: data cards, benchmark splits, the raster-to-station join for gridded covariates, leakage-by-preprocessing, and correct splits for autocorrelated data.
+13. **2.13 AI-Ready Data (Capstone)** — analysis readiness versus AI readiness, a rubric of eleven criteria scored 0/1/2, and partitions into within-domain and out-of-domain sets along statistical, spatiotemporal, and physical axes.
 
 The **Session 7 lab** ([start here](lab_s07_start_here.md)), placed after 2.6, is self-guided. Each project team takes the track of its domain: a volcano (Mount St Helens seismograms and earthquake catalog, 2004 to 2008), soil moisture at a weather station (USCRN Spokane 17 SSW, 2015 to 2024), a land-surface model (CPC monthly soil water over the western United States, 1991 to 2020), or planets around other stars (TESS light curve and pixels of HD 209458, NASA Exoplanet Archive tables). Every track follows the same steps: pull the raw data from the provider and check that the file is the one recorded, compare the instrument's native resolution with what the file delivers, read a table and arrays in 1D and 2D, hunt problems planted in a synthetic twin and measure how they bias a derived quantity, test a correlation against the physics, write the chain from raw file to a learning problem (including balancing), and check an AI agent on the same synthetic file.
 
-The chapter closes with the **final project assignment for this pillar (2.20)**: build an AI-ready dataset for your own project, with a data card and benchmark splits, following the 2.13 checklist.
+The chapter closes with the **final project assignment for this pillar (2.20)**: build an AI-ready dataset for your own project, with a description that travels with it and stored partitions, scored with the 2.13 rubric.
 
 ### Learning Outcomes
 
@@ -37,8 +37,8 @@ By the end of this chapter, you will:
 - Apply Fourier and wavelet transforms and design digital filters.
 - Generate synthetic data responsibly and disclose its use.
 - Engineer features and reduce dimensionality for downstream ML tasks.
-- Assemble an AI-ready dataset with documented provenance, a data card, and leakage-safe benchmark splits.
+- Assemble an AI-ready dataset with documented provenance and homogenization, and partition it to test generalization outside the training domain.
 
 ### Assignments
 
-- **Final Assignment (2.20)**: Build an AI-ready dataset for your final project. Apply the 2.13 checklist: document provenance and licensing, write a data card, define benchmark splits, and demonstrate that your preprocessing does not leak information across splits.
+- **Final Assignment (2.20)**: Build an AI-ready dataset for your final project. Score it with the 2.13 rubric: document provenance and licensing, describe the dataset in a file that travels with it, define within-domain and out-of-domain partitions, and show that your preprocessing does not leak information across them.
