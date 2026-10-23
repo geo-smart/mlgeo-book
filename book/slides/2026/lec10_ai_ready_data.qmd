@@ -90,6 +90,18 @@ Six of these nine datasets ship a partition that holds out a period, a region, o
 Two minutes; do not read the table. Ask each team to find the row closest to its project and the criterion that row shows best; they will use one row for the rubric activity. DOIs, checked on Crossref or DataCite today: STEAD 10.1109/ACCESS.2019.2947848; INSTANCE 10.5194/essd-13-5509-2021 (data 10.13127/instance); WeatherBench 2 10.1029/2023MS004019; ClimateBench 10.1029/2021MS002954 (data 10.5281/zenodo.5196512); CAMELS 10.5194/hess-19-209-2015 and 10.5194/hess-21-5293-2017; Sen1Floods11 10.1109/CVPRW50498.2020.00113; reBEN 10.48550/arXiv.2407.03653; CaFFe 10.5194/essd-14-4287-2022; OceanBench 10.48550/arXiv.2309.15599. "None described" means no partition appeared in the paper or README we read, not proof that none exists. Data licenses for CAMELS, Sen1Floods11, OceanBench and the WeatherBench 2 copy of ERA5 were not verified. Also verified, not on the slide: Caravan (Kratzert et al. 2023, 6,830 catchments, 10.1038/s41597-023-01975-w) and AI4Arctic sea ice (Stokholm et al. 2024, 513 + 20 scenes with ice-service chart labels, 10.5194/tc-18-3471-2024). BigEarthNet v1 used a random split; v2 replaced it with a geographic one to reduce spatial correlation between partitions.
 :::
 
+## How much of each archive is AI-ready?
+
+![](figs/lec10_ai_ready/ai_ready_vs_archive.png){.r-stretch}
+
+::: {.takeaway}
+AI-ready datasets hold 1.8% of the ERA5 archive by volume, 0.43% of continuous seismic waveforms, 0.08% of Sentinel imagery, and 0.0003% of GNSS archives.
+:::
+
+::: {.notes}
+Two minutes. Grey: the raw public archive of each discipline; teal: the summed size of the AI-ready or benchmark datasets drawn from it; red: the ratio. Order-of-magnitude estimates from cited sources, collected today; sources and dates are in figscripts/ai_ready_vs_archive.py. Seismology: EarthScope, NCEDC and SCEDC continuous waveforms, 1.3 PB (Ni et al. 2025, arXiv:2505.18874), against 37 SeisBench datasets totaling 5.59 TB (STEAD 91.5 GB, INSTANCE 168 GB, CREW 1.15 TB; INSTANCE and AQ2009 counted twice because they ship in counts and in ground-motion units). Reanalysis: ERA5 about 5 PB (ARCO-ERA5 README) against three WeatherBench 2 stores, 91.6 TB uncompressed. Satellite: Copernicus Data Space 78 PB (annual report 2024) against Major TOM Core, BigEarthNet v2 and Sen1Floods11, 63.3 TB. Ocean (PO.DAAC 315 TB) and cryosphere (NSIDC DAAC 619 TB) use FY2018 fact sheets, before SWOT and most ICESat-2 data, so current ratios are lower. Climate models: CMIP6 about 20 PB (2021) against ClimateBench and ClimateSet, 96.5 GB. GNSS: NSF GAGE more than 300 TB (2020; includes laser scanning, SAR and borehole data) against the one GNSS training set found, 0.75 GB. Hydrology: no published byte size for USGS NWIS, so no ratio. The archive sizes come from different years and scopes. The point survives the uncertainty: in every discipline, a fraction of a percent or less of the archive has been prepared to train and test models, which is why your project will build its own.
+:::
+
 ## What an AI-ready dataset looks like: INSTANCE
 
 ::: {.badge-row}
