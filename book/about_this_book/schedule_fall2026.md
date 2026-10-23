@@ -59,7 +59,7 @@ Chapter 7 has no quiz: its outcomes (audience translation, downstream impact) ar
 
 **Week 5 — Classic ML begins** (Ch 2 quiz Mon–Wed; proposals due Fri)
 - Mon Oct 26 — Supervision concepts; classification vs regression ([3.1](../Chapter3-MachineLearning/3.1_concepts_supervision.md)–[3.2](../Chapter3-MachineLearning/3.2_classification_regression.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec12_supervision_concepts.html)
-- Wed Oct 28 — Clustering ([3.3](../Chapter3-MachineLearning/3.3_clustering.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13_clustering.html)
+- Wed Oct 28 — **Structure without labels:** data dimension and data size, principal components and EOFs (first half, [2.12](../Chapter2-DataManipulation/2.12_dimensionality_reduction.ipynb)); clustering (second half, [3.3](../Chapter3-MachineLearning/3.3_clustering.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13_clustering.html)
 - Fri Oct 30 — Binary classification and imbalance ([3.4](../Chapter3-MachineLearning/3.4_binary_classification.ipynb)). **Project proposals due.** · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec14_binary_imbalance.html)
 
 **Week 6 — Classification, honestly** (arc stage 2 due Wed)
