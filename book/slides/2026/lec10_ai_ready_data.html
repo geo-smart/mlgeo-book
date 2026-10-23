@@ -31,6 +31,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="lec10_ai_ready_data_files/libs/revealjs/dist/theme/quarto-ce7acf391a23033b2e12d95eea4aebc9.css">
   <link href="lec10_ai_ready_data_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -372,6 +438,7 @@
 <li>can be partitioned into within-domain and out-of-domain sets</li>
 </ul>
 </div></div>
+<p><span class="dim">In this course AI-ready and ML-ready name the same requirements: classic machine learning and deep learning differ in how many samples they need, not in what the data must provide.</span></p>
 <div class="takeaway">
 <p>Analysis readiness is necessary for AI readiness but not sufficient: a clean, well-documented record from one station in one decade can still fail every generalization test.</p>
 </div>
@@ -438,6 +505,85 @@
 </div>
 <aside class="notes">
 <p>One minute; this slide is a recap, not new material. Point at the example column and ask which session each came from. A2 is the one projects skip: homogenization means the same quantity measured the same way through the whole record, or a documented correction where it was not (the SST bucket correction, the GNSS equipment steps, mixing local and duration magnitudes in ComCat).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="readiness-by-data-modality" class="slide level2 smaller">
+<h2>Readiness by data modality</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Modality</th>
+<th>One sample</th>
+<th>Catalog example</th>
+<th>Evidence to look for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>station time series</td>
+<td>a day or window at a station</td>
+<td>GNSS P395, CAMELS streamflow</td>
+<td>time base, gaps, splits by station and period</td>
+</tr>
+<tr class="even">
+<td>waveforms</td>
+<td>multichannel record, fixed length</td>
+<td>STEAD, INSTANCE</td>
+<td>units or instrument response, sampling rate, pick labels</td>
+</tr>
+<tr class="odd">
+<td>images and rasters</td>
+<td>georeferenced patch with bands</td>
+<td>BigEarthNet, Sen1Floods11, CaFFe</td>
+<td>projection, cloud and label masks, geographic splits</td>
+</tr>
+<tr class="even">
+<td>gridded fields</td>
+<td>map or 3D state at one time</td>
+<td>ERSST, WeatherBench 2, ClimateBench</td>
+<td>coordinates, area weights, held-out years or scenarios</td>
+</tr>
+<tr class="odd">
+<td>tables and catalogs</td>
+<td>one event or one rock</td>
+<td>earthquake catalog, rock survey</td>
+<td>units, detection limits, completeness</td>
+</tr>
+<tr class="even">
+<td>tracks and profiles</td>
+<td>along-track or along-depth record</td>
+<td>OceanBench altimetry tracks</td>
+<td>irregular sampling, platform identity</td>
+</tr>
+<tr class="odd">
+<td>text</td>
+<td>one statement or report</td>
+<td>ClimateX (Session 3)</td>
+<td>label source and labeler agreement</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>The 11 criteria are the same for every modality; the evidence to look for differs.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Ask each team which row its project is in; several projects combine two (station series plus a gridded covariate, the raster-to-station join of 2.13’s earlier version). The catalog examples come from the previous slide. Point at the right column: these are the places analysis readiness most often fails for each modality, and the place an agent should look first.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -668,12 +814,40 @@
 <li>B7 Partitioning</li>
 </ul>
 </div></div>
-<p><strong>Pairs, 8 minutes:</strong> pick one dataset from the catalog, ask your assistant to score it on the 11 criteria with evidence, then check two of its scores against the dataset’s own documentation.</p>
+<p><strong>Pairs, 8 minutes:</strong> give your assistant the agent version of this rubric (next slide) and one catalog dataset’s documentation; check two of its scores yourself.</p>
 <div class="takeaway">
 <p>A score counts only with its evidence: the file, page, or count that another team can check.</p>
 </div>
 <aside class="notes">
 <p>Five minutes including the activity setup; the activity runs at the start of the notebook time. The scale is the course rubric’s scale from Session 2, unchanged. The assistant step is deliberate (the schedule promised a rubric built with agents): agents are quick at reading documentation and slow to admit what the documentation does not say. Ask pairs to report one score the agent got wrong and how they found out. Collect two or three; the usual errors are claiming splits are shipped when they are not (B7) and treating a large number of rows as diversity (B1).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-rubric-written-for-an-agent" class="slide level2">
+<h2>The rubric, written for an agent</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href=""></a>Score each of the 11 criteria (A1-A4, B1-B7) 0, 1 or 2:</span>
+<span id="cb1-2"><a href=""></a>  0 missing; 1 present but incomplete; 2 another team could verify it.</span>
+<span id="cb1-3"><a href=""></a>For every score, quote the evidence: file and line, page and section, URL, or a count.</span>
+<span id="cb1-4"><a href=""></a>If you cannot find evidence, write "not found" and score 0; do not infer from reputation.</span>
+<span id="cb1-5"><a href=""></a>Count independent units (stations, events, regions, years), not rows.</span>
+<span id="cb1-6"><a href=""></a>B7: name the axis on which the test set lies outside the training domain:</span>
+<span id="cb1-7"><a href=""></a>  statistical, spatiotemporal, or physical.</span>
+<span id="cb1-8"><a href=""></a>Report a table: criterion, score, evidence, what is missing.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Full file: <a href="https://geo-smart.github.io/mlgeo-book/slides/2026/files/ai_ready_rubric_for_agents.md">ai_ready_rubric_for_agents.md</a>, one instruction per criterion. Copy it into your project’s AGENTS.md.</p>
+<div class="takeaway">
+<p>The same 11 criteria, rewritten so that an assistant must quote evidence for every score and say “not found” when there is none.</p>
+</div>
+<aside class="notes">
+<p>Three minutes, then the pair activity uses this file. Each course rubric so far (Session 2’s reproducibility rubric, HW1’s AGENTS.md rules) became checkable instructions; this one does the same for data. The two instructions that matter most: quote evidence for every score, and score 0 with “not found” instead of guessing. Agents fill gaps with what similar datasets usually provide; the second instruction is there to stop that. In the activity, pairs give the file and one catalog dataset’s documentation to their assistant, then check two of its scores. Collect one score per pair that the agent got wrong.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

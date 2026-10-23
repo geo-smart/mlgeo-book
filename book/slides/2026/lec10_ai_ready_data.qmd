@@ -134,6 +134,8 @@ The data also support training a model **and** testing whether it generalizes.
 :::
 ::::
 
+[In this course AI-ready and ML-ready name the same requirements: classic machine learning and deep learning differ in how many samples they need, not in what the data must provide.]{.dim}
+
 ::: {.takeaway}
 Analysis readiness is necessary for AI readiness but not sufficient: a clean, well-documented record from one station in one decade can still fail every generalization test.
 :::
@@ -157,6 +159,26 @@ Every analysis-readiness criterion was already practiced in Chapter 2; the rubri
 
 ::: {.notes}
 One minute; this slide is a recap, not new material. Point at the example column and ask which session each came from. A2 is the one projects skip: homogenization means the same quantity measured the same way through the whole record, or a documented correction where it was not (the SST bucket correction, the GNSS equipment steps, mixing local and duration magnitudes in ComCat).
+:::
+
+## Readiness by data modality {.smaller}
+
+| Modality | One sample | Catalog example | Evidence to look for |
+|---|---|---|---|
+| station time series | a day or window at a station | GNSS P395, CAMELS streamflow | time base, gaps, splits by station and period |
+| waveforms | multichannel record, fixed length | STEAD, INSTANCE | units or instrument response, sampling rate, pick labels |
+| images and rasters | georeferenced patch with bands | BigEarthNet, Sen1Floods11, CaFFe | projection, cloud and label masks, geographic splits |
+| gridded fields | map or 3D state at one time | ERSST, WeatherBench 2, ClimateBench | coordinates, area weights, held-out years or scenarios |
+| tables and catalogs | one event or one rock | earthquake catalog, rock survey | units, detection limits, completeness |
+| tracks and profiles | along-track or along-depth record | OceanBench altimetry tracks | irregular sampling, platform identity |
+| text | one statement or report | ClimateX (Session 3) | label source and labeler agreement |
+
+::: {.takeaway}
+The 11 criteria are the same for every modality; the evidence to look for differs.
+:::
+
+::: {.notes}
+Two minutes. Ask each team which row its project is in; several projects combine two (station series plus a gridded covariate, the raster-to-station join of 2.13's earlier version). The catalog examples come from the previous slide. Point at the right column: these are the places analysis readiness most often fails for each modality, and the place an agent should look first.
 :::
 
 ## AI readiness: what the samples contain {.smaller}
@@ -244,7 +266,7 @@ Each criterion scores **0** missing · **1** present but incomplete · **2** ano
 :::
 ::::
 
-**Pairs, 8 minutes:** pick one dataset from the catalog, ask your assistant to score it on the 11 criteria with evidence, then check two of its scores against the dataset's own documentation.
+**Pairs, 8 minutes:** give your assistant the agent version of this rubric (next slide) and one catalog dataset's documentation; check two of its scores yourself.
 
 ::: {.takeaway}
 A score counts only with its evidence: the file, page, or count that another team can check.
@@ -252,6 +274,29 @@ A score counts only with its evidence: the file, page, or count that another tea
 
 ::: {.notes}
 Five minutes including the activity setup; the activity runs at the start of the notebook time. The scale is the course rubric's scale from Session 2, unchanged. The assistant step is deliberate (the schedule promised a rubric built with agents): agents are quick at reading documentation and slow to admit what the documentation does not say. Ask pairs to report one score the agent got wrong and how they found out. Collect two or three; the usual errors are claiming splits are shipped when they are not (B7) and treating a large number of rows as diversity (B1).
+:::
+
+## The rubric, written for an agent
+
+```markdown
+Score each of the 11 criteria (A1-A4, B1-B7) 0, 1 or 2:
+  0 missing; 1 present but incomplete; 2 another team could verify it.
+For every score, quote the evidence: file and line, page and section, URL, or a count.
+If you cannot find evidence, write "not found" and score 0; do not infer from reputation.
+Count independent units (stations, events, regions, years), not rows.
+B7: name the axis on which the test set lies outside the training domain:
+  statistical, spatiotemporal, or physical.
+Report a table: criterion, score, evidence, what is missing.
+```
+
+Full file: [ai_ready_rubric_for_agents.md](https://geo-smart.github.io/mlgeo-book/slides/2026/files/ai_ready_rubric_for_agents.md), one instruction per criterion. Copy it into your project's AGENTS.md.
+
+::: {.takeaway}
+The same 11 criteria, rewritten so that an assistant must quote evidence for every score and say "not found" when there is none.
+:::
+
+::: {.notes}
+Three minutes, then the pair activity uses this file. Each course rubric so far (Session 2's reproducibility rubric, HW1's AGENTS.md rules) became checkable instructions; this one does the same for data. The two instructions that matter most: quote evidence for every score, and score 0 with "not found" instead of guessing. Agents fill gaps with what similar datasets usually provide; the second instruction is there to stop that. In the activity, pairs give the file and one catalog dataset's documentation to their assistant, then check two of its scores. Collect one score per pair that the agent got wrong.
 :::
 
 ## Run notebook 2.13
