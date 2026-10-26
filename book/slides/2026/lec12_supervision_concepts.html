@@ -31,8 +31,74 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="lec12_supervision_concepts_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link rel="stylesheet" href="lec12_supervision_concepts_files/libs/revealjs/dist/theme/quarto-ce7acf391a23033b2e12d95eea4aebc9.css">
   <link href="lec12_supervision_concepts_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec12_supervision_concepts_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec12_supervision_concepts_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -141,13 +207,13 @@
 <h2></h2>
 <p><span class="lecture-icon">🧭</span></p>
 <h3 id="todays-question">Today’s question</h3>
-<p>A seismic analyst has labeled ten thousand waveforms. Nobody has labeled a single Argo profile.</p>
-<p><strong>What does your data offer: labels, structure, or feedback?</strong></p>
+<p>The Pacific Northwest Seismic Network has labeled every located event as an earthquake or an explosion. Nobody has labeled a single Argo float profile.</p>
+<p><strong>What does your data offer a model: labels, structure, or feedback?</strong></p>
 <div class="dim">
 <p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/concepts-supervision">3.1 Concepts in supervision</a> · <a href="https://geo-smart.github.io/mlgeo-book/classification-regression">3.2 Classification and regression</a></p>
 </div>
 <aside class="notes">
-<p>Chapter 3 opens today. Frame the session: before any algorithm, ask what the data can supervise. Two datasets, same instrument-heavy geoscience, opposite situations — one has a label for every sample (the analyst’s earthquake/noise verdicts), the other has millions of samples and not one label (the Argo temperature-salinity archive). The whole taxonomy of learning frameworks falls out of that single question. Second half of the deck: once you do have labels, the first end-to-end workflow — and the train/validation/test discipline we will enforce all quarter. Ask the room: for your project dataset, who made the labels? Does it even have any?</p>
+<p>Chapter 3 opens today. Before any algorithm, ask what the data can supervise. Two datasets, opposite situations: one has a label for every sample, made by analysts for their own work (earthquake or explosion in the regional catalog); the other has millions of samples and no labels at all (the Argo float archive). Today covers the first situation, supervised learning, through its two forms: classification (a category) and regression (a quantity). Wednesday covers the second: structure without labels.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -160,34 +226,26 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="this-lecture-in-the-literature" class="slide level2 smaller">
-<h2>This lecture in the literature</h2>
-<!-- Literature anchors for lecture 12. Edit THIS file to update the papers;
-     the deck includes it verbatim. Keep 2-4 entries: at least one where the
-     concept was applied well (✓), one where its absence misled a field (✗).
-     Format: verdict + bold message on one line; full citation on its own
-     line below (blank line between them — they must be separate paragraphs). -->
-<div class="ref-item">
-<p><span class="ref-verdict note">📖</span> <span class="ref-msg">The field’s map: which learning frameworks fit which solid-Earth problems, and why labels are the bottleneck.</span></p>
-<p><span class="ref-cite">Bergen, K. J., Johnson, P. A., de Hoop, M. V., &amp; Beroza, G. C. (2019). Machine learning for data-driven discovery in solid Earth geoscience. <em>Science</em>, 363, eaau0323.</span></p>
+<section id="literature-example-telling-blasts-from-earthquakes" class="slide level2 smaller">
+<h2>Literature example: telling blasts from earthquakes</h2>
+<div class="badge-row">
+<p><span class="gb src">🗂️ Catalog &amp; compiled product</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
 </div>
-<div class="ref-item">
-<p><span class="ref-verdict good">✓</span> <span class="ref-msg">Supervision done at scale: millions of analyst-made arrival picks became the labels for a picker that outperforms its teachers’ consistency.</span></p>
-<p><span class="ref-cite">Zhu, W., &amp; Beroza, G. C. (2019). PhaseNet: a deep-neural-network-based seismic arrival-time picking method. <em>Geophysical Journal International</em>, 216, 261–273.</span></p>
+<div class="columns">
+<div class="column" style="width:28%;">
+<div class="lit-card">
+<p><span class="lit-msg">Quarry blasts contaminate seismicity catalogs; because they happen during working hours, the ratio of daytime to nighttime events maps where they are and helps remove them.</span></p>
+<p><span class="lit-cite">Wiemer, S., &amp; Baer, M. (2000). Mapping and removing quarry blast events from seismicity catalogs. <em>Bulletin of the Seismological Society of America</em>, 90, 525–530.</span></p>
 </div>
-<div class="ref-item">
-<p><span class="ref-verdict good">✓</span> <span class="ref-msg">When labels cost analyst hours: the playbook for letting the model choose which samples to send to the expert.</span></p>
-<p><span class="ref-cite">Settles, B. (2009). Active Learning Literature Survey. Computer Sciences Technical Report 1648, University of Wisconsin–Madison.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">The supervision trap, documented: terrain missing from a biased landslide inventory is not a negative label — models trained on incomplete inventories validated well while mapping implausible susceptibility.</span></p>
-<p><span class="ref-cite">Steger, S., Brenning, A., Bell, R., Petschko, H., &amp; Glade, T. (2016). Exploring discrepancies between quantitative validation results and the geomorphic plausibility of statistical landslide susceptibility maps. <em>Geomorphology</em>, 262, 8–23.</span></p>
-</div>
+<p><span class="dim">Rebuilt with the USGS ComCat catalog for Washington and Oregon, 2015–2024: 10,263 earthquakes (M ≥ 1) and 5,805 events labeled explosion by the network’s analysts.</span></p>
+</div><div class="column" style="width:72%;">
+<p><img data-src="figs/lec12_supervision/blasts_vs_quakes.png" style="width:100.0%"></p>
+</div></div>
 <div class="takeaway">
-<p>The supervision question is where every ML-in-geoscience paper starts — these three show the range.</p>
+<p>94% of labeled explosions occur between 08:00 and 17:00 local time, against 38% of earthquakes: the label carries a human schedule.</p>
 </div>
 <aside class="notes">
-<p>Two minutes. Bergen et al.&nbsp;is the review that organized the field: read its examples as answers to today’s question — where solid-Earth problems have labels, where they only have structure. PhaseNet is supervision at scale done right: the labels were not made for ML — they are decades of routine analyst picks, millions of them, recycled as training data; the model ends up more consistent than any single analyst. Settles is the classic survey for the label-poor case — the model chooses which samples earn the analyst’s hour; the book links it in 3.1. Note to the room: this refs file is a living document — the deck is missing its cautionary ✗ paper, and proposing one from your reading arc counts.</p>
+<p>Four minutes; the example told in full. Geoscience first: regional networks record earthquakes and also quarry and mine blasts, which have to be removed before seismicity is studied (b-values, rates, fault mapping). Wiemer and Baer (2000) used the fact that blasting happens during working hours: map the ratio of daytime to nighttime events and the quarries appear. Here it is with today’s data: USGS ComCat, Washington and Oregon box, 2015 to 2024, retrieved for this lecture (figscripts/lec12_blasts_vs_quakes.py). The Pacific Northwest Seismic Network labels quarry and mine blasts “explosion”; only 16 events carry the separate “quarry blast” label. Left: explosions cluster at quarries and mines, earthquakes along Puget Sound, the Cascade volcanoes and eastern Washington. Right: 94% of explosions occur between 08:00 and 17:00 Pacific time, peaking near 14:00, against 38% of earthquakes, which is close to the 37.5% of an even spread over 24 hours; 93% of explosions fall on weekdays against 72% of earthquakes (5 of 7 days is 71%). This is supervised learning in its simplest form: the analyst’s label is the target, and a feature that the analyst did not use directly (the hour) separates the classes. It also contains today’s warning: a feature can separate classes for a reason that is not physics.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -200,8 +258,54 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="five-field-problems-five-kinds-of-supervision" class="slide level2 smaller">
-<h2>Five field problems, five kinds of supervision</h2>
+<section id="the-same-question-in-other-geoscience-problems" class="slide level2 smaller">
+<h2>The same question in other geoscience problems</h2>
+<!-- Literature anchors for lecture 12, second literature slide (the first,
+     Wiemer & Baer 2000, is told in full in the deck with ComCat data).
+     Keep four cards: a short term first, one sentence, then the citation. -->
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="lit-card">
+<p><span class="lit-num">Review</span></p>
+<p><span class="lit-msg">Where solid-Earth problems have labels, where they have only structure, and which learning frameworks fit each.</span></p>
+<p><span class="lit-cite">Bergen, K. J., Johnson, P. A., de Hoop, M. V., &amp; Beroza, G. C. (2019). Machine learning for data-driven discovery in solid Earth geoscience. <em>Science</em>, 363, eaau0323.</span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num">Routine picks</span></p>
+<p><span class="lit-msg">Arrival times picked by network analysts over years became the labels that trained a deep phase picker.</span></p>
+<p><span class="lit-cite">Zhu, W., &amp; Beroza, G. C. (2019). PhaseNet: a deep-neural-network-based seismic arrival-time picking method. <em>Geophysical Journal International</em>, 216, 261–273.</span></p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="lit-card">
+<p><span class="lit-num bad">Biased inventory</span></p>
+<p><span class="lit-msg">Landslide maps that miss whole areas make unmapped slopes look stable; validation scores can stay high while the susceptibility map is geomorphically implausible.</span></p>
+<p><span class="lit-cite">Steger, S., Brenning, A., Bell, R., Petschko, H., &amp; Glade, T. (2016). Exploring discrepancies between quantitative validation results and the geomorphic plausibility of statistical landslide susceptibility maps. <em>Geomorphology</em>, 262, 8–23.</span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num">Active learning</span></p>
+<p><span class="lit-msg">When labels cost analyst hours, the model chooses which samples to send to the expert.</span></p>
+<p><span class="lit-cite">Settles, B. (2009). Active learning literature survey. Computer Sciences Technical Report 1648, University of Wisconsin–Madison.</span></p>
+</div>
+</div></div>
+<div class="takeaway">
+<p>Labels come from analysts, field maps, or routine processing; how and where they were made sets what a model can learn from them.</p>
+</div>
+<aside class="notes">
+<p>Two minutes, one sentence per card. Bergen et al.&nbsp;(2019) organized solid-Earth machine learning by what the data offer, which is today’s question. PhaseNet’s labels were not made for machine learning: they are years of routine arrival-time picks by network analysts, which is why they exist at scale. Steger et al.&nbsp;(2016) show the failure: landslide inventories that miss whole areas teach a model that unmapped slopes are stable, and quantitative validation can still look good while the map is geomorphically implausible. Settles (2009) is the general survey of active learning, where the model asks the analyst for the labels it needs most; it is a computer science report, included because analyst time is the bottleneck in many of our labels.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-the-data-offer-decides-the-kind-of-learning" class="slide level2 smaller">
+<h2>What the data offer decides the kind of learning</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -210,49 +314,49 @@
 </colgroup>
 <thead>
 <tr class="header">
-<th>The field problem</th>
-<th>What the data offers</th>
-<th>Framework</th>
+<th>Field problem</th>
+<th>What the data offer</th>
+<th>Kind of learning</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>10,000 analyst-labeled waveforms</td>
+<td>Earthquakes and explosions in the regional catalog</td>
 <td>a label for every sample</td>
 <td><strong>supervised</strong></td>
 </tr>
 <tr class="even">
-<td>Millions of Argo profiles, zero labels</td>
-<td>only the data’s geometry</td>
+<td>Millions of Argo float profiles</td>
+<td>only the structure of the data</td>
 <td><strong>unsupervised</strong></td>
 </tr>
 <tr class="odd">
 <td>A few mapped landslides, thousands of unvisited hillslopes</td>
-<td>few labels + the unlabeled cloud</td>
+<td>a few labels and many unlabeled samples</td>
 <td><strong>semi-supervised</strong></td>
 </tr>
 <tr class="even">
-<td>Decades of continuous seismic archive</td>
-<td>data that can hide part of itself</td>
+<td>Decades of continuous seismic records</td>
+<td>data that can predict a hidden part of itself</td>
 <td><strong>self-supervised</strong></td>
 </tr>
 <tr class="odd">
 <td>A glider choosing where to dive next</td>
-<td>consequences, discovered later</td>
+<td>consequences, observed later</td>
 <td><strong>reinforcement</strong></td>
 </tr>
 <tr class="even">
-<td>100,000 events/yr, analyst time for 2,000</td>
-<td>a model that can ask</td>
+<td>100,000 events a year, analyst time for 2,000</td>
+<td>a model that can ask for labels</td>
 <td><strong>active</strong></td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>The framework is not a preference — it is read off the data you actually have.</p>
+<p>The kind of learning follows from what your data contain: labels for every sample, a few labels, structure only, or feedback.</p>
 </div>
 <aside class="notes">
-<p>Walk each row as a story, not a definition — these are the five scenarios of book 3.1. Supervised: the analyst’s verdicts are the supervision. Unsupervised: how many water masses are in the Argo archive? Structure first, labels never. Semi-supervised: calling every unvisited hillslope “stable” plants false labels; the unlabeled slopes still map where the data are dense and where the natural gaps fall — a good boundary runs through the gaps. Self-supervised: mask part of a seismogram, predict it from the rest — the label comes free; this is the training mechanism of the foundation models behind the course’s AI thread, and in Chapter 4 you build a small one (autoencoder, masked pretraining). Reinforcement: no one can label the correct glider trajectory in advance; the reward arrives after the mission — rare in geoscience because few problems allow millions of trial-and-error interactions, but it is also how LLMs are post-trained from human feedback. Active: picking 2,000 seismograms at random wastes the analyst on easy cases; let the model ask for the labels that teach it most. Evaluation differs per row — that map is the table at the end of 3.1.</p>
+<p>Two minutes; the six scenarios of book 3.1, each as a story. Supervised: the network’s verdicts are the supervision. Unsupervised: how many water masses are in the Argo archive? Structure first, labels never (Wednesday). Semi-supervised: a few mapped landslides and many slopes nobody visited. Self-supervised: hide a part of a seismogram and predict it from the rest; the data supervise themselves. Reinforcement: an ocean glider’s choice of where to dive is rewarded later by what it measures. Active: the model sends the analyst the events it is least sure of. Ask each team: which row is your project in?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -265,18 +369,23 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="from-today-onward-supervised-learning" class="slide level2">
-<h2>From today onward: supervised learning</h2>
-<p>Two kinds of question, two kinds of answer:</p>
-<ul>
-<li><strong>Classification</strong> — a category: <em>is this window an earthquake or noise?</em> Binary (event / not event) or multiclass (granite / basalt / sandstone)</li>
-<li><strong>Regression</strong> — a quantity: <em>how much soil moisture, given temperature and humidity?</em></li>
-</ul>
+<section id="classification-and-regression" class="slide level2">
+<h2>Classification and regression</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Classification: a category</strong></p>
+<p><em>Is this catalog event an earthquake or an explosion?</em></p>
+<p>One sample: one event · features: hour, depth, magnitude, location · target: the analyst’s label</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Regression: a quantity</strong></p>
+<p><em>What is this rock’s density, given its chemistry?</em></p>
+<p>One sample: one rock · features: 7 oxides (wt%) · target: bulk density (g/cm³)</p>
+</div></div>
 <div class="takeaway">
-<p>Same workflow for both; only the type of answer — and therefore the metric — changes.</p>
+<p>The workflow is the same for both; the target and therefore the metric differ: counts of correct labels for classification, distance to the true value for regression.</p>
 </div>
 <aside class="notes">
-<p>Lessons 3.2–3.9 live in the supervised row. The split matters because it decides the evaluation currency: classification is scored by counting correct categories (accuracy today; precision/recall on Friday), regression by measuring distance to the true value (MSE, R²). Mention in passing: some classifiers are natively binary and get wrapped one-vs-rest for multiclass — an implementation detail the notebook handles. The chapter’s classifier gallery (logistic regression, LDA, naive Bayes, k-NN, SVM, random forest) is in the reading with a geoscience question attached to each — do not memorize the list; ask the three questions in order: what geoscience question, what statistical idea, does it suit my data?</p>
+<p>Two minutes. Name the four pieces for each problem before any model: one data sample, its features, its target, and the metric. The notebook uses the regional catalog for classification and the Session 5 rock table for regression, so students already know both datasets.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -289,84 +398,11 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-first-labeled-dataset" class="slide level2">
-<h2>The first labeled dataset</h2>
-<img data-src="figs/3.2_classification_regression/fig_01.png" class="r-stretch">
-<div class="takeaway">
-<p>Synthetic rock-property data (notebook 3.2): three lithologies in a two-feature space — density and magnetic susceptibility. The labels are the supervision.</p>
-</div>
-<aside class="notes">
-<p>The chapter’s first end-to-end workflow runs on this: 300 samples, 100 per rock type, two measurable physical properties. Point at the overlap between granite and basalt — that overlap is why no classifier will be perfect, and why we need honest evaluation rather than hope. The classifier we use is k-nearest neighbors: classify a new specimen by a vote among its k most similar training samples — assumes nothing about the boundary’s shape, but “similar” depends on units (a preview of Friday’s scaling lesson). Synthetic on purpose: we know the recipe, so surprises are pedagogical, not geological.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="beat-the-trivial-guess-then-report-once" class="slide level2">
-<h2>Beat the trivial guess — then report once</h2>
-<div class="big-number">
-<p>1/3 <span class="unit">baseline: always guess the most common rock</span></p>
-</div>
-<div class="big-number">
-<p>0.80 <span class="unit">k-NN accuracy on the test set — touched once</span></p>
-</div>
-<div class="dim">
-<p>The validation set chose k = 9 from {1, 3, 5, 9, 15}; the test set only confirmed it.</p>
-</div>
-<div class="takeaway">
-<p>No baseline, no meaning: 0.80 matters because the trivial predictor gets 0.33.</p>
-</div>
-<aside class="notes">
-<p>Numbers from the executed notebook: majority-class baseline 0.333 on the validation set; validation accuracies range 0.667–0.767 across k, best at k = 9; final test accuracy 0.80. Walk the three-way split aloud — training (60%) fits the model, validation (20%) compares the five candidate k values, test (20%) is touched once at the end. Why not tune on the test set? Because after enough peeks the test set silently becomes a validation set, and the final number becomes advertising. This discipline is the seed of session 18 on robust training. The confusion matrix in the notebook shows where the 20% of errors live: granite–basalt confusions, exactly the overlap on the previous slide — errors have geological structure.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="same-discipline-for-a-quantity" class="slide level2 smaller">
-<h2>Same discipline for a quantity</h2>
-<div class="big-number">
-<p>R² = −0.01 <span class="unit">baseline: predict the training mean everywhere</span></p>
-</div>
-<div class="big-number">
-<p>R² = 0.947 <span class="unit">degree-2 polynomial, test set — touched once</span></p>
-</div>
-<div class="dim">
-<p>R²: 1 = perfect, 0 = no better than the mean. Validation preferred the polynomial (MSE 4.80) over the line (5.09) — the truth has a quadratic term.</p>
-</div>
-<div class="takeaway">
-<p>Baseline → candidate models → choose on validation → confirm once on test. Every time.</p>
-</div>
-<aside class="notes">
-<p>The regression twin of the previous slide: synthetic soil moisture driven by temperature and humidity with a mild quadratic in temperature. Numbers from the executed notebook: mean-prediction baseline MSE 87.15, R² −0.012; linear regression MSE 5.09, R² 0.941; degree-2 polynomial MSE 4.80, R² 0.944 on validation; the selected polynomial scores MSE 4.02, R² 0.947 on the test set. Two teaching points: first, the linear model is already excellent — the polynomial wins by a nose, and only because the true function genuinely bends; model selection is only meaningful when the truth is unknown. Second, define R² before leaning on it — most of the room is domain, not data science. MSE is in squared physical units; the book returns to physical-units errors in 3.7.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-three-way-split-each-set-has-one-job" class="slide level2">
-<h2>The three-way split: each set has one job</h2>
+<section id="earthquake-or-explosion-baseline-model-later-years" class="slide level2 smaller">
+<h2>Earthquake or explosion: baseline, model, later years</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a>baseline <span class="op">=</span> DummyClassifier(strategy<span class="op">=</span><span class="st">"most_frequent"</span>).fit(X_train, y_train)</span>
+<span id="cb1-2"><a href=""></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>k).fit(X_train, y_train)   <span class="co"># k chosen on validation</span></span>
+<span id="cb1-3"><a href=""></a>balanced_accuracy_score(y_test, knn.predict(X_test))               <span class="co"># test: 2022-2024, used once</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <table class="caption-top">
 <colgroup>
 <col style="width: 25%">
@@ -376,44 +412,38 @@
 </colgroup>
 <thead>
 <tr class="header">
-<th>Set</th>
-<th>Share</th>
-<th>Its one job</th>
-<th>Rock-type example</th>
+<th>Partition</th>
+<th>Events (earthquakes / explosions)</th>
+<th>Classifier</th>
+<th>Balanced accuracy</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Training</strong></td>
-<td>60%</td>
-<td>fit the model’s parameters</td>
-<td>k-NN stores the labeled samples</td>
+<td>Validation, 2015–2021</td>
+<td>1,427 / 669</td>
+<td>always “earthquake” (majority class)</td>
+<td>0.50 (accuracy 0.68)</td>
 </tr>
 <tr class="even">
-<td><strong>Validation</strong></td>
-<td>20%</td>
-<td>compare models, tune choices</td>
-<td>picked k = 9 of {1…15}</td>
+<td>Validation, 2015–2021</td>
+<td>1,427 / 669</td>
+<td>k-nearest neighbors, k = 3</td>
+<td>0.972</td>
 </tr>
 <tr class="odd">
-<td><strong>Test</strong></td>
-<td>20%</td>
-<td>one final honest number</td>
-<td>accuracy 0.80, reported once</td>
-</tr>
-<tr class="even">
-<td><em>Baseline</em></td>
-<td>—</td>
-<td>the score any model must beat</td>
-<td>0.33 by always guessing</td>
+<td>Test, 2022–2024</td>
+<td>3,132 / 1,783</td>
+<td>same model, used once</td>
+<td>0.958</td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>Evaluation happens on data the model has not seen — the rule every notebook in this chapter enforces.</p>
+<p>The classifier beats the majority-class baseline by a wide margin, and its score holds on three later years it never saw: 0.958 balanced accuracy.</p>
 </div>
 <aside class="notes">
-<p>The closing screen — leave it up for questions. Say the failure modes aloud: fit the scaler or the model on everything → the test set leaks into training; tune on the test set → the honest number quietly becomes a validation score. Both reappear as named villains on Friday (3.4’s scaler discipline) and in session 18 (robust training). Vocabulary check: train/validation/test is the book’s fixed triple — homeworks and the leaderboard use exactly these words, and the leaderboard’s hidden test set is this row enforced by infrastructure.</p>
+<p>Three minutes. Features: local hour, depth, magnitude, latitude, longitude, standardized with training statistics; earthquakes and explosions both cut at M 1 (5,128 explosions remain of 5,805, so that magnitude alone does not separate them). Training and validation are 2015 to 2021, validation a random 20% stratified by label; the test is 2022 to 2024, out of domain in time (criterion B7 of the 2.13 rubric). Balanced accuracy averages the recall of the two classes, so a model that always says “earthquake” scores 0.50 even though its accuracy is 0.68. k was chosen on validation from 1, 3, 9, 27, 81 (balanced accuracy 0.958 to 0.972). Test recall: earthquakes 0.951, explosions 0.965. Numbers from notebook 3.2, ComCat downloaded 2026-10-25.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -426,19 +456,136 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="now-run-it-yourself-open-3.2" class="slide level2">
-<h2>Now run it yourself — open 3.2</h2>
-<ol type="1">
-<li><code>pixi run jupyter lab</code> → <code>3.2_classification_regression.ipynb</code></li>
-<li>Rock types: run the split, beat the 0.33 baseline, tune k on validation, test once</li>
-<li>Soil moisture: baseline → linear → polynomial; confirm the validation choice on the test set</li>
-<li>Your project data: which row of the five-problems table is it? Bring the answer Wednesday.</li>
-</ol>
-<div class="dim">
-<p>Wed: structure without labels — clustering (3.3) · Ch 2 quiz closes Wed · <strong>Project proposals due Fri Oct 30</strong></p>
+<section id="a-feature-the-analyst-set-depth" class="slide level2 compact">
+<h2>A feature the analyst set: depth</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Test 2022–2024, features used</th>
+<th>Balanced accuracy</th>
+<th>Blasts outside 08:00–17:00 labeled correctly (104)</th>
+<th>Earthquakes 08:00–17:00 labeled correctly (1,221)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>hour, depth, magnitude, location</td>
+<td>0.958</td>
+<td>0.865</td>
+<td>0.894</td>
+</tr>
+<tr class="even">
+<td>without hour</td>
+<td>0.961</td>
+<td>0.933</td>
+<td>0.939</td>
+</tr>
+<tr class="odd">
+<td>without hour and depth</td>
+<td>0.838</td>
+<td>0.760</td>
+<td>0.888</td>
+</tr>
+</tbody>
+</table>
+<p><span class="dim">98.5% of explosions carry a depth uncertainty of 31.61 km, a placeholder: their depth was fixed near the surface after the event was labeled a blast (1.8% of earthquakes). 98.4% of explosions are shallower than 1 km, against 9.1% of earthquakes.</span></p>
+<div class="takeaway">
+<p>Most of the separation comes from depth, a value partly set by the analyst after labeling; without hour and depth, balanced accuracy drops from 0.96 to 0.84.</p>
 </div>
 <aside class="notes">
-<p>Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, this deck ~20 min, notebook exercise ~40 min, synthesis ~10 min collecting answers to task 4 — expect a spread across supervised, unsupervised, and semi-supervised, which sets up Wednesday and Friday. Implementation names live in the notebook: train_test_split (called twice for the three-way split), DummyClassifier and DummyRegressor for baselines, KNeighborsClassifier, LinearRegression, PolynomialFeatures in a Pipeline. Students’ coding agents know the syntax; choosing the framework and the baseline is the scientist’s job. Remind about the proposal deadline Friday and that the Ch 2 quiz window closes Wednesday.</p>
+<p>Four minutes; the main lesson of the session. Dropping the hour barely changes the score, and even helps on the events that break the working-hours pattern (blasts at night, earthquakes during the day). The reason is depth: the network fixes the depth of a blast near the surface once it is identified, and records a placeholder depth uncertainty (31.61 km for 98.5% of explosions). A model that uses depth is partly reading the analyst’s decision back, which is a form of leakage: the feature was produced by the same process as the label. The honest score for a model meant to label events before an analyst sees them is the one without hour and depth: 0.838. Ask the room: in your project data, which columns were produced after, or because of, the label? Connect to Session 5 (cleaning rules grounded in how a column was made) and to the 2.13 rubric (criterion B5, labels).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rock-density-from-chemistry-outside-the-training-range" class="slide level2 compact">
+<h2>Rock density from chemistry, outside the training range</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Mean absolute error (g/cm³), validation, SiO₂ &lt; 63 wt%</th>
+<th>Test: silica-rich rocks, SiO₂ ≥ 63 wt%</th>
+<th>Test: random 20%</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>mean of training densities</td>
+<td>0.056</td>
+<td>0.267</td>
+<td>0.130</td>
+</tr>
+<tr class="even">
+<td>linear regression (chosen on validation)</td>
+<td>0.024</td>
+<td>0.029</td>
+<td>0.024</td>
+</tr>
+<tr class="odd">
+<td>degree-2 polynomial</td>
+<td>0.025</td>
+<td>0.031</td>
+<td>0.024</td>
+</tr>
+<tr class="even">
+<td>random forest</td>
+<td>0.025</td>
+<td>0.106</td>
+<td>0.024</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>On validation the three models tie; on silica-rich rocks outside the training range the random-forest error grows fourfold while the linear error grows by a fifth.</p>
+</div>
+<aside class="notes">
+<p>Three minutes. Regression on the Session 5 rock table (synthetic, mlgeo_synth, 5,000 rocks): target bulk density, features the seven oxides. Physical out-of-domain test: train and validate on rocks with SiO2 below 63 wt% (the intermediate and felsic boundary of the total-alkali-silica classification), test on the silica-rich rocks above it (2,794 granites and 16 andesites); compare with a random 20% test. A random split would report all three models as equal (0.024 g/cm3, close to the generator’s noise of 0.03). Outside the range, the random forest predicts about 2.75 g/cm3 for every granite: tree models cannot predict beyond the targets they saw. The linear model extrapolates the chemistry-density relation and stays physical (all predictions between 2.5 and 3.3 g/cm3; observed 2.51 to 3.13). Choosing a model on validation alone would not have revealed this; the out-of-domain test did.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="run-notebook-3.2" class="slide level2">
+<h2>Run notebook 3.2</h2>
+<ol type="1">
+<li><code>pixi run jupyter lab</code> → <code>3.2_classification_regression.ipynb</code></li>
+<li>Classification: local hour by label; majority-class baseline; k-nearest neighbors with k chosen on validation; confusion matrix</li>
+<li>Test once on 2022–2024; drop the hour, then the depth, and explain what changes</li>
+<li>Regression: rock density from oxides; baseline, linear and nonlinear models; test on the most silica-rich rocks</li>
+</ol>
+<div class="dim">
+<p>Wednesday: dimension of the data and principal components (2.12), then clustering (3.3) · Chapter 2 quiz open until Wednesday</p>
+</div>
+<aside class="notes">
+<p>Timing for the 80-minute block (10:00 to 11:20): paper-pulse talks about 10 minutes, deck about 20, notebook about 45, closing 5. Circulate on task 3: most students expect the classifier to collapse without the hour; it does not, because depth carries the separation. Ask them whether depth here is physics or processing (the placeholder depth uncertainty of 31.61 km). Implementation names live in the notebook (DummyClassifier, KNeighborsClassifier or RandomForestClassifier, confusion_matrix, DummyRegressor, LinearRegression).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

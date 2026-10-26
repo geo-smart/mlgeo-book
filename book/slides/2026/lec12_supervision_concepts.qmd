@@ -11,148 +11,174 @@ title-slide-attributes:
 
 ### Today's question
 
-A seismic analyst has labeled ten thousand waveforms. Nobody has labeled a single Argo profile.
+The Pacific Northwest Seismic Network has labeled every located event as an earthquake or an explosion. Nobody has labeled a single Argo float profile.
 
-**What does your data offer: labels, structure, or feedback?**
+**What does your data offer a model: labels, structure, or feedback?**
 
 ::: {.dim}
 Reading: [3.1 Concepts in supervision](https://geo-smart.github.io/mlgeo-book/concepts-supervision) · [3.2 Classification and regression](https://geo-smart.github.io/mlgeo-book/classification-regression)
 :::
 
 ::: {.notes}
-Chapter 3 opens today. Frame the session: before any algorithm, ask what the data can supervise. Two datasets, same instrument-heavy geoscience, opposite situations — one has a label for every sample (the analyst's earthquake/noise verdicts), the other has millions of samples and not one label (the Argo temperature-salinity archive). The whole taxonomy of learning frameworks falls out of that single question. Second half of the deck: once you do have labels, the first end-to-end workflow — and the train/validation/test discipline we will enforce all quarter. Ask the room: for your project dataset, who made the labels? Does it even have any?
+Chapter 3 opens today. Before any algorithm, ask what the data can supervise. Two datasets, opposite situations: one has a label for every sample, made by analysts for their own work (earthquake or explosion in the regional catalog); the other has millions of samples and no labels at all (the Argo float archive). Today covers the first situation, supervised learning, through its two forms: classification (a category) and regression (a quantity). Wednesday covers the second: structure without labels.
 :::
 
-## This lecture in the literature {.smaller}
+## Literature example: telling blasts from earthquakes {.smaller}
+
+::: {.badge-row}
+[🗂️ Catalog & compiled product]{.gb .src} [🪨 Solid Earth]{.gb .sys .solid} [📈 Seismology]{.gb .disc .solid}
+:::
+
+:::: {.columns}
+::: {.column width="28%"}
+::: {.lit-card}
+[Quarry blasts contaminate seismicity catalogs; because they happen during working hours, the ratio of daytime to nighttime events maps where they are and helps remove them.]{.lit-msg}
+
+[Wiemer, S., & Baer, M. (2000). Mapping and removing quarry blast events from seismicity catalogs. *Bulletin of the Seismological Society of America*, 90, 525–530.]{.lit-cite}
+:::
+
+[Rebuilt with the USGS ComCat catalog for Washington and Oregon, 2015–2024: 10,263 earthquakes (M ≥ 1) and 5,805 events labeled explosion by the network's analysts.]{.dim}
+:::
+::: {.column width="72%"}
+![](figs/lec12_supervision/blasts_vs_quakes.png){width="100%"}
+:::
+::::
+
+::: {.takeaway}
+94% of labeled explosions occur between 08:00 and 17:00 local time, against 38% of earthquakes: the label carries a human schedule.
+:::
+
+::: {.notes}
+Four minutes; the example told in full. Geoscience first: regional networks record earthquakes and also quarry and mine blasts, which have to be removed before seismicity is studied (b-values, rates, fault mapping). Wiemer and Baer (2000) used the fact that blasting happens during working hours: map the ratio of daytime to nighttime events and the quarries appear. Here it is with today's data: USGS ComCat, Washington and Oregon box, 2015 to 2024, retrieved for this lecture (figscripts/lec12_blasts_vs_quakes.py). The Pacific Northwest Seismic Network labels quarry and mine blasts "explosion"; only 16 events carry the separate "quarry blast" label. Left: explosions cluster at quarries and mines, earthquakes along Puget Sound, the Cascade volcanoes and eastern Washington. Right: 94% of explosions occur between 08:00 and 17:00 Pacific time, peaking near 14:00, against 38% of earthquakes, which is close to the 37.5% of an even spread over 24 hours; 93% of explosions fall on weekdays against 72% of earthquakes (5 of 7 days is 71%). This is supervised learning in its simplest form: the analyst's label is the target, and a feature that the analyst did not use directly (the hour) separates the classes. It also contains today's warning: a feature can separate classes for a reason that is not physics.
+:::
+
+## The same question in other geoscience problems {.smaller}
 
 {{< include refs/lec12_refs.qmd >}}
 
 ::: {.takeaway}
-The supervision question is where every ML-in-geoscience paper starts — these three show the range.
+Labels come from analysts, field maps, or routine processing; how and where they were made sets what a model can learn from them.
 :::
 
 ::: {.notes}
-Two minutes. Bergen et al. is the review that organized the field: read its examples as answers to today's question — where solid-Earth problems have labels, where they only have structure. PhaseNet is supervision at scale done right: the labels were not made for ML — they are decades of routine analyst picks, millions of them, recycled as training data; the model ends up more consistent than any single analyst. Settles is the classic survey for the label-poor case — the model chooses which samples earn the analyst's hour; the book links it in 3.1. Note to the room: this refs file is a living document — the deck is missing its cautionary ✗ paper, and proposing one from your reading arc counts.
+Two minutes, one sentence per card. Bergen et al. (2019) organized solid-Earth machine learning by what the data offer, which is today's question. PhaseNet's labels were not made for machine learning: they are years of routine arrival-time picks by network analysts, which is why they exist at scale. Steger et al. (2016) show the failure: landslide inventories that miss whole areas teach a model that unmapped slopes are stable, and quantitative validation can still look good while the map is geomorphically implausible. Settles (2009) is the general survey of active learning, where the model asks the analyst for the labels it needs most; it is a computer science report, included because analyst time is the bottleneck in many of our labels.
 :::
 
-## Five field problems, five kinds of supervision {.smaller}
+## What the data offer decides the kind of learning {.smaller}
 
-| The field problem | What the data offers | Framework |
+| Field problem | What the data offer | Kind of learning |
 |---|---|---|
-| 10,000 analyst-labeled waveforms | a label for every sample | **supervised** |
-| Millions of Argo profiles, zero labels | only the data's geometry | **unsupervised** |
-| A few mapped landslides, thousands of unvisited hillslopes | few labels + the unlabeled cloud | **semi-supervised** |
-| Decades of continuous seismic archive | data that can hide part of itself | **self-supervised** |
-| A glider choosing where to dive next | consequences, discovered later | **reinforcement** |
-| 100,000 events/yr, analyst time for 2,000 | a model that can ask | **active** |
+| Earthquakes and explosions in the regional catalog | a label for every sample | **supervised** |
+| Millions of Argo float profiles | only the structure of the data | **unsupervised** |
+| A few mapped landslides, thousands of unvisited hillslopes | a few labels and many unlabeled samples | **semi-supervised** |
+| Decades of continuous seismic records | data that can predict a hidden part of itself | **self-supervised** |
+| A glider choosing where to dive next | consequences, observed later | **reinforcement** |
+| 100,000 events a year, analyst time for 2,000 | a model that can ask for labels | **active** |
 
 ::: {.takeaway}
-The framework is not a preference — it is read off the data you actually have.
+The kind of learning follows from what your data contain: labels for every sample, a few labels, structure only, or feedback.
 :::
 
 ::: {.notes}
-Walk each row as a story, not a definition — these are the five scenarios of book 3.1. Supervised: the analyst's verdicts are the supervision. Unsupervised: how many water masses are in the Argo archive? Structure first, labels never. Semi-supervised: calling every unvisited hillslope "stable" plants false labels; the unlabeled slopes still map where the data are dense and where the natural gaps fall — a good boundary runs through the gaps. Self-supervised: mask part of a seismogram, predict it from the rest — the label comes free; this is the training mechanism of the foundation models behind the course's AI thread, and in Chapter 4 you build a small one (autoencoder, masked pretraining). Reinforcement: no one can label the correct glider trajectory in advance; the reward arrives after the mission — rare in geoscience because few problems allow millions of trial-and-error interactions, but it is also how LLMs are post-trained from human feedback. Active: picking 2,000 seismograms at random wastes the analyst on easy cases; let the model ask for the labels that teach it most. Evaluation differs per row — that map is the table at the end of 3.1.
+Two minutes; the six scenarios of book 3.1, each as a story. Supervised: the network's verdicts are the supervision. Unsupervised: how many water masses are in the Argo archive? Structure first, labels never (Wednesday). Semi-supervised: a few mapped landslides and many slopes nobody visited. Self-supervised: hide a part of a seismogram and predict it from the rest; the data supervise themselves. Reinforcement: an ocean glider's choice of where to dive is rewarded later by what it measures. Active: the model sends the analyst the events it is least sure of. Ask each team: which row is your project in?
 :::
 
-## From today onward: supervised learning
+## Classification and regression
 
-Two kinds of question, two kinds of answer:
+:::: {.columns}
+::: {.column width="50%"}
+**Classification: a category**
 
-- **Classification** — a category: *is this window an earthquake or noise?* Binary (event / not event) or multiclass (granite / basalt / sandstone)
-- **Regression** — a quantity: *how much soil moisture, given temperature and humidity?*
+*Is this catalog event an earthquake or an explosion?*
+
+One sample: one event · features: hour, depth, magnitude, location · target: the analyst's label
+:::
+::: {.column width="50%"}
+**Regression: a quantity**
+
+*What is this rock's density, given its chemistry?*
+
+One sample: one rock · features: 7 oxides (wt%) · target: bulk density (g/cm³)
+:::
+::::
 
 ::: {.takeaway}
-Same workflow for both; only the type of answer — and therefore the metric — changes.
+The workflow is the same for both; the target and therefore the metric differ: counts of correct labels for classification, distance to the true value for regression.
 :::
 
 ::: {.notes}
-Lessons 3.2–3.9 live in the supervised row. The split matters because it decides the evaluation currency: classification is scored by counting correct categories (accuracy today; precision/recall on Friday), regression by measuring distance to the true value (MSE, R²). Mention in passing: some classifiers are natively binary and get wrapped one-vs-rest for multiclass — an implementation detail the notebook handles. The chapter's classifier gallery (logistic regression, LDA, naive Bayes, k-NN, SVM, random forest) is in the reading with a geoscience question attached to each — do not memorize the list; ask the three questions in order: what geoscience question, what statistical idea, does it suit my data?
+Two minutes. Name the four pieces for each problem before any model: one data sample, its features, its target, and the metric. The notebook uses the regional catalog for classification and the Session 5 rock table for regression, so students already know both datasets.
 :::
 
-## The first labeled dataset
+## Earthquake or explosion: baseline, model, later years {.smaller}
 
-![](figs/3.2_classification_regression/fig_01.png){.r-stretch}
+```python
+baseline = DummyClassifier(strategy="most_frequent").fit(X_train, y_train)
+knn = KNeighborsClassifier(n_neighbors=k).fit(X_train, y_train)   # k chosen on validation
+balanced_accuracy_score(y_test, knn.predict(X_test))               # test: 2022-2024, used once
+```
 
-::: {.takeaway}
-Synthetic rock-property data (notebook 3.2): three lithologies in a two-feature space — density and magnetic susceptibility. The labels are the supervision.
-:::
-
-::: {.notes}
-The chapter's first end-to-end workflow runs on this: 300 samples, 100 per rock type, two measurable physical properties. Point at the overlap between granite and basalt — that overlap is why no classifier will be perfect, and why we need honest evaluation rather than hope. The classifier we use is k-nearest neighbors: classify a new specimen by a vote among its k most similar training samples — assumes nothing about the boundary's shape, but "similar" depends on units (a preview of Friday's scaling lesson). Synthetic on purpose: we know the recipe, so surprises are pedagogical, not geological.
-:::
-
-## Beat the trivial guess — then report once
-
-::: {.big-number}
-1/3 [baseline: always guess the most common rock]{.unit}
-:::
-
-::: {.big-number}
-0.80 [k-NN accuracy on the test set — touched once]{.unit}
-:::
-
-::: {.dim}
-The validation set chose k = 9 from {1, 3, 5, 9, 15}; the test set only confirmed it.
-:::
-
-::: {.takeaway}
-No baseline, no meaning: 0.80 matters because the trivial predictor gets 0.33.
-:::
-
-::: {.notes}
-Numbers from the executed notebook: majority-class baseline 0.333 on the validation set; validation accuracies range 0.667–0.767 across k, best at k = 9; final test accuracy 0.80. Walk the three-way split aloud — training (60%) fits the model, validation (20%) compares the five candidate k values, test (20%) is touched once at the end. Why not tune on the test set? Because after enough peeks the test set silently becomes a validation set, and the final number becomes advertising. This discipline is the seed of session 18 on robust training. The confusion matrix in the notebook shows where the 20% of errors live: granite–basalt confusions, exactly the overlap on the previous slide — errors have geological structure.
-:::
-
-## Same discipline for a quantity {.smaller}
-
-::: {.big-number}
-R² = −0.01 [baseline: predict the training mean everywhere]{.unit}
-:::
-
-::: {.big-number}
-R² = 0.947 [degree-2 polynomial, test set — touched once]{.unit}
-:::
-
-::: {.dim}
-R²: 1 = perfect, 0 = no better than the mean. Validation preferred the polynomial (MSE 4.80) over the line (5.09) — the truth has a quadratic term.
-:::
-
-::: {.takeaway}
-Baseline → candidate models → choose on validation → confirm once on test. Every time.
-:::
-
-::: {.notes}
-The regression twin of the previous slide: synthetic soil moisture driven by temperature and humidity with a mild quadratic in temperature. Numbers from the executed notebook: mean-prediction baseline MSE 87.15, R² −0.012; linear regression MSE 5.09, R² 0.941; degree-2 polynomial MSE 4.80, R² 0.944 on validation; the selected polynomial scores MSE 4.02, R² 0.947 on the test set. Two teaching points: first, the linear model is already excellent — the polynomial wins by a nose, and only because the true function genuinely bends; model selection is only meaningful when the truth is unknown. Second, define R² before leaning on it — most of the room is domain, not data science. MSE is in squared physical units; the book returns to physical-units errors in 3.7.
-:::
-
-## The three-way split: each set has one job
-
-| Set | Share | Its one job | Rock-type example |
+| Partition | Events (earthquakes / explosions) | Classifier | Balanced accuracy |
 |---|---|---|---|
-| **Training** | 60% | fit the model's parameters | k-NN stores the labeled samples |
-| **Validation** | 20% | compare models, tune choices | picked k = 9 of {1…15} |
-| **Test** | 20% | one final honest number | accuracy 0.80, reported once |
-| *Baseline* | — | the score any model must beat | 0.33 by always guessing |
+| Validation, 2015–2021 | 1,427 / 669 | always "earthquake" (majority class) | 0.50 (accuracy 0.68) |
+| Validation, 2015–2021 | 1,427 / 669 | k-nearest neighbors, k = 3 | 0.972 |
+| Test, 2022–2024 | 3,132 / 1,783 | same model, used once | 0.958 |
 
 ::: {.takeaway}
-Evaluation happens on data the model has not seen — the rule every notebook in this chapter enforces.
+The classifier beats the majority-class baseline by a wide margin, and its score holds on three later years it never saw: 0.958 balanced accuracy.
 :::
 
 ::: {.notes}
-The closing screen — leave it up for questions. Say the failure modes aloud: fit the scaler or the model on everything → the test set leaks into training; tune on the test set → the honest number quietly becomes a validation score. Both reappear as named villains on Friday (3.4's scaler discipline) and in session 18 (robust training). Vocabulary check: train/validation/test is the book's fixed triple — homeworks and the leaderboard use exactly these words, and the leaderboard's hidden test set is this row enforced by infrastructure.
+Three minutes. Features: local hour, depth, magnitude, latitude, longitude, standardized with training statistics; earthquakes and explosions both cut at M 1 (5,128 explosions remain of 5,805, so that magnitude alone does not separate them). Training and validation are 2015 to 2021, validation a random 20% stratified by label; the test is 2022 to 2024, out of domain in time (criterion B7 of the 2.13 rubric). Balanced accuracy averages the recall of the two classes, so a model that always says "earthquake" scores 0.50 even though its accuracy is 0.68. k was chosen on validation from 1, 3, 9, 27, 81 (balanced accuracy 0.958 to 0.972). Test recall: earthquakes 0.951, explosions 0.965. Numbers from notebook 3.2, ComCat downloaded 2026-10-25.
 :::
 
-## Now run it yourself — open 3.2
+## A feature the analyst set: depth {.compact}
+
+| Test 2022–2024, features used | Balanced accuracy | Blasts outside 08:00–17:00 labeled correctly (104) | Earthquakes 08:00–17:00 labeled correctly (1,221) |
+|---|---|---|---|
+| hour, depth, magnitude, location | 0.958 | 0.865 | 0.894 |
+| without hour | 0.961 | 0.933 | 0.939 |
+| without hour and depth | 0.838 | 0.760 | 0.888 |
+
+[98.5% of explosions carry a depth uncertainty of 31.61 km, a placeholder: their depth was fixed near the surface after the event was labeled a blast (1.8% of earthquakes). 98.4% of explosions are shallower than 1 km, against 9.1% of earthquakes.]{.dim}
+
+::: {.takeaway}
+Most of the separation comes from depth, a value partly set by the analyst after labeling; without hour and depth, balanced accuracy drops from 0.96 to 0.84.
+:::
+
+::: {.notes}
+Four minutes; the main lesson of the session. Dropping the hour barely changes the score, and even helps on the events that break the working-hours pattern (blasts at night, earthquakes during the day). The reason is depth: the network fixes the depth of a blast near the surface once it is identified, and records a placeholder depth uncertainty (31.61 km for 98.5% of explosions). A model that uses depth is partly reading the analyst's decision back, which is a form of leakage: the feature was produced by the same process as the label. The honest score for a model meant to label events before an analyst sees them is the one without hour and depth: 0.838. Ask the room: in your project data, which columns were produced after, or because of, the label? Connect to Session 5 (cleaning rules grounded in how a column was made) and to the 2.13 rubric (criterion B5, labels).
+:::
+
+## Rock density from chemistry, outside the training range {.compact}
+
+| Model | Mean absolute error (g/cm³), validation, SiO₂ < 63 wt% | Test: silica-rich rocks, SiO₂ ≥ 63 wt% | Test: random 20% |
+|---|---|---|---|
+| mean of training densities | 0.056 | 0.267 | 0.130 |
+| linear regression (chosen on validation) | 0.024 | 0.029 | 0.024 |
+| degree-2 polynomial | 0.025 | 0.031 | 0.024 |
+| random forest | 0.025 | 0.106 | 0.024 |
+
+::: {.takeaway}
+On validation the three models tie; on silica-rich rocks outside the training range the random-forest error grows fourfold while the linear error grows by a fifth.
+:::
+
+::: {.notes}
+Three minutes. Regression on the Session 5 rock table (synthetic, mlgeo_synth, 5,000 rocks): target bulk density, features the seven oxides. Physical out-of-domain test: train and validate on rocks with SiO2 below 63 wt% (the intermediate and felsic boundary of the total-alkali-silica classification), test on the silica-rich rocks above it (2,794 granites and 16 andesites); compare with a random 20% test. A random split would report all three models as equal (0.024 g/cm3, close to the generator's noise of 0.03). Outside the range, the random forest predicts about 2.75 g/cm3 for every granite: tree models cannot predict beyond the targets they saw. The linear model extrapolates the chemistry-density relation and stays physical (all predictions between 2.5 and 3.3 g/cm3; observed 2.51 to 3.13). Choosing a model on validation alone would not have revealed this; the out-of-domain test did.
+:::
+
+
+## Run notebook 3.2
 
 1. `pixi run jupyter lab` → `3.2_classification_regression.ipynb`
-2. Rock types: run the split, beat the 0.33 baseline, tune k on validation, test once
-3. Soil moisture: baseline → linear → polynomial; confirm the validation choice on the test set
-4. Your project data: which row of the five-problems table is it? Bring the answer Wednesday.
+2. Classification: local hour by label; majority-class baseline; k-nearest neighbors with k chosen on validation; confusion matrix
+3. Test once on 2022–2024; drop the hour, then the depth, and explain what changes
+4. Regression: rock density from oxides; baseline, linear and nonlinear models; test on the most silica-rich rocks
 
 ::: {.dim}
-Wed: structure without labels — clustering (3.3) · Ch 2 quiz closes Wed · **Project proposals due Fri Oct 30**
+Wednesday: dimension of the data and principal components (2.12), then clustering (3.3) · Chapter 2 quiz open until Wednesday
 :::
 
 ::: {.notes}
-Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, this deck ~20 min, notebook exercise ~40 min, synthesis ~10 min collecting answers to task 4 — expect a spread across supervised, unsupervised, and semi-supervised, which sets up Wednesday and Friday. Implementation names live in the notebook: train_test_split (called twice for the three-way split), DummyClassifier and DummyRegressor for baselines, KNeighborsClassifier, LinearRegression, PolynomialFeatures in a Pipeline. Students' coding agents know the syntax; choosing the framework and the baseline is the scientist's job. Remind about the proposal deadline Friday and that the Ch 2 quiz window closes Wednesday.
+Timing for the 80-minute block (10:00 to 11:20): paper-pulse talks about 10 minutes, deck about 20, notebook about 45, closing 5. Circulate on task 3: most students expect the classifier to collapse without the hour; it does not, because depth carries the separation. Ask them whether depth here is physics or processing (the placeholder depth uncertainty of 31.61 km). Implementation names live in the notebook (DummyClassifier, KNeighborsClassifier or RandomForestClassifier, confusion_matrix, DummyRegressor, LinearRegression).
 :::
