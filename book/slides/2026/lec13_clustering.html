@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="">
-  <title>Structure without labels: dimensions and clusters</title>
+  <title>Clustering: groups without labels</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -196,8 +196,8 @@
     <div class="slides">
 
 <section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
-  <h1 class="title">Structure without labels:<br>dimensions and clusters</h1>
-  <p class="subtitle">Session 13 · Wed Oct 28 · Book sections 2.12 and 3.3</p>
+  <h1 class="title">Clustering: groups<br>without labels</h1>
+  <p class="subtitle">Session 13 · Wed Oct 28 · Book section 3.3</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -207,13 +207,13 @@
 <h2></h2>
 <p><span class="lecture-icon">🌀</span></p>
 <h3 id="todays-question">Today’s question</h3>
-<p>A monthly map of the tropical Pacific has 1,626 values; 76 years give only 912 maps.</p>
-<p><strong>How many dimensions does a dataset really have, and which groups are in it?</strong></p>
+<p>Analysts at the Pacific Northwest Seismic Network labeled 4,000 events as earthquakes, explosions, surface events or noise.</p>
+<p><strong>If we hide the labels, do the waveforms still fall into those four groups?</strong></p>
 <div class="dim">
-<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/dimensionality-reduction">2.12 Dimensionality reduction</a> · <a href="https://geo-smart.github.io/mlgeo-book/clustering">3.3 Clustering</a></p>
+<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/clustering">3.3 Clustering</a> · uses PCA from <a href="https://geo-smart.github.io/mlgeo-book/dimensionality-reduction">2.12</a></p>
 </div>
 <aside class="notes">
-<p>Two halves today, both about structure without labels. First half, closing Chapter 2: how big a data sample is (its dimension) compared with how many samples there are, and how principal components and EOFs find the few directions that carry the variance. Second half: clustering, which groups samples instead of compressing features. Timing for the 80-minute block (10:00 to 11:20): paper-pulse talks about 10 minutes, dimensionality deck about 10, notebook 2.12 about 25, clustering deck about 10, notebook 3.3 about 25.</p>
+<p>This session is led by a student. Timing for the 80-minute block (10:00 to 11:20): slides about 20 minutes, notebook 3.3 about 50 minutes, last 10 minutes for what the room found. Read the question aloud and ask for a show of hands: who thinks the four groups come back? Most people say yes; the answer at the end of the slides is “partly”. Clustering is the first method in the course that never sees a label. Labels are used only afterwards, to judge what it found.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -226,99 +226,18 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="data-dimension-and-data-size" class="slide level2 compact">
-<h2>Data dimension and data size</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 23%">
-<col style="width: 33%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 9%">
-<col style="width: 10%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Dataset</th>
-<th style="text-align: left;">One data sample</th>
-<th style="text-align: right;">D</th>
-<th style="text-align: right;">N</th>
-<th style="text-align: right;">N / D</th>
-<th style="text-align: right;">Size</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Rock survey (synthetic)</td>
-<td style="text-align: left;">one rock: 9 properties</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">10,000</td>
-<td style="text-align: right;">1,111</td>
-<td style="text-align: right;">0.7 MB</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">GNSS station P395</td>
-<td style="text-align: left;">one day: east, north, up</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">7,496</td>
-<td style="text-align: right;">2,499</td>
-<td style="text-align: right;">0.2 MB</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">STEAD earthquakes</td>
-<td style="text-align: left;">3 components × 6,000 times</td>
-<td style="text-align: right;">18,000</td>
-<td style="text-align: right;">~1.2 M</td>
-<td style="text-align: right;">~67</td>
-<td style="text-align: right;">~86 GB</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ERSST tropical Pacific</td>
-<td style="text-align: left;">one monthly SST map</td>
-<td style="text-align: right;">1,626</td>
-<td style="text-align: right;">912</td>
-<td style="text-align: right;">0.56</td>
-<td style="text-align: right;">5.9 MB</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ERA5, one variable</td>
-<td style="text-align: left;">0.25° global state, 13 levels</td>
-<td style="text-align: right;">13.5 M</td>
-<td style="text-align: right;">~95,000</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">~5 TB</td>
-</tr>
-</tbody>
-</table>
-<p><span class="dim">D: numbers per sample. N: number of samples. Size in bytes (4-byte array values, 8-byte table values). Array rank (1D, 2D, 3D) is the shape, not the dimension.</span></p>
-<div class="takeaway">
-<p>The tropical Pacific record has 912 maps for 1,626 grid points: 0.56 samples per dimension.</p>
-</div>
-<aside class="notes">
-<p>Three minutes; this is the vocabulary the rest of the course uses. The dimension D of a data sample is the number of values that describe it: 9 for a rock in the Session 5 table, 3 for a GNSS day, 3 components times 6,000 time samples for a STEAD waveform, 1,626 ocean grid points for one monthly SST map of the tropical Pacific, and 1440 x 721 x 13 for one ERA5 variable at 0.25 degrees on 13 pressure levels. The size of a dataset is the number of samples N, and its volume in bytes. Rank is something else: a waveform is a 2D array (components x time) but one sample of dimension 18,000. Learning cares about N compared with D. When N is not much larger than D, most of the space is empty, distances between samples become similar, and flexible models overfit. Geoscience fields are smooth, so neighboring values are correlated and the number of directions that carry the variance, the intrinsic dimension, is much smaller than D. That is what principal components measure, and it is criterion B6 of the 2.13 rubric. Sizes are computed from shapes (STEAD about 1.2 million traces; ERA5 states every 6 hours from 1959 to 2023), not read from the archives. In notebook 2.12 students compute the same quantities themselves: the rock table there has 5,000 rocks (N/D 556), and the stored SST array has 1,701 values per map because it includes 75 land points that are dropped before the decomposition.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="literature-example-el-niño-as-the-first-eof" class="slide level2">
-<h2>Literature example: El Niño as the first EOF</h2>
+<section id="literature-example-water-masses-from-argo-profiles" class="slide level2 smaller">
+<h2>Literature example: water masses from Argo profiles</h2>
 <div class="badge-row">
-<p><span class="gb src">🛰️ Satellite &amp; airborne</span> <span class="gb sys ocean">🌊 Ocean</span> <span class="gb disc air">🌡️ Atmospheric &amp; climate science</span></p>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys ocean">🌊 Ocean</span> <span class="gb disc ocean">🌊 Oceanography</span></p>
 </div>
-<img data-src="figs/lec13_dimensionality/ersst_enso_eof.png" class="r-stretch">
+<p><span class="dim">Maze et al.&nbsp;(2017), <em>Progress in Oceanography</em> 151, 275–292 · rebuilt from 2023 Argo profiles (Ifremer ERDDAP)</span></p>
+<img data-src="figs/lit_argo_clusters/argo_clusters.png" class="r-stretch">
 <div class="takeaway">
-<p>Three modes carry 78% of the variance of 1,626 grid points; the first is El Niño, and its time series correlates with the Niño 3.4 index at r = 0.94.</p>
+<p>Grouping profiles by shape alone, with no positions given, recovers ocean regions such as the subpolar gyre and the Eighteen Degree Water.</p>
 </div>
 <aside class="notes">
-<p>Four minutes; the result told in full from open data. Empirical orthogonal functions (EOFs) are principal components of a geophysical field: Lorenz introduced the name for statistical weather prediction in 1956, and they are now the standard first look at any climate field. Data: NOAA ERSST v5 monthly sea surface temperature (Huang et al.&nbsp;2017, J. Climate, doi:10.1175/JCLI-D-16-0836.1), which merges ship, buoy and Argo measurements onto a 2-degree grid; it is an analysis product, so the 1950s rest on far fewer ships than today (the 1945 bucket story of Session 5 sits just before this record). Recipe, identical in notebook 2.12: tropical Pacific 20S to 20N, 120E to 80W, 1950 to 2025 (912 months, 1,626 ocean grid points); anomalies from the 1991 to 2020 monthly means; weights of the square root of the cosine of latitude; singular value decomposition. EOF1 (52.5% of the variance) is warming along the equator from the date line to South America: El Niño when its time series PC1 is positive, La Niña when negative. PC1 correlates with NOAA PSL’s Niño 3.4 index (built from ERSST v6, anomalies from 1981 to 2010) at r = 0.94 over all 912 months. EOF2 carries 17.0% and EOF3 8.4%. In the notebook students read EOF2 from its map and time series: it is mostly the warming trend (western Pacific and subtropics warm, the cold tongue cools), and its time series also drops sharply in strong eastern-Pacific El Niño years (1965, 1972, 1982, 1997, 2015), so it carries part of the difference between El Niño events. The Niño 3.4 index is built from ERSST v6, so the comparison is independent in method, not fully in data. Caution to say aloud: EOFs are orthogonal by construction, so the second and later modes are not guaranteed to be separate physical processes. Script: figscripts/ersst_enso_eof.py.</p>
+<p>Four minutes; the example told in full. The ocean: Argo floats drift at depth, rise every 10 days and measure temperature from about 2,000 m to the surface. Maze et al.&nbsp;(2017) asked whether the North Atlantic’s temperature profiles fall into a few types without being told where they come from. Method, the same as today’s notebook in a different ocean: one sample is a profile on 280 depth levels from 5 to 1,400 m; standardize each level; PCA keeps 11 components (99.88% of the variance); a Gaussian mixture groups the profiles; the number of classes, 8, is where the BIC (a score that rewards fit and penalizes extra parameters) is lowest. We rebuilt it from open data (Ifremer ERDDAP, 5,214 profiles from 574 floats, the first 10 days of each month of 2023) and got the same two choices: 11 components and a BIC minimum at 8. Point at the map: no latitude or longitude went into the clustering, yet each class occupies a region. Class 2 is the subpolar gyre (Labrador and Irminger Seas). Class 8 is the western subtropical gyre, with 18 °C water at 300 m: the Eighteen Degree Water mode water. Class 6 is warmest at 1,000 m relative to its neighbors: the salty Mediterranean water spreading west. Ask the room: why do the classes form regions even though position was not used? Answer: profiles from the same water mass look alike, and water masses occupy regions. Two differences with the paper, to say honestly: our rebuild has a Nordic Seas class (158 profiles) that the paper’s region did not separate, and the paper’s southeastern subtropical gyre class has no clear counterpart here; one year of data is not fifteen. The paper’s figures are not open-licensed, so the figure is ours (figscripts/argo_profile_clusters.py).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -331,56 +250,43 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="pca-in-three-steps" class="slide level2">
-<h2>PCA in three steps</h2>
-<ol type="1">
-<li>Remove the mean of each variable (each grid point, each oxide)</li>
-<li>Decompose the samples-by-dimensions matrix: singular value decomposition</li>
-<li>Keep the first k directions; each carries a known share of the variance</li>
-</ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a>X <span class="op">=</span> anomalies <span class="op">-</span> anomalies.mean(axis<span class="op">=</span><span class="dv">0</span>)            <span class="co"># samples x dimensions</span></span>
-<span id="cb1-2"><a href=""></a>U, S, Vt <span class="op">=</span> np.linalg.svd(X, full_matrices<span class="op">=</span><span class="va">False</span>)  <span class="co"># Vt[0]: EOF1, U[:, 0] * S[0]: PC1</span></span>
-<span id="cb1-3"><a href=""></a>variance_share <span class="op">=</span> S<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> np.<span class="bu">sum</span>(S<span class="op">**</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="takeaway">
-<p>Principal components are orthogonal directions ordered by the variance they carry; a map of each direction is an EOF, and its time series is the principal component.</p>
-</div>
-<aside class="notes">
-<p>Two minutes. The three lines are the ones students write in notebook 2.12. Name the objects: Vt holds the directions in the space of dimensions (for SST, maps; for rocks, combinations of oxides), U times S holds the coordinates of each sample along them (for SST, a time series). Standardize first when variables have different units (the rock table mixes wt% and g/cm3); do not standardize grid points of one field that share a unit, but weight them by area. scikit-learn’s PCA does the same decomposition; the notebook uses both.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="how-many-dimensions-does-a-dataset-need" class="slide level2">
-<h2>How many dimensions does a dataset need?</h2>
+<section id="clustering-in-other-geoscience-problems" class="slide level2 smaller">
+<h2>Clustering in other geoscience problems</h2>
+<!-- Literature anchors for lecture 13, second literature slide (the first,
+     Maze et al. 2017, Progress in Oceanography 151, 275–292,
+     doi:10.1016/j.pocean.2016.12.008, is told in full in the deck from
+     figscripts/argo_profile_clusters.py). Edit THIS file to update the papers;
+     the deck includes it verbatim. Keep four cards: a number or term first,
+     one sentence, then the citation. -->
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Intrinsic dimension:</strong> the number of directions that carry most of the variance</p>
-<ul>
-<li>tropical Pacific SST: 3 modes carry 78% of 1,626 dimensions</li>
-<li>rock survey: the first component is the differentiation index (2.12)</li>
-<li>the share of variance kept is a choice; state it</li>
-</ul>
+<div class="lit-card">
+<p><span class="lit-num">46,000</span></p>
+<p><span class="lit-msg">Earthquake spectra from The Geysers, 2012 to 2014, grouped by k-means with no labels. Each of the four clusters peaks once a year, in turn, following the water-injection rate.</span></p>
+<p><span class="lit-cite">Holtzman, B. K., Paté, A., Paisley, J., Waldhauser, F., &amp; Repetto, D. (2018). Machine learning reveals cyclic changes in seismic source spectra in Geysers geothermal field. <em>Science Advances</em>, 4(5), eaao2929.</span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num">10 → 4</span></p>
+<p><span class="lit-msg">A Gaussian mixture started with 10 clusters on one day of one Greenland station and kept 4. One of them holds the repeating precursors of the 2017 Nuugaatsiaq landslide.</span></p>
+<p><span class="lit-cite">Seydoux, L., Balestriero, R., Poli, P., de Hoop, M., Campillo, M., &amp; Baraniuk, R. (2020). Clustering earthquake signals and background noises in continuous seismic data with unsupervised deep learning. <em>Nature Communications</em>, 11, 3972.</span></p>
+</div>
 </div><div class="column" style="width:50%;">
-<p><strong>Why it matters for learning</strong></p>
-<ul>
-<li>fewer inputs than samples: models can be fit and tested</li>
-<li>correlated inputs collapse onto a few directions</li>
-<li>the 2.13 rubric scores it as criterion B6</li>
-</ul>
+<div class="lit-card">
+<p><span class="lit-num">43%</span></p>
+<p><span class="lit-msg">K-means on the terms of the barotropic vorticity budget splits the global ocean into five main dynamical regimes. The largest, depth-coherent flow, covers 43% of the ocean area.</span></p>
+<p><span class="lit-cite">Sonnewald, M., Wunsch, C., &amp; Heimbach, P. (2019). Unsupervised learning reveals geography of global ocean dynamical regions. <em>Earth and Space Science</em>, 6(5), 784–794.</span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num bad">k ≥ 4</span></p>
+<p><span class="lit-msg">On uniform noise, which has one cluster, all eight elbow-based rules tested pick four or more.</span></p>
+<p><span class="lit-cite">Schubert, E. (2023). Stop using the elbow criterion for k-means and how to choose the number of clusters instead. <em>ACM SIGKDD Explorations Newsletter</em>, 25(1), 36–42.</span></p>
+</div>
 </div></div>
 <div class="takeaway">
-<p>Report the number of components and the share of variance they keep, as you would report a filter’s cutoff.</p>
+<p>Clusters found without labels became findings when they lined up with something measured independently: an injection schedule, a landslide, a flow regime.</p>
 </div>
 <aside class="notes">
-<p>Two minutes. The variance curve on the previous slide is the tool: modes 1 to 3 carry 52.5, 17.0 and 8.4%; mode 4 drops to 3.4%. There is no universal threshold (90%, 95%, a kink in the curve); the choice depends on whether the small modes are noise or the signal of interest, which is the Session 9 question again. In the notebook, students compute the curve for the rock table and the SST field and state how many components carry 90% of the variance.</p>
+<p>Two minutes, one sentence per card. Holtzman et al.&nbsp;(2018): 46,000 small earthquakes at The Geysers geothermal field, grouped by the shape of their spectra; each of four clusters peaks once a year, in turn, following the water-injection rate. Nobody gave the algorithm the injection data; the match is what makes the clusters believable. Seydoux et al.&nbsp;(2020): one day of continuous data at one Greenland station; a Gaussian mixture started with 10 groups kept 4, and one of them holds the repeating small signals before the 2017 Nuugaatsiaq landslide. Sonnewald et al.&nbsp;(2019): k-means on the terms of the ocean’s vorticity budget splits the global ocean into dynamical regimes; the largest covers 43% of the ocean area. Schubert (2023) is the warning that returns on the “choosing k” slide: on uniform noise, which has a single cluster, every elbow rule tested picks four or more.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -393,98 +299,17 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="t-sne-a-map-for-looking-not-for-measuring" class="slide level2">
-<h2>t-SNE: a map for looking, not for measuring</h2>
-<ul>
-<li>t-SNE places similar samples near each other in 2D, for visualization</li>
-<li>distances between groups, group sizes, and density in the map are not meaningful</li>
-<li>the layout changes with its settings (perplexity, random seed)</li>
-<li>use PCA to reduce dimensions for a model; use t-SNE to look at the data</li>
-</ul>
-<div class="takeaway">
-<p>A t-SNE map suggests groups; clustering, next, is how we test whether the groups exist in the data themselves.</p>
+<section id="old-faithful-what-is-one-sample" class="slide level2 smaller">
+<h2>Old Faithful: what is one sample?</h2>
+<div class="badge-row">
+<p><span class="gb src">🗂️ Catalog &amp; compiled product</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">🌋 Volcanology</span></p>
 </div>
-<aside class="notes">
-<p>One minute, the bridge to the second half. Show the notebook’s t-SNE of the rock table colored by rock type if time allows: the groups separate, but the gaps between them on the map are not distances in oxide space. Clustering works in the original or PCA-reduced space, where distances mean something, which is why the seismic exercise in 3.3 reduces 61 waveform features to 15 principal components before clustering.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="run-notebook-2.12-25-minutes" class="slide level2">
-<h2>Run notebook 2.12 (25 minutes)</h2>
-<ol type="1">
-<li><code>pixi run jupyter lab</code> → <code>2.12_dimensionality_reduction.ipynb</code></li>
-<li>Data dimension and data size: D, N, N/D, and megabytes for three datasets</li>
-<li>PCA in three steps, then the variance curve of the rock table</li>
-<li>EOFs of tropical Pacific SST: anomalies, area weights, SVD; compare PC1 with Niño 3.4 and read EOF2</li>
-<li>Optional: t-SNE of the rock table; ICA</li>
-</ol>
-<aside class="notes">
-<p>Circulate on task 4: the common mistakes are forgetting to remove the monthly climatology (EOF1 becomes the seasonal cycle) and forgetting the area weight. Students who finish early read EOF2’s map and time series and decide whether it is a physical mode or the warming trend.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="clustering-in-the-literature" class="slide level2">
-<h2>Clustering in the literature</h2>
-<!-- Literature anchors for lecture 13. Edit THIS file to update the papers;
-     the deck includes it verbatim. Keep 2-4 entries: at least one where the
-     concept was applied well (✓), one where its absence misled a field (✗).
-     Format: verdict + bold message on one line; full citation on its own
-     line below (blank line between them, they must be separate paragraphs). -->
-<div class="ref-item">
-<p><span class="ref-verdict good">✓</span> <span class="ref-msg">Unsupervised grouping of earthquake spectra at The Geysers revealed source changes that cycle with the water-injection schedule.</span></p>
-<p><span class="ref-cite">Holtzman, B. K., Paté, A., Paisley, J., Waldhauser, F., &amp; Repetto, D. (2018). Machine learning reveals cyclic changes in seismic source spectra in Geysers geothermal field. <em>Science Advances</em>, 4, eaao2929.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict good">✓</span> <span class="ref-msg">PCA and self-organizing maps with hierarchical clustering, applied to the same volcano seismic spectra, found different regimes.</span></p>
-<p><span class="ref-cite">Unglert, K., Radić, V., &amp; Jellinek, A. M. (2016). Principal component analysis vs.&nbsp;self-organizing maps combined with hierarchical clustering for pattern recognition in volcano seismic spectra. <em>Journal of Volcanology and Geothermal Research</em>, 320, 58–74.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">The elbow criterion, the usual way of choosing k, picks the wrong number of clusters in common cases; better criteria exist.</span></p>
-<p><span class="ref-cite">Schubert, E. (2023). Stop using the elbow criterion for k-means and how to choose the number of clusters instead. <em>ACM SIGKDD Explorations Newsletter</em>, 25(1).</span></p>
-</div>
-<div class="takeaway">
-<p>Clustering earthquake spectra at The Geysers found source changes that cycle with water injection; the elbow rule for choosing k misleads on common cases.</p>
-</div>
-<aside class="notes">
-<p>Two minutes. Holtzman et al.&nbsp;is the discovery story: cluster tens of thousands of earthquake spectra at The Geysers geothermal field with no labels, and the cluster occupancy turns out to cycle with the annual water-injection schedule, structure nobody had put a name to. Unglert et al.&nbsp;compared unsupervised pipelines on volcano seismic spectra and found that the tool changes what regimes you see, method choice is a scientific decision, which is today’s distance-metric point at paper scale. Schubert is the cautionary one: the elbow criterion, the default ritual for choosing k, systematically misleads, and we reproduce its failure on our own data today. Refs update as the field moves; candidates from your reading arc are welcome.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="old-faithful-two-regimes-found-without-labels" class="slide level2">
-<h2>Old Faithful: two regimes found without labels</h2>
 <img data-src="figs/3.3_clustering/faithful_kmeans_slide.png" class="r-stretch">
 <div class="takeaway">
-<p>k-means with k = 2 on standardized eruption durations separates the two regimes visible in the scatter, using no labels and no physics.</p>
+<p>One sample is a pair of consecutive eruptions, so two eruption modes make up to four kinds of pair; k-means finds them without labels (silhouette 0.56 at k = 2, 0.69 at k = 4).</p>
 </div>
 <aside class="notes">
-<p>Left: 271 consecutive Old Faithful eruptions, each point pairing one eruption’s duration with the next one’s. The physics: a long eruption drains the reservoir, so recharge takes longer, duration carries memory. Read the structure precisely with the room: after a short eruption the next is reliably long (tight upper-left cloud); after a long eruption the next can be short or long. Right: k-means with k = 2 on the standardized data splits short-current from long-current eruptions; X marks the centroids. Emphasize what was NOT used: no labels, no physics, only Euclidean distance between points. That is both the power (discovery without labels) and the caveat (the algorithm would happily “find” clusters in structureless data too).</p>
+<p>Three minutes. Old Faithful in Yellowstone erupts in two modes: short (about 2 minutes) and long (about 4.5 minutes). Each point pairs one eruption’s duration with the next one’s, 271 pairs. Physics: a long eruption empties more of the reservoir, so recharge takes longer. Point at the left panel and ask the room: after a short eruption, what comes next? Answer: almost always a long one (94% in the notebook). After a long one? Either (52% short). Middle panel: k-means with k = 2 splits the pairs by the first eruption. Right panel: k = 4 finds the four kinds of pair, including the rare short-then-short group in the corner (6 pairs). The lesson: what counts as a group depends on what one sample is. The same data give two groups of eruptions and four groups of pairs. No labels and no physics were used, only distances between points.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -500,16 +325,18 @@
 <section id="distance-and-the-k-means-loop" class="slide level2">
 <h2>Distance and the k-means loop</h2>
 <ul>
-<li>Every clustering method starts from a <strong>distance</strong>; k-means uses Euclidean distance in feature space</li>
+<li>Every clustering method starts from a <strong>distance</strong>; k-means uses Euclidean distance between samples</li>
 <li>Features with large numeric ranges dominate the distance, so <strong>standardize first</strong></li>
-<li><strong>Guess</strong> k centroids, <strong>assign</strong> each sample to the nearest, <strong>re-center</strong> at the cluster means, repeat</li>
-<li>The loop stops at a <strong>local</strong> minimum: run many restarts and keep the best</li>
+<li><strong>Guess</strong> k centers, <strong>assign</strong> each sample to the nearest, <strong>move</strong> each center to the mean of its samples, repeat</li>
+<li>The loop stops at a <strong>local</strong> minimum, so run it from many starts and keep the best</li>
 </ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a>km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">4</span>, init<span class="op">=</span><span class="st">"k-means++"</span>, n_init<span class="op">=</span><span class="dv">20</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X)</span>
+<span id="cb1-2"><a href=""></a>km.labels_, km.cluster_centers_, km.inertia_   <span class="co"># group of each sample, centers, total squared distance</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="takeaway">
-<p>k-means finds groups under the distance you chose and from the start it was given, so the distance and the restarts are part of the result.</p>
+<p>The groups depend on the distance you chose and on where the loop started, so both are part of the result.</p>
 </div>
 <aside class="notes">
-<p>Define distance concretely: Euclidean is the root-sum-of-squares across features. Other choices exist for other data, Manhattan for grid-like data, geodesic on the sphere, correlation-based for waveform similarity, covariance-based in geostatistics, the book lists them; the point is that each encodes a different meaning of “similar,” and the clusters change with it. Standardization habit: k-means on raw mixed-unit features silently clusters on whichever feature has the biggest numbers. Friday shows the same failure in supervised classification with a unit change (hertz to millihertz). Also connect to 2.12: PCA reduces dimensions, clustering groups samples; on high-dimensional data the standard combo is PCA first, cluster the components, we do exactly that in today’s exercise. You will code this loop from scratch in the notebook, four short functions, no library, because the mechanism matters: it explains why k must be chosen in advance (the loop needs centroids to start), why the result depends on initialization (local minima), and why the fix is repetition (the notebook’s best-of-20 run). Then the scikit-learn version: KMeans with the k-means++ initialization and automatic restarts does all of this by default, say the names here, not on the slide. Distance returns in Chapter 4 as the building block of loss functions; the k-means objective is your first loss function, minimized by coordinate descent rather than gradients.</p>
+<p>Three minutes. Euclidean distance is the square root of the summed squared differences across features. Ask the room: if one feature is in meters and another in kilometers, which one decides the clusters? Answer: the one with the bigger numbers, which is why we standardize. Walk through the loop with your hands: drop k centers, everyone joins the nearest, centers move to the middle of their group, repeat until nothing changes. The quantity the loop lowers is the inertia, the sum of squared distances from each sample to its center. It can get stuck: in the notebook a bad start on Old Faithful gives inertia 183.9, while the best of 20 starts gives 74.0, the same as scikit-learn. That is why n_init=20. Students write two pieces of this loop themselves in the notebook (assign and update).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -522,14 +349,14 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="choosing-k-the-elbow-and-the-silhouette" class="slide level2">
+<section id="choosing-k-the-elbow-and-the-silhouette" class="slide level2 smaller">
 <h2>Choosing k: the elbow and the silhouette</h2>
 <img data-src="figs/3.3_clustering/elbow_limits_slide.png" class="r-stretch">
 <div class="takeaway">
-<p>The elbow at k = 2 disappears when the regimes blur, and the silhouette (0.56 at k = 2) uses the same distance as the clusters; neither proves the groups are real.</p>
+<p>With the regimes visible, inertia drops sharply up to k = 3 and the silhouette peaks at k = 4; blur the same pairs by 1.1 minutes and both curves flatten (silhouette 0.34 to 0.38).</p>
 </div>
 <aside class="notes">
-<p>Left: within-cluster scatter versus k for Old Faithful, clear kink at k = 2, matching the two visible regimes; this is the elbow method working. Then the notebook’s stress test: shrink the same standardized data toward the origin (middle panel) so the regimes bleed together, and the elbow curve (right) loses its kink, every k from 2 to 5 looks equally defensible. Nothing in the curve announces the failure. The notebook’s second stress test (subsample to ~20% of the data) breaks it the same way. This is the Schubert critique from the literature slide, reproduced on 271 geyser eruptions. Rule for the room: use the elbow as a guide, cross-check with the silhouette score (next slide), and with the physics. Define it slowly from the dim line, a(i) is the average distance to your own cluster, b(i) to the nearest other cluster; well-clustered samples have b much larger than a. The executed notebook gives 0.561 for k = 2. Calibrate expectations: 0.56 is decent, not spectacular, the two regimes are real but the right-hand cloud is loose. The silhouette plot in the notebook shows the per-sample distribution, which is more informative than the average: look for clusters whose silhouettes sag toward zero. Same honesty as the elbow: the silhouette is computed from the same distance metric that made the clusters, so it can bless artifacts of a bad metric. When ground-truth labels exist, as in the exercise next, better scores exist: homogeneity, completeness, V-measure.</p>
+<p>Three minutes. Left: inertia divided by its value at k = 1. As recorded (blue), adding the second cluster removes 61% of the inertia, the third 25%, the fourth only 4.5%: a bend near k = 3. Right: the silhouette compares, for each sample, the mean distance to its own cluster (a) with the mean distance to the nearest other cluster (b): (b − a) / max(a, b), from −1 to 1. It peaks at k = 4 (0.69). So the elbow and the silhouette do not even agree here. Middle: the notebook’s stress test adds random scatter of one standardized unit (1.14 min) to every pair. The red curves bend gradually and the silhouette is flat: nothing in either curve says “there is no clear k”. Ask the room: which k would you report for the blurred data? There is no good answer, which is the point. Schubert (2023) argues against the elbow for this reason. Use these curves as guides and check against the physics.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -542,14 +369,45 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="pacific-northwest-seismic-sources-without-labels" class="slide level2">
+<section id="pca-before-clustering" class="slide level2">
+<h2>PCA before clustering</h2>
+<ul>
+<li>One seismic event is described by <strong>61 waveform features</strong>: durations, amplitude ratios, frequency content, spectral shape</li>
+<li>Distances in 61 dimensions are dominated by many correlated features, so first <strong>reduce</strong>: PCA on the standardized features</li>
+<li><strong>15 components</strong> keep 80.9% of the variance; the first alone keeps 26.5%</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a>Z <span class="op">=</span> StandardScaler().fit_transform(X_seis)          <span class="co"># 4,000 events x 61 features</span></span>
+<span id="cb2-2"><a href=""></a>pca <span class="op">=</span> PCA().fit(Z)</span>
+<span id="cb2-3"><a href=""></a>n_pcs <span class="op">=</span> np.searchsorted(np.cumsum(pca.explained_variance_ratio_), <span class="fl">0.80</span>) <span class="op">+</span> <span class="dv">1</span>   <span class="co"># 15</span></span>
+<span id="cb2-4"><a href=""></a>X_pca <span class="op">=</span> PCA(n_components<span class="op">=</span>n_pcs).fit_transform(Z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="takeaway">
+<p>The seismic table has 61 features but about 15 directions that carry most of the variance; k-means runs on those 15.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; this is a recap of notebook 2.12, which was self-study. Ask the room: why not cluster on all 61 features directly? Answer: many features measure nearly the same thing, so they count several times in the distance, and the space is mostly empty. PCA rotates the standardized features into uncorrelated directions ordered by variance, and we keep the fewest that reach 80%. This is rubric criterion B6 (dimensionality) from Session 10. In the notebook the result without PCA turns out almost the same (V-measure 0.375 vs 0.371), which is worth saying: PCA here speeds things up and removes redundancy, it does not change the answer much.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="pacific-northwest-seismic-sources-without-labels" class="slide level2 smaller">
 <h2>Pacific Northwest seismic sources without labels</h2>
+<div class="badge-row">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+</div>
 <img data-src="figs/3.3_clustering/seis_crosstab_slide.png" class="r-stretch">
 <div class="takeaway">
-<p>k-means separates earthquakes and noise, but explosions and surface events share a cluster: V-measure 0.38 against the analyst labels.</p>
+<p>Earthquakes get one cluster and noise two; explosions and surface events share one (730 and 777 events). V-measure: 0.37.</p>
 </div>
 <aside class="notes">
-<p>The hand-off dataset: 4000 Pacific Northwest seismic events, earthquakes, explosions, surface events (rockfalls, avalanches, think Mt Hood), and noise, 1000 each, described by 61 physical waveform features; analysts labeled every event, but we hide the labels and cluster. Pipeline: standardize (mandatory, the features span orders of magnitude), PCA to 15 components (80% of the variance), k-means with k = 4. The crosstab scores homogeneity 0.363, completeness 0.393, V-measure 0.377, define V-measure as the harmonic mean of the first two, 0 random to 1 perfect. Read the physics in the matrix: cluster 2 is essentially earthquakes (764), cluster 1 noise (698); explosions and surface events pile into cluster 0 together, both are shallow near-surface sources without deep high-frequency energy, so their features overlap. The same dataset returns in the classification sessions (3.4, 3.5), where labels lift performance substantially, which is the point of labels.</p>
+<p>Four minutes; this is the answer to today’s question. Data: 4,000 events from the Pacific Northwest Seismic Network, 1,000 of each type, labeled by analysts (Kharita et al.&nbsp;2026, Seismica). Surface events are rockfalls, debris flows and avalanches, many on Mount Rainier and Mount Hood. Explosions are mostly quarry and mine blasts. Pipeline: standardize, 15 principal components, k-means with k = 4, then compare clusters with the hidden labels. Read the table row by row with the room. Cluster 0 is mostly earthquakes, cluster 1 mostly noise, cluster 2 mixes explosions and surface events, cluster 3 is mostly noise. Ask: why would explosions and surface events look alike? Answer: both happen at the surface, close to the stations, without the deep, impulsive high-frequency energy of earthquakes, so their waveform features overlap. Define the scores: homogeneity asks whether each cluster holds one label (0.357), completeness whether each label sits in one cluster (0.386), V-measure is their harmonic mean (0.371), from 0 (random) to 1 (perfect). The answer to the opening question: two of the four groups come back without labels; the other two need labels, which is what supervised classification in 3.4 and 3.5 adds.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -562,19 +420,75 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="run-notebook-3.3-25-minutes" class="slide level2">
-<h2>Run notebook 3.3 (25 minutes)</h2>
-<ol type="1">
-<li><code>pixi run jupyter lab</code> → <code>3.3_clustering.ipynb</code></li>
-<li>Run the from-scratch k-means on Old Faithful; break it with a bad initialization, fix it with best-of-20</li>
-<li>Seismic exercise: vary k from 2 to 8, track silhouette and inertia: does k = 4 stand out?</li>
-<li>Compare: clustering without PCA, and agglomerative clustering with 4 clusters: does the V-measure move?</li>
-</ol>
-<div class="dim">
-<p>Chapter 2 quiz closes today · Fri: binary classification and imbalance (3.4) · <strong>project proposals due Fri</strong></p>
+<section id="same-events-four-ways-of-grouping" class="slide level2 compact">
+<h2>Same events, four ways of grouping</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Method (k = 4)</th>
+<th>Homogeneity</th>
+<th>Completeness</th>
+<th>V-measure</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>k-means on 15 principal components</td>
+<td>0.357</td>
+<td>0.386</td>
+<td>0.371</td>
+</tr>
+<tr class="even">
+<td>k-means on all 61 features</td>
+<td>0.359</td>
+<td>0.393</td>
+<td>0.375</td>
+</tr>
+<tr class="odd">
+<td>Ward (hierarchical) on 15 components</td>
+<td>0.343</td>
+<td>0.472</td>
+<td>0.398</td>
+</tr>
+<tr class="even">
+<td>Gaussian mixture on 15 components</td>
+<td>0.311</td>
+<td>0.386</td>
+<td>0.344</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>No method separates explosions from surface events; Ward scores highest only because one of its clusters holds most explosions and surface events together.</p>
 </div>
 <aside class="notes">
-<p>Circulate on task 3: most teams will find k = 4 does not clearly stand out in silhouette or inertia, which is the diagnostics lesson on real data. Task 4 answers vary by run; the discussion is whether the changes are meaningful. Agglomerative clustering: build the dendrogram, choose a linkage (Ward behaves like the k-means objective; single linkage chains), and cut; the tree lets you inspect structure before choosing a number of clusters. Implementation names live in the notebook (KMeans, n_init, AgglomerativeClustering, silhouette_score, homogeneity_completeness_v_measure). Remind: Chapter 2 quiz closes tonight; proposals due Friday on Canvas.</p>
+<p>Two minutes. All four methods land between 0.34 and 0.40. Ward’s agglomerative clustering starts with every event alone and merges the pair of groups that increases the within-group variance least, until four remain. Its higher completeness comes from one very large cluster (929 explosions, 959 surface events and 527 earthquakes): keeping each label in one cluster is easy if one cluster holds almost everything. A Gaussian mixture lets each group have its own shape and size; here it does slightly worse. In the notebook, splitting the mixed cluster again into two does not separate explosions from surface events either. The scientific conclusion: with these 61 features, the difference between a blast and a rockfall is not where the variance is. A geoscientist’s next step would be features that target it, for example the frequency content in the first seconds, or the location and time of day used in Session 12.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="run-notebook-3.3" class="slide level2">
+<h2>Run notebook 3.3</h2>
+<ol type="1">
+<li><code>pixi run jupyter lab</code> → <code>3.3_clustering.ipynb</code>; read “How this notebook is organized” first</li>
+<li>Old Faithful: write the assign and update steps of k-means; compare a bad start with the best of 20</li>
+<li>Choosing k: silhouette for k = 2 to 6, then the blurred stress test</li>
+<li>Seismic events: PCA to 80% of the variance, k-means with k = 4, the table against the labels, then k = 2 to 8</li>
+<li>Compare with all 61 features and with Ward; can any split separate explosions from surface events?</li>
+</ol>
+<div class="dim">
+<p>Chapter 2 quiz closes today · Fri Oct 30: project proposal talks (<a href="https://geo-smart.github.io/mlgeo-book/project-talks">Giving a scientific talk</a>)</p>
+</div>
+<aside class="notes">
+<p>About 50 minutes, then 10 minutes for results. Every “Your turn” cell has a hint and a worked solution under ⋯; if a cell is left empty the notebook fills in the reference so the rest runs, so nobody gets stuck for long. Where people get stuck: forgetting to standardize (task 2), mixing up rows and columns in the distance calculation (task 2), and reading the table against the labels (task 4): clusters are numbered arbitrarily, so cluster 0 has no meaning by itself. For the last 10 minutes, ask two or three groups: which k did the silhouette choose for the seismic events, and does that k match the four source types? (It picks k = 2, at 0.216; the highest V-measure is at k = 3, 0.432.) Remind the room: the Chapter 2 quiz closes tonight, and Friday is the proposal talks, with every team member speaking.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

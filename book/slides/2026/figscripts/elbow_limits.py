@@ -1,11 +1,10 @@
 """Slide figure: the elbow criterion working, then failing, on the same data.
 
-Panel 1: within-cluster scatter vs k for the standardized Old Faithful data —
-a clean kink at k = 2. Panel 2: the notebook 3.3 stress test — the same data
-shrunk toward the origin (alpha * sign(x) * |x|^2, alpha = 0.5) so the
-clusters bleed together. Panel 3: the elbow curve for the shrunken data — the
-kink is gone and the choice of k is ambiguous. Mirrors notebook 3.3 with
-scikit-learn KMeans in place of the from-scratch loop.
+Panel 1: inertia (divided by its value at k = 1) vs k for the standardized
+Old Faithful pairs, as recorded and blurred. Panel 2: the notebook 3.3 stress
+test, the same pairs plus Gaussian scatter of 1 standardized unit
+(default_rng(42)). Panel 3: silhouette score vs k for both. KMeans settings as
+in notebook 3.3 (k-means++, n_init=20, random_state=42).
 
 Regenerate: pixi run python book/slides/2026/figscripts/elbow_limits.py
 """
@@ -19,6 +18,7 @@ import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 import pooch  # noqa: E402
 from sklearn.cluster import KMeans  # noqa: E402
+from sklearn.metrics import silhouette_score  # noqa: E402
 from sklearn.preprocessing import StandardScaler  # noqa: E402
 
 plt.rcParams.update({
@@ -34,38 +34,44 @@ path = pooch.retrieve(
 )
 faithful = pd.read_csv(path)
 data = StandardScaler().fit_transform(faithful[["current", "next"]])
-shrunk = 0.5 * np.sign(data) * np.abs(data) ** 2.0   # notebook 3.3 stress test
-
+blurred = data + np.random.default_rng(42).normal(0, 1.0, data.shape)   # notebook 3.3 stress test
 ks = np.arange(1, 9)
+sk = np.arange(2, 7)
 
 
-def elbow(x):
-    return [KMeans(n_clusters=k, random_state=0).fit(x).inertia_ / len(x)
-            for k in ks]
+def diagnostics(x):
+    fits = {k: KMeans(n_clusters=k, init="k-means++", n_init=20, random_state=42).fit(x) for k in ks}
+    iner = np.array([fits[k].inertia_ for k in ks])
+    sil = np.array([silhouette_score(x, fits[k].labels_) for k in sk])
+    return iner / iner[0], sil
 
 
-fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(17.5, 5.6))
+(i_rec, s_rec), (i_blur, s_blur) = diagnostics(data), diagnostics(blurred)
+print("silhouette as recorded:", dict(zip(sk, s_rec.round(3))))
+print("silhouette blurred:   ", dict(zip(sk, s_blur.round(3))))
 
-ax1.plot(ks, elbow(data), marker="o", color="#1f77b4", linewidth=2.5)
-ax1.axvline(2, color="#b3402a", linestyle="--", linewidth=2)
-ax1.set_title("Clear kink at k = 2", loc="left")
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(20, 6.0))
+for ax, y, x, name in [(ax1, i_rec, ks, "as recorded"), (ax1, i_blur, ks, "blurred"),
+                       (ax3, s_rec, sk, "as recorded"), (ax3, s_blur, sk, "blurred")]:
+    style = dict(marker="o", color="#1f77b4") if name == "as recorded" else dict(marker="s", color="#b3402a", linestyle="--")
+    ax.plot(x, y, linewidth=2.5, markersize=9, label=name, **style)
+ax1.set_title("Elbow: inertia vs k", loc="left")
 ax1.set_xlabel("number of clusters k")
-ax1.set_ylabel("within-cluster scatter")
+ax1.set_ylabel("inertia / inertia at k = 1")
+ax1.legend(fontsize=17)
 ax1.grid(True, alpha=0.4)
-
-ax2.scatter(shrunk[:, 0], shrunk[:, 1], s=22, color="#3b3b3b")
-ax2.set_title("Clusters pushed closer", loc="left")
-ax2.set_xlabel("eruption duration (shrunk)")
-ax2.set_ylabel("next duration (shrunk)")
+ax2.scatter(blurred[:, 0], blurred[:, 1], s=26, color="#3b3b3b")
+ax2.set_title("The same pairs, blurred", loc="left")
+ax2.set_xlabel("duration (standardized)")
+ax2.set_ylabel("next duration (standardized)")
 ax2.grid(True, alpha=0.4)
-
-ax3.plot(ks, elbow(shrunk), marker="o", color="#1f77b4", linewidth=2.5)
-ax3.set_title("Kink gone: k is a guess", loc="left")
+ax3.set_title("Silhouette score vs k", loc="left")
 ax3.set_xlabel("number of clusters k")
-ax3.set_ylabel("within-cluster scatter")
+ax3.set_ylabel("mean silhouette")
+ax3.set_ylim(0, 0.8)
 ax3.grid(True, alpha=0.4)
 
-fig.suptitle("Old Faithful geyser, Yellowstone (panels 2–3: shrunken stress test, notebook 3.3)",
+fig.suptitle("Old Faithful geyser, Yellowstone: the stress test of notebook 3.3 adds scatter of 1 standardized unit (1.14 min)",
              x=0.01, ha="left", fontsize=20, fontweight="normal", color="#6e675c")
 fig.tight_layout(rect=(0, 0, 1, 0.93), w_pad=2.4)
 
