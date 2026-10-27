@@ -21,7 +21,7 @@ The course meets three times a week, and the sessions draw on the book out of ch
 | 11 | Fri Oct 23 | [Verify, then trust: interrogating AI output](lec11_verify_then_trust.md) | [6.2](../Chapter6-AgenticAI/6.2_critical_evaluation.ipynb) |
 | 12 | Mon Oct 26 | [What supervises the learning? Labels, structure, or feedback](lec12_supervision_concepts.md) | [3.1](../Chapter3-MachineLearning/3.1_concepts_supervision.md) · [3.2](../Chapter3-MachineLearning/3.2_classification_regression.ipynb) |
 | 13 | Wed Oct 28 | [Clustering: groups without labels](lec13_clustering.md) | [3.3](../Chapter3-MachineLearning/3.3_clustering.ipynb) |
-| 13 | Self-study | [Data dimension and principal components](lec13a_dimensionality_reduction.md) | [2.12](../Chapter2-DataManipulation/2.12_dimensionality_reduction.ipynb) |
+| 13 | Wed Oct 28 | [Data dimension and principal components](lec13a_dimensionality_reduction.md) | [2.12](../Chapter2-DataManipulation/2.12_dimensionality_reduction.ipynb) |
 | 14 | Fri Oct 30 | [Rare events, honest metrics: grading a detector that hardly ever triggers](lec14_binary_imbalance.md) | [3.4](../Chapter3-MachineLearning/3.4_binary_classification.ipynb) |
 | 15 | Mon Nov 2 | [Four sources, one leaderboard: multiclass classification, graded honestly](lec15_four_sources_leaderboard.md) | [3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb) |
 | 16 | Wed Nov 4 | [Are your probabilities honest? Logistic regression, opened up](lec16_honest_probabilities.md) | [3.6](../Chapter3-MachineLearning/3.6_logistic_regression.ipynb) |
