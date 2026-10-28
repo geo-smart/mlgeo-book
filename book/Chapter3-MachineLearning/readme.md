@@ -8,7 +8,7 @@ This chapter covers classic machine learning (CML) for geoscience: models that l
 
 1. **Concepts** (3.1) — the training-supervision taxonomy: supervised, unsupervised, semi-supervised, self-supervised, reinforcement, and active learning, and where each shows up in geoscience.
 2. **Classification and regression** (3.2) — the two supervised problem types, a first end-to-end workflow, and the train/validation/test split.
-3. **Clustering** (3.3) — unsupervised structure discovery: distance metrics, k-means from scratch, silhouette and elbow diagnostics, hierarchical clustering, and a volcanic-seismicity exercise.
+3. **Fitting a line, finding groups** (3.3) — least-squares regression and its uncertainty, k-means from its two steps, choosing K with the elbow, and PCA before clustering, on height and weight, Old Faithful, rock chemistry and Pacific Northwest seismic events.
 4. **Binary classification** (3.4) — event-vs-noise detection, classifier comparison, the metrics that matter when classes are imbalanced (precision, recall, PR curves vs ROC), and two knobs for treating imbalance (class weights, threshold moving).
 5. **Multiclass classification** (3.5) — four seismic source types, per-class confusion matrices, one-vs-rest ROC, and the class leaderboard exercise.
 6. **Logistic regression from scratch** (3.6) — the one lesson where the black box is opened: the loss function, gradient descent, automatic differentiation with PyTorch, and a calibration check — reliability diagrams and the Brier score — on the predicted probabilities.
