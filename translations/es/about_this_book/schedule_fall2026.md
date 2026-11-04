@@ -23,6 +23,7 @@ Dos decisiones de diseño le dan forma al trimestre. Primero, **el hilo de los a
 | Arco de lecturas, etapa 3 — su rúbrica de calidad | 4 nov | vie 13 nov |
 | Avance de proyecto n.º 1 — taller de auditoría de datos | — | lun 16 nov, en clase |
 | Cuestionario del cap. 6 | lun 16 nov | mié 18 nov |
+| Tarea: evaluar clusters ([Homework_Clustering, en inglés](https://geo-smart.github.io/mlgeo-book/homework-clustering/)) | mié 4 nov | lun 9 nov |
 | Tarea de ML clásico ([Homework_CML](../Chapter3-MachineLearning/Homework_CML.ipynb)) | 4 nov | vie 20 nov |
 | Tarea de aprendizaje profundo ([Homework_DL](../Chapter4-DeepLearning/Homework_DL.ipynb)) | 23 nov | vie 4 dic |
 | Cuestionario del cap. 5 (verifica la lectura invertida del cap. 5) | lun 30 nov | jue 3 dic |

@@ -46,5 +46,5 @@ By the end of this chapter, you will be able to:
 
 ### Assignments
 
-- **Homework**: one homework assignment (a whole-rock geochemistry classification problem) covering data preparation, PCA, clustering, and model comparison.
+- **Homework**: one homework assignment (a whole-rock geochemistry classification problem) covering data preparation, PCA, clustering, and model comparison, plus a short homework on [scoring clusters](Homework_Clustering.ipynb) (about 2 hours): homogeneity, completeness and the silhouette, by hand and on the data of your Session 7 track, with PCA and an AI review of your work.
 - **Final project milestone**: one milestone guideline (3.20) applying these methods to your own project dataset.

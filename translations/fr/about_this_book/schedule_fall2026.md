@@ -23,6 +23,7 @@ Deux choix de conception structurent le trimestre. D'abord, **le fil des agents 
 | Reading arc stage 3 — your quality rubric | Nov 4 | Fri Nov 13 |
 | Project check-in #1 — data-audit studio | — | Mon Nov 16, in class |
 | Ch 6 quiz | Mon Nov 16 | Wed Nov 18 |
+| Devoir : évaluer des clusters ([Homework_Clustering, en anglais](https://geo-smart.github.io/mlgeo-book/homework-clustering/)) | Wed Nov 4 | Mon Nov 9 |
 | HW-CML ([Homework_CML](../Chapter3-MachineLearning/Homework_CML.ipynb)) | Nov 4 | Fri Nov 20 |
 | HW-DL ([Homework_DL](../Chapter4-DeepLearning/Homework_DL.ipynb)) | Nov 23 | Fri Dec 4 |
 | Ch 5 quiz (checks the flipped Ch 5 reading) | Mon Nov 30 | Thu Dec 3 |
