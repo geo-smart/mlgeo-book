@@ -18,7 +18,7 @@ Two design choices shape the quarter. First, **the agent thread runs through the
 | Reading arc stage 1 — AI-assisted lit review ([6.5](../Chapter6-AgenticAI/6.5_reading_arc.md)) | Oct 5 | Wed Oct 21 |
 | Ch 2 quiz | Mon Oct 26 | Wed Oct 28 |
 | Final project proposal ([1.10](1.10_MLGEO_FinalProject.md)) | Oct 12 | Fri Oct 30 |
-| Classification leaderboard ([3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb)) | Mon Nov 2 | closes Tue Nov 24 |
+| Classification leaderboard ([3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb)) | Wed Nov 4 | closes Tue Nov 24 |
 | Reading arc stage 2 — anatomy of good papers | Oct 21 | Wed Nov 4 |
 | Ch 3 quiz (includes the flipped 3.10 reading) | Tue Nov 10 | Thu Nov 12 |
 | Reading arc stage 3 — your quality rubric | Nov 4 | Fri Nov 13 |
@@ -61,11 +61,11 @@ Chapter 7 has no quiz: its outcomes (audience translation, downstream impact) ar
 **Week 5 — Classic ML begins** (Ch 2 quiz Mon–Wed; proposals due Fri)
 - Mon Oct 26 — Supervision concepts; classification vs regression ([3.1](../Chapter3-MachineLearning/3.1_concepts_supervision.md)–[3.2](../Chapter3-MachineLearning/3.2_classification_regression.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec12_supervision_concepts.html)
 - Wed Oct 28 — **Regression: fitting a line, clustering: groups without labels**: least-squares regression and its uncertainty ([3.2](../Chapter3-MachineLearning/3.2_classification_regression.ipynb)), k-means clustering ([3.3](../Chapter3-MachineLearning/3.3_clustering.ipynb)) and principal components ([2.12](../Chapter2-DataManipulation/2.12_dimensionality_reduction.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13_classic_ml.html) · [notebook 3.3](../Chapter3-MachineLearning/3.3_clustering.ipynb) · reference slides: [12](https://geo-smart.github.io/mlgeo-book/slides/2026/lec12_supervision_concepts.html) · [13a](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13a_dimensionality_reduction.html) · [13](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13_clustering.html)
-- Fri Oct 30 — Binary classification and imbalance ([3.4](../Chapter3-MachineLearning/3.4_binary_classification.ipynb)). **Project proposals due.** · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec14_binary_imbalance.html)
+- Fri Oct 30 — **Project proposal talks. Project proposals due.**
 
-**Week 6 — Classification, honestly** (arc stage 2 due Wed)
-- Mon Nov 2 — Multiclass classification ([3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb)); how the leaderboard and hidden test sets work. **Classification leaderboard opens.** · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec15_four_sources_leaderboard.html)
-- Wed Nov 4 — Logistic regression from scratch; are your probabilities honest? ([3.6](../Chapter3-MachineLearning/3.6_logistic_regression.ipynb)). HW-CML assigned. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec16_honest_probabilities.html)
+**Week 6 — Classification** (arc stage 2 due Wed)
+- Mon Nov 2 — End of clustering and classic ML ([3.3](../Chapter3-MachineLearning/3.3_clustering.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13_classic_ml.html)
+- Wed Nov 4 — **Classification: binary, multiclass, logistic regression** ([3.4](../Chapter3-MachineLearning/3.4_binary_classification.ipynb), [3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb), [3.6](../Chapter3-MachineLearning/3.6_logistic_regression.ipynb)): all the metrics, rare classes, thresholds, calibration, how the leaderboard and hidden test sets work. **Classification leaderboard opens.** HW-CML assigned. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec16_classification.html)
 - Fri Nov 6 — Trees, forests, ensembles ([3.7](../Chapter3-MachineLearning/3.7_randomForest_regression.ipynb) + [3.9](../Chapter3-MachineLearning/3.9_ensemble_learning.ipynb)); reading importances without fooling yourself. [3.10](../Chapter3-MachineLearning/3.10_autoML.ipynb) assigned as flipped reading (checked by the Ch 3 quiz). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec17_trees_forests_honestly.html)
 
 **Week 7 — The two evaluation lectures** (short week — no class Wed Nov 11; Ch 3 quiz Tue–Thu; arc stage 3 due Fri)

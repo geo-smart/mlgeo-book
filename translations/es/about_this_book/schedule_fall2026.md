@@ -17,7 +17,7 @@ Dos decisiones de diseño le dan forma al trimestre. Primero, **el hilo de los a
 | Arco de lecturas, etapa 1 — revisión de literatura asistida por IA ([6.5](../Chapter6-AgenticAI/6.5_reading_arc.md)) | 5 oct | mié 21 oct |
 | Cuestionario del cap. 2 | lun 26 oct | mié 28 oct |
 | Propuesta del proyecto final ([1.10](1.10_MLGEO_FinalProject.md)) | 12 oct | vie 30 oct |
-| Tabla de clasificación de clasificación ([3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb)) | lun 2 nov | cierra el mar 24 nov |
+| Tabla de clasificación de clasificación ([3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb)) | mié 4 nov | cierra el mar 24 nov |
 | Arco de lecturas, etapa 2 — anatomía de los buenos artículos | 21 oct | mié 4 nov |
 | Cuestionario del cap. 3 (incluye la lectura invertida de 3.10) | mar 10 nov | jue 12 nov |
 | Arco de lecturas, etapa 3 — su rúbrica de calidad | 4 nov | vie 13 nov |
@@ -60,11 +60,11 @@ El capítulo 7 no tiene cuestionario: sus resultados de aprendizaje (traducción
 **Semana 5 — Empieza el ML clásico** (cuestionario del cap. 2, lun–mié; propuestas el viernes)
 - Lun 26 oct — Conceptos de supervisión; clasificación frente a regresión ([3.1](../Chapter3-MachineLearning/3.1_concepts_supervision.md)–[3.2](../Chapter3-MachineLearning/3.2_classification_regression.ipynb)). · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec12_supervision_concepts.html)
 - Mié 28 oct — Final de la **regresión fuera del dominio de entrenamiento** ([3.2](../Chapter3-MachineLearning/3.2_classification_regression.ipynb)); **dimensión de los datos y componentes principales** ([2.12](../Chapter2-DataManipulation/2.12_dimensionality_reduction.ipynb)); inicio del **agrupamiento** ([3.3](https://geo-smart.github.io/mlgeo-book/clustering)). · diapositivas: [12](https://geo-smart.github.io/mlgeo-book/slides/2026/lec12_supervision_concepts.html) · [13a](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13a_dimensionality_reduction.html) · [13](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13_clustering.html)
-- Vie 30 oct — Clasificación binaria y desbalance ([3.4](../Chapter3-MachineLearning/3.4_binary_classification.ipynb)). **Se entregan las propuestas de proyecto.** · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec14_binary_imbalance.html)
+- Vie 30 oct — **Presentaciones de las propuestas de proyecto. Se entregan las propuestas de proyecto.**
 
-**Semana 6 — Clasificación, con honestidad** (etapa 2 del arco se entrega el miércoles)
-- Lun 2 nov — Clasificación multiclase ([3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb)); cómo funcionan la tabla de clasificación (*leaderboard*) y los conjuntos de prueba ocultos. **Abre la tabla de clasificación de clasificación.** · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec15_four_sources_leaderboard.html)
-- Mié 4 nov — Regresión logística desde cero; ¿sus probabilidades son honestas? ([3.6](../Chapter3-MachineLearning/3.6_logistic_regression.ipynb)). Se asigna la tarea de ML clásico. · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec16_honest_probabilities.html)
+**Semana 6 — Clasificación** (etapa 2 del arco se entrega el miércoles)
+- Lun 2 nov — Final del agrupamiento y del ML clásico ([3.3](https://geo-smart.github.io/mlgeo-book/clustering)). · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13_classic_ml.html)
+- Mié 4 nov — **Clasificación: binaria, multiclase, regresión logística** ([3.4](../Chapter3-MachineLearning/3.4_binary_classification.ipynb), [3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb), [3.6](../Chapter3-MachineLearning/3.6_logistic_regression.ipynb)): todas las métricas, clases raras, umbrales, calibración, cómo funcionan la tabla de clasificación (*leaderboard*) y los conjuntos de prueba ocultos. **Abre la tabla de clasificación de clasificación.** Se asigna la tarea de ML clásico. · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec16_classification.html)
 - Vie 6 nov — Árboles, bosques, ensambles ([3.7](../Chapter3-MachineLearning/3.7_randomForest_regression.ipynb) + [3.9](../Chapter3-MachineLearning/3.9_ensemble_learning.ipynb)); leer las importancias sin engañarse. Se asigna [3.10](../Chapter3-MachineLearning/3.10_autoML.ipynb) como lectura invertida (verificada por el cuestionario del cap. 3). · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec17_trees_forests_honestly.html)
 
 **Semana 7 — Las dos clases sobre evaluación** (semana corta — no hay clase el mié 11 nov; cuestionario del cap. 3, mar–jue; etapa 3 del arco se entrega el viernes)
