@@ -94,6 +94,25 @@ ax.set(xlabel="Probability of explosion from logistic regression", ylabel="Event
 ax.legend(frameon=False, loc=(0.22, 0.72))
 save(fig, "threshold_histogram")
 
+# --- Binary: the three thresholds as points on the ROC and precision-recall curves --------
+fig, (left, right) = plt.subplots(1, 2, figsize=(14, 5.0))
+fpr, tpr, _ = roc_curve(yte, p)
+prec, rec, _ = precision_recall_curve(yte, p)
+left.plot(fpr, tpr, color=BLUE, lw=3, label=f"AUC {numbers['binary_scores']['roc_auc']:.3f}")
+right.plot(rec, prec, color=BLUE, lw=3, label=f"AP {numbers['binary_scores']['average_precision']:.3f}")
+for row in numbers["binary"]:
+    t, r, f, q = row["threshold"], row["recall"], row["fp"] / (row["fp"] + row["tn"]), row["precision"]
+    left.plot(f, r, "o", ms=15, mfc="white", mec=RED, mew=3, zorder=5)
+    left.annotate(f"{t}", (f, r), xytext=(12, -24), textcoords="offset points", fontsize=19, color=RED, fontweight="bold")
+    right.plot(r, q, "o", ms=15, mfc="white", mec=RED, mew=3, zorder=5)
+    right.annotate(f"{t}", (r, q), xytext=(-34, -36), textcoords="offset points", fontsize=19, color=RED, fontweight="bold")
+left.plot([0, 1], [0, 1], color=MUTED, ls=":", lw=2)
+left.set(xlabel="False-positive rate", ylabel="Recall", title="ROC curve", xlim=(0, 1), ylim=(0, 1.02))
+right.set(xlabel="Recall", ylabel="Precision", title="Precision-recall curve", xlim=(0, 1), ylim=(0, 1.02))
+left.legend(frameon=False, loc="lower right")
+right.legend(frameon=False, loc="lower left")
+save(fig, "threshold_to_curves")
+
 # --- Binary: explosions made rare (5%), repeated on 20 random subsets ----------
 eq_index, ex_index = yb[yb == 0].index, yb[yb == 1].index
 n_rare = round(len(eq_index) * 0.05 / 0.95)

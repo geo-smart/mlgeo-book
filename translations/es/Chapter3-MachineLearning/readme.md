@@ -16,6 +16,7 @@ Este capítulo cubre el aprendizaje automático clásico (*classical machine lea
 8. **Entrenamiento robusto** (3.8) — validación cruzada para datos correlacionados: por qué las divisiones aleatorias mienten en series autocorrelacionadas; divisiones temporales, por grupos (sitio, evento) y espaciales dejando un conglomerado fuera; StratifiedGroupKFold para historiales de casos pequeños y desbalanceados; modelos de referencia de persistencia e intervalos de confianza por *bootstrap* sobre los scores.
 9. **Aprendizaje por ensambles** (3.9) — votación, *bagging*, potenciación y apilamiento (*stacking*), con la dispersión del voto del ensamble como primera estimación de la incertidumbre epistémica y la exhaustividad por clase en la comparación de modelos.
 10. **Qué fue del AutoML** (3.10) — una breve historia de la búsqueda automática de modelos, las piezas que sobrevivieron (optimización de hiperparámetros con Optuna, buenos valores por defecto del *gradient boosting*) y un ejercicio de evaluación crítica de código de modelado generado por IA.
+11. **Los bosques en la práctica** (3.11, en inglés): un cuaderno activo para la sesión 17, con una curva ROC a partir de diez eventos, los umbrales de dos modelos, regresión con bosques sobre mediciones reales de humedad del suelo y una prueba fuera del rango de entrenamiento.
 
 La reducción de dimensionalidad (PCA, t-SNE) se cubre en el capítulo 2.12 y aquí se usa como paso de preprocesamiento, sin volver a enseñarse.
 

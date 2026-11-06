@@ -16,6 +16,7 @@ This chapter covers classic machine learning (CML) for geoscience: models that l
 8. **Robust training** (3.8) — cross-validation for correlated data: why random splits lie on autocorrelated series; time-aware, grouped (site, event), and leave-cluster-out spatial splits; StratifiedGroupKFold for small imbalanced case histories; persistence baselines and bootstrap confidence intervals on scores.
 9. **Ensemble learning** (3.9) — voting, bagging, boosting, and stacking, with ensemble vote spread as a first estimate of epistemic uncertainty and per-class recall in the model comparison.
 10. **What became of AutoML** (3.10) — a short history of automated model search, the pieces that survived (hyperparameter optimization with Optuna, strong gradient-boosting defaults), and a critical-evaluation exercise on AI-generated modeling code.
+11. **Forests in practice** (3.11): an active notebook for Session 17, with a ROC curve from ten events, thresholds across two models, forest regression on real soil moisture, and a test beyond the training range.
 
 Dimensionality reduction (PCA, t-SNE) is covered in Chapter 2.12 and is used here as a preprocessing step, not re-taught.
 

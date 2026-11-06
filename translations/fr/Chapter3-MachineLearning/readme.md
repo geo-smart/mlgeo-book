@@ -16,6 +16,7 @@ Ce chapitre couvre le *machine learning* classique (apprentissage automatique cl
 8. **Entraînement robuste** (3.8) — la validation croisée pour données corrélées : pourquoi les découpages aléatoires mentent sur les séries autocorrélées ; découpages temporels, par groupes (site, événement) et spatiaux par laisser-un-groupe-dehors (*leave-cluster-out*) ; StratifiedGroupKFold pour les petites collections de cas déséquilibrées ; modèles de référence par persistance et intervalles de confiance *bootstrap* sur les scores.
 9. **Apprentissage ensembliste** (3.9) — vote, *bagging*, *boosting* et *stacking* (empilement), avec la dispersion des votes de l'ensemble comme première estimation de l'incertitude épistémique et le rappel par classe dans la comparaison des modèles.
 10. **Ce qu'il est advenu de l'AutoML** (3.10) — une brève histoire de la recherche automatique de modèles, les morceaux qui ont survécu (optimisation d'hyperparamètres avec Optuna, bons réglages par défaut du *gradient boosting*), et un exercice d'évaluation critique d'un code de modélisation généré par l'IA.
+11. **Les forêts en pratique** (3.11, en anglais) : un notebook actif pour la séance 17, avec une courbe ROC à partir de dix événements, les seuils de deux modèles, une régression par forêt sur des mesures réelles d'humidité du sol et un test hors du domaine d'entraînement.
 
 La réduction de dimension (PCA, t-SNE) est traitée au chapitre 2.12 et sert ici d'étape de prétraitement — elle n'est pas réenseignée.
 

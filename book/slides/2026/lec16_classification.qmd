@@ -27,6 +27,10 @@ format:
         .reveal .roomy .column pre { font-size: 0.56em; }
         .reveal .dense .column { font-size: 0.7em; }
         .reveal .mid table { font-size: 0.74em; }
+        .reveal .fit .column { font-size: 1.12em; line-height: 1.3; }
+        .reveal .fit table { font-size: 0.95em; }
+        .reveal .fit .column pre { font-size: 0.5em; }
+        .reveal .fit .takeaway { font-size: 0.8em; margin-top: 0.5em; }
         .reveal .mid table td, .reveal .mid table th { padding: 0.14em 0.4em; }
         </style>
 title-slide-attributes:
@@ -43,15 +47,15 @@ A town must decide whether a storm warrants a landslide warning. A seismic netwo
 
 | Part | Book section | What we do | Data |
 |---|---|---|---|
-| 1. Binary | [3.4](https://geo-smart.github.io/mlgeo-book/binary-classification) | two classes, every metric, rare events, thresholds, balancing | landslide days in Sitka; explosions and earthquakes |
-| 2. Multiclass | [3.5](https://geo-smart.github.io/mlgeo-book/multiclass-classification) | per-class scores, macro and micro averages, the leaderboard | four Pacific Northwest source types; Swiss avalanche danger levels |
-| 3. Logistic regression | [3.6](https://geo-smart.github.io/mlgeo-book/logistic-regression) | the simplest classifier: score, probability, weights, calibration | the same seismic events and landslide days |
+| 1. Logistic regression | [3.6](https://geo-smart.github.io/mlgeo-book/logistic-regression) | the simplest classifier: from a weighted sum to a probability | landslide days in Sitka; explosions and earthquakes |
+| 2. Binary decisions | [3.4](https://geo-smart.github.io/mlgeo-book/binary-classification) | threshold, then every metric, rare events, calibration, balancing | the same events and landslide days |
+| 3. Multiclass | [3.5](https://geo-smart.github.io/mlgeo-book/multiclass-classification) | per-class scores, macro and micro averages, the leaderboard | four Pacific Northwest source types; Swiss avalanche danger levels |
 
 ::: {.notes}
-This one session replaces the former separate decks for 3.4, 3.5 and 3.6, because the proposal talks took Friday's slot. Timing for the 80 minutes (10:00 to 11:20): this deck about 50 minutes (Part 1 about 25, Parts 2 and 3 about 12 each), notebook 25 minutes, wrap-up 5 minutes. Ask the room before starting: on a landslide warning, what does a missed event cost? What does a false alarm cost? Keep those two costs in mind: today ends in a decision.
+This one session replaces the former separate decks for 3.4, 3.5 and 3.6, because the proposal talks took Friday's slot. This order was changed after the class of Nov 4, so that the probability comes first, then the threshold, then the metrics that depend on it. Timing for the 80 minutes (10:00 to 11:20): this deck about 50 minutes (Part 1 about 12, Part 2 about 26, Part 3 about 12), notebook 25 minutes, wrap-up 5 minutes. Ask the room before starting: on a landslide warning, what does a missed event cost? What does a false alarm cost? Keep those two costs in mind: today ends in a decision.
 :::
 
-## Part 1. Binary: landslide days in Sitka, Alaska {.roomy}
+## Part 1. Logistic regression: Sitka landslide days {.roomy}
 
 ::: {.columns}
 ::: {.column width="42%"}
@@ -81,14 +85,146 @@ Patton et al. (2023), *Nat. Hazards Earth Syst. Sci.* 23, 3261–3284, Fig. 1. [
 :::
 
 ::: {.notes}
-This paper runs through today: it has binary classes, extreme rarity, a threshold chosen with a community, and logistic regression as the model. Point at the map: steep, forested slopes above a road network with frequent, sustained rain. A landslide day is the positive class. The second number is arithmetic: 6,601 of 6,606 days had no landslide, so a system that never warns is right 99.92% of the time and would have missed all five events, including the fatal one. Ask: so what should we grade it on? Next slide gives every option, on data with less extreme balance so that each number moves.
+This paper runs through today: it has two classes, extreme rarity, logistic regression as the model, and a threshold chosen with a community. Point at the map: steep, forested slopes above a road network with frequent, sustained rain. A landslide day is the positive class. The second number is arithmetic: 6,601 of 6,606 days had no landslide, so a system that never warns is right 99.92% of the time and would have missed all five events, including the fatal one. Ask: if a yes or no is not good enough, what should the model output instead? Next slide: a probability that rises with rainfall.
 :::
 
-## From a confusion matrix to every binary metric {.dense}
+## From rainfall to a probability: one predictor
+
+::: {.columns}
+::: {.column width="64%"}
+![](figs/lec16_classification/papers/patton2023_fig03_logistic_by_rain_window.png){height="690"}
+:::
+::: {.column width="36%"}
+Each panel is one logistic regression: landslide probability against rainfall over one window, from 1 h to 14 d.
+
+- Red points: the 5 landslide days; black: the others
+- Red curve: the fitted S-shaped curve, a sigmoid, with 85% and 95% intervals
+- Gray: how often each rainfall occurs
+
+The **3 h window fits best**. Long windows flatten the curve.
+
+A probability of 0.01 corresponds to **21.3 mm in 3 h**: a cut on the probability is a cut on the rainfall.
+
+::: {.credit}
+Patton et al. (2023), Fig. 3. CC BY 4.0.
+:::
+:::
+:::
+
+::: {.notes}
+This is logistic regression at its simplest, with a physical axis. Each panel has one predictor, the maximum rainfall in a window, so there are only two parameters. With five positive events, two parameters is about what the data can support, and this is a good reason to use logistic regression. The shaded bands are 85% and 95% confidence intervals: wide, because of five events. As windows lengthen, the curve flattens: rain over 14 days does not separate landslide days from the others, while a 3 h burst does. The translation of 0.01 to millimetres is what makes the warning usable in a forecast office, and it is the first time today we meet a threshold: Part 2 is about choosing one. Next slide: the same curve with many predictors.
+:::
+
+## Many predictors: score, probability, loss
+
+![](figs/lec16_classification/sigmoid_logloss.png){.r-stretch}
+
+::: {.takeaway}
+Weighted sum of standardized features, then the sigmoid $p = 1/(1 + e^{-z})$. Training lowers the mean log-loss $-[y \ln p + (1-y)\ln(1-p)]$: wrong at 0.99 costs 4.6, wrong at 0.55 costs 0.8.
+:::
+
+::: {.notes}
+Despite the name, it is a classifier. It extends the weighted sum of the regression in 3.3. Left: every test event has a score z, a weighted sum of 61 standardized features. The sigmoid turns the score into a probability; events are plotted at 0 or 1 by their true class. The dashed line marks 0.5, the default threshold, which Part 2 moves. The decision boundary is z = 0: linear in the features. Right: the loss. Read the orange curve: if the event is an explosion and you state p = 0.99 the cost is 0.01, at 0.55 it is 0.60, at 0.01 it is 4.6. Blue is the mirror for earthquakes. That shape is why the model tries to avoid confident errors. For several classes, one weight vector per class and a softmax in place of the sigmoid. Notebook 3.6 implements the fit by hand.
+:::
+
+## Fitting: lower the log-loss {.fit}
+
+::: {.columns}
+::: {.column width="50%"}
+Training searches for the weights that make the mean log-loss smallest.
+
+| Stated probability of the true class | Log-loss |
+|---|---|
+| 0.99 | 0.01 |
+| 0.55 | 0.60 |
+| 0.45 | 0.80 |
+| 0.01 | 4.61 |
+:::
+::: {.column width="50%"}
+```python
+from sklearn.linear_model import LogisticRegression
+
+model = LogisticRegression(max_iter=5000)
+model.fit(X_train_scaled, y_train)
+p = model.predict_proba(X_test_scaled)
+```
+
+Standardize first, with the training split only: the weights then compare, and the fit converges faster.
+:::
+:::
+
+::: {.takeaway}
+Confident errors cost the most: 4.61 for a true class stated at 0.01. Notebook 3.6 writes the descent by hand, and every network in Chapter 4 trains with the same loop.
+:::
+
+::: {.notes}
+Keep this short. The method is gradient descent: compute the gradient of the mean log-loss and step against it, scaled by a learning rate. Do not derive it today: 3.6 does, and checks the formula against automatic differentiation, and 4.0 returns to it. scikit-learn also adds a small L2 penalty by default, so its weights differ slightly from the unpenalized fit in 3.6.
+:::
+
+## Reading the weights: explosion against earthquake
+
+::: {.columns}
+::: {.column width="52%"}
+![](figs/lec16_classification/top_weights.png){height="610"}
+:::
+::: {.column width="48%"}
+A weight is the change in log-odds per one standard deviation of a feature, with **the other features held fixed**.
+
+- Energy in the lower band (`E_1_3`) pushes toward explosion. This matches the paper, where explosions emphasize energy at 1–5 Hz
+- `E_1_3` and `Fquart1` have opposite weights of the same size, ±2.14, and correlate at −0.69
+
+::: {.dim}
+Band names are read from the feature names in the table. Weights of correlated features share credit, so a single weight is not a physical law.
+:::
+:::
+:::
+
+::: {.takeaway}
+Weights are one reason to start with logistic regression: each prediction can be traced to the features. Friday's forest has importances that need more care.
+:::
+
+::: {.notes}
+Log-odds: ln(p / (1 − p)), which is exactly the score z. So +1 standard deviation of E_1_3 multiplies the odds of explosion by e^2.14, about 8.5, if nothing else changed. But nothing else stays fixed: 3.3 showed that 12 pairs of these features correlate above 0.9. Drop one and its partner absorbs the weight. Kharita et al. discuss the time-frequency attributions of explosions and earthquakes in their section on interpretability. Ask: which of these features would you trust at a different network? That prepares robust training on Monday.
+:::
+
+## Part 2. A threshold makes the decision {.dense}
+
+::: {.columns}
+::: {.column width="47%"}
+![](figs/lec16_classification/threshold_histogram.png){height="610"}
+:::
+::: {.column width="53%"}
+**Explosion or earthquake?** Logistic regression on 61 waveform features. Each event gets a probability; a cut makes it a decision.
+
+| Threshold | Explosions caught | Missed | False alarms | Earthquakes kept |
+|---|---|---|---|---|
+| 0.2 | 235 | 15 | 53 | 197 |
+| 0.5 | 217 | 33 | 16 | 234 |
+| 0.8 | 188 | 62 | 6 | 244 |
+
+Out of 250 explosions and 250 earthquakes. Missed blasts stay in the earthquake catalog and bias hazard statistics. False alarms remove real earthquakes, or cost an analyst's time.
+
+[📍 In-situ sensor]{.gb .src} [🪨 Solid Earth]{.gb .sys .solid} [📈 Seismology]{.gb .disc .solid}
+
+::: {.dim}
+Zenodo record 14025693. Test split of 500 events, seed 2026.
+:::
+:::
+:::
+
+::: {.takeaway}
+Nothing was refit. Lowering the threshold from 0.8 to 0.2 cuts missed explosions from 62 to 15 and raises false alarms from 6 to 53.
+:::
+
+::: {.notes}
+Explosions pile up near 1 and earthquakes near 0, and the threshold slides through the overlap. Ask for a show of hands: which threshold would you run, and for whom? Then make them say the cost. Scikit-learn's predict uses 0.5 by default, and that is a choice made for you. To change it: take predict_proba, compare with your own cut. The real base rate in a catalog is not 50%, so the precisions of the next slides would be lower in operation: later slides show why. Numbers: figscripts/lec16_classification.py, canonical seed 2026, explosions and earthquakes only, 25% test.
+:::
+
+## One threshold: the confusion matrix and its metrics {.dense}
 
 ::: {.columns}
 ::: {.column width="29%"}
-**Explosion or earthquake?** 500 test events, threshold 0.5, positive class explosion.
+The row for threshold 0.5 as a table. Positive class: explosion.
 
 | Analyst | Predicted explosion | Predicted earthquake |
 |---|---|---|
@@ -96,12 +232,6 @@ This paper runs through today: it has binary classes, extreme rarity, a threshol
 | earthquake | FP 16 | **TN 234** |
 
 TP, FN, FP, TN: true positive, false negative, false positive, true negative.
-
-[📍 In-situ sensor]{.gb .src} [🪨 Solid Earth]{.gb .sys .solid} [📈 Seismology]{.gb .disc .solid}
-
-::: {.dim}
-Logistic regression on 61 waveform features. Zenodo record 14025693.
-:::
 :::
 ::: {.column width="71%"}
 | Metric | Formula | The question it answers | Value |
@@ -113,64 +243,33 @@ Logistic regression on 61 waveform features. Zenodo record 14025693.
 | Balanced accuracy | mean of recall and specificity | accuracy with both classes equal | .902 |
 | F1 | 2 × precision × recall / sum | high only if both are high | .899 |
 | Matthews correlation (MCC) | correlation of truth, prediction | uses all four cells, −1 to 1 | .806 |
-| ROC AUC | area, recall against false-positive rate | ranking, over all thresholds | .963 |
-| Average precision (AP) | area, precision against recall | the trigger list, over all thresholds | .963 |
-:::
-:::
-
-::: {.notes}
-Build it on the board from the four cells. Translate each to the network: a false negative is a blast left in the earthquake catalog, which pollutes hazard statistics; a false positive is an earthquake thrown out as a blast. The first seven rows need a threshold; the last two sweep all thresholds. F1 example worth doing aloud: precision 1.0 with recall 0.1 gives F1 0.18, not 0.55, because the harmonic mean follows the lower number. ROC stands for receiver operating characteristic. On balanced data these numbers look alike, which is why the next slide changes the balance. Numbers: figscripts/lec16_classification.py, canonical seed 2026, explosions and earthquakes only, 25% test.
-:::
-
-## Make explosions rare: which metrics notice?
-
-::: {.columns}
-::: {.column width="54%"}
-| Metric | 50% explosions | 5% explosions |
-|---|---|---|
-| Never predict explosion (accuracy) | .500 | **.950** |
-| Accuracy | .902 | **.965** |
-| ROC AUC | .963 | .940 |
-| Balanced accuracy | .902 | .755 |
-| Precision | .931 | .717 |
-| F1 | .899 | .602 |
-| MCC | .806 | .593 |
-| Average precision | .963 | **.621** |
-| Recall | .868 | **.521** |
-:::
-::: {.column width="46%"}
-::: {.big-number}
-.965 [accuracy, 1.5 points above never predicting an explosion]{.unit}
-:::
-
-::: {.big-number}
-.521 [recall: about half of the explosions are missed]{.unit}
-:::
-
-::: {.dim}
-5%: 53 explosions with all 1,000 earthquakes, trained and scored by 5-fold cross-validation, mean of 20 random subsets. 50%: test split of the previous slide.
-:::
 :::
 :::
 
 ::: {.takeaway}
-Same features, same model. Accuracy rose while recall fell from .868 to .521. Report recall and precision of the rare class, never accuracy alone.
+At threshold 0.5 the model catches 217 of 250 explosions (recall .868), and 217 of its 233 explosion calls are correct (precision .931).
 :::
 
 ::: {.notes}
-Read down the table. The two top rows are the trap: accuracy goes up, as does the score of the trivial detector. ROC AUC barely moves. Everything that looks at the positive class falls. A network's real stream is unbalanced like this, and worse: Sitka is 0.08% positive. Variability: across the 20 subsets the standard deviation of recall is 0.06 and of average precision 0.07, so do not over-read the third decimal. Book section 3.4 repeats this on a synthetic detector with 2% events, where accuracy is 0.992 and recall 0.65: the same pattern. The class-weight knob in 3.4 trades precision for recall during training.
+Build it on the board from the four cells. Translate each to the network: a false negative is a blast left in the earthquake catalog, which pollutes hazard statistics; a false positive is an earthquake thrown out as a blast. All seven rows change when the threshold moves; the next slide moves it. F1 example worth doing aloud: precision 1.0 with recall 0.1 gives F1 0.18, not 0.55, because the harmonic mean follows the lower number. On balanced data these numbers look alike; a later slide changes the balance.
 :::
 
-## ROC and precision-recall curves on the same model
+## Every threshold: ROC and precision-recall curves
 
-![](figs/lec16_classification/roc_pr_rare.png){.r-stretch}
+![](figs/lec16_classification/threshold_to_curves.png){height="440"}
+
+| Threshold | False-positive rate | Recall | Precision | F1 |
+|---|---|---|---|---|
+| 0.2 | .212 | .940 | .816 | .874 |
+| 0.5 | .064 | .868 | .931 | **.899** |
+| 0.8 | .024 | .752 | .969 | .847 |
 
 ::: {.takeaway}
-Rare explosions move the ROC curve little and the precision-recall curve a lot: the false-positive rate divides by all earthquakes, precision by the trigger list. One subset shown (AUC .93, AP .60); over 20 subsets, .94 and .62.
+Each threshold is one confusion matrix and one point on each curve. The areas, ROC AUC .963 and average precision (AP) .963, score the ranking over all thresholds; F1 favors 0.5 because it weighs both errors equally.
 :::
 
 ::: {.notes}
-Both curves sweep the same threshold. Left: the false-positive rate divides by every earthquake, about 1,000 of them, so 40 false triggers hardly register. Right: precision divides by the events flagged, which is the list an analyst must review. Saito and Rehmsmeier (2015, PLOS ONE 10, e0118432) make this argument for imbalanced data in general, and the Sitka paper cites them. The blue curve is 2,000 events with cross-validation, the red curve one random rare subset, so the AP shown differs from the mean over 20 subsets on the previous slide. Rule to leave with: with rare positives, read the precision-recall curve.
+Point at a red circle, then at the row of the table. ROC stands for receiver operating characteristic: recall against the false-positive rate. ROC AUC is also the chance that a random explosion gets a higher probability than a random earthquake. Average precision is the area under precision against recall, and it reads as the quality of the trigger list. A catalog curator who pays more for a missed blast should choose 0.2 even though F1 prefers 0.5. Friday's opening exercise draws one of these curves by hand from ten events.
 :::
 
 ## Sitka: two thresholds on one precision-recall curve
@@ -200,32 +299,85 @@ Patton et al. (2023), Fig. 11. CC BY 4.0. The caption gives 0.1 for the lower th
 This is the decision slide of the lecture. The colour of the curve is the threshold. With only five positive days, any threshold below 0.023 gives recall 1 and any above 0.31 gives precision 1, so data alone do not fix the numbers: the authors used judgment and community input. Note the two levels: a model does not have to give a single yes or no. Moderate hazard means stay alert; below 0.01 tells residents they can relax, which the authors value in a place with frequent rain. Precision and recall on the row for 0.01 to 0.70 are for the lower threshold; those on the last row are for the upper. These are fit to all five events, and the paper checks them with leave-one-out validation.
 :::
 
-## Same model, three thresholds {.dense}
+## Make explosions rare: which metrics notice?
 
 ::: {.columns}
-::: {.column width="47%"}
-![](figs/lec16_classification/threshold_histogram.png){height="610"}
+::: {.column width="54%"}
+| Metric | 50% explosions | 5% explosions |
+|---|---|---|
+| Never predict explosion (accuracy) | .500 | **.950** |
+| Accuracy | .902 | **.965** |
+| ROC AUC | .963 | .940 |
+| Balanced accuracy | .902 | .755 |
+| Precision | .931 | .717 |
+| F1 | .899 | .602 |
+| MCC | .806 | .593 |
+| Average precision | .963 | **.621** |
+| Recall | .868 | **.521** |
 :::
-::: {.column width="53%"}
-| Threshold | Precision | Recall | Specificity | Missed | False alarms |
-|---|---|---|---|---|---|
-| 0.2 | .816 | .940 | .788 | 15 | 53 |
-| 0.5 | .931 | .868 | .936 | 33 | 16 |
-| 0.8 | .969 | .752 | .976 | 62 | 6 |
+::: {.column width="46%"}
+::: {.big-number}
+.965 [accuracy, 1.5 points above never predicting an explosion]{.unit}
+:::
 
-Out of 250 explosions and 250 earthquakes. Missed blasts stay in the earthquake catalog and bias hazard statistics. False alarms remove real earthquakes, or cost an analyst's time.
+::: {.big-number}
+.521 [recall: about half of the explosions are missed]{.unit}
+:::
 
-Explosions pile up near 1 and earthquakes near 0. The threshold slides through the overlap.
-
+::: {.dim}
+5%: 53 explosions with all 1,000 earthquakes, trained and scored by 5-fold cross-validation, mean of 20 random subsets. 50%: the test split of the earlier slides.
+:::
 :::
 :::
 
 ::: {.takeaway}
-Nothing was refit. F1 favors 0.5 (.899) because it weighs the two errors equally; a catalog curator who pays more for a missed blast should choose 0.2.
+Same features, same model. Accuracy rose while recall fell from .868 to .521. Report recall and precision of the rare class, never accuracy alone.
 :::
 
 ::: {.notes}
-Ask for a show of hands: which threshold would you run, and for whom? Then make them say the cost. Scikit-learn's predict uses 0.5 by default, and that is a choice made for you. To change it: take predict_proba, compare with your own cut. Explosions pile up near 1 and earthquakes near 0, and the threshold slides through the overlap. Test split: 250 explosions, 250 earthquakes. The real base rate in a catalog is not 50%, so these precisions would be lower in operation: the previous slides showed why.
+Read down the table. The two top rows are the trap: accuracy goes up, as does the score of the trivial detector. ROC AUC barely moves. Everything that looks at the positive class falls. A network's real stream is unbalanced like this, and worse: Sitka is 0.08% positive. Variability: across the 20 subsets the standard deviation of recall is 0.06 and of average precision 0.07, so do not over-read the third decimal. Book section 3.4 repeats this on a synthetic detector with 2% events, where accuracy is 0.992 and recall 0.65: the same pattern. The class-weight knob in 3.4 trades precision for recall during training.
+:::
+
+## ROC and precision-recall with rare explosions
+
+![](figs/lec16_classification/roc_pr_rare.png){.r-stretch}
+
+::: {.takeaway}
+Rare explosions move the ROC curve little and the precision-recall curve a lot: the false-positive rate divides by all earthquakes, precision by the trigger list. One subset shown (AUC .93, AP .60); over 20 subsets, .94 and .62.
+:::
+
+::: {.notes}
+Both curves sweep the same threshold. Left: the false-positive rate divides by every earthquake, about 1,000 of them, so 40 false triggers hardly register. Right: precision divides by the events flagged, which is the list an analyst must review. Saito and Rehmsmeier (2015, PLOS ONE 10, e0118432) make this argument for imbalanced data in general, and the Sitka paper cites them. The blue curve is 2,000 events with cross-validation, the red curve one random rare subset, so the AP shown differs from the mean over 20 subsets on the previous slide. Rule to leave with: with rare positives, read the precision-recall curve.
+:::
+
+## Calibration: stated against observed probability
+
+::: {.columns}
+::: {.column width="50%"}
+![](figs/lec16_classification/reliability.png){height="620"}
+:::
+::: {.column width="50%"}
+A model is **calibrated** when stated probabilities match observed frequencies.
+
+**Reliability diagram:** stated probability against observed share. Calibrated models follow the diagonal.
+
+**Brier score:** mean squared error of the probability. Weather forecasters have used it since Brier (1950).
+
+| Explosion or earthquake, 5-fold | Accuracy | Brier |
+|---|---|---|
+| Logistic regression | .902 | .074 |
+| Forest of 10 trees | .880 | .087 |
+
+The forest's probabilities are vote shares among only 10 trees. Forests come on Friday.
+:::
+:::
+
+::: {.takeaway}
+Sitka's warning levels are probabilities: 0.01 and 0.70 mean something only if the model is calibrated. Whoever sets the threshold takes your number at face value.
+:::
+
+::: {.notes}
+Accuracy looks only at which side of 0.5 you are on. The Brier score and the reliability diagram read the number itself. Each point is a bin of events: x is the mean stated probability, y the observed share of explosions. Most events sit near 0 or 1, so the middle bins hold few events and wobble. Logistic regression minimizes log-loss, which rewards calibrated probabilities on the training distribution, though balancing or a change of base rate breaks it. Notebook 3.6 shows an overfit forest repaired by recalibration on the water table (Brier 0.239 to 0.220). Reference: Brier (1950), Monthly Weather Review 78, 1–3.
 :::
 
 ## Balance the training set, test at the real proportion {.dense}
@@ -373,10 +525,10 @@ Split first, balance training only. If someone will read your number as a probab
 :::
 
 ::: {.notes}
-Left: run in 3.4 style with a random forest, 53 explosions and 1,000 earthquakes, 25% test, mean of 10 subsets. The forest memorizes copies, so a score of .995 is a measurement of the leak. Whenever a score looks this good, ask when the resampling happened. Right: class weights tell the model that explosions are as common as earthquakes, so stated probabilities are about 2.5 times too high on average. The correction uses Bayes' rule: odds × share / (1 − share) when the training was balanced to 50%. Brier returns from .063 to .031, near the unbalanced model, and ranking does not change. The same applies to any deployed base rate that differs from training. Connects to the calibration slide in Part 3.
+Left: run in 3.4 style with a random forest, 53 explosions and 1,000 earthquakes, 25% test, mean of 10 subsets. The forest memorizes copies, so a score of .995 is a measurement of the leak. Whenever a score looks this good, ask when the resampling happened. Right: class weights tell the model that explosions are as common as earthquakes, so stated probabilities are about 2.5 times too high on average. The correction uses Bayes' rule: odds × share / (1 − share) when the training was balanced to 50%. Brier returns from .063 to .031, near the unbalanced model, and ranking does not change. The same applies to any deployed base rate that differs from training. Connects to the calibration slide above.
 :::
 
-## Part 2. Multiclass: four seismic source types
+## Part 3. Multiclass: four seismic source types
 
 ::: {.columns}
 ::: {.column width="44%"}
@@ -515,141 +667,6 @@ Kharita et al. (2026), *Seismica* 5(1), Fig. 4. eq earthquake, px explosion, su 
 Top two panels: precision and recall per class. Bottom: overall accuracy. Ask students to find which class improves most from scattering-only features (blue) to physical features (brown and purple): explosions and surface events. Noise is easy for every set. That is why you report per class. The paper's caption gives the 1 to 2% for waveform configuration; the 70 and 88 are read from panel (c). Students' 61 features belong to the physical family, so this figure is the larger study behind today's table.
 :::
 
-## Part 3. Logistic regression: score, probability, loss
-
-![](figs/lec16_classification/sigmoid_logloss.png){.r-stretch}
-
-::: {.takeaway}
-Weighted sum of standardized features, then the sigmoid $p = 1/(1 + e^{-z})$. Training lowers the mean log-loss $-[y \ln p + (1-y)\ln(1-p)]$: wrong at 0.99 costs 4.6, wrong at 0.55 costs 0.8.
-:::
-
-::: {.notes}
-Despite the name, it is a classifier. Left: every test event has a score z, a weighted sum of 61 standardized features. The sigmoid turns the score into a probability; events are plotted at 0 or 1 by their true class. The threshold of the last part sits on the dashed line. The decision boundary is z = 0: linear in the features. Right: the loss. Read the orange curve: if the event is an explosion and you state p = 0.99 the cost is 0.01, at 0.55 it is 0.60, at 0.01 it is 4.6. Blue is the mirror for earthquakes. That shape is why the model tries to avoid confident errors. For several classes, one weight vector per class and a softmax in place of the sigmoid. Notebook 3.6 implements the fit by hand.
-:::
-
-## Sitka: logistic regression with one predictor
-
-::: {.columns}
-::: {.column width="64%"}
-![](figs/lec16_classification/papers/patton2023_fig03_logistic_by_rain_window.png){height="690"}
-:::
-::: {.column width="36%"}
-Each panel is one logistic regression: landslide probability against rainfall over one window, from 1 h to 14 d.
-
-- Red points: the 5 landslide days; black: the others
-- Red curve: fitted sigmoid, with 85% and 95% intervals
-- Gray: how often each rainfall occurs
-
-The **3 h window fits best**. Long windows flatten the curve.
-
-A probability of 0.01 corresponds to **21.3 mm in 3 h**.
-
-::: {.credit}
-Patton et al. (2023), Fig. 3. CC BY 4.0.
-:::
-:::
-:::
-
-::: {.notes}
-This is the curve from the previous slide with a physical axis. Each panel has one predictor, the maximum rainfall in a window, so there are only two parameters. With five positive events, two parameters is about what the data can support, and this is a good reason to use logistic regression. The shaded bands are 85% and 95% confidence intervals: wide, because of five events. As windows lengthen, the curve flattens: rain over 14 days does not separate landslide days from the others, while a 3 h burst does. The translation of 0.01 to millimetres is what makes the warning usable in a forecast office.
-:::
-
-## Fitting by gradient descent {.roomy}
-
-::: {.columns}
-::: {.column width="50%"}
-1. Start from weights $w$ and intercept $b$
-2. Compute the probability of every training sample
-3. Compute the gradient of the mean log-loss
-4. Step against it, scaled by a learning rate; repeat
-
-| Stated probability of the true class | Log-loss |
-|---|---|
-| 0.99 | 0.01 |
-| 0.55 | 0.60 |
-| 0.45 | 0.80 |
-| 0.01 | 4.61 |
-:::
-::: {.column width="50%"}
-```python
-from sklearn.linear_model import LogisticRegression
-
-model = LogisticRegression(max_iter=5000)
-model.fit(X_train_scaled, y_train)
-p = model.predict_proba(X_test_scaled)
-```
-
-Standardize first, with the training split only: the weights then compare, and the descent converges faster.
-
-**Notebook 3.6** writes this loop by hand, then with automatic differentiation in PyTorch. Every network in Chapter 4 is trained with the same loop.
-
-:::
-:::
-
-::: {.takeaway}
-On the four source types, this model reaches macro-F1 .884 on the leaderboard split; the random forest of notebook 3.5 reaches .883.
-:::
-
-::: {.notes}
-Gradient: the direction in which the loss climbs fastest, so step the other way. Do not derive it today: 3.6 does, and checks the formula against automatic differentiation. scikit-learn also adds a small L2 penalty by default, so its weights differ slightly from the unpenalized fit in 3.6. The takeaway is the seed for Friday: a linear model with 62 numbers per class matches a forest of 100 trees here. Then what does a forest add? Forest: scikit-learn defaults, random_state 42, as in 3.5.
-:::
-
-## Reading the weights: explosion against earthquake
-
-::: {.columns}
-::: {.column width="52%"}
-![](figs/lec16_classification/top_weights.png){height="610"}
-:::
-::: {.column width="48%"}
-A weight is the change in log-odds per one standard deviation of a feature, with **the other features held fixed**.
-
-- Energy in the lower band (`E_1_3`) pushes toward explosion. This matches the paper, where explosions emphasize energy at 1–5 Hz
-- `E_1_3` and `Fquart1` have opposite weights of the same size, ±2.14, and correlate at −0.69
-
-::: {.dim}
-Band names are read from the feature names in the table. Weights of correlated features share credit, so a single weight is not a physical law.
-:::
-:::
-:::
-
-::: {.takeaway}
-Weights are one reason to start with logistic regression: each prediction can be traced to the features. Friday's forest has importances that need more care.
-:::
-
-::: {.notes}
-Log-odds: ln(p / (1 − p)), which is exactly the score z. So +1 standard deviation of E_1_3 multiplies the odds of explosion by e^2.14, about 8.5, if nothing else changed. But nothing else stays fixed: 3.3 showed that 12 pairs of these features correlate above 0.9. Drop one and its partner absorbs the weight. Kharita et al. discuss the time-frequency attributions of explosions and earthquakes in their section on interpretability. Ask: which of these features would you trust at a different network? That prepares robust training on Monday.
-:::
-
-## Calibration: stated against observed probability
-
-::: {.columns}
-::: {.column width="50%"}
-![](figs/lec16_classification/reliability.png){height="620"}
-:::
-::: {.column width="50%"}
-A model is **calibrated** when stated probabilities match observed frequencies.
-
-**Reliability diagram:** stated probability against observed share. Calibrated models follow the diagonal.
-
-**Brier score:** mean squared error of the probability. Weather forecasters have used it since Brier (1950).
-
-| Explosion or earthquake, 5-fold | Accuracy | Brier |
-|---|---|---|
-| Logistic regression | .902 | .074 |
-| Forest of 10 trees | .880 | .087 |
-
-The forest's probabilities are vote shares among only 10 trees.
-:::
-:::
-
-::: {.takeaway}
-Sitka's warning levels are probabilities: 0.01 and 0.70 mean something only if the model is calibrated. Whoever sets the threshold takes your number at face value.
-:::
-
-::: {.notes}
-Accuracy looks only at which side of 0.5 you are on. The Brier score and the reliability diagram read the number itself. Each point is a bin of events: x is the mean stated probability, y the observed share of explosions. Most events sit near 0 or 1, so the middle bins hold few events and wobble. Logistic regression minimizes log-loss, which rewards calibrated probabilities on the training distribution, though balancing or a change of base rate breaks it. Notebook 3.6 shows an overfit forest repaired by recalibration on the water table (Brier 0.239 to 0.220). Reference: Brier (1950), Monthly Weather Review 78, 1–3.
-:::
-
 ## Which metric answers which question {.mid}
 
 | Your question | Metric | Today's example | Misleads when |
@@ -695,10 +712,10 @@ Mon Nov 9 (3.8) builds the splits this dataset cannot run.
 :::
 
 ::: {.notes}
-Canonical split: section 3 of notebook 3.5. Changing it disqualifies the comparison. Most common mistake: scoring candidate models repeatedly on X_test, which is tuning to the test set (Blum and Hardt, 2015, on leaderboards). Because the dataset and seed are public, the test labels can be reconstructed, which is why the public score carries no grade: see leaderboard/INSTRUCTOR.md for the hidden-set recipe. Results file: results/predictions_<uwnetid>.csv.
+The linear model with 62 numbers per class matches a forest of 100 trees here: Friday asks what a forest adds. Canonical split: section 3 of notebook 3.5. Changing it disqualifies the comparison. Most common mistake: scoring candidate models repeatedly on X_test, which is tuning to the test set (Blum and Hardt, 2015, on leaderboards). Because the dataset and seed are public, the test labels can be reconstructed, which is why the public score carries no grade: see leaderboard/INSTRUCTOR.md for the hidden-set recipe. Results file: results/predictions_<uwnetid>.csv.
 :::
 
-## Now run it yourself: 3.5, then 3.4 and 3.6 {.roomy}
+## Now run it yourself {.roomy}
 
 1. `git pull`, then `pixi run jupyter lab` → `3.5_multiclass_classification.ipynb`; run sections 1 to 4 (data, split, scaling)
 2. In a new cell, fit `LogisticRegression(max_iter=5000)` on `X_train_scaled`; compute `f1_score(y_test, pred, average="macro")`; compare with .884, then look at `classification_report`
@@ -707,7 +724,7 @@ Canonical split: section 3 of notebook 3.5. Changing it disqualifies the compari
 5. If you have time: 3.4, section "Imbalanced detection". Choose a threshold and defend it in one sentence
 
 ::: {.dim}
-Reading: 3.6, gradient descent by hand and calibration. Due Mon Nov 9: homework on scoring clusters. HW-CML assigned today, due Fri Nov 20. Fri Nov 6: trees and forests (3.7, 3.9). Mon Nov 9: robust training (3.8).
+Review order: 3.6, then 3.4, then 3.5. Gradient descent by hand is in 3.6. Due Mon Nov 9: homework on scoring clusters. HW-CML assigned today, due Fri Nov 20. Fri Nov 6: trees and forests (3.7, 3.9). Mon Nov 9: robust training (3.8).
 :::
 
 ::: {.notes}
