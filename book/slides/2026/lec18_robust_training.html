@@ -255,8 +255,8 @@
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>How do we partition, validate and test?</td>
-<td>25 min</td>
+<td>How do we define, partition, validate and test?</td>
+<td>30 min</td>
 <td>3.8, 25 min</td>
 </tr>
 <tr class="even">
@@ -281,7 +281,7 @@
 </table>
 </div>
 <aside class="notes">
-<p>Timing for 100 minutes: 35 minutes of slides and 60 of notebooks, in three rounds, then 5 of synthesis. If the class meeting is the scheduled 80 minutes (10:00 to 11:20), keep the slides and cut notebooks to 18, 10 and 12 minutes: skip 3.8 Part 3, 3.9 Part 3 and 3.10 Part 2. Part 1 now opens with four definition slides (partitions and cross-validation, validation against test, the three domain axes, leakage), about 11 minutes, so it runs 25 minutes; to stay in time, skip “How large should a block be?” and “Name what your samples share” and leave them as reading. These follow Friday: a forest was our model, and today we ask how to score it, how to combine it with others, and how to search among them. Every notebook runs on scikit-learn alone.</p>
+<p>Timing for 100 minutes: 35 minutes of slides and 60 of notebooks, in three rounds, then 5 of synthesis. If the class meeting is the scheduled 80 minutes (10:00 to 11:20), keep the slides and cut notebooks to 18, 10 and 12 minutes: skip 3.8 Part 3, 3.9 Part 3 and 3.10 Part 2. Part 1 now opens on P395 and builds the definitions on it: X and Y (recall of lecture 12), partitions and cross-validation, validation against test, overfitting (recall of lecture 17), row order, the three domain axes (recall of lecture 10), leakage; then the P395 and map results, and a closing checklist. About 30 minutes. To stay in time, skip “How large should a block be?” and “Name what your samples share” and leave them as reading, or move Part 3 (AutoML) to the next class. These follow Friday: a forest was our model, and today we ask how to score it, how to combine it with others, and how to search among them. Every notebook runs on scikit-learn alone.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -332,14 +332,97 @@
           display:block!important;
       }</style></aside>
 </section>
+<section id="p395-a-station-that-keeps-moving" class="slide level2">
+<h2>P395: a station that keeps moving</h2>
+<img data-src="figs/1.7_get_geodetic_gnss/p395_context_slide.png" class="r-stretch">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📐 Geodesy</span></p>
+<div class="takeaway">
+<p>From 60 days of history, predict the mean position over the next 30 days, one sample every 5 days (1,482 samples, 2006 to 2026).</p>
+</div>
+<aside class="notes">
+<p>NGL station P395, Oregon Coast Range, above the Cascadia subduction zone. This figure from Chapter 1 shows motion relative to North America. The forecasts on the next slides use east position in IGS20, as in the course file, where the station moves at -6.4 mm/yr (NGL MIDAS, table in 1.7). The steady motion plus seasonal wiggles is what we are forecasting. Neighboring samples share 55 of 60 history days and 25 of 30 target days, so they are correlated by construction. Ask: what could go wrong if we shuffle them?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="name-the-sample-x-and-y-before-any-split" class="slide level2">
+<h2>Name the sample, X and Y before any split</h2>
+<div class="columns">
+<div class="column" style="width:46%;">
+<p><img data-src="figs/lec18_robust_training/xy_p395_sample.png" style="width:100.0%"></p>
+</div><div class="column" style="width:54%;">
+<div class="mid">
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Today</th>
+<th>X, the inputs</th>
+<th>Y, the target</th>
+<th>One sample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>P395</strong></td>
+<td>six numbers from the past 60 days</td>
+<td>mean east position, next 30 days</td>
+<td>one day, every 5 days</td>
+</tr>
+<tr class="even">
+<td><strong>Soil map</strong></td>
+<td>climate, or latitude and longitude</td>
+<td>annual soil moisture</td>
+<td>one grid cell</td>
+</tr>
+<tr class="odd">
+<td><strong>Seismic</strong></td>
+<td>61 waveform features</td>
+<td>source type, 4 classes</td>
+<td>one event at one station</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div>
+<div class="takeaway">
+<p>Lecture 12 named four pieces before any model: one sample, its features X, its target Y, the metric. Write them down for your project now: the split, the score and what counts as new all depend on them.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; a recall of lecture 12 (“Classification and regression”), now on today’s data. Ask everyone to write their project’s X, Y and sample on paper before you move on, then take two or three answers. The P395 figure is one real sample: the blue days give the six inputs (60-day mean, 10-day mean, last position, 60-day slope, and two numbers for the time of year), the orange window gives the target, the mean east position over the next 30 days. A new sample starts every 5 days, so consecutive samples share most of their 60-day window: this is why the split matters later. The soil map’s sample is one CPC grid cell with its 1991 to 2020 mean; the seismic sample is one event recorded at one station, which is why several rows can come from the same earthquake. Figure from figscripts/lec18_train_val_test.py.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="partition-the-data-then-cross-validate" class="slide level2">
 <h2>Partition the data, then cross-validate</h2>
 <img data-src="figs/lec18_robust_training/cv_diagram.png" class="r-stretch">
 <div class="takeaway">
-<p><strong>Cross-validation</strong> repeats one step k times: train on k − 1 folds, score the held-out fold, move on, until every sample has been validated once. The mean of the k scores compares models. The <strong>test</strong> period stays aside and is scored once.</p>
+<p><strong>Cross-validation</strong> repeats one step k times: train on k − 1 folds, score the held-out fold, move on, until every sample has been validated once. The mean of the k scores compares models. The <strong>test</strong> window stays aside and is scored once. For a <strong>forecast</strong>, every split follows time, with a gap so no target window overlaps the next.</p>
 </div>
 <aside class="notes">
-<p>Three minutes. Definitions first, since everything in Part 1 uses them. Partitioning means deciding which samples the model may learn from (training), which ones we use to compare models and settings (validation), and which ones we keep to report the final score (test). One train/validation split gives one noisy score; cross-validation repeats the split k times (here 5) and averages, so every training sample is validated once. Left: shuffled folds. The orange validation samples sit between blue training samples, so each validation day has its neighbors, yesterday and tomorrow, in training. Right: the same five steps forward in time; each step trains on the past and validates on the next block, which is how a forecast is used. In both, the black test period is never touched while we choose. In code: KFold(shuffle=True) on the left, TimeSeriesSplit on the right. Schematic, no data; drawn by figscripts/lec18_cv_diagram.py.</p>
+<p>Three minutes. Definitions first, since everything in Part 1 uses them. Partitioning means deciding which samples the model may learn from (training), which ones we use to compare models and settings (validation), and which ones we keep to report the final score (test). One train/validation split gives one noisy score; cross-validation repeats the split k times (here 5) and averages, so every training sample is validated once. Left: shuffled folds. The orange validation samples sit between blue training samples, so each validation day has its neighbors, yesterday and tomorrow, in training. Right: forecasting is its own case. Each step trains on the past, drops a gap, and validates on the next block, which is how a forecast is used; the test window is the most recent one, also behind a gap, and no information from after the forecast time enters training. The gap matters at P395: each target is a 30-day mean and samples start every 5 days, so without a gap of 6 samples the last training targets overlap the first validation days. In both panels the black test window is never touched while we choose. In code: KFold(shuffle=True) on the left, TimeSeriesSplit(n_splits=5, gap=6) on the right. Schematic, no data; drawn by figscripts/lec18_cv_diagram.py.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -380,7 +463,7 @@
 <tr class="even">
 <td><strong>Validation</strong></td>
 <td>the same domain, independent units</td>
-<td>choosing models, features, settings</td>
+<td>choosing models, features, settings such as tree depth; spotting overfitting</td>
 <td>many times</td>
 </tr>
 <tr class="odd">
@@ -398,11 +481,52 @@
 </tbody>
 </table>
 </div>
+<p><span class="dim">Same words elsewhere: a satellite product “validated” against in situ stations, and a hydrological model “validated” on a later period than its calibration, are <strong>tests</strong> here; so is forecast “verification”. Define the three terms in your report.</span></p>
 <div class="takeaway">
-<p>Every look at the validation score is a choice, so the best validation score is optimistic. In 3.10 the best search score was .845 and the untouched test .820.</p>
+<p>Report the within-domain and out-of-domain test scores separately. The best validation score is optimistic: in 3.10, .845 against .820 on the untouched test.</p>
 </div>
 <aside class="notes">
-<p>Two minutes. Validation and test answer different questions. Validation is for choosing, and because we choose the best of many, its score is biased upward: the more models and settings we compare, the larger the bias. The test set is for reporting, and it only stays honest if nothing was chosen with it: no settings, no features, no early stopping, no “let me try one more model”. If you look at the test set and then change something, it has become a validation set, and you need a new test set. Within domain and out of domain are the two kinds of test, and lecture 10 (criterion B7) asked each team to name its out-of-domain axis. The .845 and .820 come from the lecture 18 figure script (search_optimism).</p>
+<p>Two minutes. Validation and test answer different questions. Validation is for choosing, and because we choose the best of many, its score is biased upward: the more models and settings we compare, the larger the bias. The test set is for reporting, and it only stays honest if nothing was chosen with it: no settings, no features, no “let me try one more model”. If you look at the test set and then change something, it has become a validation set, and you need a new test set. Within domain and out of domain are the two kinds of test, and lecture 10 (criterion B7) asked each team to name its out-of-domain axis. On vocabulary: Two minutes. Students will read papers where “validation” means what we call a test: a satellite product “validated” against in situ stations has not been tuned on those stations, so that comparison is a test, and usually out of domain (other sites, other conditions). Hydrologists calibrate a model on one period and validate on another; Klemeš (1986, Hydrological Sciences Journal 31, 13-24) set out the split-sample test and harder versions across catchments and climates, which are out-of-domain tests in our vocabulary. Weather services call forecast scoring verification. Ask: in your discipline, what word do papers use for the held-out score? The words differ, the question is the same: was this data used to choose anything? The .845 and .820 come from the lecture 18 figure script (search_optimism).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="training-scores-say-nothing-about-skill" class="slide level2">
+<h2>Training scores say nothing about skill</h2>
+<img data-src="figs/lec18_robust_training/forest_vs_tree_depth.png" class="r-stretch">
+<div class="takeaway">
+<p>The forest scores 1.000 on its training events and .884 on test events. One tree grown deeper fits training better and better while validation stops improving after depth 8: that widening gap is <strong>overfitting</strong>. Validation picks the depth; the test scores it once.</p>
+</div>
+<aside class="notes">
+<p>Three minutes; a recall of lecture 17’s “Keep asking and the tree memorizes”, now on all 61 features of the four seismic source types (canonical split of 3.5: 3,000 training and 1,000 test events). Left: a 300-tree forest fits every training event by construction, because its trees grow until their leaves are pure; only the test score, .884, says anything about skill. Right: one decision tree, its maximum depth varied from 1 to unlimited, scored by 5-fold cross-validation inside the training events. Training macro-F1 climbs to 1.000; validation macro-F1 peaks at .812 at depth 8, then drifts down to .792 at full depth (18 levels). Below depth 3 both are low: underfitting. Beyond depth 8, the tree learns the noise of its training events: overfitting, diagnosed by the gap between the two curves, never by the training score alone. Depth 8 is chosen with validation data only; the test set, untouched until then, gives .825, against .800 for the full-depth tree. This is the same loop as 3.10’s search, with one setting. Numbers from figscripts/lec18_train_val_test.py.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="row-order-is-not-random" class="slide level2">
+<h2>Row order is not random</h2>
+<img data-src="figs/lec18_robust_training/row_order.png" class="r-stretch">
+<div class="takeaway">
+<p>The seismic files are stored class by class. Taking the last 25% of rows as the test set puts all 1,000 surface events in the test and none in training: accuracy 0. Five random folds, stratified by class, give .876 to .892.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Files are sorted: by class, by date, by station, by latitude, by magnitude. A split by row index then gives training and test sets with different distributions of Y (and often of X), an accidental out-of-domain test. Here it is extreme: the forest never sees a surface event and gets every test event wrong. With continuous targets the same happens more quietly, for example a catalog sorted by magnitude whose last rows are the largest events. Shuffling with stratification by class fixes the mix (third and fourth bars). Cross-validation then averages over several partitions: the five validation folds range from .876 to .892, so any single split could have been reported as either. Caution for the next slide: shuffling is right here because these samples are independent events; for data correlated in time or space, shuffling leaks, and the split must follow the structure instead. Numbers from figscripts/lec18_train_val_test.py.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -443,27 +567,6 @@
 </div>
 <aside class="notes">
 <p>Three minutes. Four routes, each with a number from this course. (1) Neighbors in time: shuffled folds put yesterday and tomorrow in training, so P395’s validation error is 0.46 mm against 12.4 mm when validating on the future (lower is better). (2) Same event on both sides: one earthquake is recorded by many stations, and its magnitude is the same on every row; random rows let the forest recognize the event (R² .87 against .65 with whole events held out; synthetic table in 3.8). (3) Preprocessing on all data before the split: oversampling, scaling, feature selection or imputation fit on all samples carry test information into training; lecture 16’s oversampling gave F1 .995 against .590. (4) Choosing with the test set: the best of many tries looks better than an untouched test (.845 against .820). A fifth route, target leakage, is a feature that already contains the answer: in 3.2, 98.5% of explosions had a depth error of exactly 31.61 km, an analyst convention, so depth error “detects” explosions. The fix in every case: split first, by what the samples share, and fit every preprocessing step inside the training folds (a scikit-learn Pipeline does this). Figure from figscripts/lec18_cv_diagram.py; values from the lecture 18 and lecture 16 figure scripts.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="p395-a-station-that-keeps-moving" class="slide level2">
-<h2>P395: a station that keeps moving</h2>
-<img data-src="figs/1.7_get_geodetic_gnss/p395_context_slide.png" class="r-stretch">
-<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📐 Geodesy</span></p>
-<div class="takeaway">
-<p>From 60 days of history, predict the mean position over the next 30 days, one sample every 5 days (1,482 samples, 2006 to 2026).</p>
-</div>
-<aside class="notes">
-<p>NGL station P395, Oregon Coast Range, above the Cascadia subduction zone. This figure from Chapter 1 shows motion relative to North America. The forecasts on the next slides use east position in IGS20, as in the course file, where the station moves at -6.4 mm/yr (NGL MIDAS, table in 1.7). The steady motion plus seasonal wiggles is what we are forecasting. Neighboring samples share 55 of 60 history days and 25 of 30 target days, so they are correlated by construction. Ask: what could go wrong if we shuffle them?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -777,6 +880,34 @@
 </div>
 <aside class="notes">
 <p>This table is Part 1 on one screen. Chapter 2.13’s data audit asked this question before training, and the split applies it to evaluation. The event row uses a small synthetic table in 3.8, where the magnitude is identical across recordings of an event, so random folds let the forest recognize the event. In code: TimeSeriesSplit, GroupKFold, StratifiedGroupKFold; students’ agents know them, and naming what the samples share is the scientist’s part. Leave-one-out costs one fit per sample and leaves each sample’s neighbors in training, so it is the shuffled split at its most optimistic.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="checklist-before-you-train" class="slide level2">
+<h2>Checklist before you train</h2>
+<div class="roomy">
+<ol type="1">
+<li>What are <strong>X</strong> and <strong>Y</strong>, and what is one sample?</li>
+<li>How are Y and X <strong>distributed</strong>: rare classes, sorted files, uneven ranges?</li>
+<li>Are samples <strong>correlated</strong> in time, in space, or by event?</li>
+<li>Which <strong>split</strong> matches how the model will be used: shuffled, forward in time with a gap, blocked in space, grouped by event?</li>
+<li>Which test is <strong>within domain</strong>, which is <strong>out of domain</strong>, and along which axis?</li>
+</ol>
+</div>
+<div class="takeaway">
+<p>Report training only as a diagnosis, validation for your choices, and the two test scores separately.</p>
+</div>
+<aside class="notes">
+<p>One minute; this is Part 1 on one slide, and the order of 3.8. Ask each team to answer the five questions for its project in its data-audit check-in on November 16.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

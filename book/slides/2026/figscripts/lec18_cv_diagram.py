@@ -11,7 +11,7 @@ from matplotlib.patches import Patch
 
 OUT = Path(__file__).resolve().parents[1] / "figs" / "lec18_robust_training"
 OUT.mkdir(parents=True, exist_ok=True)
-TRAIN, VAL, TEST, UNUSED = "#9bb7d4", "#d95f02", "#1b1b1b", "#eeeeee"
+TRAIN, VAL, TEST, UNUSED, GAP = "#9bb7d4", "#d95f02", "#1b1b1b", "#eeeeee", "#f1d98a"
 N, K, N_TEST = 40, 5, 8
 rng = np.random.default_rng(0)
 order = rng.permutation(N - N_TEST)
@@ -43,15 +43,16 @@ edges = np.linspace(8, N - N_TEST, K + 1).astype(int)
 forward = []
 for k in range(K):
     a, b = edges[k], edges[k + 1] if k < K - 1 else N - N_TEST
-    row = [TRAIN if i < a else VAL if i < b else UNUSED for i in range(N - N_TEST)]
-    forward.append(row + [TEST] * N_TEST)
-draw(axes[1], forward, "Forward in time: validate only on the future")
+    row = [TRAIN if i < a - 2 else GAP if i < a else VAL if i < b else UNUSED for i in range(N - N_TEST)]
+    forward.append(row[:-2] + [GAP, GAP] + [TEST] * N_TEST)   # a gap also separates the test window
+draw(axes[1], forward, "Forecast: train on the past, leave a gap, validate later")
 
 fig.legend(handles=[Patch(color=TRAIN, label="training: fit the model"),
                     Patch(color=VAL, label="validation: compare models and settings"),
-                    Patch(color=TEST, label="test: scored once, at the end"),
+                    Patch(color=TEST, label="test: most recent, scored once"),
+                    Patch(color=GAP, label="gap: dropped"),
                     Patch(color=UNUSED, label="not used in this step")],
-           loc="lower center", ncol=4, frameon=False)
+           loc="lower center", ncol=5, frameon=False, fontsize=16)
 fig.subplots_adjust(left=0.01, right=0.995, top=0.85, bottom=0.13, wspace=0.08)
 fig.savefig(OUT / "cv_diagram.png", dpi=110)
 print("wrote", OUT / "cv_diagram.png")
