@@ -13,9 +13,9 @@ This chapter covers classic machine learning (CML) for geoscience: models that l
 5. **Multiclass classification** (3.5) — four seismic source types, per-class confusion matrices, one-vs-rest ROC, and the class leaderboard exercise.
 6. **Logistic regression from scratch** (3.6) — the one lesson where the black box is opened: the loss function, gradient descent, automatic differentiation with PyTorch, and a calibration check — reliability diagrams and the Brier score — on the predicted probabilities.
 7. **Trees, forests, and boosting** (3.7) — decision trees, random forest regression, feature importance and its pitfalls (permutation importance, partial dependence, correlated features), and gradient boosting as the modern tabular default.
-8. **Robust training** (3.8) — cross-validation for correlated data: why random splits lie on autocorrelated series; time-aware, grouped (site, event), and leave-cluster-out spatial splits; StratifiedGroupKFold for small imbalanced case histories; persistence baselines and bootstrap confidence intervals on scores.
-9. **Ensemble learning** (3.9) — voting, bagging, boosting, and stacking, with ensemble vote spread as a first estimate of epistemic uncertainty and per-class recall in the model comparison.
-10. **What became of AutoML** (3.10) — a short history of automated model search, the pieces that survived (hyperparameter optimization with Optuna, strong gradient-boosting defaults), and a critical-evaluation exercise on AI-generated modeling code.
+8. **Robust training** (3.8): what a validation score answers on correlated data. A GNSS forecast on shuffled and future folds, spatial blocks on a soil moisture map, whole events in a ground-motion table, persistence baselines, and an interval that respects correlation.
+9. **Ensembles** (3.9): averaging, boosting written by hand, and stacking on out-of-fold predictions, with shared errors as the limit of a combination and disagreement between models as a first estimate of epistemic uncertainty.
+10. **AutoML** (3.10): a small AutoML written with scikit-learn only, how the choice of validation changes its winner, why the best score of a search is optimistic, and an audit of a modeling script written by an AI agent.
 11. **Forests in practice** (3.11): an active notebook for Session 17, with a ROC curve from ten events, thresholds across two models, forest regression on real soil moisture, and a test beyond the training range.
 
 Dimensionality reduction (PCA, t-SNE) is covered in Chapter 2.12 and is used here as a preprocessing step, not re-taught.

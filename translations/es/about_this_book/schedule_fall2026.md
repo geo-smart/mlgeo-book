@@ -19,11 +19,12 @@ Dos decisiones de diseño le dan forma al trimestre. Primero, **el hilo de los a
 | Propuesta del proyecto final ([1.10](1.10_MLGEO_FinalProject.md)) | 12 oct | vie 30 oct |
 | Tabla de clasificación de clasificación ([3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb)) | mié 4 nov | cierra el mar 24 nov |
 | Arco de lecturas, etapa 2 — anatomía de los buenos artículos | 21 oct | mié 4 nov |
-| Cuestionario del cap. 3 (incluye la lectura invertida de 3.10) | mar 10 nov | jue 12 nov |
+| Cuestionario del cap. 3 | mar 10 nov | jue 12 nov |
 | Arco de lecturas, etapa 3 — su rúbrica de calidad | 4 nov | vie 13 nov |
 | Avance de proyecto n.º 1 — taller de auditoría de datos | — | lun 16 nov, en clase |
 | Cuestionario del cap. 6 | lun 16 nov | mié 18 nov |
 | Tarea: evaluar clusters ([Homework_Clustering, en inglés](https://geo-smart.github.io/mlgeo-book/homework-clustering/)) | mié 4 nov | lun 9 nov |
+| Laboratorio: entrenamiento robusto ([3.8](../Chapter3-MachineLearning/3.8_robust_training.ipynb)) | lun 9 nov | lun 16 nov, 23:59 |
 | Tarea de ML clásico ([Homework_CML](../Chapter3-MachineLearning/Homework_CML.ipynb)) | 4 nov | vie 20 nov |
 | Tarea de aprendizaje profundo ([Homework_DL](../Chapter4-DeepLearning/Homework_DL.ipynb)) | 23 nov | vie 4 dic |
 | Cuestionario del cap. 5 (verifica la lectura invertida del cap. 5) | lun 30 nov | jue 3 dic |
@@ -65,14 +66,14 @@ El capítulo 7 no tiene cuestionario: sus resultados de aprendizaje (traducción
 **Semana 6 — Clasificación** (etapa 2 del arco se entrega el miércoles)
 - Lun 2 nov — Final del agrupamiento y del ML clásico ([3.3](https://geo-smart.github.io/mlgeo-book/clustering)). · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13_classic_ml.html)
 - Mié 4 nov — **Clasificación: binaria, multiclase, regresión logística** ([3.4](../Chapter3-MachineLearning/3.4_binary_classification.ipynb), [3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb), [3.6](../Chapter3-MachineLearning/3.6_logistic_regression.ipynb)): todas las métricas, clases raras, umbrales, calibración, cómo funcionan la tabla de clasificación (*leaderboard*) y los conjuntos de prueba ocultos. **Abre la tabla de clasificación de clasificación.** Se asigna la tarea de ML clásico. Orden de lectura sugerido: 3.6, 3.4, 3.5. · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec16_classification.html)
-- Vie 6 nov — **Árboles y bosques: clasificación, luego regresión** ([3.7](../Chapter3-MachineLearning/3.7_randomForest_regression.ipynb), [3.9](../Chapter3-MachineLearning/3.9_ensemble_learning.ipynb), práctica en [3.11, en inglés](https://geo-smart.github.io/mlgeo-book/forests-practice/)): una curva ROC trazada a mano, de un árbol a muchos, umbrales entre modelos, regresión con bosques frente a la climatología y la persistencia, importancia, límites fuera del rango de entrenamiento. Se asigna [3.10](../Chapter3-MachineLearning/3.10_autoML.ipynb) como lectura invertida (verificada por el cuestionario del cap. 3). · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec17_trees_forests_honestly.html)
+- Vie 6 nov — **Árboles y bosques: clasificación, luego regresión** ([3.7](../Chapter3-MachineLearning/3.7_randomForest_regression.ipynb), práctica en [3.11, en inglés](https://geo-smart.github.io/mlgeo-book/forests-practice/)): una curva ROC trazada a mano, de un árbol a muchos, umbrales entre modelos, regresión con bosques frente a la climatología y la persistencia, importancia, límites fuera del rango de entrenamiento, bosques sobre mapas, buenas prácticas de entrenamiento. · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec17_trees_forests_honestly.html)
 
 **Semana 7 — Las dos clases sobre evaluación** (semana corta — no hay clase el mié 11 nov; cuestionario del cap. 3, mar–jue; etapa 3 del arco se entrega el viernes)
-- Lun 9 nov — **Entrenamiento robusto** ([3.8](../Chapter3-MachineLearning/3.8_robust_training.ipynb)), sesión completa: por qué mienten las particiones aleatorias; particiones temporales, por grupos y espaciales; la escalera de particiones sobre datos con verdad sembrada. · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec18_robust_training.html)
+- Lun 9 nov — **Entrenamiento robusto, ensambles, AutoML** ([3.8](../Chapter3-MachineLearning/3.8_robust_training.ipynb), [3.9](../Chapter3-MachineLearning/3.9_ensemble_learning.ipynb), [3.10](../Chapter3-MachineLearning/3.10_autoML.ipynb)), sesión completa: a qué responde una puntuación de validación (particiones temporales, por grupos y espaciales, modelos de referencia); promedio, *boosting* y *stacking*; un pequeño AutoML escrito con scikit-learn y la auditoría de un script escrito por un agente. · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec18_robust_training.html)
 - Vie 13 nov — **Construya un conjunto de evaluación** ([6.3](../Chapter6-AgenticAI/6.3_build_an_eval_set.ipynb)) + declaración de uso y normas ([6.4](../Chapter6-AgenticAI/6.4_disclosure_and_norms.md)): el mismo movimiento de evaluación justa, aplicado a los agentes. Se asigna la etapa 4 del arco de lecturas — cuatro semanas de pista. · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec19_eval_sets_for_agents.html)
 
 **Semana 8 — Avance de proyecto, luego aprendizaje profundo** (cuestionario del cap. 6, lun–mié; tarea de ML clásico se entrega el viernes)
-- Lun 16 nov — **Avance de proyecto n.º 1: taller de auditoría de datos.** Cada equipo, cinco minutos: sus datos contra la lista de verificación de 2.13, su modelo de referencia, su diseño de partición — recién salido de 3.8.
+- Lun 16 nov — **Avance de proyecto n.º 1: taller de auditoría de datos.** Cada equipo, cinco minutos: sus datos contra la lista de verificación de 2.13, su modelo de referencia, su diseño de partición — recién salido de 3.8. **Entrega del laboratorio 3.8.**
 - Mié 18 nov — De los perceptrones a los MLP ([4.0](../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.ipynb)–[4.2](../Chapter4-DeepLearning/mlgeo_4.2_MLP.ipynb)). · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec21_neuron_to_network.html)
 - Vie 20 nov — CNN: imágenes, formas de onda y el modelo de referencia clásico ([4.3](../Chapter4-DeepLearning/mlgeo_4.3_CNN.ipynb)). · [diapositivas](https://geo-smart.github.io/mlgeo-book/slides/2026/lec22_convolution_detector.html)
 
@@ -96,7 +97,7 @@ El capítulo 7 no tiene cuestionario: sus resultados de aprendizaje (traducción
 
 - El hilo de los agentes es deliberadamente temprano: la cultura de verificación (6.1/6.2) se instala antes de que se formen los hábitos de tarea, 6.3 llega la semana siguiente a 3.8 para que la evaluación justa se lea como una sola idea aplicada dos veces, y la etapa 4 del [arco de lecturas](../Chapter6-AgenticAI/6.5_reading_arc.md) tiene un mes de pista. El cuestionario del cap. 6 sigue a 6.3/6.4 a mediados de noviembre.
 - El cuaderno 4.5 se reparte entre dos sesiones de laboratorio en el punto de control marcado; no intente hacerlo de una sentada.
-- Los capítulos invertidos (3.10, cap. 5) son examinables mediante sus cuestionarios; el tiempo de clase que habrían ocupado financia los avances de proyecto y la sesión de amortiguamiento.
+- El capítulo invertido (cap. 5) es examinable mediante su cuestionario; el tiempo de clase que habría ocupado financia los avances de proyecto y la sesión de amortiguamiento.
 - El avance n.º 1 sustituye un informe intermedio escrito: retroalimentación más temprana, en el momento en que todavía puede cambiar el proyecto.
 - Los estudiantes de 469 siguen la ruta atenuada que se indica en cada tarea: expectativas de nivel Aplicar en los resultados de incertidumbre y de agentes, 4.6/4.7 opcionales, y asistir en lugar de liderar los proyectos finales.
 - Las secciones que no se ven en clase no son lectura opcional para 569 salvo que se indique así; las clases seleccionan, el libro lleva la profundidad.

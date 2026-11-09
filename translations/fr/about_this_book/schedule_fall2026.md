@@ -19,11 +19,12 @@ Deux choix de conception structurent le trimestre. D'abord, **le fil des agents 
 | Final project proposal ([1.10](1.10_MLGEO_FinalProject.md)) | Oct 12 | Fri Oct 30 |
 | Classification leaderboard ([3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb)) | Wed Nov 4 | closes Tue Nov 24 |
 | Reading arc stage 2 — anatomy of good papers | Oct 21 | Wed Nov 4 |
-| Ch 3 quiz (includes the flipped 3.10 reading) | Tue Nov 10 | Thu Nov 12 |
+| Ch 3 quiz | Tue Nov 10 | Thu Nov 12 |
 | Reading arc stage 3 — your quality rubric | Nov 4 | Fri Nov 13 |
 | Project check-in #1 — data-audit studio | — | Mon Nov 16, in class |
 | Ch 6 quiz | Mon Nov 16 | Wed Nov 18 |
 | Devoir : évaluer des clusters ([Homework_Clustering, en anglais](https://geo-smart.github.io/mlgeo-book/homework-clustering/)) | Wed Nov 4 | Mon Nov 9 |
+| Labo : entraînement robuste ([3.8](../Chapter3-MachineLearning/3.8_robust_training.ipynb)) | lun. 9 nov. | lun. 16 nov., 23 h 59 |
 | HW-CML ([Homework_CML](../Chapter3-MachineLearning/Homework_CML.ipynb)) | Nov 4 | Fri Nov 20 |
 | HW-DL ([Homework_DL](../Chapter4-DeepLearning/Homework_DL.ipynb)) | Nov 23 | Fri Dec 4 |
 | Ch 5 quiz (checks the flipped Ch 5 reading) | Mon Nov 30 | Thu Dec 3 |
@@ -67,14 +68,14 @@ Le chapitre 7 n'a pas de quiz : ses résultats d'apprentissage (traduction pour
 **Semaine 6 — La classification** (étape 2 de l'arc à rendre mercredi)
 - Lun. 2 nov. — Fin du partitionnement (*clustering*) et du ML classique ([3.3](https://geo-smart.github.io/mlgeo-book/clustering)). · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13_classic_ml.html)
 - Mer. 4 nov. — **Classification : binaire, multiclasse, régression logistique** ([3.4](../Chapter3-MachineLearning/3.4_binary_classification.ipynb), [3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb), [3.6](../Chapter3-MachineLearning/3.6_logistic_regression.ipynb)) : toutes les métriques, classes rares, seuils, calibration, fonctionnement du classement (*leaderboard*) et des ensembles de test cachés. **Ouverture du classement de classification.** Devoir HW-CML donné. Ordre de lecture conseillé : 3.6, 3.4, 3.5. · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec16_classification.html)
-- Ven. 6 nov. — **Arbres et forêts : classification, puis régression** ([3.7](../Chapter3-MachineLearning/3.7_randomForest_regression.ipynb), [3.9](../Chapter3-MachineLearning/3.9_ensemble_learning.ipynb), exercices en [3.11, en anglais](https://geo-smart.github.io/mlgeo-book/forests-practice/)) : une courbe ROC tracée à la main, d'un arbre à plusieurs, seuils d'un modèle à l'autre, régression par forêt face à la climatologie et à la persistance, importance, limites hors du domaine d'entraînement. [3.10](../Chapter3-MachineLearning/3.10_autoML.ipynb) donné en lecture inversée (vérifiée par le quiz du ch. 3). · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec17_trees_forests_honestly.html)
+- Ven. 6 nov. — **Arbres et forêts : classification, puis régression** ([3.7](../Chapter3-MachineLearning/3.7_randomForest_regression.ipynb), exercices en [3.11, en anglais](https://geo-smart.github.io/mlgeo-book/forests-practice/)) : une courbe ROC tracée à la main, d'un arbre à plusieurs, seuils d'un modèle à l'autre, régression par forêt face à la climatologie et à la persistance, importance, limites hors du domaine d'entraînement, forêts sur des cartes, bonnes pratiques d'entraînement. · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec17_trees_forests_honestly.html)
 
 **Semaine 7 — Les deux cours sur l'évaluation** (semaine courte — pas cours le mer. 11 nov. ; quiz du ch. 3, mar.–jeu. ; étape 3 de l'arc à rendre vendredi)
-- Lun. 9 nov. — **Entraînement robuste** ([3.8](../Chapter3-MachineLearning/3.8_robust_training.ipynb)), séance entière : pourquoi les découpages aléatoires mentent ; découpages temporels, par groupes et spatiaux ; l'échelle des découpages sur des données à vérité plantée. · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec18_robust_training.html)
+- Lun. 9 nov. — **Entraînement robuste, ensembles, AutoML** ([3.8](../Chapter3-MachineLearning/3.8_robust_training.ipynb), [3.9](../Chapter3-MachineLearning/3.9_ensemble_learning.ipynb), [3.10](../Chapter3-MachineLearning/3.10_autoML.ipynb)), séance entière : ce à quoi répond un score de validation (découpages temporels, par groupes et spatiaux, modèles de référence) ; moyenne, *boosting* et *stacking* ; un petit AutoML écrit avec scikit-learn, et l'audit d'un script écrit par un agent. · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec18_robust_training.html)
 - Ven. 13 nov. — **Construire un jeu d'évaluation** ([6.3](../Chapter6-AgenticAI/6.3_build_an_eval_set.ipynb)) + déclaration et normes ([6.4](../Chapter6-AgenticAI/6.4_disclosure_and_norms.md)) : le même geste d'évaluation équitable, appliqué aux agents. Étape 4 de l'arc de lecture donnée — quatre semaines de marge. · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec19_eval_sets_for_agents.html)
 
 **Semaine 8 — Point d'étape, puis apprentissage profond** (quiz du ch. 6, lun.–mer. ; HW-CML à rendre vendredi)
-- Lun. 16 nov. — **Point d'étape de projet n° 1 : atelier d'audit des données.** Chaque équipe, cinq minutes : vos données face à la liste de contrôle 2.13, votre modèle de référence, la conception de votre découpage — tout frais de la séance 3.8.
+- Lun. 16 nov. — **Point d'étape de projet n° 1 : atelier d'audit des données.** Chaque équipe, cinq minutes : vos données face à la liste de contrôle 2.13, votre modèle de référence, la conception de votre découpage — tout frais de la séance 3.8. **Labo 3.8 à rendre.**
 - Mer. 18 nov. — Du perceptron aux MLP ([4.0](../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.ipynb)–[4.2](../Chapter4-DeepLearning/mlgeo_4.2_MLP.ipynb)). · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec21_neuron_to_network.html)
 - Ven. 20 nov. — Les CNN : images, formes d'onde, et le modèle de référence classique ([4.3](../Chapter4-DeepLearning/mlgeo_4.3_CNN.ipynb)). · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec22_convolution_detector.html)
 
@@ -98,7 +99,7 @@ Le chapitre 7 n'a pas de quiz : ses résultats d'apprentissage (traduction pour
 
 - Le fil des agents est délibérément placé tôt : la culture de vérification (6.1/6.2) est installée avant que les habitudes de travail ne se forment, 6.3 arrive la semaine suivant 3.8 pour que l'évaluation équitable se lise comme une seule idée appliquée deux fois, et l'étape 4 de l'[arc de lecture](../Chapter6-AgenticAI/6.5_reading_arc.md) dispose d'un mois de marge. Le quiz du chapitre 6 suit 6.3/6.4 à la mi-novembre.
 - Le carnet 4.5 est réparti sur deux séances de TP, à son point de reprise signalé ; ne tentez pas de le faire d'une traite.
-- Les chapitres inversés (3.10, ch. 5) sont examinables via leurs quiz ; le temps de cours qu'ils auraient occupé finance les points d'étape et la séance tampon.
+- Le chapitre inversé (ch. 5) est examinable via son quiz ; le temps de cours qu'il aurait occupé finance les points d'étape et la séance tampon.
 - Le point d'étape n° 1 remplace un rapport de mi-parcours écrit : un retour plus tôt, au moment où il peut encore changer le projet.
 - Les étudiants de 469 suivent le parcours allégé indiqué dans chaque devoir : attentes de niveau Appliquer sur les résultats d'apprentissage relatifs à l'incertitude et aux agents, 4.6/4.7 facultatifs, et un rôle d'appui plutôt que de pilotage dans les projets finaux.
 - Les sections non traitées en cours ne sont pas des lectures facultatives pour les 569, sauf mention contraire ; le cours sélectionne, le livre porte la profondeur.

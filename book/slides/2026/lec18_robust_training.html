@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="">
-  <title>Robust training: what your validation score really measures</title>
+  <title>Robust training, ensembles, AutoML: what a score can and cannot tell you</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -31,8 +31,74 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="lec18_robust_training_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link rel="stylesheet" href="lec18_robust_training_files/libs/revealjs/dist/theme/quarto-ce7acf391a23033b2e12d95eea4aebc9.css">
   <link href="lec18_robust_training_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec18_robust_training_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec18_robust_training_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -124,14 +190,43 @@
       margin-right: 0; 
     }
   </style>
+  <style>
+  .reveal table { font-size: 0.72em; width: 100%; }
+  .reveal table th, .reveal table td { padding: 0.2em 0.4em; line-height: 1.18; vertical-align: top; }
+  .reveal .column { font-size: 0.8em; line-height: 1.24; }
+  .reveal .column table { font-size: 0.92em; }
+  .reveal .column .credit { font-size: 0.62em; margin-top: 0.5em; }
+  .reveal .column .dim { font-size: 0.82em; }
+  .reveal .column li { margin: 0.14em 0; }
+  .reveal .column p { margin: 0.32em 0; }
+  .reveal .columns { align-items: flex-start; gap: 0.5em; }
+  .reveal .takeaway { font-size: 0.74em; line-height: 1.2; margin-top: 0.25em; }
+  .reveal .column pre { font-size: 0.8em; width: 100%; margin: 0.2em 0; }
+  .reveal h2 { font-size: 1.5em; margin-bottom: 0.2em; }
+  .reveal .roomy .column { font-size: 0.98em; }
+  .reveal .roomy table { font-size: 0.86em; }
+  .reveal .roomy ol { font-size: 0.86em; }
+  .reveal .ten table { font-size: 0.86em; }
+  .reveal .ten table td, .reveal .ten table th { padding: 0.08em 0.5em; }
+  .reveal .dense .column { font-size: 0.7em; }
+  .reveal .dense table { font-size: 0.8em; }
+  .reveal .mid table { font-size: 0.77em; }
+  .reveal .lit3 .column { font-size: 0.66em; line-height: 1.22; }
+  .reveal .lit3 .column p { margin: 0.2em 0; }
+  .reveal .lit3 .column .credit { font-size: 0.78em; }
+  .reveal .lit3 .dim { font-size: 0.5em; }
+  .reveal .practice { font-size: 0.68em; }
+  .reveal .practice table { font-size: 0.9em; }
+  .reveal .practice table td, .reveal .practice table th { padding: 0.06em 0.4em; line-height: 1.12; }
+  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
-  <h1 class="title">Robust training:<br>what your validation score really measures</h1>
-  <p class="subtitle">Session 18 · Mon Nov 9 · Book section 3.8</p>
+  <h1 class="title">Robust training, ensembles, AutoML:<br>what a score can and cannot tell you</h1>
+  <p class="subtitle">Session 18 · Mon Nov 9 · Book sections 3.8, 3.9, 3.10</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -140,223 +235,53 @@
 <section id="section" class="slide level2" data-background-color="#faf7f2">
 <h2></h2>
 <p><span class="lecture-icon">🗺️</span></p>
-<h3 id="todays-question">Today’s question</h3>
-<p>Every score is an answer to a question.</p>
-<p><strong>Which question is your train / validation / test design asking?</strong></p>
-<div class="dim">
-<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/robust-training">3.8 Robust training</a></p>
-</div>
-<aside class="notes">
-<p>Frame the session: we never grade a model, we grade a model <em>under a data design</em>. Train = what the model fits; validation = what steers our choices; test = touched once, at the end. Today is about what happens when the validation data secretly resemble the training data. Ask the room: who has reported a validation score this quarter? What question was it answering?</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="this-lecture-in-the-literature" class="slide level2">
-<h2>This lecture in the literature</h2>
-<!-- Literature anchors for lecture 18. Edit THIS file to update the papers;
-     the deck includes it verbatim. Keep 2-4 entries: at least one where the
-     concept was applied well (✓), one where its absence misled a field (✗).
-     Format: verdict + bold message on one line; full citation on its own
-     line below (blank line between them — they must be separate paragraphs). -->
-<div class="ref-item">
-<p><span class="ref-verdict note">📖</span> <span class="ref-msg">The playbook: how to validate models when data share time, space, or group structure.</span></p>
-<p><span class="ref-cite">Roberts, D. R., et al.&nbsp;(2017). Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure. <em>Ecography</em>, 40, 913–929.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">Random validation inflated the skill of pan-tropical biomass maps — held-out regions exposed it.</span></p>
-<p><span class="ref-cite">Ploton, P., et al.&nbsp;(2020). Spatial validation reveals poor predictive performance of large-scale ecological mapping models. <em>Nature Communications</em>, 11, 4540.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">A celebrated deep aftershock model, matched by a single neuron — baselines recalibrated the claim.</span></p>
-<p><span class="ref-cite">DeVries, P. M. R., et al.&nbsp;(2018). Deep learning of aftershock patterns following large earthquakes. <em>Nature</em>, 560, 632–634. — Mignan, A. &amp; Broccardo, M. (2019). One neuron versus deep learning in aftershock prediction. <em>Nature</em>, 574, E1–E3.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict good">✓</span> <span class="ref-msg">Doing it right: estimate where on the map your model actually applies — and say so.</span></p>
-<p><span class="ref-cite">Meyer, H. &amp; Pebesma, E. (2021). Predicting into unknown space? Estimating the area of applicability of spatial prediction models. <em>Methods in Ecology and Evolution</em>, 12, 1620–1633.</span></p>
-</div>
-<div class="takeaway">
-<p>The field is actively writing this story — new papers land monthly. These four anchor today’s ideas.</p>
-</div>
-<aside class="notes">
-<p>Spend two minutes here; the goal is that students see today’s concept as live science, not course furniture. Ploton: pan-tropical forest biomass maps scored beautifully under random validation, then collapsed when validated on held-out regions — exactly today’s ladder, at Nature-paper scale. DeVries/Mignan: a deep aftershock model celebrated, then matched by one neuron — the persistence-baseline discipline from slide 6, in the wild. Roberts is the reading for students who want the full framework; Meyer &amp; Pebesma is where the field is heading (knowing <em>where</em> a model applies). Tell students the refs file updates as new papers land — bring me candidates.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="a-model-that-looked-great" class="slide level2">
-<h2>A model that looked great</h2>
-<div class="big-number">
-<p>R² = 0.90 <span class="unit">validation days shuffled into training years</span></p>
-</div>
-<div class="big-number">
-<p>R² = −0.3 <span class="unit">validation days in the future</span></p>
-</div>
-<div class="dim">
-<p>R² measures skill against predicting the mean: 1 = perfect, 0 = no better than the mean, negative = worse than the mean.</p>
-</div>
-<div class="takeaway">
-<p>Same random forest, same GNSS data. Only the train/validation design changed.</p>
-</div>
-<aside class="notes">
-<p>The model: a random forest predicting daily GNSS east displacement from date features (book 3.8). Define R² <em>before</em> using it — most of the room is domain, not data science. Emphasize: neither number is a bug. They answer different questions: “can I reproduce days like the ones I trained on?” vs “can I predict next year?” Only the second matches deployment.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="three-ways-to-cut-the-same-series" class="slide level2">
-<h2>Three ways to cut the same series</h2>
-<img data-src="figs/3.8_robust_training/gnss_split_ladder_slide.png" class="r-stretch">
-<div class="takeaway">
-<p>Real ground motion: tectonic drift + seasonal hydrologic loading. Shuffled designs hand the model the neighbors of every validation day — only the last panel ever predicts the future.</p>
-</div>
-<aside class="notes">
-<p>Walk the panels top to bottom. Blue = training days, orange = validation days; same station P395, Oregon Coast Range. Panels 1–2: validation days sit surrounded by training days from the same week — the forest interpolates its neighbors. Panel 3: all validation days come after all training days. Connect to the physics: the smooth drift is plate motion, the wiggles are seasonal water loading — that smoothness is exactly what leaks.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="data-correlation-is-the-leak" class="slide level2">
-<h2>Data correlation is the leak</h2>
-<ul>
-<li>Consecutive samples share the signal — today looks like yesterday</li>
-<li>Shuffling puts correlated samples on both sides of the train/validation line</li>
-<li>The model memorizes the neighborhood, not the physics</li>
-</ul>
-<div class="takeaway">
-<p>Leakage is not cheating — it is a data design that ignores correlation.</p>
-</div>
-<aside class="notes">
-<p>Data correlation in plain terms: any process with memory — ground motion, river discharge, temperature — produces samples that are not independent. A shuffled design turns prediction into interpolation. This is a property of the data, not of any particular tool. Preview: the same argument applies across locations, events, and whole regions.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-baseline-to-beat-persistence" class="slide level2">
-<h2>The baseline to beat: persistence</h2>
-<p><em>Persistence: predict that tomorrow equals today.</em></p>
-<div class="big-number">
-<p>1.7 mm <span class="unit">persistence — mean absolute error</span></p>
-</div>
-<div class="big-number">
-<p>16 mm <span class="unit">tuned random forest, honest future validation</span></p>
-</div>
-<div class="dim">
-<p>R² said “worse than the mean”; MAE says by how much, in millimeters. Same validation days, same metric, both models.</p>
-</div>
-<div class="takeaway">
-<p>Report a physical-units error (MAE) next to any skill score. Baselines before models.</p>
-</div>
-<aside class="notes">
-<p>Reconcile the metrics explicitly: R² is unitless skill (good for “is this better than nothing”), MAE is physical error (good for “does 16 mm matter for my science”). Why does the forest lose? Trees cannot extrapolate the 12 mm/yr trend beyond their training labels — persistence follows the drift for free. The simplest physical baseline encodes the strongest structure. This is the Mignan &amp; Broccardo move from the literature slide: before crediting the complex model, ask what a one-line rule achieves.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="regions-leak-the-same-way" class="slide level2">
-<h2>Regions leak the same way</h2>
-<img data-src="figs/3.8_robust_training/fig_04.png" class="r-stretch">
-<div class="takeaway">
-<p>Measurement locations cluster; the field varies smoothly over ~25 km. Random designs let the model interpolate the map instead of predicting new ground. Synthetic regional field (mlgeo_synth).</p>
-</div>
-<aside class="notes">
-<p>Shift domains: a regional field (think groundwater recharge, ground shaking, a soil property) sampled at clustered locations — clustering is how real networks get built (access roads, campaigns, permits). A validation location 2 km from a training location is the spatial version of “tomorrow looks like today.” This figure is synthetic (mlgeo_synth) — we planted the truth, so the next slide can measure exactly how much each design flatters us. (The notebook’s code labels locations <code>site_id</code> — same thing.)</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-validation-ladder" class="slide level2">
-<h2>The validation ladder</h2>
+<h3 id="todays-questions">Today’s questions</h3>
+<div class="roomy">
 <table class="caption-top">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 62%">
+<col style="width: 12%">
+<col style="width: 17%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Held out from training</th>
-<th>R²</th>
-<th>The question it answers</th>
+<th>Part</th>
+<th>Question</th>
+<th>Slides</th>
+<th>Notebook</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Random samples</td>
-<td><strong>0.72</strong></td>
-<td>Conditions like my training data?</td>
+<td>1</td>
+<td>Which question does a validation score answer?</td>
+<td>15 min</td>
+<td>3.8, 25 min</td>
 </tr>
 <tr class="even">
-<td>Whole locations</td>
-<td><strong>0.36</strong></td>
-<td>A new location near my network?</td>
+<td>2</td>
+<td>When does combining models help?</td>
+<td>10 min</td>
+<td>3.9, 15 min</td>
 </tr>
 <tr class="odd">
-<td>Whole regions</td>
-<td><strong>−0.84</strong></td>
-<td>A new region entirely?</td>
+<td>3</td>
+<td>What does an automated search need from us?</td>
+<td>10 min</td>
+<td>3.10, 20 min</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>One table to take away</td>
+<td>5 min</td>
+<td></td>
 </tr>
 </tbody>
 </table>
-<div class="dim">
-<p>Grouped validation: all samples that share one label — a location, an event, a well — stay on the same side of the train/validation line.</p>
-</div>
-<div class="takeaway">
-<p>None of these numbers is wrong. They answer different questions — match the design to your deployment.</p>
 </div>
 <aside class="notes">
-<p>Define grouped validation before the table settles — it is a statistical idea, not a software feature. Ladder logic: hold out random samples → validation locations appear in training → easiest question. Hold out whole locations → new-location question. Hold out whole regions → the score collapses below zero: worse than predicting the mean, because the model must extrapolate the field. Students choose their rung by asking where the model will actually be used. Implementation names for the notebook: scikit-learn calls these KFold, GroupKFold, and leave-cluster-out is GroupKFold on the region label — the concepts are what transfer.</p>
+<p>Timing for 100 minutes: 35 minutes of slides and 60 of notebooks, in three rounds, then 5 of synthesis. If the class meeting is the scheduled 80 minutes (10:00 to 11:20), keep the slides and cut notebooks to 18, 10 and 12 minutes: skip 3.8 Part 3, 3.9 Part 3 and 3.10 Part 2. Part 1 now has ten slides; if it runs long, skip “How large should a block be?” and leave it as reading. These follow Friday: a forest was our model, and today we ask how to score it, how to combine it with others, and how to search among them. Every notebook runs on scikit-learn alone.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -369,19 +294,203 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="small-correlated-imbalanced-the-usual-case" class="slide level2">
-<h2>Small, correlated, imbalanced — the usual case</h2>
+<section id="part-1-a-second-test-changed-two-published-scores" class="slide level2">
+<h2>Part 1: a second test changed two published scores</h2>
+<div class="lit3">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figs/lec10_ai_ready/papers/ploton2020_fig04_random_vs_spatial_cv.png" style="width:100.0%"></p>
+<p><span class="gb src">🛰️ Satellite &amp; airborne</span> <span class="gb sys bio">🌱 Biosphere</span> <span class="gb disc bio">🦠 Biogeosciences</span></p>
+<p><strong>Forest biomass, central Africa.</strong> A random forest on satellite and climate layers, scored against field plots. Random 10-fold: R² = 0.53 (a). Whole regions held out: R² = 0.14 (b).</p>
+<div class="credit">
+<p>Ploton et al.&nbsp;(2020), <em>Nature Communications</em> 11, 4540, Fig. 4. <a href="https://doi.org/10.1038/s41467-020-18321-y">doi:10.1038/s41467-020-18321-y</a>. CC BY 4.0.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figs/lit_aftershock_2018/aftershock_rerun.png" style="width:100.0%"></p>
+<p><span class="gb src">🖥️ Model &amp; simulation</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<p><strong>Aftershock locations, 199 fault slip models.</strong> The 2018 paper found that maximum shear stress change explains over 98% of its network’s output. A 2019 comment showed that this one quantity, in a two-parameter model, reaches the same AUC.</p>
+<div class="credit">
+<p>Our rerun of the open data and weights of DeVries, Viégas, Wattenberg &amp; Meade (2018), <em>Nature</em> 560, 632–634; comment by Mignan &amp; Broccardo (2019), <em>Nature</em> 574, E1–E3; reply by Meade (2019), <em>Nature</em> 574, E4.</p>
+</div>
+</div></div>
+<p><span class="dim">Further reading: Roberts et al.&nbsp;(2017), validation when data share time, space or groups · Meyer &amp; Pebesma (2021), where on a map a model applies.</span></p>
+</div>
+<aside class="notes">
+<p>Two minutes. On Friday the forest on map coordinates lost its skill as the test moved away from its training cells. Part 1 takes 15 minutes: that effect in time and on a map, then which training choices change the score that matters.</p>
+<p>Left, Ploton et al.&nbsp;(2020): the same model and the same plots, scored twice. Random 10-fold cross-validation gives R² = 0.53 (RMSPE 56.5 Mg/ha); spatial 44-fold cross-validation, holding out whole regions, gives 0.14 (77.5 Mg/ha). Nothing in the model changed; the second test asked the question the map is used for. Students saw this figure in lecture 10.</p>
+<p>Right, the aftershock study, which we told in full in lecture 2. How to present it, in about a minute: - Disclosure first, briefly: “I served on the PhD committee of the first author.” Students learn that disclosing a relationship is normal practice. - Credit what the 2018 paper did. It asked a physical question, where aftershocks occur, and found that the network’s output follows maximum shear stress change and the von Mises criterion, quantities with a physical meaning. The authors published their data and trained weights, which is the only reason the comment could test their model, and the only reason we could rerun it. - The comment’s point, stated as a measurement: one of those stress quantities, alone, matches the network’s AUC (0.847 against 0.849 in our rerun). The baseline changed what the result means: the skill came from the stress metric, and the network’s main contribution was pointing to it. - The reply argued the aim had been physical insight into aftershock locations, not the network itself. Read the reply before quoting it; I only saw its bibliographic record. - What students should take: this is how science is meant to work. A strong claim, open data, a public check, a public answer. Every one of their projects should run the simple baseline before someone else does. Avoid “debunked”, “failed” or “one neuron beat deep learning”: those are headlines, not what the exchange showed.</p>
+<p>Further reading, full references: Roberts, D. R., et al.&nbsp;(2017), Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure, Ecography 40, 913-929; Meyer, H. &amp; Pebesma, E. (2021), Predicting into unknown space? Estimating the area of applicability of spatial prediction models, Methods in Ecology and Evolution 12, 1620-1633. Roberts et al.&nbsp;is the framework paper for anyone who wants the full menu of structured cross-validation. Meyer and Pebesma estimate where on a map a model’s predictions can be trusted. Their figures are not openly licensed or could not be retrieved, so they appear as citations only.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="p395-a-station-that-keeps-moving" class="slide level2">
+<h2>P395: a station that keeps moving</h2>
+<img data-src="figs/1.7_get_geodetic_gnss/p395_context_slide.png" class="r-stretch">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📐 Geodesy</span></p>
+<div class="takeaway">
+<p>From 60 days of history, predict the mean position over the next 30 days, one sample every 5 days (1,482 samples, 2006 to 2026).</p>
+</div>
+<aside class="notes">
+<p>NGL station P395, Oregon Coast Range, above the Cascadia subduction zone. This figure from Chapter 1 shows motion relative to North America. The forecasts on the next slides use east position in IGS20, as in the course file, where the station moves at -6.4 mm/yr (NGL MIDAS, table in 1.7). The steady motion plus seasonal wiggles is what we are forecasting. Neighboring samples share 55 of 60 history days and 25 of 30 target days, so they are correlated by construction. Ask: what could go wrong if we shuffle them?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-same-forest-on-two-splits-of-the-same-record" class="slide level2">
+<h2>The same forest on two splits of the same record</h2>
+<img data-src="figs/lec18_robust_training/p395_two_splits.png" class="r-stretch">
+<div class="takeaway">
+<p>Shuffled folds: 0.46 mm. Training on the past and validating on the future: 12.4 mm. The forest flattens because it cannot predict beyond the values it has seen.</p>
+</div>
+<aside class="notes">
+<p>Gray: training samples. Blue: validation samples. Orange: the forest. Top: every validation sample has neighbors in training that share most of its window, so the forest copies them. Bottom: all validation samples come after training, and the forest stays near the last values it saw, the same effect as Friday’s hot days. Five folds, 100 trees. The future folds leave a gap of 6 samples so target windows do not overlap. R² goes from 1.00 to -3.8; R² below zero means worse than predicting the mean of the validation samples. Neither score is wrong: the top one answers how well the model reproduces days between days it has seen, and the bottom one answers how well it forecasts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-baseline-that-needs-no-learning" class="slide level2">
+<h2>A baseline that needs no learning</h2>
+<div class="roomy">
+<div class="columns">
+<div class="column" style="width:42%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Future folds</th>
+<th>Error (mm)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Forest, 100 trees</td>
+<td><strong>12.4</strong></td>
+</tr>
+<tr class="even">
+<td>Persistence: same as the last observed day</td>
+<td><strong>1.17</strong></td>
+</tr>
+<tr class="odd">
+<td>Linear regression, same six features</td>
+<td><strong>0.82</strong></td>
+</tr>
+<tr class="even">
+<td><em>Forest, shuffled folds</em></td>
+<td><em>0.46</em></td>
+</tr>
+</tbody>
+</table>
+<p>Persistence takes one line and beats the forest tenfold. The shuffled score alone would have ranked the forest first.</p>
+</div><div class="column" style="width:58%;">
+<p><img data-src="figs/lec18_robust_training/p395_baselines.png" height="700"></p>
+</div></div>
+</div>
+<aside class="notes">
+<p>Report a physical-units error next to any skill score, and always a baseline. Persistence and the linear model use what we know about this record: it changes slowly and steadily. This is the check that Mignan and Broccardo applied to the aftershock network on slide 3: before crediting the complex model, ask what a one-line rule achieves. The linear model is not always the answer; on Friday, the forest was slightly better than linear at Turnbull soil moisture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="p395-forecast-error-for-six-forest-settings-and-a-change-of-target" class="slide level2">
+<h2>P395 forecast error for six forest settings and a change of target</h2>
+<img data-src="figs/lec18_robust_training/practice_p395.png" class="r-stretch">
+<div class="takeaway">
+<p><strong>Persistence</strong> forecasts the next 30 days as the last observed position, with no learning: 1.17 mm. Six random forests forecasting the future position: 12.4 to 15.8 mm. One random forest forecasting the change in position: 0.84 mm.</p>
+</div>
+<aside class="notes">
+<p>Persistence is the simplest forecast of a time series: tomorrow equals today, here the next 30-day mean equals the last observed daily position. Same samples and folds as before. Hollow circles: shuffled folds; filled: future folds. The six settings are maximum depth 3, 12 or unlimited, times a minimum of 1 or 20 samples per leaf, 100 trees each. Shuffled and future folds pick the same setting here (unlimited depth, leaf 1), so the choice of validation did not change the setting; it changed whether you would ship the forest at all. No setting can fix a forest that has to return a position it has never seen. Predicting the change since the last observed day (features: the 60-day and 10-day means minus the last day, the 60-day slope, the season) turns an extrapolation into an interpolation, because changes over 30 days stay in the range of the training data. The forest then matches linear regression (0.82). In 3.8 students run both. Numbers from lec18_scores_ensembles_automl.py, numbers.json, key practice_time.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-same-effect-on-a-map" class="slide level2">
+<h2>The same effect on a map</h2>
+<img data-src="figs/lec18_robust_training/map_blocks.png" class="r-stretch">
+<p><span class="gb src">🖥️ Model &amp; simulation</span> <span class="gb sys water">💧 Land water</span> <span class="gb disc water">💧 Hydrology &amp; land-surface modeling</span></p>
+<div class="takeaway">
+<p>A <strong>block</strong> is a square of the map, 2°, 4° or 6° on a side. All cells of a block go to the same fold, so each model is scored on a region with no training cells nearby. Two random forests predict annual soil moisture, one from climate only, one from latitude and longitude only. Random cells: R² .90 for both. 6° blocks: .86 from climate, .51 from latitude and longitude.</p>
+</div>
+<aside class="notes">
+<p>Left: 4 by 4 degree blocks, colored by the fold that holds them out; each fold leaves out about a fifth of the blocks. Whole blocks stay on one side of the split, so a held-out cell has no training cell in its own block. Right: a ladder of splits, each asking about ground farther from training. 4 degrees is about 300 to 440 km here, and on Friday the correlation of this field fell to .40 at 200 to 300 km. Caution from Friday: CPC soil moisture is a leaky-bucket model driven by precipitation and temperature, so the climate features nearly contain the answer. Coordinates give interpolation, useful inside a surveyed region and of no use beyond it. Five folds, 200 trees, R² pooled over all held-out cells.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-large-should-a-block-be" class="slide level2">
+<h2>How large should a block be?</h2>
+<div class="dense">
+<div class="columns">
+<div class="column" style="width:46%;">
+<p><img data-src="figs/lec18_robust_training/papers/stock2025_fig05.jpg" height="745"></p>
+</div><div class="column" style="width:54%;">
+<p><span class="gb src">🛰️ Satellite &amp; airborne</span> <span class="gb sys ocean">🌊 Ocean</span> <span class="gb disc ocean">🌊 Oceanography</span></p>
+<p><strong>Baltic Sea chlorophyll from satellite reflectance.</strong> Synthetic chlorophyll, so the true error is known. Solid: true error; dashed: random 10-fold.</p>
 <ul>
-<li>300 case histories · 12% positive class · several soundings per location</li>
-<li>Measurements from one location must stay together → grouped validation</li>
-<li>But one fold drew <strong>zero</strong> positive cases → the skill score is undefined</li>
+<li>RFXY, a random forest from reflectance plus latitude and longitude, looks best under random 10-fold and has the largest true error</li>
+<li>The predictors stopped being correlated beyond 200 to 300 km</li>
 </ul>
-<p><strong>Fix: stratified grouped validation</strong> — keep each location’s samples together <em>and</em> spread the rare positives across folds.</p>
-<div class="takeaway">
-<p>The norm in geotechnical engineering, hydrology, and geology — not an edge case.</p>
+<p><strong>Ask the class</strong></p>
+<ul>
+<li>What physical process sets the distance over which soil moisture stays correlated? How far is it?</li>
+<li>At P395, which time scales carry the physics, and is a 30-day gap longer than they are?</li>
+<li>In your project, what length or time scale must a block or a gap exceed?</li>
+</ul>
+<div class="credit">
+<p>Stock (2025), <em>Front. Remote Sens.</em> 6, 1531097, Fig. 5, <a href="https://doi.org/10.3389/frsen.2025.1531097">doi</a>. CC BY 4.0.</p>
+</div>
+</div></div>
 </div>
 <aside class="notes">
-<p>Concrete setting: liquefaction case histories — several soundings per location, positives rare. Walk the failure: grouping is <em>required</em> (soundings from one location are near-duplicates), but with 12% positives, chance gives a fold with no positive cases, and any score needing both classes (AUC) is undefined. Stratification adds the constraint that each fold keeps roughly the class balance. This small/correlated/imbalanced triple is what most domain datasets look like; the big clean benchmarks are the exception. Implementation: scikit-learn’s StratifiedGroupKFold — named in the notebook, not memorized here.</p>
+<p>Stock also found that block size mattered most, and block shape and the number of folds little. Point at the top right panel, RFXY: the dashed line sits near .14 and the solid line near .22, read from the figure. The colored lines are block splits, rising toward the truth as blocks grow, without reaching it. Stock also found that leaving out whole subbasins performed best overall because it matched the mapping task, although large blocks sometimes overestimated errors. The advice: use correlograms of the predictors and domain knowledge, and try a range of sizes when they do not settle it. Connects to Part 3: a search would have chosen RFXY.</p>
+<p>Ask the class, two or three minutes, one question at a time. Points to bring out. Soil moisture: correlated over the size of the weather systems that wet it (winter frontal storms over several hundred to a thousand kilometers, summer convection over tens of kilometers), with soil texture, vegetation and topography adding variation at kilometers. On Friday our CPC field had correlation .40 at 200 to 300 km and near zero by 900 km, so 6 degree blocks (about 450 to 670 km here) are close to the scale where neighbors stop sharing information; CPC is a 0.5 degree model, so it has no kilometer-scale variation at all. P395: daily noise, the seasonal cycle of hydrological loading (one year), episodic slow slip (months to years apart along Cascadia) and steady plate motion (decades). The 30-day gap only removes overlapping windows; the seasonal cycle and the trend still connect training and validation, which is why we validate on the future rather than adding a gap to a shuffled split. Projects: the block or the gap should exceed the scale over which the target and the features stay correlated, measured with a correlogram or a variogram, and match how the model will be used (a new region, a new year, a new event).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -394,49 +503,157 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="before-you-validate-name-what-your-samples-share" class="slide level2 smaller">
-<h2>Before you validate: name what your samples share</h2>
+<section id="judge-a-training-choice-by-the-outcome-you-need" class="slide level2">
+<h2>Judge a training choice by the outcome you need</h2>
+<div class="practice">
+<p><strong>Generalization:</strong> error where the model will be used (later days, unsampled regions). <strong>Fine tuning:</strong> small gains from settings (hyperparameters), same model, features and conditions.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Shared structure</th>
-<th>Why samples are correlated</th>
-<th>Validation principle</th>
+<th>Choice</th>
+<th>Score that looks good</th>
+<th>Score on the outcome</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>P395:</strong> shuffled folds for a forecast</td>
+<td>0.46 mm</td>
+<td>12.4 mm</td>
+<td><strong>Bad:</strong> ranks the forest first</td>
+</tr>
+<tr class="even">
+<td><strong>P395:</strong> tune six forest settings</td>
+<td>0.46 to 3.3 mm</td>
+<td>12.4 to 15.8 mm</td>
+<td>Fine tuning; none beats persistence (1.17)</td>
+</tr>
+<tr class="odd">
+<td><strong>P395:</strong> predict the change, not the position</td>
+<td>0.79 mm</td>
+<td>0.84 mm</td>
+<td><strong>Good:</strong> 15 times smaller error</td>
+</tr>
+<tr class="even">
+<td><strong>Soil map:</strong> RF from latitude and longitude only</td>
+<td>R² .90, random cells</td>
+<td>.51, 6° blocks</td>
+<td><strong>Bad</strong> beyond the sampled region</td>
+</tr>
+<tr class="odd">
+<td><strong>Soil map:</strong> RF from climate only, settings picked on random folds</td>
+<td>.86 to .90</td>
+<td>picked .863, best .864</td>
+<td>Acceptable for fine tuning</td>
+</tr>
+<tr class="even">
+<td><strong>Seismic:</strong> tune forest settings</td>
+<td>macro-F1 .884</td>
+<td>.884, default won</td>
+<td>Fine tuning, no gain</td>
+</tr>
+<tr class="odd">
+<td><strong>Seismic:</strong> 300 or 1,000 training events instead of 3,000</td>
+<td></td>
+<td>.844, .864, .884</td>
+<td>Data mattered more than settings</td>
+</tr>
+<tr class="even">
+<td><strong>Seismic:</strong> logistic regression, unscaled, 100 iterations</td>
+<td></td>
+<td>.565, against .884 scaled</td>
+<td><strong>Bad:</strong> check the fit converged</td>
+</tr>
+<tr class="odd">
+<td><strong>Seismic:</strong> oversample before the split (lecture 16)</td>
+<td>F1 .995</td>
+<td>.590</td>
+<td><strong>Bad:</strong> leakage</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="takeaway">
+<p>A choice is bad when it raises the score you report without raising the score where the model will be used. In all three datasets, settings were the smallest lever.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; this is Part 1 on one screen. Read it by columns: the “looks good” score is what an unchecked report would claim, and the outcome score is the one that matches use. Shuffled folds are not always wrong: on the soil map with climate features, the setting they picked scored .863 in 6 degree blocks, against .864 for the best, so for fine tuning they were good enough. What they cannot do is tell you whether the features generalize: both models look like .90 on random cells. The seismic rows use the random split of 3.5 only, because the tables carry no event identifier, so they say nothing about new regions or years; differences below about .01 macro-F1 are within the spread of random splits. The oversampling row is lecture 16’s explosion-against-earthquake test (53 explosions, 1,000 earthquakes, mean of 10 subsets). Two practices I tested gave no measurable harm on these data, and should not be presented as harmless: selecting features before the split (the seismic features are strong enough that selection picks the same ones), and choosing settings on the test set (a gain of about .007, within the noise). Those two came from a one-off test outside the repository, so quote them only as “no measurable effect here”. Numbers from lec18_scores_ensembles_automl.py, keys practice_time, practice_region, practice_seismic; lecture 16 balancing script for the last row.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="name-what-your-samples-share" class="slide level2">
+<h2>Name what your samples share</h2>
+<div class="mid">
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Samples share</th>
+<th>Why they are correlated</th>
+<th>Validate by</th>
+<th>From today</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Time</strong></td>
 <td>consecutive samples share weather, season, drift</td>
-<td>train on the past, validate on the future</td>
+<td>training on the past, validating on the future</td>
+<td>P395: 0.46 to 12.4 mm</td>
 </tr>
 <tr class="even">
 <td><strong>Location</strong></td>
-<td>repeated measurements at one location are near-duplicates</td>
-<td>grouped validation by location</td>
+<td>repeated measurements at one location are near copies</td>
+<td>holding out whole locations</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td><strong>Event</strong></td>
-<td>one physical event (an earthquake, a storm) reaches many instruments</td>
-<td>grouped validation by event</td>
+<td>one earthquake reaches many instruments</td>
+<td>holding out whole events</td>
+<td>synthetic: R² .87 to .65</td>
 </tr>
 <tr class="even">
 <td><strong>Region</strong></td>
-<td>nearby locations lie on the same smooth field</td>
-<td>leave a region out, with a buffer</td>
+<td>nearby locations lie on one smooth field</td>
+<td>holding out blocks as large as the correlation distance</td>
+<td>CPC: R² .90 to .51</td>
+</tr>
+<tr class="odd">
+<td><strong>Rare class and groups</strong></td>
+<td>a group can land in a fold with no positives</td>
+<td>holding out groups, rare cases spread across folds</td>
+<td></td>
 </tr>
 </tbody>
 </table>
+</div>
 <div class="takeaway">
-<p>This is Chapter 2.13’s data audit applied at validation time: find the correlation, then keep it on one side of the train/validation line.</p>
+<p>Compare models with cross-validation inside the training data, and score the test set once, at the end.</p>
 </div>
 <aside class="notes">
-<p>This table is the lecture in one screen — leave it up while fielding questions. Each row is a case from today: time (the P395 panels), region (the field map), location and event (the ladder and the case-history example). The principles are statistical, tool-independent; the notebook shows the scikit-learn spellings, and a coding agent can always produce the syntax — naming the correlation is the part only the scientist can do.</p>
+<p>This table is Part 1 on one screen. Chapter 2.13’s data audit asked this question before training, and the split applies it to evaluation. The event row uses a small synthetic table in 3.8, where the magnitude is identical across recordings of an event, so random folds let the forest recognize the event. In code: TimeSeriesSplit, GroupKFold, StratifiedGroupKFold; students’ agents know them, and naming what the samples share is the scientist’s part. Leave-one-out costs one fit per sample and leaves each sample’s neighbors in training, so it is the shuffled split at its most optimistic.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -449,19 +666,476 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="now-run-it-yourself-open-3.8" class="slide level2">
-<h2>Now run it yourself — open 3.8</h2>
+<section id="open-3.8-25-minutes" class="slide level2">
+<h2>Open 3.8 (25 minutes)</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<div class="roomy">
 <ol type="1">
-<li><code>pixi run jupyter lab</code> → <code>3.8_robust_training.ipynb</code></li>
-<li>Run the ladder: random samples vs grouped-by-location vs leave-region-out</li>
-<li>Break it: put the coordinates in the features and watch the random-samples score inflate</li>
-<li>Your team’s data: which row of the table applies? (Bring the answer to Monday’s check-in.)</li>
+<li><code>git pull</code>, then open <code>3.8_robust_training.ipynb</code></li>
+<li>Part 1: score the forest on shuffled folds, on future folds, and persistence</li>
+<li>Part 1: tune six settings, then predict the change</li>
+<li>Part 2: write the block labels, then score whole blocks</li>
+<li><strong>Your project:</strong> which choice in today’s table would you test first?</li>
 </ol>
+</div>
+</div><div class="column" style="width:48%;">
+<p>Three splits, then a new target:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a>cross_val_score(forest, X, y,</span>
+<span id="cb1-2"><a href=""></a>    cv<span class="op">=</span>KFold(<span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a>cross_val_score(forest, X, y,</span>
+<span id="cb1-5"><a href=""></a>    cv<span class="op">=</span>TimeSeriesSplit(<span class="dv">5</span>, gap<span class="op">=</span><span class="dv">6</span>))</span>
+<span id="cb1-6"><a href=""></a></span>
+<span id="cb1-7"><a href=""></a>cross_val_score(forest, X, y,</span>
+<span id="cb1-8"><a href=""></a>    cv<span class="op">=</span>GroupKFold(<span class="dv">5</span>), groups<span class="op">=</span>blocks)</span>
+<span id="cb1-9"><a href=""></a></span>
+<span id="cb1-10"><a href=""></a>forest.fit(X_change, y <span class="op">-</span> last_value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
 <div class="dim">
-<p>Friday: the same discipline applied to AI agents (6.3) · HW-CML due Fri Nov 20</p>
+<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/robust-training">3.8</a>. Each task has a hint and a hidden solution. Part 3 (whole events) is optional.</p>
 </div>
 <aside class="notes">
-<p>Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, slide deck ~20 min, guided notebook exercise ~40 min on the four tasks (circulate; the break-it task is where misconceptions surface), synthesis ~10 min collecting answers to task 4 — that question seeds Monday’s data-audit check-in. The deck introduces; the exercise teaches. The notebook is where the scikit-learn names live (TimeSeriesSplit, GroupKFold, StratifiedGroupKFold); students’ coding agents know them too — the concept-to-deployment mapping is the skill being graded.</p>
+<p>Pairs, 25 minutes. Circulate during the block labels, where students may need help with what the groups mean. Collect one answer to task 5: it seeds the data-audit check-in on Nov 16.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="part-2-ensembles-three-ways-to-combine-models" class="slide level2">
+<h2>Part 2, ensembles: three ways to combine models</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Forest: independent trees, averaged</strong><br><strong>Boosting: each tree adds a correction</strong></p>
+<p><img data-src="figs/lec18_robust_training/papers/feigl2021_fig02_forest_boosting_panels.png"></p>
+<div class="credit">
+<p>Feigl, Lebiedzinski, Herrnegger and Schulz (2021), <em>Hydrology and Earth System Sciences</em> 25, 2951–2977, Fig. 2, cropped. <a href="https://doi.org/10.5194/hess-25-2951-2021">doi:10.5194/hess-25-2951-2021</a>. CC BY 4.0.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Stacking: a model learns from the models’ forecasts</strong></p>
+<p><img data-src="figs/lec18_robust_training/papers/shukla2025_fig06_flow_chart.png"></p>
+<p>Seismic energy forecasting: five models, then a forest on their forecasts, tested on later years.</p>
+<div class="credit">
+<p>Shukla, Dhanya, Kumar, Priyanka and Dutt (2025), <em>Natural Hazards and Earth System Sciences</em> 25, 3713–3736, Fig. 6. <a href="https://doi.org/10.5194/nhess-25-3713-2025">doi:10.5194/nhess-25-3713-2025</a>. CC BY 4.0.</p>
+</div>
+</div></div>
+<div class="takeaway">
+<p>Bagging and forests lower variance. Boosting lowers bias, one correction at a time. Stacking must learn from predictions on samples its members did not train on.</p>
+</div>
+<aside class="notes">
+<p>Part 2 takes 10 minutes. Left panels: in a forest each tree gives its own estimate and they are averaged; in boosting the trees are added, each scaled by a learning rate. Right: Shukla and colleagues decompose annual log seismic energy into modes, feed them to five learners, and let a forest combine the forecasts. A good question for any such paper, and for the room: their text describes decomposing the series, and does not say the decomposition was fit on training years only. If it used later years, what would that do to the test score? Say that this is a question to ask, not a finding: I read the methods, not their code. Voting is the simplest combination: equal votes among different models. Pasting is bagging without replacement.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="boosting-tree-by-tree" class="slide level2">
+<h2>Boosting, tree by tree</h2>
+<img data-src="figs/lec18_robust_training/boosting_by_hand.png" class="r-stretch">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys water">💧 Land water</span> <span class="gb disc water">💧 Hydrology &amp; land-surface modeling</span></p>
+<div class="takeaway">
+<p>Held-out error falls from 15.6 °C at the mean to 4.08 °C with 10 trees, then climbs to 4.27 °C by 300 trees while training error keeps falling.</p>
+</div>
+<aside class="notes">
+<p>USCRN WA Spokane 17 SSW, daily maximum air and ground temperature, trained on 2015 to 2021, tested on 2022 to 2024. Each tree has depth 2 and 30% of its correction is kept. One tree gives four stairs; each later tree refines the stairs. Compare Friday’s forest: more trees never hurt a forest, because it averages. Boosting keeps fitting what remains, and after the signal, what remains is noise. So the number of trees is a setting to choose by validation inside the training years. On these held-out days: forest 4.39 °C, line 4.26 °C. The differences are small since one feature does most of the work. Students write this loop in 3.9, in three lines.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="three-models-on-four-source-types" class="slide level2">
+<h2>Three models on four source types</h2>
+<img data-src="figs/lec18_robust_training/ensemble_scores.png" class="r-stretch">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="takeaway">
+<p>Average and stack match the best member, since 62 of the boosted model’s 102 errors are shared by all three. Where the models disagree, the average is wrong 42% of the time, against 6% where they agree.</p>
+</div>
+<aside class="notes">
+<p>The 4,000 Pacific Northwest events, canonical split, 1,000 test events. The y-axis is truncated to show the differences: .896 and .898 differ by about two events. Macro-F1: logistic .884, forest .884, boosted .898, equal average .898, stack .896. Ask what those 62 events are. Likely explanations are waveform features that look like another class, or labels an analyst might revise: that is my reading, not something I checked event by event. Students could look at them in 3.9. One data set and one split, so do not generalize: stacking does help when members make different errors. Right panel: a combination that scores no higher can still tell you which predictions to send to an analyst. This is the same reading as Friday’s vote agreement among trees, and it returns with deep ensembles in 4.5. Disagreement estimates epistemic uncertainty, what the models have not learned. It does not capture aleatoric uncertainty, the noise in the measurement itself.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="stream-temperature-inputs-beat-model-family" class="slide level2">
+<h2>Stream temperature: inputs beat model family</h2>
+<img data-src="figs/lec18_robust_training/papers/feigl2021_fig04_panels_ab.png" class="r-stretch">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys water">💧 Land water</span> <span class="gb disc water">💧 Hydrology &amp; land-surface modeling</span></p>
+<div class="takeaway">
+<p>Ten Central European catchments, last 20% of each record as test. Model family (a): no significant difference, p = .11. Inputs (b): p &lt; 10⁻¹⁴.</p>
+</div>
+<div class="credit">
+<p>Feigl, Lebiedzinski, Herrnegger and Schulz (2021), <em>Hydrology and Earth System Sciences</em> 25, 2951–2977, Fig. 4, panels a, b. <a href="https://doi.org/10.5194/hess-25-2951-2021">doi:10.5194/hess-25-2951-2021</a>. CC BY 4.0.</p>
+</div>
+<aside class="notes">
+<p>Panel a: each box is one model family across catchments and input sets, against air2stream, a physically based benchmark. Panel b: the input sets; T is air temperature, Q discharge, P precipitation, GL global radiation. Input sets with discharge have the lowest medians. Best experiments of different families differ by a median of 0.08 °C. Boosted trees and feedforward networks were each best in 4 of 10 catchments. The best machine-learning model beat the benchmark in every catchment: 0.55 °C against 0.98 °C on average. The time split is what makes this comparison believable. Message for projects: before stacking models, ask what measurement you could add.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="open-3.9-15-minutes" class="slide level2">
+<h2>Open 3.9 (15 minutes)</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="roomy">
+<ol type="1">
+<li>Part 1: average the three models, and count the events they all miss</li>
+<li>Part 2: write the boosting loop, then read the two error curves</li>
+<li>Part 3: fit the stack on out-of-fold predictions</li>
+<li><strong>Your project:</strong> do your models make different errors?</li>
+</ol>
+</div>
+</div><div class="column" style="width:60%;">
+<p>Each round fits a small tree to what is still wrong:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(rounds):</span>
+<span id="cb2-2"><a href=""></a>    residuals <span class="op">=</span> fit[<span class="st">"ground"</span>] <span class="op">-</span> fit_prediction</span>
+<span id="cb2-3"><a href=""></a>    tree <span class="op">=</span> DecisionTreeRegressor(max_depth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-4"><a href=""></a>    tree.fit(fit[[<span class="st">"air"</span>]], residuals)</span>
+<span id="cb2-5"><a href=""></a>    fit_prediction <span class="op">+=</span> RATE <span class="op">*</span> tree.predict(fit[[<span class="st">"air"</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<div class="dim">
+<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/ensemble-learning">3.9</a>. The first data cell takes about 10 seconds and the stack about 30. If you run short, skip Part 3.</p>
+</div>
+<aside class="notes">
+<p>Pairs, 15 minutes. Task 2 is the most important: three lines that explain every boosted-tree package they will use.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="part-3-automl-the-method-is-a-loop" class="slide level2">
+<h2>Part 3, AutoML: the method is a loop</h2>
+<div class="columns">
+<div class="column" style="width:62%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="kw">def</span> mini_automl(candidates, X, y, cv):</span>
+<span id="cb3-2"><a href=""></a>    scores <span class="op">=</span> {}</span>
+<span id="cb3-3"><a href=""></a>    <span class="cf">for</span> name, model <span class="kw">in</span> candidates.items():</span>
+<span id="cb3-4"><a href=""></a>        scores[name] <span class="op">=</span> <span class="op">-</span>cross_val_score(</span>
+<span id="cb3-5"><a href=""></a>            model, X, y, cv<span class="op">=</span>cv,</span>
+<span id="cb3-6"><a href=""></a>            scoring<span class="op">=</span><span class="st">"neg_mean_absolute_error"</span>).mean()</span>
+<span id="cb3-7"><a href=""></a>    <span class="cf">return</span> pd.Series(scores).sort_values()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The argument that decides the result is <code>cv</code>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Candidates in 3.10</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linear models</td>
+<td>Linear, Ridge</td>
+</tr>
+<tr class="even">
+<td>Nearest neighbors</td>
+<td>3, 30</td>
+</tr>
+<tr class="odd">
+<td>Forests</td>
+<td>default, leaf 20</td>
+</tr>
+<tr class="even">
+<td>Boosted trees</td>
+<td>default, slow</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:38%;">
+<p>Tools such as H2O AutoML, AutoGluon and auto-sklearn add to this loop:</p>
+<ul>
+<li>many families and settings</li>
+<li>search that spends time where scores look good</li>
+<li>a stack of the winners</li>
+</ul>
+<p>They do not know how your model will be used.</p>
+</div></div>
+<aside class="notes">
+<p>Part 3 takes 10 minutes. This is the function students write in 3.10, with scikit-learn only. Earlier editions used pycaret and Optuna; neither is needed to understand the idea, and both are fine to use in a project. Optuna and similar libraries draw new settings near those that scored well, which saves time when a fit takes hours. Coding agents now often write this whole loop on request, which is where the audit at the end of this part comes in.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="soil-moisture-south-korea-automl-and-a-forest" class="slide level2">
+<h2>Soil moisture, South Korea: AutoML and a forest</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p><img data-src="figs/lec18_robust_training/papers/lee2023_fig08_validation_scatter.png" height="690"></p>
+</div><div class="column" style="width:48%;">
+<p><span class="gb src">🛰️ Satellite &amp; airborne</span> <span class="gb sys water">💧 Land water</span> <span class="gb disc water">💧 Hydrology &amp; land-surface modeling</span></p>
+<p>Daily soil moisture from satellite, weather model and terrain data, 2014 to 2021, against in-situ stations.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Mean error (%)</th>
+<th>Forest</th>
+<th>AutoML</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Random 20% held out</td>
+<td>2.71</td>
+<td><strong>2.21</strong></td>
+</tr>
+<tr class="even">
+<td>Each year held out</td>
+<td><strong>4.10</strong></td>
+<td>4.13</td>
+</tr>
+</tbody>
+</table>
+<p>AutoML’s lead disappears when the test is a year it has not seen, and both errors grow by half or more.</p>
+<div class="credit">
+<p>Lee, Sohn, Kim, Park, Park and Lee (2023), <em>Remote Sensing</em> 15, 4168, Fig. 8, Tables 4 to 7. <a href="https://doi.org/10.3390/rs15174168">doi:10.3390/rs15174168</a>. CC BY 4.0.</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>Panels a and b: leave-one-year-out, forest then AutoML. Panels c and d: random sampling, forest then AutoML, one round of five. The table gives the averages over all rounds. AutoML here is H2O; the forest used H2O defaults, 50 trees of depth 20. The authors conclude that AutoML tends to be more accurate, and they also state that leave-one-year-out is closer to real conditions. The tie is in their Tables 4 and 5. My reading, not theirs: on the random split a flexible search can benefit from neighbors in time and space, as our forest did at P395.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="one-search-two-validations-two-winners" class="slide level2">
+<h2>One search, two validations, two winners</h2>
+<img data-src="figs/lec18_robust_training/automl_two_rankings.png" class="r-stretch">
+<div class="takeaway">
+<p>Final test on the last 20% of P395: the winner on shuffled folds errs by 13.4 mm, the winner on future folds by 0.74 mm. Persistence: 1.12 mm.</p>
+</div>
+<aside class="notes">
+<p>Same eight candidates, same 1,185 samples, same loop. Only cv changed. Each line joins a candidate’s error on shuffled folds and future folds; note the log scale. On shuffled folds, the forest wins and the linear models come third and fourth. On future folds, everything that cannot extrapolate falls together near 10 mm. A shuffled search would ship a model eighteen times worse on the final test. This is one record with a strong trend, which suits linear models. On a stationary series the gap would be smaller, and I would not generalize the 18. Students reproduce this in 3.10.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-best-score-of-a-search-is-optimistic" class="slide level2">
+<h2>The best score of a search is optimistic</h2>
+<img data-src="figs/lec18_robust_training/search_optimism.png" class="r-stretch">
+<div class="takeaway">
+<p>30 random settings on the seismic events: the search’s best is .845 cross-validated and .820 on test. Report the winner’s score on a test set used once.</p>
+</div>
+<aside class="notes">
+<p>Thirty random settings of logistic regression, forests and nearest neighbors, on 300 of the seismic training events so the effect shows. The best test score among all 30 was .824, and that model was not the one the search selected, but we would not be allowed to look at that in practice. The gap grows with the number of tries and shrinks with more data. The same applies to 500 trials in a Bayesian search: the best trial’s score is optimistic.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="an-agent-wrote-this.-what-is-wrong-with-it" class="slide level2">
+<h2>An agent wrote this. What is wrong with it?</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>two_labels <span class="op">=</span> seismic[seismic[<span class="st">"source"</span>] <span class="op">!=</span> <span class="st">"surface event"</span>]   <span class="co"># remove noisy labels</span></span>
+<span id="cb4-2"><a href=""></a>features <span class="op">=</span> StandardScaler().fit_transform(</span>
+<span id="cb4-3"><a href=""></a>    two_labels.drop(columns<span class="op">=</span>[<span class="st">"source"</span>, <span class="st">"serial_no"</span>]))        <span class="co"># normalize features</span></span>
+<span id="cb4-4"><a href=""></a>a_train, a_test, b_train, b_test <span class="op">=</span> train_test_split(</span>
+<span id="cb4-5"><a href=""></a>    features, two_labels[<span class="st">"source"</span>], test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">7</span>)</span>
+<span id="cb4-6"><a href=""></a></span>
+<span id="cb4-7"><a href=""></a><span class="cf">for</span> name, model <span class="kw">in</span> models.items():</span>
+<span id="cb4-8"><a href=""></a>    model.fit(a_train, b_train)</span>
+<span id="cb4-9"><a href=""></a>    score <span class="op">=</span> model.score(a_train, b_train)                    <span class="co"># evaluate each candidate</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="roomy">
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Classes</th>
+<th>Scored on</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The script prints</td>
+<td>3 of 4</td>
+<td>data it trained on</td>
+<td>accuracy <strong>1.000</strong> (forest)</td>
+</tr>
+<tr class="even">
+<td>Repaired</td>
+<td>4 of 4</td>
+<td>cross-validation, then test once</td>
+<td>macro-F1 <strong>.871</strong>, <strong>.888</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="takeaway">
+<p>Three flaws. Find them before you open 3.10.</p>
+</div>
+<aside class="notes">
+<p>Give the room a minute, in pairs. One: a class is dropped under a comment about noisy labels, so the score describes an easier problem. Two: the scaler sees the test events before the split. The effect here is small, but with imputation or target encoding it can be large. Three: models are chosen on training accuracy, which rewards memorization. Warning signs: a near-perfect score, no baseline, no held-out score. This is a script written for this class, not a recorded agent output. It leads into Friday’s lecture on evaluating agents (6.3): the same checks, applied to the agent.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="open-3.10-20-minutes" class="slide level2">
+<h2>Open 3.10 (20 minutes)</h2>
+<div class="roomy">
+<ol type="1">
+<li>Part 1: write <code>mini_automl</code>, run it twice, then score both winners once on the final test</li>
+<li>Part 2: compare the search’s best score with its test score</li>
+<li>Part 3: list the three flaws, then repair the script</li>
+<li>If you have time: ask your own agent for a short AutoML, and audit it against this list: what is held out, what baseline is reported, is the scaler fit on training folds only, is the test set used once?</li>
+</ol>
+</div>
+<div class="dim">
+<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/automl">3.10</a>. Before you run the search, write down which model you expect to win. If you run short, skip Part 2. Ch 3 quiz: Tue to Thu. Friday: evaluating agents (6.3). HW-CML due Fri Nov 20.</p>
+</div>
+<aside class="notes">
+<p>Pairs, 20 minutes. Ask for predictions of the winners before they run the search; it makes the result stick.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<div class="roomy">
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Choice</th>
+<th>What it decides</th>
+<th>Check</th>
+<th>Example today</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Split</strong></td>
+<td>which question the score answers</td>
+<td>keep what samples share on one side</td>
+<td>P395: 0.46 mm shuffled, 12.4 mm future</td>
+</tr>
+<tr class="even">
+<td><strong>Baseline</strong></td>
+<td>whether the score means anything</td>
+<td>a rule with no learning, in physical units</td>
+<td>persistence 1.17 mm</td>
+</tr>
+<tr class="odd">
+<td><strong>Ensemble</strong></td>
+<td>whether models can repair each other</td>
+<td>do members make different errors?</td>
+<td>62 events fool all three</td>
+</tr>
+<tr class="even">
+<td><strong>Number of trees</strong></td>
+<td>when boosting starts to fit noise</td>
+<td>error on held-out data</td>
+<td>4.08 °C at 10 trees, 4.27 °C at 300</td>
+</tr>
+<tr class="odd">
+<td><strong>Search</strong></td>
+<td>which model you ship</td>
+<td>score the winner once on a test set</td>
+<td>13.4 mm or 0.74 mm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<aside class="notes">
+<p>Five minutes of synthesis. Ask for one row where a student’s project is exposed. Monday Nov 16’s check-in asks each team for its data audit, baseline and split, so this table is the preparation. Friday applies the same discipline to agents.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

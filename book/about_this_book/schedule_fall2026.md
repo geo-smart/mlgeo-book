@@ -20,11 +20,12 @@ Two design choices shape the quarter. First, **the agent thread runs through the
 | Final project proposal ([1.10](1.10_MLGEO_FinalProject.md)) | Oct 12 | Fri Oct 30 |
 | Classification leaderboard ([3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb)) | Wed Nov 4 | closes Tue Nov 24 |
 | Reading arc stage 2 — anatomy of good papers | Oct 21 | Wed Nov 4 |
-| Ch 3 quiz (includes the flipped 3.10 reading) | Tue Nov 10 | Thu Nov 12 |
+| Ch 3 quiz | Tue Nov 10 | Thu Nov 12 |
 | Reading arc stage 3 — your quality rubric | Nov 4 | Fri Nov 13 |
 | Project check-in #1 — data-audit studio | — | Mon Nov 16, in class |
 | Ch 6 quiz | Mon Nov 16 | Wed Nov 18 |
 | Homework: scoring clusters ([Homework_Clustering](../Chapter3-MachineLearning/Homework_Clustering.ipynb)) | Wed Nov 4 | Mon Nov 9 |
+| Lab: robust training ([3.8](../Chapter3-MachineLearning/3.8_robust_training.ipynb)) | Mon Nov 9 | Mon Nov 16, 11:59 pm |
 | HW-CML ([Homework_CML](../Chapter3-MachineLearning/Homework_CML.ipynb)) | Nov 4 | Fri Nov 20 |
 | HW-DL ([Homework_DL](../Chapter4-DeepLearning/Homework_DL.ipynb)) | Nov 23 | Fri Dec 4 |
 | Ch 5 quiz (checks the flipped Ch 5 reading) | Mon Nov 30 | Thu Dec 3 |
@@ -66,14 +67,14 @@ Chapter 7 has no quiz: its outcomes (audience translation, downstream impact) ar
 **Week 6 — Classification** (arc stage 2 due Wed)
 - Mon Nov 2 — End of clustering and classic ML ([3.3](../Chapter3-MachineLearning/3.3_clustering.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec13_classic_ml.html)
 - Wed Nov 4 — **Classification: binary, multiclass, logistic regression** ([3.4](../Chapter3-MachineLearning/3.4_binary_classification.ipynb), [3.5](../Chapter3-MachineLearning/3.5_multiclass_classification.ipynb), [3.6](../Chapter3-MachineLearning/3.6_logistic_regression.ipynb)): all the metrics, rare classes, thresholds, calibration, how the leaderboard and hidden test sets work. **Classification leaderboard opens.** HW-CML assigned. Suggested reading order: 3.6, 3.4, 3.5. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec16_classification.html)
-- Fri Nov 6 — **Trees and forests: classification, then regression** ([3.7](../Chapter3-MachineLearning/3.7_randomForest_regression.ipynb), [3.9](../Chapter3-MachineLearning/3.9_ensemble_learning.ipynb), practice in [3.11](../Chapter3-MachineLearning/3.11_forests_practice.ipynb)): a ROC curve drawn by hand, one tree to many, thresholds across models, forest regression against climatology and persistence, importance, limits outside the training range. [3.10](../Chapter3-MachineLearning/3.10_autoML.ipynb) assigned as flipped reading (checked by the Ch 3 quiz). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec17_trees_forests_honestly.html)
+- Fri Nov 6 — **Trees and forests: classification, then regression** ([3.7](../Chapter3-MachineLearning/3.7_randomForest_regression.ipynb), practice in [3.11](../Chapter3-MachineLearning/3.11_forests_practice.ipynb)): a ROC curve drawn by hand, one tree to many, thresholds across models, forest regression against climatology and persistence, importance, limits outside the training range, forests on maps, best practices for training. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec17_trees_forests_honestly.html)
 
 **Week 7 — The two evaluation lectures** (short week — no class Wed Nov 11; Ch 3 quiz Tue–Thu; arc stage 3 due Fri)
-- Mon Nov 9 — **Robust training** ([3.8](../Chapter3-MachineLearning/3.8_robust_training.ipynb)), full session: why random splits lie; temporal, grouped, and spatial splits; the split ladder on data with planted truth. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec18_robust_training.html)
+- Mon Nov 9 — **Robust training, ensembles, AutoML** ([3.8](../Chapter3-MachineLearning/3.8_robust_training.ipynb), [3.9](../Chapter3-MachineLearning/3.9_ensemble_learning.ipynb), [3.10](../Chapter3-MachineLearning/3.10_autoML.ipynb)), full session: what a validation score answers (temporal, grouped and spatial splits, baselines); averaging, boosting and stacking; a small AutoML written with scikit-learn, and auditing a script written by an agent. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec18_robust_training.html)
 - Fri Nov 13 — **Build an eval set** ([6.3](../Chapter6-AgenticAI/6.3_build_an_eval_set.ipynb)) + disclosure and norms ([6.4](../Chapter6-AgenticAI/6.4_disclosure_and_norms.md)): the same fair-evaluation move, applied to agents. Reading arc stage 4 assigned — four weeks of runway. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec19_eval_sets_for_agents.html)
 
 **Week 8 — Check-in, then deep learning** (Ch 6 quiz Mon–Wed; HW-CML due Fri)
-- Mon Nov 16 — **Project check-in #1: data-audit studio.** Each team, five minutes: your data against the 2.13 checklist, your baseline, your split design — fresh from 3.8.
+- Mon Nov 16 — **Project check-in #1: data-audit studio.** Each team, five minutes: your data against the 2.13 checklist, your baseline, your split design — fresh from 3.8. your split design — fresh from 3.8. **Lab 3.8 due.**
 - Wed Nov 18 — Perceptrons to MLPs ([4.0](../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.ipynb)–[4.2](../Chapter4-DeepLearning/mlgeo_4.2_MLP.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec21_neuron_to_network.html)
 - Fri Nov 20 — CNNs: images, waveforms, and the classical baseline ([4.3](../Chapter4-DeepLearning/mlgeo_4.3_CNN.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec22_convolution_detector.html)
 
@@ -97,7 +98,7 @@ Chapter 7 has no quiz: its outcomes (audience translation, downstream impact) ar
 
 - The agent thread is deliberately early: verification culture (6.1/6.2) is installed before homework habits form, 6.3 lands the week after 3.8 so fair evaluation reads as one idea applied twice, and stage 4 of the [reading arc](../Chapter6-AgenticAI/6.5_reading_arc.md) has a month of runway. The Ch 6 quiz follows 6.3/6.4 in mid-November.
 - Notebook 4.5 is split across two lab sessions at its marked checkpoint; do not attempt it in one sitting.
-- Flipped chapters (3.10, Ch 5) are examinable through their quizzes; the in-class time they would have used funds the check-ins and the buffer.
+- The flipped chapter (Ch 5) is examinable through its quiz; the in-class time it would have used funds the check-ins and the buffer.
 - Check-in #1 replaces a written midterm report: earlier feedback, at the moment it can still change the project.
 - 469 students follow the diluted path noted in each assignment: Apply-level expectations on the uncertainty and agent outcomes, 4.6/4.7 optional, and assisting rather than leading final projects.
 - Sections not lectured are not optional reading for 569 unless marked so; lectures select, the book carries the depth.
