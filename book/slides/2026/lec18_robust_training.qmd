@@ -47,14 +47,14 @@ title-slide-attributes:
 ::: {.roomy}
 | Part | Question | Slides | Notebook |
 |---|-------------------------|-----|-------|
-| 1 | Which question does a validation score answer? | 15 min | 3.8, 25 min |
+| 1 | How do we partition, validate and test? | 25 min | 3.8, 25 min |
 | 2 | When does combining models help? | 10 min | 3.9, 15 min |
 | 3 | What does an automated search need from us? | 10 min | 3.10, 20 min |
 | | One table to take away | 5 min | |
 :::
 
 ::: {.notes}
-Timing for 100 minutes: 35 minutes of slides and 60 of notebooks, in three rounds, then 5 of synthesis. If the class meeting is the scheduled 80 minutes (10:00 to 11:20), keep the slides and cut notebooks to 18, 10 and 12 minutes: skip 3.8 Part 3, 3.9 Part 3 and 3.10 Part 2. Part 1 now has ten slides; if it runs long, skip "How large should a block be?" and leave it as reading. These follow Friday: a forest was our model, and today we ask how to score it, how to combine it with others, and how to search among them. Every notebook runs on scikit-learn alone.
+Timing for 100 minutes: 35 minutes of slides and 60 of notebooks, in three rounds, then 5 of synthesis. If the class meeting is the scheduled 80 minutes (10:00 to 11:20), keep the slides and cut notebooks to 18, 10 and 12 minutes: skip 3.8 Part 3, 3.9 Part 3 and 3.10 Part 2. Part 1 now opens with four definition slides (partitions and cross-validation, validation against test, the three domain axes, leakage), about 11 minutes, so it runs 25 minutes; to stay in time, skip "How large should a block be?" and "Name what your samples share" and leave them as reading. These follow Friday: a forest was our model, and today we ask how to score it, how to combine it with others, and how to search among them. Every notebook runs on scikit-learn alone.
 :::
 
 ## Part 1: a second test changed two published scores
@@ -102,6 +102,61 @@ Right, the aftershock study, which we told in full in lecture 2. How to present 
 Avoid "debunked", "failed" or "one neuron beat deep learning": those are headlines, not what the exchange showed.
 
 Further reading, full references: Roberts, D. R., et al. (2017), Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure, Ecography 40, 913-929; Meyer, H. & Pebesma, E. (2021), Predicting into unknown space? Estimating the area of applicability of spatial prediction models, Methods in Ecology and Evolution 12, 1620-1633. Roberts et al. is the framework paper for anyone who wants the full menu of structured cross-validation. Meyer and Pebesma estimate where on a map a model's predictions can be trusted. Their figures are not openly licensed or could not be retrieved, so they appear as citations only.
+:::
+
+## Partition the data, then cross-validate
+
+![](figs/lec18_robust_training/cv_diagram.png){.r-stretch}
+
+::: {.takeaway}
+**Cross-validation** repeats one step k times: train on k − 1 folds, score the held-out fold, move on, until every sample has been validated once. The mean of the k scores compares models. The **test** period stays aside and is scored once.
+:::
+
+::: {.notes}
+Three minutes. Definitions first, since everything in Part 1 uses them. Partitioning means deciding which samples the model may learn from (training), which ones we use to compare models and settings (validation), and which ones we keep to report the final score (test). One train/validation split gives one noisy score; cross-validation repeats the split k times (here 5) and averages, so every training sample is validated once. Left: shuffled folds. The orange validation samples sit between blue training samples, so each validation day has its neighbors, yesterday and tomorrow, in training. Right: the same five steps forward in time; each step trains on the past and validates on the next block, which is how a forecast is used. In both, the black test period is never touched while we choose. In code: KFold(shuffle=True) on the left, TimeSeriesSplit on the right. Schematic, no data; drawn by figscripts/lec18_cv_diagram.py.
+:::
+
+## Validation chooses, the test reports
+
+::: {.mid}
+| Partition | Drawn from | Used for | How often we look |
+|---|---|---|---|
+| **Training** | the domain | fitting the model's parameters | every fit |
+| **Validation** | the same domain, independent units | choosing models, features, settings | many times |
+| **Test, within domain** | the same domain, never used to choose | reporting how well the model interpolates | once |
+| **Test, out of domain** | outside the training domain along a stated axis | reporting how well it generalizes along that axis | once |
+:::
+
+::: {.takeaway}
+Every look at the validation score is a choice, so the best validation score is optimistic. In 3.10 the best search score was .845 and the untouched test .820.
+:::
+
+::: {.notes}
+Two minutes. Validation and test answer different questions. Validation is for choosing, and because we choose the best of many, its score is biased upward: the more models and settings we compare, the larger the bias. The test set is for reporting, and it only stays honest if nothing was chosen with it: no settings, no features, no early stopping, no "let me try one more model". If you look at the test set and then change something, it has become a validation set, and you need a new test set. Within domain and out of domain are the two kinds of test, and lecture 10 (criterion B7) asked each team to name its out-of-domain axis. The .845 and .820 come from the lecture 18 figure script (search_optimism).
+:::
+
+## Three axes for an out-of-domain test
+
+![](figs/lec10_ai_ready/partition_axes.png){.r-stretch}
+
+::: {.takeaway}
+**Statistical:** inputs far from the training samples (lecture 17's days above 28 °C). **Spatiotemporal:** a later period or a new region (P395's future, the soil map's 6° blocks). **Physical:** a process or event size not in training (floods larger than any trained on).
+:::
+
+::: {.notes}
+Three minutes; students saw this figure in lecture 10 (criterion B7), today we connect it to the scores. A model interpolates well inside its training domain; whether it generalizes is only known along the axis we held out, so a project must name that axis. Statistical: measured in the space of input features, for example the distance of each new sample to its nearest training sample, standardized with training statistics only (Meyer and Pebesma 2021 call the inside the area of applicability). Lecture 17: a forest trained below 28 °C saw its error rise from 4.1 to 7.9 °C on hotter days, while linear regression stayed at 4.0. Spatiotemporal: P395 forecasts later in time; the soil map's held-out blocks. Physical: larger floods than any in training, a new source type, a different tectonic setting; Frame et al. (2022, corrigendum 2023) is the hydrology example from lecture 10. Ask each pair: which axis matters for the people who will use your model?
+:::
+
+## Data leakage: the test leaks into training
+
+![](figs/lec18_robust_training/leakage_pairs.png){.r-stretch}
+
+::: {.takeaway}
+Leakage is any route by which information about the validation or test samples reaches the model while it is trained or chosen. Each pair is the same model and data; only the leak differs.
+:::
+
+::: {.notes}
+Three minutes. Four routes, each with a number from this course. (1) Neighbors in time: shuffled folds put yesterday and tomorrow in training, so P395's validation error is 0.46 mm against 12.4 mm when validating on the future (lower is better). (2) Same event on both sides: one earthquake is recorded by many stations, and its magnitude is the same on every row; random rows let the forest recognize the event (R² .87 against .65 with whole events held out; synthetic table in 3.8). (3) Preprocessing on all data before the split: oversampling, scaling, feature selection or imputation fit on all samples carry test information into training; lecture 16's oversampling gave F1 .995 against .590. (4) Choosing with the test set: the best of many tries looks better than an untouched test (.845 against .820). A fifth route, target leakage, is a feature that already contains the answer: in 3.2, 98.5% of explosions had a depth error of exactly 31.61 km, an analyst convention, so depth error "detects" explosions. The fix in every case: split first, by what the samples share, and fit every preprocessing step inside the training folds (a scikit-learn Pipeline does this). Figure from figscripts/lec18_cv_diagram.py; values from the lecture 18 and lecture 16 figure scripts.
 :::
 
 ## P395: a station that keeps moving
