@@ -74,7 +74,7 @@ Chapter 7 has no quiz: its outcomes (audience translation, downstream impact) ar
 - Fri Nov 13 — **Build an eval set** ([6.3](../Chapter6-AgenticAI/6.3_build_an_eval_set.ipynb)) + disclosure and norms ([6.4](../Chapter6-AgenticAI/6.4_disclosure_and_norms.md)): the same fair-evaluation move, applied to agents. Reading arc stage 4 assigned — four weeks of runway. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec19_eval_sets_for_agents.html)
 
 **Week 8 — Check-in, then deep learning** (Ch 6 quiz Mon–Wed; HW-CML due Fri)
-- Mon Nov 16 — **Project check-in #1: data-audit studio.** Each team, five minutes: your data against the 2.13 checklist, your baseline, your split design — fresh from 3.8. your split design — fresh from 3.8. **Lab 3.8 due.**
+- Mon Nov 16 — **Project check-in #1: data-audit studio.** Each team, five minutes: your data against the 2.13 checklist, your baseline, your split design, fresh from 3.8. **Lab 3.8 due.**
 - Wed Nov 18 — Perceptrons to MLPs ([4.0](../Chapter4-DeepLearning/mlgeo_4.0_perceptrons.ipynb)–[4.2](../Chapter4-DeepLearning/mlgeo_4.2_MLP.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec21_neuron_to_network.html)
 - Fri Nov 20 — CNNs: images, waveforms, and the classical baseline ([4.3](../Chapter4-DeepLearning/mlgeo_4.3_CNN.ipynb)). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec22_convolution_detector.html)
 
