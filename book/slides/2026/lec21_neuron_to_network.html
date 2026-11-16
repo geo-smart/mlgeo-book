@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="">
-  <title>From a neuron to a network: what stacking actually buys</title>
+  <title>From a neuron to a network: templates, logistic regression, layers</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="lec21_neuron_to_network_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link rel="stylesheet" href="lec21_neuron_to_network_files/libs/revealjs/dist/theme/quarto-ce7acf391a23033b2e12d95eea4aebc9.css">
   <link href="lec21_neuron_to_network_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec21_neuron_to_network_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec21_neuron_to_network_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,8 +130,8 @@
     <div class="slides">
 
 <section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
-  <h1 class="title">From a neuron to a network:<br>what stacking actually buys</h1>
-  <p class="subtitle">Session 21 · Wed Nov 18 · Book sections 4.0–4.2</p>
+  <h1 class="title">From a neuron to a network:<br>templates, logistic regression, layers</h1>
+  <p class="subtitle">Session 21 · Mon Nov 16 and Wed Nov 18 · Book sections 4.0–4.2</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -141,13 +141,13 @@
 <h2></h2>
 <p><span class="lecture-icon">🧠</span></p>
 <h3 id="todays-question">Today’s question</h3>
-<p>A neural network is a stack of very small machines.</p>
-<p><strong>What does one neuron do — and when does stacking neurons buy anything?</strong></p>
+<p>Deep learning starts with one neuron, and you have already used it twice.</p>
+<p><strong>What does one neuron compute, how are its weights set, and what does it miss?</strong></p>
 <div class="dim">
-<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-0-perceptrons">4.0 Perceptrons</a> · <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-1-nn">4.1 Neural networks</a> · <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-2-mlp">4.2 MLPs</a></p>
+<p>Part 1, Monday: one neuron (4.0). Part 2, Wednesday: from a neuron to a network (4.1, 4.2).</p>
 </div>
 <aside class="notes">
-<p>Frame the session: deep learning starts today, and it starts embarrassingly small — one neuron, built by hand, trained by a rule you can write on the board. By the end of class the same idea, stacked, matches the random forests from Chapter 3 on the same Pacific Northwest data. Ask the room: who thinks a neural network is fundamentally different from the regressions we have been fitting? Hold that thought — the first slide of math says otherwise. Reminder: the Chapter 6 quiz closes today.</p>
+<p>This deck covers two class meetings. Part 1 (Monday Nov 16) is the perceptron: about 25 minutes of slides and 15 minutes in notebook 4.0, after the project check-ins. Part 2 (Wednesday Nov 18) builds a network and trains it on a small example: about 20 minutes of slides, then notebooks 4.1 and 4.2. The plan for Part 1 is to show that students already know the neuron: it is the weighted sum of template matching (lecture 1, section 2.9) and of logistic regression (lecture 16, notebook 3.6). Ask the room before starting: who thinks a neural network is a different kind of object from the regressions we have fitted? Come back to the answers on the summary slide. Reading: 4.0 Perceptrons, 4.1 Neural networks, 4.2 MLPs.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -160,34 +160,14 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="this-lecture-in-the-literature" class="slide level2">
-<h2>This lecture in the literature</h2>
-<!-- Literature anchors for lecture 21. Edit THIS file to update the papers;
-     the deck includes it verbatim. Keep 2-4 entries: at least one where the
-     concept was applied well (✓), one where its absence misled a field (✗).
-     Format: verdict + bold message on one line; full citation on its own
-     line below (blank line between them — they must be separate paragraphs). -->
-<div class="ref-item">
-<p><span class="ref-verdict note">📖</span> <span class="ref-msg">Where it started: a single trainable neuron, sold as a model of the brain.</span></p>
-<p><span class="ref-cite">Rosenblatt, F. (1958). The perceptron: A probabilistic model for information storage and organization in the brain. <em>Psychological Review</em>, 65(6), 386–408.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict note">📖</span> <span class="ref-msg">Why stacking works: one hidden layer, enough units, and an MLP can approximate almost any function.</span></p>
-<p><span class="ref-cite">Hornik, K., Stinchcombe, M., &amp; White, H. (1989). Multilayer feedforward networks are universal approximators. <em>Neural Networks</em>, 2(5), 359–366.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict bad">✗</span> <span class="ref-msg">A deep fully connected network on tabular stress features — matched by a single neuron. Capacity is not understanding.</span></p>
-<p><span class="ref-cite">DeVries, P. M. R., et al.&nbsp;(2018). Deep learning of aftershock patterns following large earthquakes. <em>Nature</em>, 560, 632–634. — Mignan, A. &amp; Broccardo, M. (2019). One neuron versus deep learning in aftershock prediction. <em>Nature</em>, 574, E1–E3.</span></p>
-</div>
-<div class="ref-item">
-<p><span class="ref-verdict good">✓</span> <span class="ref-msg">Today’s running example done right: the Pacific Northwest benchmark our 61-feature table descends from — labels, provenance, documentation.</span></p>
-<p><span class="ref-cite">Ni, Y., et al.&nbsp;(2023). Curated Pacific Northwest AI-ready seismic dataset. <em>Seismica</em>, 2(1). doi:10.26443/seismica.v2i1.368</span></p>
-</div>
+<section id="one-neuron-a-weighted-sum-then-an-activation" class="slide level2">
+<h2>One neuron: a weighted sum, then an activation</h2>
+<img data-src="figs/lec21_neuron/neuron_diagram.png" class="r-stretch">
 <div class="takeaway">
-<p>The neuron is from 1958; the honest-comparison discipline is from this decade. Both are today’s material.</p>
+<p>Score <span class="math inline">\(z = \sum_i w_i x_i + b\)</span>: each input times its weight, added up, plus a bias. The activation turns the score into the output.</p>
 </div>
 <aside class="notes">
-<p>Two minutes. Rosenblatt: the perceptron was hardware — a room-sized machine for image recognition; the learning rule we implement today is his. Hornik: the universal-approximation result is why “just add units” is a defensible strategy — but it says nothing about whether training finds the approximation, which is why the rest of the chapter exists. DeVries/Mignan returns from lecture 18, now with its architecture in focus: the celebrated aftershock model was exactly the kind of fully connected network we build today, on tabular features, and one logistic neuron matched it — capacity without a baseline check misleads. Ni et al.&nbsp;is the curated Pacific Northwest benchmark; the 61-feature table we train on all week descends from that curation effort. Refs file updates as the field moves — bring candidates.</p>
+<p>Two minutes. Walk the figure left to right. Inputs: the numbers that describe one data sample, either features computed from a record or the samples of the record itself. Weights: one per input. The neuron multiplies, adds, and adds one more number, the bias, which shifts the score up or down (one bias per neuron, not one per input). The activation turns the score into the output. Define aloud: weight, bias, score, activation function.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -200,19 +180,14 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="one-neuron-in-full" class="slide level2">
-<h2>One neuron, in full</h2>
-<p><span class="math inline">\(y = f\left(\sum_i w_i x_i + b\right)\)</span></p>
-<ul>
-<li>A weighted sum of the inputs, <strong>one bias per neuron</strong>, then an activation <span class="math inline">\(f\)</span></li>
-<li>The activation names the unit: step → a hard yes/no (threshold logic unit); sigmoid → a probability — <strong>logistic regression is a one-neuron classifier</strong></li>
-<li>No activation → plain linear regression</li>
-</ul>
+<section id="the-activation-names-the-model" class="slide level2">
+<h2>The activation names the model</h2>
+<img data-src="figs/lec21_neuron/activations.png" class="r-stretch">
 <div class="takeaway">
-<p>Everything you fit in Chapter 3 is already here. A network is this, repeated.</p>
+<p>The same weighted sum gives three models you know. Only the last step differs.</p>
 </div>
 <aside class="notes">
-<p>Slow down on this slide — it carries the chapter. Walk the equation: weights multiply inputs, one bias shifts the threshold (one per neuron, not one per input — a common misreading), activation decides the output’s character. With a step activation the neuron makes hard decisions: that unit is the classic threshold logic unit. Swap in a sigmoid and the same neuron outputs a probability — it <em>is</em> the logistic regression from 3.6. So the room has already trained neurons without knowing it. The word “perceptron” historically means a single layer of threshold units; today it survives in “multi-layer perceptron.” Vocabulary to define aloud: activation function, bias.</p>
+<p>Two minutes. Three choices for the activation, three models the class has met. No activation: the output is the score, and the neuron is the linear regression of lecture 13. Sigmoid: the output is a probability between 0 and 1, and the neuron is the logistic regression of lecture 16. Step: the output is 1 if the score is positive and 0 otherwise; this is the threshold unit of Rosenblatt (1958), and a layer of such units is what he called the perceptron. The word survives today in multilayer perceptron, the fully connected network of Part 2. A fourth use of the same sum comes next: template matching, where the weights are not fitted at all.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -225,14 +200,18 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="a-neuron-finds-earthquakes-with-a-rule-from-1958" class="slide level2">
-<h2>A neuron finds earthquakes — with a rule from 1958</h2>
-<img data-src="figs/mlgeo_4.0_perceptrons/fig_03.png" class="r-stretch">
+<section id="template-matching-weights-copied-from-one-earthquake" class="slide level2">
+<h2>Template matching: weights copied from one earthquake</h2>
+<img data-src="figs/lit_qtm_2019/qtm_map_fmd.png" class="r-stretch">
+<p><span class="gb src">🗂️ Catalog &amp; compiled product</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
 <div class="takeaway">
-<p>Two detector features, 600 windows, convergence in 2 epochs — but only because we removed the overlap first. One line separates only linearly separable data. Synthetic (mlgeo_synth).</p>
+<p>Lecture 1: the waveform of each known earthquake, slid along ten years of records, found 1.81 million earthquakes in Southern California. At each position the detector computes a weighted sum, with the template as weights.</p>
+</div>
+<div class="credit">
+<p>Our figure from the open QTM catalog of Ross, Trugman, Hauksson &amp; Shearer (2019), <em>Science</em> 364, 767–771 (figscripts/qtm_hidden_earthquakes.py).</p>
 </div>
 <aside class="notes">
-<p>The setup: seismic detector features from the course generator — STA/LTA ratio and spectral centroid per 30-s window, event vs noise. The perceptron learning rule: predict, and if wrong, nudge each weight toward the mistake; sweep the data until an epoch has zero mistakes. It converged in 2 epochs here ([42, 0] mistakes). The honesty caveat is the point: we filtered out the overlap band to <em>make</em> the classes linearly separable, because the rule never converges otherwise — that is the perceptron’s famous limitation, and the reason the field stalled until multi-layer networks and gradient losses. Real detector data has overlap; hold that as the motivation for hidden layers.</p>
+<p>Two minutes; a recall of lecture 1. Ross et al.&nbsp;(2019) took the waveforms of the earthquakes in the Southern California Seismic Network catalog as templates and cross-correlated each with ten years of continuous records (2008 to 2017). Result: 1.81 million earthquakes, ten times the catalog, and a magnitude of completeness lowered from 1.7 to 0.3. Why it works: an earthquake that repeats on the same fault patch, recorded at the same station, sends nearly the same waveform. In section 2.9 students computed a cross-correlation themselves. At one lag, the cross-correlation is a sum of products, window sample times template sample: a neuron whose weights are the template, and whose bias is minus the detection threshold. The question for the next slide: if nobody supplies the template, and the neuron only gets labeled windows, what weights does it find?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -245,67 +224,189 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="training-is-a-loop-you-can-write" class="slide level2">
-<h2>Training is a loop you can write</h2>
+<section id="fitted-on-labeled-windows-the-weights-become-the-template" class="slide level2">
+<h2>Fitted on labeled windows, the weights become the template</h2>
+<img data-src="figs/lec21_neuron/template_weights.png" class="r-stretch">
+<div class="takeaway">
+<p>From 800 labeled windows the neuron recovers the event waveform: correlation 0.99. It detects as well as template matching, 99.75% of 400 test windows.</p>
+</div>
+<aside class="notes">
+<p>Four minutes; this is the central figure of Part 1. The data are from the course generator, mlgeo_synth: a magnitude 2 source 20 km from the station, recorded again and again in new noise, with a signal-to-noise ratio (peak amplitude over the standard deviation of the noise, section 2.10) between 1.5 and 6. Each data sample is a 6 s window, 600 values, so the neuron has 600 weights. Left: three of the test windows. At a signal-to-noise ratio of 1.5 the event is hard to see by eye. Right, top: the template, the event without noise, P wave then S wave. Right, middle: the weights of a neuron fitted by logistic regression on 800 labeled windows. Nobody gave it the waveform; it recovered it from the labels. A neuron’s weights are the input pattern it responds to most strongly, and this reading holds for every neuron in the chapter. Template matching with the true template classifies 399 of 400 test windows correctly, and so does the fitted neuron. Right, bottom: the weights from the 1958 rule of the next slide. That rule stops at the first weights that make no training mistake (13 passes here): correlation 0.29 with the template and 95.5% on the test windows.</p>
+<p>For questions. The fit uses scikit-learn’s logistic regression with a penalty on the size of the weights (C = 0.001). With a weak penalty (C = 1) the correlation drops to 0.90, because the noise of the generator is colored and the neuron spends part of its weights cancelling it: the matched filter in colored noise of lecture 9. The task is easy on purpose: one source, one station, a fixed arrival time. Part 2 moves the arrival. Numbers: figs/lec21_neuron/numbers.json, from figscripts/lec21_one_neuron.py. Notebook 4.0 section 2.4 reproduces the figure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-1958-rule-correct-the-weights-after-each-mistake" class="slide level2">
+<h2>The 1958 rule: correct the weights after each mistake</h2>
+<img data-src="figs/lec21_neuron/boundary_passes.png" class="r-stretch">
+<div class="takeaway">
+<p>Missed event: add the window to the weights. False alarm: subtract it. Here the line stops moving after 42 corrections.</p>
+</div>
+<aside class="notes">
+<p>Three minutes. Rosenblatt’s rule (1958), the first learning rule for a neuron, written out in notebook 4.0 section 2.2. Each point is a 30 s window described by two detector features: the STA/LTA ratio (short-term over long-term average amplitude, lecture 9) and the spectral centroid. Start with the weights at zero. Show one window and compute the output with the step, 0 or 1. If it is right, do nothing. If the neuron said noise and it was an event, add the window’s features to the weights, so that the score of similar windows goes up; if it said event and it was noise, subtract them. The dashed lines are the boundary (where the score is zero) after 1, 5 and 15 corrections; the thick line is where it stops. All 42 corrections happen in the first pass through the 600 windows; the second pass finds no mistake. In code: <code>error = thisTarget - out</code>, then <code>w = w + learningRate * error * thisInput</code>. Say what the notebook did to get this result: it removed the windows in the overlap band, so that a separating line exists. The rule is guaranteed to stop only then. Ask the room: what will happen on real events, which overlap?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="on-real-events-the-rule-never-stops-correcting" class="slide level2">
+<h2>On real events the rule never stops correcting</h2>
+<img data-src="figs/lec21_neuron/rule_vs_loss.png" class="r-stretch">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="takeaway">
+<p>Explosion or earthquake, Pacific Northwest: the rule still corrects about 196 of 1,500 events per pass, and its test accuracy swings from 74.6% to 90.2%. Lowering the log-loss climbs steadily to 89.6%.</p>
+</div>
+<aside class="notes">
+<p>Three minutes. The same data and the same split as lecture 16: 1,000 explosions and 1,000 earthquakes from the Pacific Northwest, 61 waveform features, 1,500 events to train and 500 to test, features standardized on the training events. Left: the number of corrections the 1958 rule makes in each pass. It falls from 266 to about 200 and stays there, because explosions and earthquakes overlap in these features and no plane separates them. Right, red: the test accuracy after each pass. Over the last 100 passes it ranges from 74.6% to 90.2%; the answer depends on which pass we stop at. Right, green: the same neuron trained by gradient descent on the log-loss, the method of lecture 16 and notebook 3.6. It reaches 89.6% after 300 passes and is still improving slowly; run to convergence it gives the 90.2% quoted in lecture 16. The loss also gives a probability for each event, so the threshold, the ROC curve and the calibration of lecture 16 all apply. Numbers: figs/lec21_neuron/numbers.json.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-the-rule-to-the-loss-the-correction-becomes-smooth" class="slide level2">
+<h2>From the rule to the loss: the correction becomes smooth</h2>
+<img data-src="figs/lec21_neuron/correction_size.png" class="r-stretch">
+<div class="takeaway">
+<p>Replace the step by the sigmoid and the 1958 correction becomes the gradient step on the log-loss of lecture 16. Every network in Chapter 4 is trained with this step.</p>
+</div>
+<aside class="notes">
+<p>Three minutes. The two updates, to write on the board: 1958 rule, <code>w = w + rate * (t - out) * x</code> with <code>out</code> equal to 0 or 1; log-loss, <code>w = w + rate * (t - p) * x</code> with <code>p</code> the probability from the sigmoid. <code>t</code> is the true class. The figure shows the size of the correction for a window that contains an event (t = 1), against the score the neuron gave it. Red, the rule: full correction if the score is negative (a miss), none if it is positive. Green, the log-loss: an event stated with confidence barely moves the weights, a confident miss moves them almost as much as under the rule, and everything in between is proportional. This is exact, not an analogy: differentiate the log-loss with respect to a weight, for a sigmoid neuron, and the result is (p − t) times the input. Notebook 3.6 checked that derivative against automatic differentiation. A smooth activation and a loss to descend are what made networks with several layers trainable. Vocabulary to define aloud: loss (what we lower), gradient (the direction in which the loss rises fastest), learning rate (the size of the step).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="in-the-literature-one-neuron-matched-13451-weights" class="slide level2">
+<h2>In the literature: one neuron matched 13,451 weights</h2>
+<img data-src="figs/lit_aftershock_2018/aftershock_rerun.png" class="r-stretch">
+<p><span class="gb src">🖥️ Model &amp; simulation</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="takeaway">
+<p>Where do aftershocks occur? A network with six hidden layers scores AUC 0.849. One neuron fed one stress quantity scores 0.847.</p>
+</div>
+<div class="credit">
+<p>Our rerun of the open data and weights of DeVries, Viégas, Wattenberg &amp; Meade (2018), <em>Nature</em> 560, 632–634; comment by Mignan &amp; Broccardo (2019), <em>Nature</em> 574, E1–E3; reply by Meade (2019), <em>Nature</em> 574, E4.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; told in lectures 2 and 18, so go fast and keep the same care: disclose that I served on the PhD committee of the first author, credit the open data and weights, and avoid “debunked”. DeVries et al.&nbsp;(2018) trained six hidden layers of 50 neurons, 13,451 weights, on stress changes from 199 slip models. Mignan and Broccardo (2019) showed that a single neuron, a logistic regression with two parameters, fed the maximum shear stress change reaches the same AUC (0.847 against 0.849 in our rerun, figscripts/aftershock_auc_rerun.py). Today’s reading of it: this is the neuron of the previous slides, used as the baseline. Mignan and Broccardo (2020, Seismological Research Letters 91, 2330-2342) then reviewed 77 articles that used neural networks for earthquake prediction from 1994 to 2019 and concluded that far simpler models offer similar predictive power. An older example for the same point: Dowla, Taylor and Anderson (1990, Bull. Seismol. Soc. Am. 80(5)) separated 83 western US earthquakes from 87 Nevada Test Site explosions with one hidden neuron on 82 spectral values, over 93% correct at a single station, and reported that it performed like a linear discriminant (abstract only read, OSTI record 7283112).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="in-the-literature-glacier-mass-balance-french-alps" class="slide level2">
+<h2>In the literature: glacier mass balance, French Alps</h2>
+<div class="columns">
+<div class="column" style="width:42%;">
+<p><img data-src="figs/lec21_neuron/papers/bolibar2020_fig06_lasso_vs_network_spatial.png" height="600"></p>
+</div><div class="column" style="width:58%;">
+<p><span class="gb src">🖥️ Model &amp; simulation</span> <span class="gb sys ice">🧊 Cryosphere</span> <span class="gb disc ice">🧊 Glaciology</span></p>
+<p><img data-src="figs/lec21_neuron/papers/bolibar2020_fig03_network_architecture.png" style="width:100.0%"></p>
+<div class="credit">
+<p>Bolibar et al.&nbsp;(2020), <em>The Cryosphere</em> 14, 565–584, Figs. 6 and 3. <a href="https://doi.org/10.5194/tc-14-565-2020">doi:10.5194/tc-14-565-2020</a>. CC BY 4.0.</p>
+</div>
+</div></div>
+<div class="takeaway">
+<p>On glaciers left out of training, the error falls from 0.74 m of water per year for the linear model (b) to 0.51 for the network (c).</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Bolibar et al.&nbsp;(2020): annual surface mass balance of 32 glaciers in the French Alps, 1,048 glacier-years, from topographic features and climate reanalysis. Left, their Figure 6: predicted against reference mass balance for glaciers held out of training (leave one glacier out, the grouped validation of lecture 18). Top row, linear models: ordinary least squares, error 0.81 m of water equivalent per year, and Lasso, 0.74. Bottom row, the network: 0.51 without sample weights and 0.62 with weights, with r² rising from 0.49 to 0.76 and 0.79. Right, their Figure 3: the network, fully connected, with four hidden layers of 40, 20, 10 and 5 neurons. The authors call it a quite small network. What to say: the linear model is a single neuron with no activation, it is the baseline in the top row, and the hidden layers earn their place here because mass balance responds nonlinearly to temperature and snowfall. Point also at the validation design: held-out glaciers, and in the paper held-out years as well.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="in-the-literature-snow-and-ocean-nutrients" class="slide level2">
+<h2>In the literature: snow and ocean nutrients</h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<p><img data-src="figs/lec21_neuron/papers/ntokas2021_fig15_swe_scatter.png" height="440"></p>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys water">💧 Land water</span> <span class="gb disc water">💧 Hydrology &amp; land-surface modeling</span></p>
+<div class="credit">
+<p>Ntokas et al.&nbsp;(2021), <em>Hydrol. Earth Syst. Sci.</em> 25, 3017–3040, Fig. 15. <a href="https://doi.org/10.5194/hess-25-3017-2021">doi:10.5194/hess-25-3017-2021</a>. CC BY 4.0.</p>
+</div>
+</div><div class="column" style="width:44%;">
+<p><img data-src="figs/lec21_neuron/papers/sauzede2017_fig02_network_schematic.jpg" height="400"></p>
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys ocean">🌊 Ocean</span> <span class="gb disc ocean">🌊 Oceanography</span></p>
+<div class="credit">
+<p>Sauzède et al.&nbsp;(2017), <em>Front. Mar.&nbsp;Sci.</em> 4, 128, Fig. 2. <a href="https://doi.org/10.3389/fmars.2017.00128">doi:10.3389/fmars.2017.00128</a>. CC BY.</p>
+</div>
+</div></div>
+<div class="takeaway">
+<p>Snow water from snow depth: one hidden layer, R² 0.97 against 0.88 for regression formulas. Ocean nitrate: two hidden layers, error 1.04 µmol/kg.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Left, Ntokas et al.&nbsp;(2021): 234,779 records of snow depth, density and water equivalent from 2,878 locations across Canada. Each panel plots simulated against observed snow water equivalent in mm. (a) a constant density, (b) and (c) the regression formulas of Jonas et al.&nbsp;(2009) and Sturm et al.&nbsp;(2010), (d) an ensemble of 20 networks with 12 inputs and one hidden layer of 120 neurons, (e) one such model per snow class. R² goes from 0.88 for the regressions to 0.97 for the network; in the paper’s Table 8 the mean absolute error on the testing set goes from 44.5 (Jonas) to 32.8.</p>
+<p>Right, Sauzède et al.&nbsp;(2017): the CANYON networks. Inputs: position, day of year, pressure, temperature, salinity, oxygen. Two hidden layers (20 and 17 neurons for nitrate), one output. Trained on 549,561 bottle samples of the GLODAPv2 compilation, 137,219 held out; error on nitrate 1.04 µmol/kg. Use: a profiling float that measures only temperature, salinity and oxygen can report an estimate of nutrients. The held-out samples were drawn at random; the paper also withholds eight whole 10° by 10° zones, the check lecture 18 asks for.</p>
+<p>Other examples if asked. Volcanoes: Picchiani et al.&nbsp;(2011, Atmos. Meas. Tech. 4, 2619-2631), ash in MODIS images of Etna from three infrared channels, ten hidden neurons, accuracy above 90% against the method that labeled the pixels. Exoplanets: Pearson, Palafox and Griffith (2018, MNRAS 474, 478-491), transits in light curves of 180 points, hidden layers of 64, 32 and 8 neurons: 88.7% of simulated transits found, a convolutional network 88.5%, the box-fitting search 63.1% (arXiv version). When small is not enough: Rasp, Pritchard and Gentine (2018, PNAS 115, 9684-9689) needed nine layers of 256 neurons to replace the subgrid physics of a climate model and report that one or two hidden layers were unstable; Brenowitz and Bretherton (2018, GRL 45, 6289-6298, here at UW) used one hidden layer of 128 neurons for a similar task (preprint read).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="open-4.0-15-minutes" class="slide level2">
+<h2>Open 4.0 (15 minutes)</h2>
 <ol type="1">
-<li><strong>Predict</strong> with the current weights</li>
-<li><strong>Measure</strong> the cost (mean squared error, cross-entropy)</li>
-<li><strong>Step</strong> the weights against the gradient</li>
-<li>Repeat until the cost stops moving</li>
+<li>Sections 1 and 2: the rule stops after 2 passes</li>
+<li>Section 2.3: write the sigmoid, compare the rule and the log-loss</li>
+<li>Section 2.4: compare the fitted weights with the template</li>
+<li>Move the arrival by 0.1 s: what does the neuron detect now?</li>
 </ol>
-<div class="takeaway">
-<p>The course rule: write the loop out — no hidden helpers. Every deep model this quarter trains with exactly these four lines.</p>
-</div>
-<aside class="notes">
-<p>This is the no-hidden-helpers rule made explicit: in 4.0 the loop is bare NumPy (the gradient of MSE for a linear neuron is one matrix product); in 4.1 the same four steps reappear as the PyTorch idiom — zero the gradients, forward pass, loss, backward pass, optimizer step. Students must be able to point at each of the four steps in any training code they use, including code an agent wrote for them. Also define epoch (one pass through the training data) and minibatch (the loop steps on small batches, not the full set). Gradient descent on the linear neuron lands on the same line as ordinary least squares — the benchmark in the notebook — which is the sanity check that the loop works.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="one-knob-can-break-everything" class="slide level2">
-<h2>One knob can break everything</h2>
-<img data-src="figs/mlgeo_4.0_perceptrons/learning_rate_grid_slide.png" class="r-stretch">
-<div class="takeaway">
-<p>The learning rate sets the step size: too small crawls, too large diverges. Watch the cost curve, always.</p>
-</div>
-<aside class="notes">
-<p>Same neuron, same data, same zero start — only the learning rate changes. Bottom right is the panel to burn in: at 0.01 the cost grows without bound because each step overshoots the minimum; training silently produces garbage weights. The failure is visible only because we plotted the cost per iteration — that habit (plot the learning curve, every time) is the takeaway. In the notebook there is an interactive widget to explore this; the exercise asks them to find the divergence boundary. Adam, the optimizer we use from 4.1 on, adapts the step per weight but does not remove the knob.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="stack-it-the-pnw-source-classifier" class="slide level2">
-<h2>Stack it: the PNW source classifier</h2>
-<div class="big-number">
-<p>2,116 <span class="unit">weights — one hidden layer of 32 neurons</span></p>
-</div>
-<div class="big-number">
-<p>87% <span class="unit">test accuracy, four source types</span></p>
-</div>
 <div class="dim">
-<p>4,000 seismic events from the Pacific Northwest — earthquake, explosion, noise, surface event — 61 waveform features each. Chapter 3’s tuned random forest: the same 80–90% range.</p>
-</div>
-<div class="takeaway">
-<p>On a small feature table, a one-hidden-layer network and a tuned forest land in the same place. That is the honest headline.</p>
+<p><code>pixi run jupyter lab</code>, then <code>mlgeo_4.0_perceptrons.ipynb</code> · Lab 3.8 due tonight · Chapter 6 quiz closes Wednesday · Classic ML project milestone (3.20) due Mon Nov 23</p>
 </div>
 <aside class="notes">
-<p>The running example: the 61-feature Pacific Northwest table (real data — the same four-class set from Chapter 3, from the curated PNW benchmark; one all-NaN feature column dropped from the original 62). A hidden layer is neurons whose outputs feed other neurons: linear map to 32 units, ReLU, linear map to 4 class scores. 4.1’s exact numbers: 87.1% test accuracy, 88.5% validation. The deeper 4.2 model — three hidden layers plus dropout and batch normalization — reaches 89.0%: two points for triple the machinery. Say the comparison plainly: deep learning does not dominate on small tabular data; forests remain the strong default there — a result the tabular-benchmark literature keeps reconfirming. The payoff of the network form comes when structure — order, position — matters; that is Friday. Confusion matrix in the notebook: earthquakes and explosions confuse each other most, noise separates cleanly — same physics-driven pattern as Chapter 3.</p>
+<p>Fifteen minutes, in pairs. Priorities if time is short: task 3 (the weights as a template) and task 4 (the shift), because Wednesday and Friday build on them. Results to expect. Task 2: on the 2,000 synthetic detector windows the rule keeps correcting about 100 windows per pass and its test accuracy moves between 91.2% and 92.4%; the log-loss descent reaches 93.8%. Task 3: correlation 0.986 between weights and template, 99.75% for both detectors. Task 4: with the arrival 0.1 s later the neuron detects none of the 200 events. The discussion to have before they leave: the weights are tied to positions in the window, so the pattern is recognized only where it was during training. Names in the notebook: <code>LogisticRegression(C=0.001)</code> (scikit-learn; C is the inverse of the penalty strength), <code>synthetic_seismogram</code> (the course generator). Sections 3 and 4 of the notebook (line fit by gradient descent, learning rate) are reading for Wednesday.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -318,18 +419,14 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="what-the-network-still-cannot-see" class="slide level2">
-<h2>What the network still cannot see</h2>
-<ul>
-<li>To an MLP the 61 features are an unordered list — shuffle the columns (consistently) and nothing changes</li>
-<li>Feed it a raw 3,000-sample waveform and a P wave learned at second 9 is <strong>not recognized</strong> at second 14</li>
-<li>Every weight is glued to one input position: no translation invariance</li>
-</ul>
+<section id="part-2.-a-network-neurons-that-feed-neurons" class="slide level2">
+<h2>Part 2. A network: neurons that feed neurons</h2>
+<img data-src="figs/lec21_neuron/network_diagram.png" class="r-stretch">
 <div class="takeaway">
-<p>Earthquakes arrive whenever they like. Friday’s fix: convolution — one pattern detector, slid everywhere.</p>
+<p>Each hidden neuron is Monday’s neuron, with its own weights. The output neurons take the hidden outputs as their inputs.</p>
 </div>
 <aside class="notes">
-<p>This is the bridge slide — spend time here. The MLP’s power (fully connected: every input to every neuron) is also its blindness: it has no notion of <em>where</em> in the input a pattern sits. On the feature table that is fine, because features are genuinely unordered. On a waveform it is fatal: a network trained with arrivals 9 s into the window has learned weights tied to samples 900-and-something, and an arrival at 14 s hits entirely different weights. You could train on every possible shift — or build shift-handling into the architecture and pay for the pattern once. That is the convolution idea, and it is why Friday’s detector has 4,658 parameters instead of millions. Ask the room: what other geoscience data has “pattern can occur anywhere” structure? (Spectrogram tremor, dune fields in imagery, storm cells in radar.)</p>
+<p>Wednesday starts here. Two minutes. Recall Monday in one sentence: one neuron is a weighted sum and an activation; its weights are a template; trained on a loss it is logistic regression. Its limit: the boundary between its two answers is a line or a plane, and its prediction of a number is a straight line. A hidden layer is a set of neurons that all read the same inputs, each with its own weights, so each responds to its own pattern. Their outputs are the inputs of the next layer. The activation between layers matters: a weighted sum of weighted sums is one weighted sum, so without it the network reduces to one neuron. Count weights with the room on the drawing: 4 inputs to 5 hidden neurons is 4 × 5 + 5 biases = 25; 5 hidden to 2 outputs is 5 × 2 + 2 = 12. Hornik, Stinchcombe and White (1989) proved that one hidden layer with enough neurons can approximate any continuous function. The theorem does not say how many neurons, how much data, or whether training finds the weights. This fully connected network is called a multilayer perceptron (MLP). The next five slides train one, on a small example.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -342,55 +439,194 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="from-chapter-3-to-chapter-4-what-actually-changed" class="slide level2">
-<h2>From Chapter 3 to Chapter 4 — what actually changed</h2>
+<section id="a-simple-example-temperature-against-depth-in-the-ocean" class="slide level2">
+<h2>A simple example: temperature against depth in the ocean</h2>
+<img data-src="figs/lec21_neuron/profile_line.png" class="r-stretch">
+<p><span class="gb src">🖥️ Model &amp; simulation</span> <span class="gb sys ocean">🌊 Ocean</span> <span class="gb disc ocean">🌊 Oceanography</span></p>
+<div class="takeaway">
+<p>One neuron predicts a straight line: 2.4 °C per 100 m, error 1.0 °C. It cannot bend at the two thermoclines. Synthetic profile, 60 samples.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Geoscience first. The upper ocean is layered: a mixed layer stirred by wind, at nearly one temperature; a seasonal thermocline where temperature drops fast; a slower decrease through the main thermocline; cold deep water. The profile here is synthetic, written in the figure script (figscripts/lec21_network_training.py): 4 °C deep water, plus 6 °C lost across a seasonal thermocline near 60 m, plus 8 °C lost across a main thermocline near 300 m, sampled at 60 random depths between 0 and 600 m with 0.3 °C of noise, like a float profile. A second set of 40 samples with new noise is the validation set. The task: predict temperature from depth. One input, one output. The red line is the best one neuron can do with no activation: a straight line, 2.4 °C per 100 m, with a root-mean-square error of 1.0 °C, three times the noise. Ask: what shape would the model need? Steps. That is what a hidden neuron with a smooth activation provides.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="forward-pass-three-hidden-neurons-added-up" class="slide level2">
+<h2>Forward pass: three hidden neurons, added up</h2>
+<img data-src="figs/lec21_neuron/forward_pass.png" class="r-stretch">
+<div class="takeaway">
+<p>Each hidden neuron makes one smooth step in depth. Scaled by its output weight and summed, the three steps build the profile: 10 weights in all.</p>
+</div>
+<aside class="notes">
+<p>Three minutes. This is the trained network, read from input to output; computing the output from the input is called the forward pass. The network: 1 input (depth), 3 hidden neurons with a tanh activation, 1 output (temperature). Count the weights: 3 input weights and 3 biases for the hidden layer, 3 output weights and 1 bias: 10. Panel 1: the output of each hidden neuron against depth. Each is a smooth step between −1 and 1; its input weight sets how sharp the step is and its bias sets the depth where it occurs. Panel 2: each output multiplied by its output weight, in °C. Panel 3: their sum plus the output bias, over the 60 samples. Ask the room which hidden neuron carries the main thermocline (the green one, centered near 280 m) and which carry the upper part. Tanh is a sigmoid rescaled to run from −1 to 1; networks today more often use ReLU, max(0, z), which builds the curve from straight pieces. This is Monday’s reading again: each hidden neuron responds to one pattern, here one step in depth.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-loss-one-number-for-the-misfit" class="slide level2">
+<h2>The loss: one number for the misfit</h2>
+<img data-src="figs/lec21_neuron/loss_misfit.png" class="r-stretch">
+<div class="takeaway">
+<p>Each red bar is the misfit of one sample. The loss is the mean of the squared misfits; its square root here is 0.71 °C.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Partway through training, after 1,000 steps: the network has found one bend and misses the plateau near 150 m. For each of the 60 samples, the red bar is predicted minus measured temperature. Square them, average: the mean squared error, the loss for a regression. Its square root is in °C, 0.71 here, which is easier to judge than the loss itself: the noise in the data is 0.3 °C, so there is still structure left to fit. For classification the loss was the log-loss of lecture 16; the rest of the procedure is identical. Training asks one question again and again: how should each of the 10 weights change to make this number smaller? The answer is the gradient, computed by the chain rule from the output back to the input, layer by layer (backpropagation; notebook 3.6 did it for one neuron).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="training-predict-measure-step-repeat" class="slide level2">
+<h2>Training: predict, measure, step, repeat</h2>
+<img data-src="figs/lec21_neuron/training_snapshots.png" class="r-stretch">
+<div class="takeaway">
+<p>From random weights the error falls from 3.6 °C to 0.32 °C in 20,000 steps, with a long plateau near 0.7 °C before the network finds the second thermocline.</p>
+</div>
+<aside class="notes">
+<p>Four minutes. The four steps of every training loop: predict with the current weights, measure the loss, step every weight against its gradient, repeat. Left to right: the network at step 0 (random weights, nearly a vertical line, error 3.64 °C), after 5 steps (the overall trend, 1.12 °C), after 1,000 steps (one bend, 0.71 °C), after 20,000 steps (both thermoclines, 0.32 °C, the noise level). Right: the error against the step, on logarithmic axes, for the training samples and for the 40 validation samples that were never used to compute a gradient. Three things to read. First, most of the gain comes in the first ten steps. Second, the plateau from about step 10 to step 2,000: the loss barely moves, then drops again when one hidden neuron moves to the seasonal thermocline. A flat loss curve does not prove that training is finished. Third, the validation curve follows the training curve and ends at 0.32 °C: with 10 weights and 60 samples there is no overfitting. In notebook 4.2 students remove dropout from a larger network and watch the two curves separate. In PyTorch the same four steps are spelled forward pass, loss, <code>loss.backward()</code>, <code>optimizer.step()</code>; and the loop works on small batches of samples (minibatches), one pass through all of them being an epoch.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-learning-rate-sets-the-size-of-each-step" class="slide level2">
+<h2>The learning rate sets the size of each step</h2>
+<img data-src="figs/lec21_neuron/learning_rate_profile.png" class="r-stretch">
+<div class="takeaway">
+<p>Same network, same start. At 0.01 the error is still 0.71 °C after 20,000 steps; at 0.3 it reaches 0.32 °C; at 1.0 it blows up within 9 steps.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. The learning rate multiplies the gradient to give the step. Blue, 0.01: every step is safe and small; after 20,000 steps the network is still on the plateau. Green, 0.3: the run of the previous slide. Red, 1.0: each step overshoots, the error grows, and the run stops after 9 steps with numbers too large to store. Nothing warns you except this curve, so plot the loss against the step every time you train. Notebook 4.0 section 4 shows the same three regimes for a single neuron fitting a line, with an interactive version. The optimizer used from notebook 4.1 on, Adam, adapts the step for each weight, but it still has a learning rate to choose.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="four-seismic-source-types-what-the-hidden-layer-adds" class="slide level2">
+<h2>Four seismic source types: what the hidden layer adds</h2>
+<img data-src="figs/lec21_neuron/accuracy_bars.png" class="r-stretch">
+<p><span class="gb src">📍 In-situ sensor</span> <span class="gb sys solid">🪨 Solid Earth</span> <span class="gb disc solid">📈 Seismology</span></p>
+<div class="takeaway">
+<p>On 61 features, a hidden layer of 32 neurons adds 0.4 points to logistic regression: 3 of 800 test events, inside one standard error.</p>
+</div>
+<aside class="notes">
+<p>Three minutes. Back to real data and to the baseline habit of lecture 18. Earthquake, explosion, surface event, noise: 4,000 Pacific Northwest events, 2,400 to train, 800 to validate, 800 to test (the split of notebook 4.1). Blue: no hidden layer, four output neurons with a softmax, the multiclass logistic regression of lecture 16: 248 weights (61 × 4 + 4), 86.8% (694 of 800). Green: the network of notebook 4.1, 61 inputs, 32 hidden neurons with ReLU, 4 outputs, 2,116 weights (61 × 32 + 32 = 1,984, plus 32 × 4 + 4 = 132): 87.1% (697). Grey: a random forest, 300 trees, default settings: 88.5% (708). The first and third are computed by figscripts/lec21_one_neuron.py on the same split; the second is read from the executed notebook 4.1. One standard error on 800 events is about 1.2 points: the first two cannot be told apart. Notebook 4.2’s deeper model (hidden layers of 128, 64 and 32 neurons, dropout, batch normalization) reaches 89.0% on its own split. The published study on the full curated set (Kharita et al.&nbsp;2026, lecture 16) reports 89% for its best random forest on features and above 92% for convolutional networks on spectrograms. What to say: the 61 features were built by seismologists and have already done the work; a hidden layer has little left to add. In the ocean profile the hidden layer was essential, because the input was raw (depth) and the relation was not a line. Networks gain when they read the record itself. That needs one more idea.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-neuron-loses-an-arrival-that-moves-by-0.1-s" class="slide level2">
+<h2>A neuron loses an arrival that moves by 0.1 s</h2>
+<img data-src="figs/lec21_neuron/shift_blindness.png" class="r-stretch">
+<div class="takeaway">
+<p>Monday’s neuron detects 99.5% of events at the trained arrival time, 47% when the arrival is 0.05 s later, and none from 0.08 s to 0.25 s. The template slid over every lag detects all of them.</p>
+</div>
+<aside class="notes">
+<p>Three minutes; this is the bridge to Friday. Monday’s neuron on waveform windows, fitted on events whose P wave always arrived 0.83 s into the window. Now the arrival comes later, by the amount on the horizontal axis; 200 event windows per point, synthetic (mlgeo_synth). Green: the fraction the neuron still calls events. It halves at 0.05 s and is zero from 0.08 s. Each weight multiplies one position in the window; move the waveform by a third of a period and its peaks meet weights of the opposite sign. Ask the room why detection returns near 0.33 s: that is one period of the 3 Hz S wave, so the largest peaks line up with the right weights again, one cycle late. Black: template matching as it is done in practice, the same weighted sum computed at every lag (here within ±0.6 s), keeping the largest; threshold set on noise windows, false alarms 1% to 5%. It does not depend on where the event is.</p>
+<p>A fully connected network has the same limit as the single neuron: every weight is tied to one input position. On the 61 features this is harmless, because features have no order. On a waveform, an image or a map, the network would have to see every pattern at every position during training. Friday’s convolutional layer takes the idea in black: one small set of weights, slid along the record. Ask: which of your project data have patterns that can occur anywhere? (Tremor in a spectrogram, storm cells in radar, transits in a light curve.)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="from-chapter-3-to-chapter-4" class="slide level2">
+<h2>From Chapter 3 to Chapter 4</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Idea</th>
-<th>Chapter 3 name</th>
-<th>Chapter 4 name</th>
-<th>Geoscience example</th>
+<th>Earlier in the course</th>
+<th>In Chapter 4</th>
+<th>Example from these two days</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>One neuron, sigmoid</td>
-<td>logistic regression</td>
-<td>one-layer classifier</td>
-<td>event vs noise windows</td>
+<td>template matching</td>
+<td>a neuron’s weights</td>
+<td>correlation 0.99 with the event</td>
 </tr>
 <tr class="even">
-<td>Fit by gradient steps</td>
-<td>optimization</td>
-<td>the training loop</td>
-<td>every model this week</td>
+<td>logistic regression</td>
+<td>a neuron trained on a loss</td>
+<td>89.6%, explosion or earthquake</td>
 </tr>
 <tr class="odd">
-<td>Held-out steering set</td>
-<td>validation set</td>
-<td>validation per epoch</td>
-<td>PNW source classes</td>
+<td>gradient descent</td>
+<td>the training loop</td>
+<td>3.6 °C to 0.32 °C</td>
 </tr>
 <tr class="even">
-<td>Model capacity control</td>
-<td>regularization</td>
-<td>dropout, early stopping</td>
-<td>the 4.2 exercise</td>
+<td>baseline</td>
+<td>the model with no hidden layer</td>
+<td>86.8% against 87.1%</td>
+</tr>
+<tr class="odd">
+<td>new</td>
+<td>layers that match the data</td>
+<td>Friday: a shifted arrival</td>
 </tr>
 </tbody>
 </table>
-<div class="takeaway">
-<p>Chapter 4 renames Chapter 3, then adds one thing: layers you can stack to fit the structure of your data.</p>
-</div>
 <aside class="notes">
-<p>Leave this up during questions — it demystifies. Row by row: the sigmoid neuron <em>is</em> logistic regression; training loops are gradient optimization with bookkeeping; the train/validation/test triple carries over unchanged (4.1 splits 60/20/20, stratified, scaler fit on train only — leakage discipline from 3.8 intact); dropout and checkpointing are regularization wearing new clothes. What is genuinely new: differentiable building blocks that mirror data structure — dense for tables, convolution for grids and signals (Friday), recurrence and attention for sequences (Monday). The scientist’s job is unchanged: name the structure, pick the block.</p>
+<p>Leave this up during questions. Return to the opening question: is a neural network a different kind of object from the regressions of Chapter 3? Row by row: a neuron is the weighted sum of template matching (lecture 1, section 2.9); with a sigmoid and the log-loss it is logistic regression (lecture 16); training is the gradient descent of notebook 3.6 with bookkeeping; the baseline habit of lecture 18 carries over, and here the baseline is the model with no hidden layer. The train, validation and test sets also carry over unchanged (4.1 splits 60/20/20, stratified, with the scaler fit on the training events only). What is new is the last row: layers built to match how the data are organized. Fully connected layers for a table of features, convolution for records and maps where a pattern can occur anywhere (Friday), recurrence and attention for sequences where order matters (Monday Nov 23). Naming that structure is the scientist’s part of the work.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -403,19 +639,19 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="now-build-one-open-4.0-then-4.1" class="slide level2">
-<h2>Now build one — open 4.0, then 4.1</h2>
+<section id="open-4.1-then-4.2" class="slide level2">
+<h2>Open 4.1, then 4.2</h2>
 <ol type="1">
-<li><code>pixi run jupyter lab</code> → <code>mlgeo_4.0_perceptrons.ipynb</code>: train the perceptron rule; swap <code>spectral_centroid_hz</code> for <code>kurtosis</code> — why does convergence break?</li>
-<li><code>mlgeo_4.1_NN.ipynb</code>: run the full PyTorch loop on the PNW features; read the learning curves</li>
-<li><code>mlgeo_4.2_MLP.ipynb</code>: retrain with <code>p_drop=0.0</code> — watch the train/validation gap open</li>
-<li>Note your test accuracy — Friday’s CNN must be judged against a baseline too</li>
+<li>4.1: run the training loop, find the four steps in the code</li>
+<li>Read the learning curves: where do training and validation part?</li>
+<li>4.2: retrain with <code>p_drop=0.0</code> and compare the curves</li>
+<li>Note your test accuracy next to the 86.8% baseline</li>
 </ol>
 <div class="dim">
-<p>PyTorch names live here: <code>nn.Module</code>, <code>nn.Linear</code>, <code>nn.CrossEntropyLoss</code>, <code>Adam</code>, <code>DataLoader</code> · Ch 6 quiz closes today · HW-CML due Fri · Friday: CNNs (4.3)</p>
+<p>PyTorch names: <code>nn.Module</code>, <code>nn.Linear</code>, <code>nn.ReLU</code>, <code>nn.CrossEntropyLoss</code>, <code>Adam</code>, <code>DataLoader</code> · Chapter 6 quiz closes today · Classic ML project milestone (3.20) due Mon Nov 23 · Friday: convolution (4.3)</p>
 </div>
 <aside class="notes">
-<p>Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, this deck ~20 min, guided notebook work ~40 min, synthesis ~10 min. Priorities if time is short: task 1’s exercise (separability is the concept that transfers) and task 3 (seeing the overfitting gap open is worth ten slides). The PyTorch spellings students will meet: <code>nn.Module</code> subclass with <code>__init__</code>/<code>forward</code>, <code>nn.Linear</code>, <code>nn.ReLU</code>, <code>nn.CrossEntropyLoss</code> (softmax lives inside the loss, not the model — a standard trip-up), <code>torch.optim.Adam</code>, <code>Dataset</code>/<code>DataLoader</code>, <code>model.train()</code> vs <code>model.eval()</code> (dropout and batchnorm behave differently — 4.2 section 4.4). Their coding agents know the syntax; the graded skill is pointing at the four loop steps and reading the curves. Synthesis question to collect: where in your project data does position/order matter — and would an MLP see it?</p>
+<p>Timing for Wednesday (10:00 to 11:20): Part 2 slides about 20 minutes, notebooks about 50 minutes, synthesis 10 minutes. Priorities if time is short: task 1 (finding the four steps) and task 3 (the gap between training and validation curves opening when dropout is removed). PyTorch spellings students will meet: a subclass of <code>nn.Module</code> with <code>__init__</code> and <code>forward</code>, <code>nn.Linear</code>, <code>nn.ReLU</code>, <code>nn.CrossEntropyLoss</code> (the softmax is inside the loss, not the model, which often causes confusion), <code>torch.optim.Adam</code>, <code>Dataset</code> and <code>DataLoader</code>, <code>model.train()</code> against <code>model.eval()</code> (dropout and batch normalization behave differently in the two modes, 4.2 section 4.4). Dropout: during training, a random fraction of the hidden outputs is set to zero at each step, which limits overfitting. Question to collect at the end: where in your project data does position or order matter, and would a fully connected network see it?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

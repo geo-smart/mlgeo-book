@@ -77,6 +77,21 @@ Check every citation (DOI resolves, title and authors match) before it goes on
 a slide, and check every number against the paper or a rerun. Speaker notes
 carry the full story of each paper.
 
+## Figures lead, text follows
+
+Added 2026-11-16 after the first rewrite of lecture 21 came back with small type and too much text.
+
+- **Never shrink type to make content fit.** No per-deck CSS that sets tables, columns, cards or code below the
+  theme's default size. If a slide does not fit, cut words or split it.
+- **Most slides are one figure** (`.r-stretch`) with a title and one takeaway line. Tables and bullet lists are
+  the exception: the closing summary and the hand-off slide. The explanation goes in the speaker notes.
+- **Show research figures, not descriptions of papers.** A paper appears as its figure (CC BY, with a `.credit`
+  line) or as our rebuild from its open data.
+- **Draw the object being taught** as a schematic (a neuron, a network, a split), with a figscript.
+- **Explain each new method on a simple synthetic geoscience example**, one figure per part of the method
+  (lecture 21: an ocean temperature profile for the forward pass, the loss, the training steps, the learning rate).
+- Plan a deck by listing the figure of every slide first. Screenshot every slide at 1600 x 900 before shipping.
+
 ## Titles, takeaways, and code on slides
 
 - **No slogans.** A title names what the slide shows ("Zeros in three
