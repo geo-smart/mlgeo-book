@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="lec23_networks_with_memory_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link rel="stylesheet" href="lec23_networks_with_memory_files/libs/revealjs/dist/theme/quarto-ce7acf391a23033b2e12d95eea4aebc9.css">
   <link href="lec23_networks_with_memory_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec23_networks_with_memory_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec23_networks_with_memory_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -220,6 +220,26 @@
           display:block!important;
       }</style></aside>
 </section>
+<section id="where-recurrent-networks-fit-sequences" class="slide level2">
+<h2>Where recurrent networks fit: sequences</h2>
+<img data-src="figs/lec_framework/framework_rnn.png" class="r-stretch">
+<div class="takeaway">
+<p>A series in time has an order, and the past informs the future. Recurrence applies the same rule at every day and carries a memory; attention lets every day look at every other day.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; the framework figure, third row (after Battaglia et al.&nbsp;2018, Table 1). In session 22 the GNSS series of P395 came as six summary numbers, a table, and a fully connected network could not beat linear regression. Today the series comes as 90 daily values, a sequence. Two assumptions fit it: order (day 50 comes after day 49) and a rule that does not change from day to day (time translation). A recurrent layer builds both in: it reads one day at a time and updates a memory with the same weights each day. Attention keeps the same weights for every day too, but compares every pair of days directly, and needs positional encodings because it is otherwise blind to order. Same question as session 22, different structure, different network.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="why-the-plain-recurrent-network-forgets" class="slide level2">
 <h2>Why the plain recurrent network forgets</h2>
 <img data-src="figs/mlgeo_4.4_RNN/vanishing_gradient_slide.png" class="r-stretch">
@@ -370,6 +390,58 @@
 </div>
 <aside class="notes">
 <p>The week in one screen — leave it up for questions. The pattern students should carry to projects: pick the block that mirrors the data’s structure (unordered features → dense; translation structure → convolution; order and long-range dependence → recurrence or attention), then earn the complexity against the strongest zero- or few-parameter baseline you can write. Also worth saying: attention is the block behind the pretrained weather and time-series forecasters now entering the geosciences (Pangu on the literature slide) — the mechanics built today are the reading skills for that literature. Wednesday continues into the model-training lab (4.5, data curation and label quality); the forecasting rematch on real data is 4.10 in week 10, where the persistence row returns with a leaderboard attached.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="best-practices-recurrent-networks-and-attention" class="slide level2">
+<h2>Best practices: recurrent networks and attention</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Practice</th>
+<th>Rubric</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Frame</td>
+<td>windows from the past only; split in time</td>
+<td>C3.1, A4</td>
+</tr>
+<tr class="even">
+<td>Design</td>
+<td>context window matches the memory needed</td>
+<td>C3.2</td>
+</tr>
+<tr class="odd">
+<td>Baseline</td>
+<td>persistence and seasonal naive, each horizon</td>
+<td>C3.3</td>
+</tr>
+<tr class="even">
+<td>Evaluate</td>
+<td>error against forecast horizon</td>
+<td>C3.4</td>
+</tr>
+<tr class="odd">
+<td>Evaluate</td>
+<td>seeds; gaps inside the spread are ties</td>
+<td>D7, E3</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Leave this up. Each row is a line of the rubric in book section 4.8, with today’s numbers. C3.1 and A4: every input window ends before its forecast window starts, and no window crosses the 8-year boundary. C3.2: 90 days of context for a 30-day horizon; task 3 doubles the horizon to see what breaks. C3.3: persistence 2.10 mm, seasonal naive 15.53 mm (the wrong baseline for a trending series, which is itself the lesson). C3.4: the error grows with the lead day; report the curve, not one number. D7 and E3: the four networks land between 1.83 and 1.87 mm; rerun with other seeds before ranking them, because differences of 0.04 mm are likely inside the seed spread. The rubric grows by these items today.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

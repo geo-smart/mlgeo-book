@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="lec22_convolution_detector_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link rel="stylesheet" href="lec22_convolution_detector_files/libs/revealjs/dist/theme/quarto-ce7acf391a23033b2e12d95eea4aebc9.css">
   <link href="lec22_convolution_detector_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec22_convolution_detector_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec22_convolution_detector_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -200,6 +200,47 @@
           display:block!important;
       }</style></aside>
 </section>
+<section id="wednesdays-neuron-loses-an-arrival-that-moves-by-0.1-s" class="slide level2">
+<h2>Wednesday’s neuron loses an arrival that moves by 0.1 s</h2>
+<img data-src="figs/lec21_neuron/shift_blindness.png" class="r-stretch">
+<div class="takeaway">
+<p>The neuron of lecture 21 detects 99.5% of events at the trained arrival time, 47% when the arrival is 0.05 s later, and none from 0.08 s to 0.25 s. The template slid over every lag detects all of them.</p>
+</div>
+<aside class="notes">
+<p>Three minutes; the problem this lecture solves. Recall the neuron of lecture 21 (notebook 4.0 section 5) on waveform windows, fitted on events whose P wave always arrived 0.83 s into the window. Now the arrival comes later, by the amount on the horizontal axis; 200 event windows per point, synthetic (mlgeo_synth). Green: the fraction the neuron still calls events. It halves at 0.05 s and is zero from 0.08 s. Each weight multiplies one position in the window; move the waveform by a third of a period and its peaks meet weights of the opposite sign. Ask the room why detection returns near 0.33 s: that is one period of the 3 Hz S wave, so the largest peaks line up with the right weights again, one cycle late. Black: template matching as it is done in practice, the same weighted sum computed at every lag (here within ±0.6 s), keeping the largest; threshold set on noise windows, false alarms 1% to 5%. It does not depend on where the event is.</p>
+<p>A fully connected network has the same limit as the single neuron: every weight is tied to one input position. On the 61 features this is harmless, because features have no order. On a waveform, an image or a map, the network would have to see every pattern at every position during training. Today’s convolutional layer takes the idea in black: one small set of weights, slid along the record. Next slide. Ask: which of your project data have patterns that can occur anywhere? (Tremor in a spectrogram, storm cells in radar, transits in a light curve.)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="where-the-convolutional-network-fits-data-on-a-grid" class="slide level2">
+<h2>Where the convolutional network fits: data on a grid</h2>
+<img data-src="figs/lec_framework/framework_cnn.png" class="r-stretch">
+<div class="takeaway">
+<p>A waveform, a spectrogram or a map is a grid: neighbors are related, and the same pattern can appear anywhere. A convolutional layer assumes both, and pays for each pattern once.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; the framework figure of the four core sessions, second row (after Battaglia et al.&nbsp;2018, Table 1). Last session the input was a table of 61 hand-built features, with no order: fully connected. Today the same seismic events come as waveforms, a grid in time. Two assumptions fit that data: locality (a sample is related to its neighbors, so each neuron looks at a short window) and translation (a P wave is the same P wave at second 9 or at second 14, so the same weights are slid along the record). The previous slide showed what happens without them: a fully connected neuron loses an arrival moved by 0.1 s. The convolutional layer is the template matching of lecture 21, with the templates learned.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="convolution-one-pattern-detector-slid-everywhere" class="slide level2">
 <h2>Convolution: one pattern detector, slid everywhere</h2>
 <img data-src="figs/mlgeo_4.3_CNN/fig_02.png" class="r-stretch">
@@ -348,6 +389,63 @@
 </div>
 <aside class="notes">
 <p>Leave this up for questions; it is the lecture in one screen. Row 1: the CNN’s 10× headline dissolves when the classical baseline gets the one regressor it was missing — always ask what the baseline was denied. Row 2: with matched false-alarm budgets on identical traces, the CNN genuinely extends detection half a decade of SNR deeper — the honest win, and the reason this architecture took over catalog building. Row 3: the same detector, on real ground motion, is a coin flip — distribution shift eats the entire margin. The three rows are one discipline applied three times: baseline first, matched conditions, report the failure as measured. Connect forward: Monday’s forecasting shootout carries a persistence baseline row for exactly the same reason.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="best-practices-the-convolutional-network" class="slide level2">
+<h2>Best practices: the convolutional network</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Practice</th>
+<th>Rubric</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Design</td>
+<td>kernel and receptive field match the phase period</td>
+<td>C2.1</td>
+</tr>
+<tr class="even">
+<td>Design</td>
+<td>normalize each record; no amplitude shortcut</td>
+<td>C2.2</td>
+</tr>
+<tr class="odd">
+<td>Design</td>
+<td>pooling where position does not matter</td>
+<td>C2.3</td>
+</tr>
+<tr class="even">
+<td>Baseline</td>
+<td>STA/LTA or the informed regression, same records</td>
+<td>C2.4</td>
+</tr>
+<tr class="odd">
+<td>Evaluate</td>
+<td>detection against SNR, matched false alarms</td>
+<td>E4</td>
+</tr>
+<tr class="even">
+<td>Evaluate</td>
+<td>real records before any claim</td>
+<td>E5</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Leave this up. Each row is a line of the rubric in book section 4.8, and each comes from today’s numbers. C2.1: the three convolution blocks see a window long enough to hold a P wave and its coda; check the receptive field in seconds against the period of the phase. C2.2: per-trace standardization, so the network cannot classify on amplitude. C2.3: global average pooling makes the detector independent of the arrival time; a picker, which must report the time, would keep position. C2.4: the trend case tied the informed regression (0.008 against 0.009 °C per decade); the detector beat STA/LTA at matched 1% false alarms (50% detection at SNR 1.5 against 4.8). E4: report detection as a function of SNR, not one accuracy. E5: 87.9% on synthetic test windows fell to 46.8% on real miniPNW waveforms; validation on synthetics alone is not validation. The rubric grows by these six items today.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

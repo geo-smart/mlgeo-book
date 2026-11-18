@@ -47,6 +47,18 @@ Context window = what the model reads; forecast horizon = what it must write. Te
 Define the two terms of the day: context window (the stretch of past the model reads — 90 days here) and forecast horizon (how far it must predict — 30 days). The record: 10 years of daily synthetic GNSS displacement with known components — ~12 mm/yr tectonic trend, seasonal loading, an earthquake step with postseismic relaxation, noise. We know the components because we built them; that is what lets us diagnose the models later. Data design: standardize using training-portion statistics only; slide a window to build (90-in, 30-out) pairs; first 8 years train, last 2 validate, no window straddles the boundary — a random split would let a validation window overlap two training windows almost entirely. One subtlety worth saying aloud: each window is *anchored* — the model forecasts change relative to its last observed day — because the trend puts validation windows at absolute levels training never saw; without anchoring every model would extrapolate outside its range and the saturating activations would fail. All four models share windows, loss, optimizer, and metric: mean absolute error over the 30-day horizon, in millimeters.
 :::
 
+## Where recurrent networks fit: sequences
+
+![](figs/lec_framework/framework_rnn.png){.r-stretch}
+
+::: {.takeaway}
+A series in time has an order, and the past informs the future. Recurrence applies the same rule at every day and carries a memory; attention lets every day look at every other day.
+:::
+
+::: {.notes}
+Two minutes; the framework figure, third row (after Battaglia et al. 2018, Table 1). In session 22 the GNSS series of P395 came as six summary numbers, a table, and a fully connected network could not beat linear regression. Today the series comes as 90 daily values, a sequence. Two assumptions fit it: order (day 50 comes after day 49) and a rule that does not change from day to day (time translation). A recurrent layer builds both in: it reads one day at a time and updates a memory with the same weights each day. Attention keeps the same weights for every day too, but compares every pair of days directly, and needs positional encodings because it is otherwise blind to order. Same question as session 22, different structure, different network.
+:::
+
 ## Why the plain recurrent network forgets
 
 ![](figs/mlgeo_4.4_RNN/vanishing_gradient_slide.png){.r-stretch}
@@ -110,6 +122,20 @@ Architecture follows data structure: dense for tables, convolution for patterns 
 
 ::: {.notes}
 The week in one screen — leave it up for questions. The pattern students should carry to projects: pick the block that mirrors the data's structure (unordered features → dense; translation structure → convolution; order and long-range dependence → recurrence or attention), then earn the complexity against the strongest zero- or few-parameter baseline you can write. Also worth saying: attention is the block behind the pretrained weather and time-series forecasters now entering the geosciences (Pangu on the literature slide) — the mechanics built today are the reading skills for that literature. Wednesday continues into the model-training lab (4.5, data curation and label quality); the forecasting rematch on real data is 4.10 in week 10, where the persistence row returns with a leaderboard attached.
+:::
+
+## Best practices: recurrent networks and attention
+
+| Step | Practice | Rubric |
+|---|---|---|
+| Frame | windows from the past only; split in time | C3.1, A4 |
+| Design | context window matches the memory needed | C3.2 |
+| Baseline | persistence and seasonal naive, each horizon | C3.3 |
+| Evaluate | error against forecast horizon | C3.4 |
+| Evaluate | seeds; gaps inside the spread are ties | D7, E3 |
+
+::: {.notes}
+Leave this up. Each row is a line of the rubric in book section 4.8, with today's numbers. C3.1 and A4: every input window ends before its forecast window starts, and no window crosses the 8-year boundary. C3.2: 90 days of context for a 30-day horizon; task 3 doubles the horizon to see what breaks. C3.3: persistence 2.10 mm, seasonal naive 15.53 mm (the wrong baseline for a trending series, which is itself the lesson). C3.4: the error grows with the lead day; report the curve, not one number. D7 and E3: the four networks land between 1.83 and 1.87 mm; rerun with other seeds before ranking them, because differences of 0.04 mm are likely inside the seed spread. The rubric grows by these items today.
 :::
 
 ## Now race them yourself — open 4.4
