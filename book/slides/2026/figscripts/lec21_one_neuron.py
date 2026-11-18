@@ -70,8 +70,10 @@ def sigmoid(z):
 
 
 def perceptron_rule(X, y, n_pass, seed=None, X_test=None, y_test=None):
-    """Rosenblatt's rule as in notebook 4.0: correct the weights after each mistake."""
-    w, b = np.zeros(X.shape[1]), 0.0
+    """Rosenblatt's rule as in notebook 4.0: update the weights after each nonzero error.
+    Random starting weights (seed 0), not zeros."""
+    start = np.random.default_rng(0)
+    w, b = start.normal(0, 1, X.shape[1]), start.normal(0, 1)
     rng = np.random.default_rng(seed) if seed is not None else None
     mistakes, test_acc = [], []
     for _ in range(n_pass):
@@ -92,8 +94,10 @@ def perceptron_rule(X, y, n_pass, seed=None, X_test=None, y_test=None):
 
 
 def logistic_descent(X, y, n_pass, rate, X_test=None, y_test=None):
-    """Gradient descent on the mean log-loss: the loop of notebook 3.6, in numpy."""
-    w, b = np.zeros(X.shape[1]), 0.0
+    """Gradient descent on the mean log-loss: the loop of notebook 3.6, in numpy.
+    Random starting weights (seed 0), not zeros."""
+    start = np.random.default_rng(0)
+    w, b = start.normal(0, 1, X.shape[1]), start.normal(0, 1)
     loss, test_acc = [], []
     for _ in range(n_pass):
         p = sigmoid(X @ w + b)
@@ -136,6 +140,8 @@ ax.text(1.2, 5.95, "inputs", ha="center", fontsize=22, color=MUTED)
 ax.text(3.3, 5.95, "weights", ha="center", fontsize=22, color=BLUE)
 ax.text(6.3, 4.25, "weighted sum", ha="center", fontsize=22, color=BLUE)
 save(fig, "neuron_diagram")
+import shutil  # noqa: E402
+shutil.copy(FIGS / "neuron_diagram.png", HERE.parents[2] / "img" / "neuron_diagram.png")   # also used in notebook 4.1
 
 # =============================================================================
 # 2 and 3. A neuron on waveform windows: weights against the template
@@ -201,7 +207,7 @@ numbers["waveform"] = {
     "weak_penalty_C1_test_accuracy": float(weak.score(Xw_test, yw_test)),
     "logistic_test_accuracy": float(((sigmoid(Xw_test @ w_log + b_log) >= 0.5) == yw_test).mean()),
     "logistic_weights_corr_template": corr(w_log, template),
-    "perceptron_passes_to_zero_mistakes": len(mistakes_w), "perceptron_mistakes_per_pass": mistakes_w,
+    "perceptron_epochs_to_zero_errors": len(mistakes_w), "perceptron_nonzero_errors_per_epoch": mistakes_w,
     "perceptron_test_accuracy": float(((Xw_test @ w_per + b_per >= 0) == yw_test).mean()),
     "perceptron_weights_corr_template": corr(w_per, template),
     "template_threshold_cc": cc_threshold,
@@ -210,32 +216,29 @@ numbers["waveform"] = {
     "template_test_false_alarm": float((cc_test[yw_test == 0] > cc_threshold).mean()),
 }
 
-fig = plt.figure(figsize=(16, 8.2))
-grid = fig.add_gridspec(3, 2, width_ratios=[1, 1.25], hspace=0.55, wspace=0.12)
+fig = plt.figure(figsize=(21, 7.6))
+grid = fig.add_gridspec(2, 2, width_ratios=[1, 1.25], hspace=0.5, wspace=0.12)
 low = int(np.nanargmin(np.where(yw_test == 1, snr_test, np.nan)))
-high = int(np.nanargmax(np.where(yw_test == 1, snr_test, np.nan)))
 noise = int(np.flatnonzero(yw_test == 0)[0])
 for row, (idx, title, color) in enumerate([
-        (high, f"Event, signal-to-noise ratio {snr_test[high]:.1f}", ORANGE),
-        (low, f"Event, signal-to-noise ratio {snr_test[low]:.1f}", ORANGE),
-        (noise, "Noise only", BLUE)]):
+        (low, "Given: an event window", ORANGE),
+        (noise, "Given: a noise window", BLUE)]):
     ax = fig.add_subplot(grid[row, 0])
-    ax.plot(t_win, Xw_test[idx], color=color, lw=1.2)
-    ax.set_title(title, fontsize=20, loc="left")
+    ax.plot(t_win, Xw_test[idx], color=color, lw=1.4)
+    ax.set_title(title, fontsize=26, loc="left")
     ax.set_yticks([])
-    if row == 2:
+    if row == 1:
         ax.set_xlabel("Time in the window (s)")
     else:
         ax.set_xticklabels([])
 for row, (vec, title, color) in enumerate([
-        (template, "Template: the event without noise (P, then S)", INK),
-        (w_log, f"Weights fitted on the log-loss: correlation {corr(w_log, template):.2f}", GREEN),
-        (w_per, f"Weights from the 1958 rule: correlation {corr(w_per, template):.2f}", RED)]):
+        (template, "Not given: the template", INK),
+        (w_log, f"Found by training: the 600 weights", GREEN)]):
     ax = fig.add_subplot(grid[row, 1])
-    ax.plot(t_win, vec / np.abs(vec).max(), color=color, lw=1.6)
-    ax.set_title(title, fontsize=20, loc="left")
+    ax.plot(t_win, vec / np.abs(vec).max(), color=color, lw=2.2)
+    ax.set_title(title, fontsize=26, loc="left")
     ax.set_yticks([])
-    if row == 2:
+    if row == 1:
         ax.set_xlabel("Time in the window (s): one weight per sample")
     else:
         ax.set_xticklabels([])
@@ -311,8 +314,8 @@ reference = LogisticRegression(max_iter=5000).fit(Xtr, ytr)
 last = slice(N_PASS - 100, N_PASS)
 numbers["explosion_earthquake"] = {
     "n_train": len(ytr), "n_test": len(yte), "n_features": Xtr.shape[1], "passes": N_PASS,
-    "rule_mistakes_first_pass": mistakes[0], "rule_mistakes_last_100_min": int(np.min(mistakes[last])),
-    "rule_mistakes_last_100_mean": float(np.mean(mistakes[last])),
+    "rule_nonzero_errors_first_epoch": mistakes[0], "rule_nonzero_errors_last_100_min": int(np.min(mistakes[last])),
+    "rule_nonzero_errors_last_100_mean": float(np.mean(mistakes[last])),
     "rule_test_accuracy_last_100_min": float(np.min(acc_rule[last])),
     "rule_test_accuracy_last_100_max": float(np.max(acc_rule[last])),
     "loss_first": loss[0], "loss_last": loss[-1], "descent_rate": 0.5,
@@ -325,11 +328,11 @@ numbers["explosion_earthquake"] = {
 passes = np.arange(1, N_PASS + 1)
 fig, (left, right) = plt.subplots(1, 2, figsize=(16, 6.4), gridspec_kw={"wspace": 0.28})
 left.plot(passes, mistakes, color=RED, lw=2.5)
-left.set(xlabel="Pass through the 1,500 training events", ylabel="Mistakes corrected in the pass",
-         title="1958 rule: mistakes per pass", ylim=(0, max(mistakes) * 1.08))
-right.plot(passes, acc_rule, color=RED, lw=2, label="1958 rule: correct each mistake")
+left.set(xlabel="Epoch (1,500 training events)", ylabel="Events with a nonzero error",
+         title="1958 rule: nonzero errors per epoch", ylim=(0, max(mistakes) * 1.08))
+right.plot(passes, acc_rule, color=RED, lw=2, label="1958 rule")
 right.plot(passes, acc_loss, color=GREEN, lw=3.5, label="Gradient descent on the log-loss")
-right.set(xlabel="Pass through the 1,500 training events", ylabel="Accuracy, 500 test events",
+right.set(xlabel="Epoch (1,500 training events)", ylabel="Accuracy, 500 test events",
           title="Accuracy on the test events", ylim=(0.74, 0.97))
 right.legend(frameon=False, loc="upper left", fontsize=18)
 fig.text(0.5, -0.02, "Explosion against earthquake, 61 waveform features. " + PNW_TAG + ".", ha="center", fontsize=17, color=MUTED)

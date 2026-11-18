@@ -143,6 +143,18 @@ auc = {k: roc_auc_score(t, s) for k, (t, s, _, _) in curves.items()}
 for k, v in auc.items():
     print(f"AUC {v:.3f}  {k}")
 
+# Plain-language skill, for lecture 21: rank the test cells by each score, keep the 10% ranked
+# highest, and count the share of all cells with aftershocks that fall in them.
+import json  # noqa: E402
+top = {}
+for k, (t_, s_, _, _) in curves.items():
+    keep = s_ >= np.quantile(s_, 0.9)
+    top[k] = {"share_of_aftershock_cells_in_top10pct": float(t_[keep].sum() / t_.sum()),
+              "share_of_top10pct_cells_with_aftershocks": float(t_[keep].mean()), "auc": float(auc[k])}
+    print(f"top 10% of cells: {100 * top[k]['share_of_aftershock_cells_in_top10pct']:.1f}% of aftershock cells  {k}")
+(OUT / "numbers.json").write_text(json.dumps({"n_test_cells": int(y.size), "n_aftershock_cells": int(y.sum()),
+                                              "network_parameters": int(n_par), "models": top}, indent=1))
+
 # ---- figure: Chi-Chi map (left) and ROC curves on the whole test set (right) -------------------
 to_ll = pyproj.Transformer.from_crs("EPSG:32651", "EPSG:4326", always_xy=True)   # UTM 51N (Taiwan)
 z0 = -7500.0                                                                       # depth slice the authors plot

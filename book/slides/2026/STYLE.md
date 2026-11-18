@@ -39,6 +39,20 @@ The governing order for every slide and every explanation:
   independent."
 - train / validation / test — the book's triple, always explicit (see the
   book-wide terminology standard).
+- **error** = prediction minus observation. Never "mistake", "misfit" or
+  "correction" for the difference between a prediction and an observation;
+  for a classifier, count "samples with a nonzero error".
+- Training vocabulary and symbols are those of notebook 3.6, on every slide
+  and in every notebook: observation $y_i$, prediction $\hat{y}_i$, error,
+  loss of a sample $\mathcal{L}_i$, loss $\mathcal{L}$ (the mean over the
+  samples of a batch), gradient $\partial \mathcal{L} / \partial w$,
+  learning rate $\alpha$, update, batch, epoch. Not "cost", "target",
+  "output", "pass", "step" (which also names an activation).
+- Starting weights are random numbers drawn with a seed, never zeros, in
+  every training loop shown to students; say why and report the seed.
+- When a lecture trains a model, show the mechanics before any comparison or
+  history: errors, loss of each sample, mean loss over the batch, gradient
+  for each weight, update, loss at each epoch, loss from batch to batch.
 - Fields in full: geotechnical engineering, atmospheric sciences.
 - Statistical methods by concept name: "grouped validation by location,"
   "train on the past, validate on the future," "leave a region out, with a

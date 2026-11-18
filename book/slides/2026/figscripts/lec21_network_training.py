@@ -12,13 +12,13 @@ squared error, written out in numpy below.
 
 Figures, written to figs/lec21_neuron/ (numbers to numbers_training.json):
   activations.png          the three activations and the model each one gives
-  correction_size.png      size of the weight correction against the score
+  correction_size.png      size of the error against the score, 1958 rule and log-loss
   boundary_passes.png      the 1958 rule on the separable windows of notebook 4.0
   network_diagram.png      a neuron beside a network with one hidden layer
   profile_line.png         the profile and the best line (one neuron)
   forward_pass.png         what each hidden neuron outputs, and their weighted sum
-  loss_misfit.png          the loss drawn as misfit bars
-  training_snapshots.png   the fit after 0, 100, 1,000 and 20,000 steps, and the loss curve
+  loss_misfit.png          the loss drawn as error bars, sample by sample
+  training_snapshots.png   the fit after 0, 5, 1,000 and 20,000 updates, and the loss curve
   learning_rate_profile.png  three learning rates on the same network
   accuracy_bars.png        four source types: no hidden layer, hidden layer, forest
 
@@ -69,7 +69,7 @@ fig, axes = plt.subplots(1, 3, figsize=(17, 5.6))
 for ax, out, title, sub, color in [
         (axes[0], z, "No activation", "linear regression\n(lecture 13)", BLUE),
         (axes[1], sigmoid(z), "Sigmoid", "logistic regression\n(lecture 16)", GREEN),
-        (axes[2], (z >= 0).astype(float), "Step", "perceptron\n(1958)", RED)]:
+        (axes[2], (z >= 0).astype(float), "Step", "threshold logic\nunit (1943)", RED)]:
     ax.plot(z, out, color=color, lw=5)
     ax.axvline(0, color=MUTED, lw=1.2, ls=":")
     ax.set_title(title, color=color)
@@ -85,13 +85,13 @@ save(fig, "activations")
 # Size of the correction against the score, for a true event (t = 1)
 # =============================================================================
 fig, ax = plt.subplots(figsize=(13, 6.4))
-ax.plot(z, 1 - (z >= 0).astype(float), color=RED, lw=5, label="1958 rule: $t -$ output, all or nothing")
-ax.plot(z, 1 - sigmoid(z), color=GREEN, lw=5, label="log-loss: $t - p$, in proportion to the error")
+ax.plot(z, 1 - (z >= 0).astype(float), color=RED, lw=5, label="1958 rule: prediction 0 or 1, all or nothing")
+ax.plot(z, 1 - sigmoid(z), color=GREEN, lw=5, label="log-loss: prediction is a probability, in proportion to the error")
 ax.axvline(0, color=MUTED, lw=1.2, ls=":")
-ax.set(xlabel="score $z$ of a window that contains an event ($t = 1$)", ylabel="size of the correction", ylim=(-0.05, 1.3))
-ax.annotate("missed with confidence:\nlarge correction", xy=(-4.5, 0.99), xytext=(-5.9, 0.42), fontsize=20, color=MUTED,
+ax.set(xlabel="score $z$ of a window that contains an event ($y = 1$)", ylabel="size of the error $|\\hat{y} - y|$", ylim=(-0.05, 1.3))
+ax.annotate("missed with confidence:\nlarge error, large update", xy=(-4.5, 0.99), xytext=(-5.9, 0.42), fontsize=20, color=MUTED,
             arrowprops=dict(arrowstyle="->", color=MUTED, lw=2))
-ax.annotate("detected with confidence:\nalmost none", xy=(4.5, 0.02), xytext=(2.0, 0.42), fontsize=20, color=MUTED,
+ax.annotate("detected with confidence:\nalmost no update", xy=(4.5, 0.02), xytext=(2.0, 0.42), fontsize=20, color=MUTED,
             arrowprops=dict(arrowstyle="->", color=MUTED, lw=2))
 ax.legend(frameon=False, loc="upper right", fontsize=20)
 save(fig, "correction_size")
@@ -110,7 +110,8 @@ Xs = subset[["sta_lta", "spectral_centroid_hz"]].to_numpy()
 ts = subset["label"].to_numpy()
 order = rng.permutation(len(Xs))
 Xs, ts = Xs[order], ts[order]
-w, b, rate = np.zeros(2), 0.0, 0.01
+start = np.random.default_rng(0)                      # random starting weights, seed 0, as in notebook 4.0
+w, b, rate = start.normal(0, 1, 2), start.normal(0, 1), 0.1
 mistakes, lines = [], []
 for _ in range(50):
     n_wrong = 0
@@ -124,7 +125,7 @@ for _ in range(50):
     mistakes.append(n_wrong)
     if n_wrong == 0:
         break
-numbers["separable_rule"] = {"mistakes_per_pass": mistakes, "n_windows": len(ts)}
+numbers["separable_rule"] = {"nonzero_errors_per_epoch": mistakes, "n_windows": len(ts)}
 fig, ax = plt.subplots(figsize=(13, 7))
 for lab, name, color in [(0, "noise windows", BLUE), (1, "event windows", ORANGE)]:
     ax.scatter(Xs[ts == lab, 0], Xs[ts == lab, 1], s=28, alpha=0.6, color=color, label=name)
@@ -132,8 +133,8 @@ x1 = np.linspace(0, 12, 50)
 for k, wk, bk in lines:
     if abs(wk[1]) > 1e-12:
         ax.plot(x1, -(wk[0] * x1 + bk) / wk[1], color=MUTED, lw=2, ls="--")
-ax.plot([], [], color=MUTED, lw=2, ls="--", label="after 1, 5 and 15 corrections")
-ax.plot(x1, -(w[0] * x1 + b) / w[1], color=INK, lw=4.5, label=f"final: no mistake left ({mistakes[0]} corrections)")
+ax.plot([], [], color=MUTED, lw=2, ls="--", label="after 1, 5 and 15 updates")
+ax.plot(x1, -(w[0] * x1 + b) / w[1], color=INK, lw=4.5, label=f"final: every error is zero ({sum(mistakes)} updates)")
 ax.set(xlabel="STA/LTA ratio", ylabel="Spectral centroid (Hz)", xlim=(0, 16), ylim=(-0.5, 15))
 ax.legend(frameon=False, loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2, fontsize=20)
 fig.text(0.5, -0.02, "Synthetic (mlgeo_synth): 600 windows chosen so that a line separates the classes", ha="center", fontsize=18, color=MUTED)
@@ -209,7 +210,7 @@ def train(n_hidden, rate, n_steps, seed=0, keep=()):
     """Plain gradient descent on the mean squared error; the gradient by the chain rule."""
     r = np.random.default_rng(seed)
     W1, b1 = r.normal(0, 1.0, n_hidden), r.normal(0, 0.5, n_hidden)
-    W2, b2 = r.normal(0, 0.5, n_hidden), 0.0
+    W2, b2 = r.normal(0, 0.5, n_hidden), r.normal(0, 0.5)     # every weight and bias random, none at zero
     loss, loss_val, kept = [], [], {}
     for step in range(n_steps + 1):
         if step in keep:
@@ -229,7 +230,8 @@ def train(n_hidden, rate, n_steps, seed=0, keep=()):
 
 
 RATE, STEPS, KEEP = 0.3, 20000, (0, 5, 1000, 20000)
-loss, loss_val, final, kept = train(3, RATE, STEPS, seed=0, keep=KEEP)
+NET_SEED = 2   # random starting weights; seed 2 trains without spikes at this learning rate (seeds 0-11 scanned)
+loss, loss_val, final, kept = train(3, RATE, STEPS, seed=NET_SEED, keep=KEEP)
 to_degc = lambda mse: float(np.sqrt(mse) * t_std)  # noqa: E731
 slope, intercept = np.polyfit(depth, temp, 1)
 line_rmse = float(np.sqrt(np.mean((slope * depth + intercept - temp) ** 2)))
@@ -260,7 +262,7 @@ save(fig, "profile_line")
 # --- forward pass: hidden outputs and their weighted sum ---------------------
 W1, b1, W2, b2 = final
 H = hidden(grid_x, W1, b1)
-fig, axes = plt.subplots(1, 3, figsize=(18, 7.6), gridspec_kw={"wspace": 0.3})
+fig, axes = plt.subplots(1, 3, figsize=(20, 7.6), gridspec_kw={"wspace": 0.42})
 for j, color in enumerate([ORANGE, GREEN, PURPLE]):
     axes[0].plot(H[:, j], grid_depth, color=color, lw=4.5, label=f"hidden neuron {j + 1}")
     axes[1].plot(H[:, j] * W2[j] * t_std, grid_depth, color=color, lw=4.5)
@@ -281,12 +283,12 @@ pred_early = predict(x, early) * t_std + t_mean
 fig, ax = plt.subplots(figsize=(9.5, 8))
 for d, t_obs, t_pred in zip(depth, temp, pred_early):
     ax.plot([t_obs, t_pred], [d, d], color=RED, lw=2.2, alpha=0.8)
-ax.plot([], [], color=RED, lw=2.2, label="misfit of each sample")
+ax.plot([], [], color=RED, lw=2.2, label="error of each sample")
 ax.scatter(temp, depth, s=70, color=BLUE, alpha=0.9, label="measured", zorder=3)
-ax.plot(predict(grid_x, early) * t_std + t_mean, grid_depth, color=INK, lw=4.5, label="network after 1,000 steps")
+ax.plot(predict(grid_x, early) * t_std + t_mean, grid_depth, color=INK, lw=4.5, label="network after 1,000 updates")
 profile_axes(ax)
 ax.legend(frameon=False, loc="lower right", fontsize=20)
-ax.text(2.4, 130, f"loss = mean of misfit²\nroot: {to_degc(loss[1000]):.2f} °C", fontsize=21, color=RED, va="top")
+ax.text(2.4, 130, f"loss = mean of error²\nroot: {to_degc(loss[1000]):.2f} °C", fontsize=21, color=RED, va="top")
 save(fig, "loss_misfit")
 
 # --- snapshots of training and the loss curve ----------------------------------
@@ -295,7 +297,7 @@ for ax, step in zip(axes[:4], KEEP):
     ax.scatter(temp, depth, s=30, color=BLUE, alpha=0.6)
     ax.plot(predict(grid_x, kept[step]) * t_std + t_mean, grid_depth, color=INK, lw=4.5)
     ax.set(ylim=(600, 0), xlim=(2, 20.5), xlabel="°C")
-    ax.set_title(f"step {step:,}\n{to_degc(loss[step]):.2f} °C", fontsize=22)
+    ax.set_title(f"update {step:,}\n{to_degc(loss[step]):.2f} °C", fontsize=22)
     if step:
         ax.set_yticklabels([])
 axes[0].set_ylabel("Depth (m)")
@@ -305,7 +307,7 @@ ax.loglog(steps_axis, np.sqrt(loss) * t_std, color=INK, lw=4, label="training sa
 ax.loglog(steps_axis, np.sqrt(loss_val) * t_std, color=ORANGE, lw=4, ls="--", label="validation samples")
 ax.axhline(0.3, color=MUTED, lw=2, ls=":")
 ax.text(1.3, 0.31, "noise in the data, 0.3 °C", fontsize=18, color=MUTED, va="bottom")
-ax.set(xlabel="gradient step", title="Error (°C)")
+ax.set(xlabel="update (one per epoch)", title="Root of the loss (°C)")
 ax.set_yticks([0.3, 1, 3])
 ax.set_yticklabels(["0.3", "1", "3"])
 ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
@@ -316,17 +318,17 @@ save(fig, "training_snapshots")
 # --- three learning rates -------------------------------------------------------
 fig, ax = plt.subplots(figsize=(13, 6.8))
 rates = {}
-for rate, color, lab in [(0.01, BLUE, "0.01: too small, still far after 20,000 steps"),
+for rate, color, lab in [(0.01, BLUE, "0.01: too small, still far after 20,000 updates"),
                          (0.3, GREEN, "0.3: reaches the noise level"),
                          (1.0, RED, "1.0: too large, the loss blows up")]:
     with np.errstate(all="ignore"):
-        l_r, _, _, _ = train(3, rate, STEPS, seed=0)
+        l_r, _, _, _ = train(3, rate, STEPS, seed=NET_SEED)
     good = np.isfinite(l_r) & (l_r < 1e6)
     ax.loglog(np.arange(1, len(l_r) + 1)[good], np.sqrt(l_r[good]) * t_std, color=color, lw=4.5, label=lab)
     rates[str(rate)] = {"steps_run": int(len(l_r)), "last_finite_rmse_degC": to_degc(l_r[good][-1])}
 numbers["profile"]["learning_rates"] = rates
 ax.axhline(0.3, color=MUTED, lw=2, ls=":")
-ax.set(xlabel="gradient step", ylabel="Error on the training samples (°C)", ylim=(0.2, 300))
+ax.set(xlabel="update (one per epoch)", ylabel="Root of the training loss (°C)", ylim=(0.2, 300))
 ax.legend(frameon=False, fontsize=20, loc="upper right", title="learning rate", title_fontsize=20)
 ax.text(1.2e4, 0.31, "noise", fontsize=18, color=MUTED, va="bottom")
 save(fig, "learning_rate_profile")
