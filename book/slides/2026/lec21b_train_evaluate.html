@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="lec21b_train_evaluate_files/libs/revealjs/dist/theme/quarto-ce7acf391a23033b2e12d95eea4aebc9.css">
+  <link rel="stylesheet" href="lec21b_train_evaluate_files/libs/revealjs/dist/theme/quarto-78dea2cbd685bed2b396a070a9bae9ee.css">
   <link href="lec21b_train_evaluate_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec21b_train_evaluate_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec21b_train_evaluate_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -168,6 +168,186 @@
 </div>
 <aside class="notes">
 <p>Two minutes; this figure returns in each of the next three sessions with its own row highlighted. It follows Battaglia et al.&nbsp;(2018, arXiv:1806.01261), Table 1, which lists for each standard layer the entities it works on, how they are related, and what that relation lets the network assume (its inductive bias). A fully connected layer assumes nothing about how the inputs are related: shuffle the 61 features of a seismic event, consistently in every sample, and the network learns the same thing. That is right for a table of hand-built features. It is wasteful for a waveform, where neighboring samples are related (next session, convolution), and for a series in time, where order matters (the session after, recurrence and attention). The last row, graphs, is where a seismic or GNSS network of stations would go; this course does not cover it. Today: two problems that are tables.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="inside-an-mlp-every-input-to-every-neuron" class="slide level2">
+<h2>Inside an MLP: every input to every neuron</h2>
+<img data-src="figs/lec21b_mlp/mlp_anatomy.png" class="r-stretch">
+<div class="takeaway">
+<p>61 features in, 32 hidden neurons with ReLU, 4 scores out: 2,116 weights (notebook 4.1). The softmax turns the scores into probabilities.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; the map of the next eight slides. Notebook 4.1’s network NN1: the input is one row of the table, 61 waveform, envelope and spectral features of one seismic event (Chapter 3’s dataset). Every input is connected to every hidden neuron (gray links), every hidden neuron to every output. Hidden layer: 61 × 32 weights + 32 biases = 1,984. Output layer: 32 × 4 + 4 = 132. Total 2,116, the number 4.1 prints. The four outputs are scores (logits), one per class in 4.1’s order: earthquake, explosion, noise, surface event; the probabilities drawn are an example. This is lecture 21’s network of three neurons, grown: same weighted sums, same ReLU, same training loop.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="one-dense-layer-by-hand" class="slide level2">
+<h2>One dense layer by hand</h2>
+<img data-src="figs/lec21b_mlp/dense_by_hand.png" class="r-stretch">
+<div class="takeaway">
+<p>Each neuron: a weighted sum of all inputs plus its bias, then ReLU. Here z1 = 1.60 passes; z2 = −1.55 becomes 0. In matrix form, z = W x + b.</p>
+</div>
+<aside class="notes">
+<p>Three minutes; do the arithmetic with the room. Inputs x = (1, −0.5, 2), already scaled. Neuron 1 (blue links): 0.5×1 − 1×(−0.5) + 0.25×2 + 0.1 = 1.60; ReLU keeps it. Neuron 2 (red links): −1×1 + 0.5×(−0.5) − 0.25×2 + 0.2 = −1.55; ReLU sets it to 0, so neuron 2 is silent for this sample and passes no gradient back for it. The weights of the layer form a matrix W with one row per neuron (2 × 3 here, 32 × 61 in 4.1); nn.Linear(3, 2) stores exactly this W and b. All numbers computed in figscripts/lec21b_mlp_cartoons.py.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="each-hidden-neuron-cuts-the-input-space" class="slide level2">
+<h2>Each hidden neuron cuts the input space</h2>
+<img data-src="figs/lec21b_mlp/width_boundary.png" class="r-stretch">
+<div class="takeaway">
+<p>One ReLU neuron draws one straight line: 66% of the training samples right on a ring. Three lines enclose the core: 98%. Sixteen smooth the edge: 98%.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Synthetic data: two scaled features, a core class (blue) surrounded by a ring class (orange), 600 samples. Networks with one hidden layer of 1, 3 and 16 ReLU neurons (scikit-learn, seeded). The dashed lines are where each hidden neuron switches on (w·x + b = 0). One neuron can only split the plane in two. Three neurons give three cuts, and the output layer combines them into a closed region around the core. Sixteen neurons make the boundary smoother, not more correct here. The scores are on the training samples: this slide is about what a layer can represent, not about generalization. Width is the number of cuts a layer can make.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-many-weights-to-fit" class="slide level2">
+<h2>How many weights to fit?</h2>
+<img data-src="figs/lec21b_mlp/weights_count.png" class="r-stretch">
+<div class="takeaway">
+<p>weights = outputs × (inputs + 1): 2,116 in 4.1, 1,313 in 4.2. Start small, one hidden layer of 16 to 64 neurons, and grow only if the training loss stays high.</p>
+</div>
+<aside class="notes">
+<p>One minute. Every link is a weight, plus one bias per neuron. 4.1: 61 → 32 → 4. 4.2 (P395 regression): 6 → 32 → 32 → 1, so 224 + 1,056 + 33 = 1,313; the middle layer 32 → 32 holds most of them. Rubric item C1.3: compare the number of weights with the number of training samples; a network with more weights than samples can memorize them. Contrast with next session: a convolution shares its weights along the record, so its count does not grow with the length of the input; a dense layer’s does.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="wide-and-shallow-or-deep-and-narrow" class="slide level2">
+<h2>Wide and shallow, or deep and narrow?</h2>
+<img data-src="figs/lec21b_mlp/width_depth.png" class="r-stretch">
+<div class="takeaway">
+<p>At about 17,000 weights each: 256 neurons in one layer, or 64 in each of four. Depth composes cuts of cuts; for a table of features, one or two hidden layers are usually enough.</p>
+</div>
+<aside class="notes">
+<p>Two minutes. Both networks take the 61 features and give 4 scores. Wide: 61 × 256 + 256 + 256 × 4 + 4 = 16,900. Deep: 61 × 64 + 64 + 3 × (64 × 64 + 64) + 64 × 4 + 4 = 16,708. A wide layer makes many cuts of the input at once; each layer of a deep network cuts the output of the previous one, so it can build more complicated regions with the same weights, but it is harder to train (more layers for the gradient to cross) and benefits from batch normalization (notebook 4.1, section 7). On tables of hand-built features, start with one hidden layer and add width or depth only if the training loss stays high (rubric C1.3). The same width-or-depth question returns for convolutions next session.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="an-mlp-sees-no-order" class="slide level2">
+<h2>An MLP sees no order</h2>
+<img data-src="figs/lec21b_mlp/no_order.png" class="r-stretch">
+<div class="takeaway">
+<p>Shuffle the samples of every window in the same way and the MLP scores the same, 57.6% and 57.8%: it never used the shape of the waveform. Right for a table, wasteful for a waveform.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; the bridge to next session. Synthetic event and noise windows (mlgeo_synth, 400 + 400), 300 samples each at 10 Hz, fed directly to an MLP with 32 hidden neurons, 3 seeds. Top: the samples in their recorded order. Bottom: the same windows with the samples shuffled, the same shuffle for every window. The MLP gives each input its own weights, so shuffling the inputs only renames them: the test accuracy is the same within the seed spread. A seismologist cannot read the shuffled trace; the MLP does not care, because it never used neighbors or order. That is fine for 61 unordered features, where the column order means nothing. For a waveform it throws away the structure: the convolutional detector of notebook 4.3, built to use neighbors, reaches 88% on its synthetic test windows (different window length and data size, so compare the order of magnitude, not the digits).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="scale-the-inputs-first" class="slide level2">
+<h2>Scale the inputs first</h2>
+<img data-src="figs/lec21b_mlp/scaling.png" class="r-stretch">
+<div class="takeaway">
+<p>In km and magnitude units the loss is a narrow valley: after 60 steps the magnitude weight is −0.03 of −0.76. Scaled to unit variance, the same 60 steps reach the lowest loss.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; rubric items A5 and C1.1. Synthetic regression with two inputs, epicentral distance (5 to 150 km) and magnitude (1 to 4); the contours are the mean squared error as a function of the two weights. Raw units: the distance input varies 50 times more than the magnitude, so the loss changes 2,600 times faster along one weight than the other (the ratio of curvatures, computed). Gradient descent must use a learning rate small enough for the steep direction, and then crawls along the flat one: 60 steps leave the magnitude weight at −0.03 when its best value is −0.76. Scaled: the valley is round, and 60 steps with a larger learning rate reach the optimum. Scale with the mean and standard deviation of the training samples only, then apply the same numbers to validation and test.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dropout-train-with-random-neurons-switched-off" class="slide level2">
+<h2>Dropout: train with random neurons switched off</h2>
+<img data-src="figs/lec21b_mlp/dropout.png" class="r-stretch">
+<div class="takeaway">
+<p>In each training batch, each hidden neuron is off with probability 0.3, so no neuron can rely on one particular other; at evaluation every neuron works.</p>
+</div>
+<aside class="notes">
+<p>One minute; notebook 4.1, section 7. Dropout is a regularizer: a way to reduce overfitting when the training and validation curves part (rubric D6). Each batch trains a different random sub-network; the full network at test time behaves like an average of them. PyTorch scales the surviving outputs during training (by 1/(1 − 0.3)) so that nothing changes at evaluation. model.train() turns dropout on, model.eval() turns it off: forgetting model.eval() before evaluating is a classic error. In 4.1, removing dropout (Your turn 2) shows its effect on the two curves.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="classification-or-regression-the-head-decides" class="slide level2">
+<h2>Classification or regression: the head decides</h2>
+<img data-src="figs/lec21b_mlp/heads.png" class="r-stretch">
+<div class="takeaway">
+<p>Classification: one score per class, softmax, cross-entropy (4.1). Regression: one number, no activation, squared, absolute or Huber error (4.2). The hidden layers can be identical.</p>
+</div>
+<aside class="notes">
+<p>One minute; the table of the next slide in a picture. The last layer fits the quantity to predict (rubric C1.2): 4 scores for 4 source types, with the softmax inside nn.CrossEntropyLoss, so the model ends at the scores; or 1 number with no activation for P395’s east position in 30 days, in mm, because a ReLU or sigmoid at the end would forbid negative or large values. Everything before the head can be the same network. Next session the hidden layers become convolutions; the head does not change.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

@@ -59,6 +59,42 @@ A series in time has an order, and the past informs the future. Recurrence appli
 Two minutes; the framework figure, third row (after Battaglia et al. 2018, Table 1). In session 22 the GNSS series of P395 came as six summary numbers, a table, and a fully connected network could not beat linear regression. Today the series comes as 90 daily values, a sequence. Two assumptions fit it: order (day 50 comes after day 49) and a rule that does not change from day to day (time translation). A recurrent layer builds both in: it reads one day at a time and updates a memory with the same weights each day. Attention keeps the same weights for every day too, but compares every pair of days directly, and needs positional encodings because it is otherwise blind to order. Same question as session 22, different structure, different network.
 :::
 
+## Inside an RNN: one day at a time, one memory
+
+![](figs/lec23_rnn/rnn_anatomy.png){.r-stretch}
+
+::: {.takeaway}
+The same cell reads day 1 to day 90 and updates a memory h of 32 numbers; a linear head turns the last memory into the next 30 days.
+:::
+
+::: {.notes}
+Two minutes; the map of the next slides. Notebook 4.4's VanillaRNN: the input is a window of 90 daily east displacements, one number per day, so the tensor is (batch, 90, 1). nn.RNN(1, 32) reads the days in order; at each day it combines the new value with its memory h from the day before, using the same weights every day. It returns all 90 memories, shape (batch, 90, 32); the model keeps the last one, (batch, 32), and nn.Linear(32, 30) turns it into the 30 forecast days. The output is a regression: 30 numbers, trained with mean squared error. The series and forecast drawn are illustrative.
+:::
+
+## The recurrence by hand
+
+![](figs/lec23_rnn/rnn_by_hand.png){.r-stretch}
+
+::: {.takeaway}
+h = tanh(0.8 × x + 0.6 × h of the day before). Day 3 has no input, yet h = 0.22: the network still carries day 1.
+:::
+
+::: {.notes}
+Three minutes; compute two steps with the room. One hidden number, w_x = 0.8, w_h = 0.6, no bias. Day 1: tanh(0.8 × 1) = 0.66. Day 2, no input: tanh(0.6 × 0.66) = 0.38. Day 3: tanh(0.6 × 0.38) = 0.22. Day 4, input 0.5: tanh(0.4 + 0.6 × 0.22) = 0.49. Day 5: 0.28. The memory of day 1 fades by roughly the factor 0.6 each day. In nn.RNN with hidden size 32, w_x becomes a 32 × 1 matrix, w_h a 32 × 32 matrix, and there are two bias vectors: the same computation with vectors. All numbers computed in figscripts/lec23_rnn_cartoons.py.
+:::
+
+## How long a memory lasts
+
+![](figs/lec23_rnn/memory_decay.png){.r-stretch}
+
+::: {.takeaway}
+A spike fades by w_h each day: below 1% after 7 days (0.5), 44 days (0.9), 459 days (0.99). The same factor, multiplied over the days, shrinks the gradient.
+:::
+
+::: {.notes}
+Two minutes. For small values tanh is nearly linear, so a spike in the input survives in h as w_h to the power of the number of days since. With w_h = 0.5 the network forgets in a week; with 0.9, in about six weeks; only with w_h very close to 1 does it remember across the 90-day window, and then it also keeps every bit of noise. The next slide shows the same product from the other side: the gradient that trains day 1 is multiplied by about one such factor per day on its way back.
+:::
+
 ## Why the plain recurrent network forgets
 
 ![](figs/mlgeo_4.4_RNN/vanishing_gradient_slide.png){.r-stretch}
@@ -71,18 +107,64 @@ Training pushes the gradient back through all 90 steps — a product of ~90 fact
 First the mechanism: a recurrent neuron receives the current input *and* its own previous output — the hidden state is the memory, updated each day as h_t = tanh(Wx·x_t + Wh·h_(t-1) + b). Training unrolls the network over the 90 steps and backpropagates through time: the gradient reaching day 1 is a product of roughly 90 Jacobians, one per step. The figure is just powers of a single number, and that is the entire argument: 0.95^90 ≈ 0.01, 1.05^90 ≈ 80. When the product shrinks (the common case with tanh), early steps receive no training signal — the network cannot learn that something 80 days back matters, because the lesson never travels that far. Exploding is controlled by gradient clipping; there is no equally simple fix for vanishing. That asymmetry motivated both fixes on the next slide. Our vanilla RNN still forecasts respectably here (2,110 parameters, 1.83 mm) — because this series needs mostly recent context; the pathology bites when long memory is genuinely required.
 :::
 
-## Two escapes: gates, or drop the recurrence
+## How many weights to fit?
 
-- **LSTM (1997)**: a cell state updated by *addition*, guarded by learned forget / input / output gates — gradients cross long sequences without shrinking
-- **Attention (2014)**: every day looks directly at every other day — each position asks a **query**, offers a **key**, passes a **value**; softmax-weighted average, no 90-step product anywhere
-- **Transformer (2017)**: attention only, stacked, plus positional encodings — because attention alone is blind to order
+![](figs/lec23_rnn/weights_count.png){.r-stretch}
 
 ::: {.takeaway}
-One attention head is ~15 lines of code — and you will write them, from scratch, today.
+RNN cell 1,120, LSTM cell 4,480 (four gates); with the head, 2,110 and 5,470, as notebook 4.4 prints. The 90 days appear nowhere: the same weights every day.
 :::
 
 ::: {.notes}
-LSTM in one breath: alongside the hidden state runs a cell state modified additively — the forget gate decides what to keep, the input gate what to write, the output gate what to expose; addition, not repeated multiplication, is why gradients survive. Cost: ~4× the parameters of a plain cell. Attention in one breath: give every position three learned views of itself — query ("what am I looking for?"), key ("what do I contain?"), value ("what do I pass on") — score every query against every key (a 90×90 matrix), softmax each row into weights, average the values. Day 5 and day 85 connect at identical cost. The attribution, per the book: Bahdanau et al. introduced this as an add-on to recurrent sequence-to-sequence models; the Transformer (Vaswani et al.) removed the recurrence entirely. The catch students must articulate: pure attention is permutation-blind — shuffle the 90 days and the mean-pooled output is unchanged — so Transformers add positional encodings (fixed sinusoids per position) to restore order. The notebook builds the ~15-line head first, then uses PyTorch's encoder block.
+One minute. RNN cell, hidden size 32, one input: 32 × 1 input weights + 32 × 32 recurrent weights + 2 × 32 biases = 1,120 (PyTorch keeps two bias vectors). A GRU has 3 such sets (3,360), an LSTM 4 (4,480). The head nn.Linear(32, 30): 990. The attention and Transformer counts are those printed by notebook 4.4. Like a convolution, a recurrent layer reuses its weights along time, so a window of 900 days costs no more weights than 90 days; it costs more computation, one step per day.
+:::
+
+## LSTM: a memory changed by addition
+
+![](figs/lec23_rnn/lstm_cell.png){.r-stretch}
+
+::: {.takeaway}
+Gates between 0 and 1 decide what to forget, what to write and what to show. The cell state is changed by addition, so the gradient is not multiplied by a small factor every day.
+:::
+
+::: {.notes}
+Three minutes. Hochreiter & Schmidhuber (1997). Alongside h, the LSTM keeps a cell state c (orange line). Each day: the forget gate (a sigmoid, 0 to 1) multiplies c, keeping or erasing each of its 32 numbers; the input gate scales a new candidate (tanh) that is added to c; the output gate decides how much of tanh(c) to show as h. All four boxes read h of the day before and x of the day: four weight sets, hence four times the weights of a plain cell. Because c is updated by addition, a forget gate near 1 lets information and gradients cross many days without shrinking. In 4.4 the LSTM scores the same as the plain RNN (1.86 against 1.83 mm), because this series needs mostly recent memory.
+:::
+
+## Attention by hand: every day looks at every day
+
+![](figs/lec23_rnn/attention_by_hand.png){.r-stretch}
+
+::: {.takeaway}
+Scores q·k, softmax weights that add up to 1, then a weighted average of the values: 3.40 for day 5. No chain of steps, so nothing fades; positions must be added.
+:::
+
+::: {.notes}
+Three minutes; Bahdanau et al. (2014) as an addition to recurrent models, Vaswani et al. (2017) attention only. Each day gets three learned vectors: a query (what it looks for), a key (what it contains), a value (what it passes on). Here day 5's query (0.2, 2) is compared with the five keys; the scores are divided by √2 (the square root of the vector length) and turned into weights by the softmax: days 2 and 4, whose keys match the query, get 0.31 each. The output is the weighted average of the values, 3.40. For 90 days this is a 90 × 90 table of weights, computed at once. Shuffle the days and the result is the same, so Transformers add a positional encoding to each day. Notebook 4.4 writes one attention head in about 15 lines, then uses nn.TransformerEncoderLayer.
+:::
+
+## Stacked and bidirectional layers
+
+![](figs/lec23_rnn/stacked_bidir.png){.r-stretch}
+
+::: {.takeaway}
+Stacking adds depth: layer 2 reads the memories of layer 1. A bidirectional layer also reads backward, from the future: right for a finished record, a leak in a forecast.
+:::
+
+::: {.notes}
+One minute; rubric item C3.1. nn.RNN(..., num_layers=2) stacks two recurrent layers. bidirectional=True runs a second chain from the last day to the first and joins the two memories: each day's output then depends on later days. For classifying a finished record (is there tremor in this hour?) that is allowed and often helps. For a forecast it uses information that would not exist at forecast time, and the validation score becomes too good to be true.
+:::
+
+## The head: a forecast, a class, or one output per day
+
+![](figs/lec23_rnn/heads.png){.r-stretch}
+
+::: {.takeaway}
+From the last memory: 30 forecast days (regression) or one class per window. From every memory: one output per day, such as the probability of a P arrival.
+:::
+
+::: {.notes}
+One minute. The recurrent layer is the same in the three cases; what changes is which memories the head reads and the loss. Notebook 4.4 reads the last memory and predicts 30 numbers at once (mean squared error). A window classifier reads the last memory and applies a softmax (cross-entropy). A phase picker reads every memory and gives a probability per sample, the design of recurrent and attention pickers in seismology. The pick probabilities drawn are an example.
 :::
 
 ## The shootout — baselines first
