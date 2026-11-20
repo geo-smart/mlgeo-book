@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="lec22_convolution_detector_files/libs/revealjs/dist/theme/quarto-ce7acf391a23033b2e12d95eea4aebc9.css">
+  <link rel="stylesheet" href="lec22_convolution_detector_files/libs/revealjs/dist/theme/quarto-78dea2cbd685bed2b396a070a9bae9ee.css">
   <link href="lec22_convolution_detector_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec22_convolution_detector_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec22_convolution_detector_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -446,6 +446,107 @@
 </table>
 <aside class="notes">
 <p>Leave this up. Each row is a line of the rubric in book section 4.8, and each comes from today’s numbers. C2.1: the three convolution blocks see a window long enough to hold a P wave and its coda; check the receptive field in seconds against the period of the phase. C2.2: per-trace standardization, so the network cannot classify on amplitude. C2.3: global average pooling makes the detector independent of the arrival time; a picker, which must report the time, would keep position. C2.4: the trend case tied the informed regression (0.008 against 0.009 °C per decade); the detector beat STA/LTA at matched 1% false alarms (50% detection at SNR 1.5 against 4.8). E4: report detection as a function of SNR, not one accuracy. E5: 87.9% on synthetic test windows fell to 46.8% on real miniPNW waveforms; validation on synthetics alone is not validation. The rubric grows by these six items today.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="start-your-teams-agent-now-it-works-while-you-train" class="slide level2">
+<h2>Start your team’s agent now: it works while you train</h2>
+<p>One laptop per team runs the agent; the rest of the team goes to the stations. First: <code>git pull</code> in your <code>mlgeo-book</code> folder, and open that folder in VS Code.</p>
+<div class="columns steps">
+<div class="column" style="width:34%;">
+<h3 id="github-copilot">GitHub Copilot</h3>
+<ol type="1">
+<li>Open Chat: ⌃⌘I (Mac) or Ctrl+Alt+I</li>
+<li>Mode menu under the chat box: <strong>Agent</strong></li>
+<li>Paste the prompt</li>
+<li>Allow the commands it asks to run</li>
+</ol>
+</div><div class="column" style="width:30%;">
+<h3 id="claude-code">Claude Code</h3>
+<ol type="1">
+<li>In the VS Code terminal: <code>claude</code></li>
+<li>Paste the prompt</li>
+<li>Allow the commands it asks to run</li>
+</ol>
+</div><div class="column" style="width:36%;">
+<h3 id="uw-purple-only">UW Purple only</h3>
+<ol type="1">
+<li>purple.uw.edu, NetID</li>
+<li>Attach <code>seismic.py</code> from <code>book/mlgeo_synth/</code> (as <code>.txt</code> if refused)</li>
+<li>Run B: also attach the rubric file named in the prompt</li>
+<li>Paste the prompt and the Purple line</li>
+</ol>
+</div></div>
+<div class="takeaway">
+<p>Odd-numbered teams run <strong>A</strong>, even-numbered teams run <strong>B</strong>. The two prompts differ by one paragraph.</p>
+</div>
+<aside class="notes">
+<p>Two minutes, then move on. In the dry run on Nov 20 (Claude Code, model claude-opus-5, both runs at once on one laptop), run A took 26 minutes and run B 30 minutes, each with 5 to 6 minutes of training; weaker models or slower laptops may take longer. Nobody should watch it: it runs while the team does the stations, and we read its report at the end of class. Write the team numbers on the board and the A/B assignment next to them. One person per team owns the agent laptop: they approve the commands it asks to run (a training script; nothing to install, everything is in pixi) and refuse any git command or any write outside the run folder. Copilot: the agent mode is what lets it run code; in Ask mode it only writes text. Claude Code: the panel in VS Code works too. Purple reads but cannot run code (as in HW1 step 8c), so a Purple run produces a script and the report it expects, with no measured numbers; that is a third condition worth comparing, not a failure. Note the tool and model each team used; we tally them at minute 68. Students who have none of the three pair with a team that does.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-prompt-copy-it-exactly" class="slide level2">
+<h2>The prompt: copy it exactly</h2>
+<p>Replace <code>&lt;team&gt;</code> with your team number and <code>&lt;A or B&gt;</code> with your run.</p>
+<div class="prompt">
+<pre class="text"><code>Build a 1-D convolutional network that detects earthquakes in 30 s vertical-component seismograms sampled at 100 Hz. Train it on synthetic records from mlgeo_synth.seismogram_dataset (source: book/mlgeo_synth/seismic.py). The detector will run on real stations, where the background noise differs from the generator's (the ocean microseism makes it redder, for example). Write one script, run it, and write report.md with your results and your verdict: is this detector ready to run on a real station?
+
+Rules: run all code with `pixi run python`, on the CPU, with less than 10 minutes of training in total. Do not download anything. Write files only in book/Chapter4-DeepLearning/s22_agent_runs/team&lt;team&gt;_&lt;A or B&gt;/. Do not edit, commit, push or stash any other file.</code></pre>
+<p><strong>Run B only</strong>, add:</p>
+<pre class="text"><code>Follow every item of book/Chapter4-DeepLearning/mlgeo_4.8_dl_rubric.md. End report.md with a table of item ID, pass or fail, and evidence; then list the items you could not check, and why.</code></pre>
+</div>
+<div class="dim">
+<p><strong>Purple only</strong>, add: <em>You cannot run code. Write the script and the report you expect it to produce, and mark every number as not computed.</em></p>
+</div>
+<aside class="notes">
+<p>The two runs are an experiment with one variable: same task, same data, same rules, and only run B gets the rubric. Do not open the rubric file yourselves; we read it together after the stations. The deployment sentence (real stations, redder noise) is in both prompts on purpose: it is the information a careful modeler would act on, and we will see which runs test on noise unlike the training noise without being told how. The rules paragraph is the same contract as the session 7 lab: pixi only, no downloads (thirty laptops pulling the 670 MB miniPNW file on the room’s network would stall everyone), writes confined to one ignored folder. If an agent asks a question, answer only “use your judgment and say what you chose in report.md”, so all runs get the same information.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="when-it-stops-save-do-not-judge-yet" class="slide level2">
+<h2>When it stops: save, do not judge yet</h2>
+<ol type="1">
+<li>Save the conversation as <code>transcript.md</code> in your run folder
+<ul>
+<li>Claude Code: <code>/export</code></li>
+<li>Copilot Chat: right-click in the chat, <strong>Copy All</strong>, paste</li>
+<li>Purple: copy the conversation, or print the page to PDF</li>
+</ul></li>
+<li><code>git status</code>: no book file should be listed. If one is, <code>git checkout -- &lt;file&gt;</code> and note it</li>
+<li>On the board: team, A or B, tool and model, minutes to finish, finished or not</li>
+</ol>
+<div class="takeaway">
+<p>Do not read report.md yet. At minute 68 we score every run against the rubric the class writes today.</p>
+</div>
+<aside class="notes">
+<p>The transcript is evidence for the audit: we check that every command the report says it ran appears in the transcript, as in HW1 step 8 and the session 7 lab. Ask teams not to read the report early, so the class writes its own rubric items from the station measurements without anchoring on what the agent did. An agent still running at minute 65 gets stopped; “did not finish in 45 minutes” is a result and goes on the board.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

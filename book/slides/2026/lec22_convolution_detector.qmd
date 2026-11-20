@@ -152,6 +152,87 @@ Leave this up for questions; it is the lecture in one screen. Row 1: the CNN's 1
 Leave this up. Each row is a line of the rubric in book section 4.8, and each comes from today's numbers. C2.1: the three convolution blocks see a window long enough to hold a P wave and its coda; check the receptive field in seconds against the period of the phase. C2.2: per-trace standardization, so the network cannot classify on amplitude. C2.3: global average pooling makes the detector independent of the arrival time; a picker, which must report the time, would keep position. C2.4: the trend case tied the informed regression (0.008 against 0.009 °C per decade); the detector beat STA/LTA at matched 1% false alarms (50% detection at SNR 1.5 against 4.8). E4: report detection as a function of SNR, not one accuracy. E5: 87.9% on synthetic test windows fell to 46.8% on real miniPNW waveforms; validation on synthetics alone is not validation. The rubric grows by these six items today.
 :::
 
+## Start your team's agent now: it works while you train
+
+One laptop per team runs the agent; the rest of the team goes to the stations. First: `git pull` in your `mlgeo-book` folder, and open that folder in VS Code.
+
+::: {.columns .steps}
+::: {.column width="34%"}
+### GitHub Copilot
+
+1. Open Chat: ⌃⌘I (Mac) or Ctrl+Alt+I
+2. Mode menu under the chat box: **Agent**
+3. Paste the prompt
+4. Allow the commands it asks to run
+:::
+::: {.column width="30%"}
+### Claude Code
+
+1. In the VS Code terminal: `claude`
+2. Paste the prompt
+3. Allow the commands it asks to run
+:::
+::: {.column width="36%"}
+### UW Purple only
+
+1. purple.uw.edu, NetID
+2. Attach `seismic.py` from `book/mlgeo_synth/` (as `.txt` if refused)
+3. Run B: also attach the rubric file named in the prompt
+4. Paste the prompt and the Purple line
+:::
+:::
+
+::: {.takeaway}
+Odd-numbered teams run **A**, even-numbered teams run **B**. The two prompts differ by one paragraph.
+:::
+
+::: {.notes}
+Two minutes, then move on. In the dry run on Nov 20 (Claude Code, model claude-opus-5, both runs at once on one laptop), run A took 26 minutes and run B 30 minutes, each with 5 to 6 minutes of training; weaker models or slower laptops may take longer. Nobody should watch it: it runs while the team does the stations, and we read its report at the end of class. Write the team numbers on the board and the A/B assignment next to them. One person per team owns the agent laptop: they approve the commands it asks to run (a training script; nothing to install, everything is in pixi) and refuse any git command or any write outside the run folder. Copilot: the agent mode is what lets it run code; in Ask mode it only writes text. Claude Code: the panel in VS Code works too. Purple reads but cannot run code (as in HW1 step 8c), so a Purple run produces a script and the report it expects, with no measured numbers; that is a third condition worth comparing, not a failure. Note the tool and model each team used; we tally them at minute 68. Students who have none of the three pair with a team that does.
+:::
+
+## The prompt: copy it exactly
+
+Replace `<team>` with your team number and `<A or B>` with your run.
+
+::: {.prompt}
+```{.text code-line-numbers="false"}
+Build a 1-D convolutional network that detects earthquakes in 30 s vertical-component seismograms sampled at 100 Hz. Train it on synthetic records from mlgeo_synth.seismogram_dataset (source: book/mlgeo_synth/seismic.py). The detector will run on real stations, where the background noise differs from the generator's (the ocean microseism makes it redder, for example). Write one script, run it, and write report.md with your results and your verdict: is this detector ready to run on a real station?
+
+Rules: run all code with `pixi run python`, on the CPU, with less than 10 minutes of training in total. Do not download anything. Write files only in book/Chapter4-DeepLearning/s22_agent_runs/team<team>_<A or B>/. Do not edit, commit, push or stash any other file.
+```
+
+**Run B only**, add:
+
+```{.text code-line-numbers="false"}
+Follow every item of book/Chapter4-DeepLearning/mlgeo_4.8_dl_rubric.md. End report.md with a table of item ID, pass or fail, and evidence; then list the items you could not check, and why.
+```
+:::
+
+::: {.dim}
+**Purple only**, add: *You cannot run code. Write the script and the report you expect it to produce, and mark every number as not computed.*
+:::
+
+::: {.notes}
+The two runs are an experiment with one variable: same task, same data, same rules, and only run B gets the rubric. Do not open the rubric file yourselves; we read it together after the stations. The deployment sentence (real stations, redder noise) is in both prompts on purpose: it is the information a careful modeler would act on, and we will see which runs test on noise unlike the training noise without being told how. The rules paragraph is the same contract as the session 7 lab: pixi only, no downloads (thirty laptops pulling the 670 MB miniPNW file on the room's network would stall everyone), writes confined to one ignored folder. If an agent asks a question, answer only "use your judgment and say what you chose in report.md", so all runs get the same information.
+:::
+
+## When it stops: save, do not judge yet
+
+1. Save the conversation as `transcript.md` in your run folder
+    - Claude Code: `/export`
+    - Copilot Chat: right-click in the chat, **Copy All**, paste
+    - Purple: copy the conversation, or print the page to PDF
+2. `git status`: no book file should be listed. If one is, `git checkout -- <file>` and note it
+3. On the board: team, A or B, tool and model, minutes to finish, finished or not
+
+::: {.takeaway}
+Do not read report.md yet. At minute 68 we score every run against the rubric the class writes today.
+:::
+
+::: {.notes}
+The transcript is evidence for the audit: we check that every command the report says it ran appears in the transcript, as in HW1 step 8 and the session 7 lab. Ask teams not to read the report early, so the class writes its own rubric items from the station measurements without anchoring on what the agent did. An agent still running at minute 65 gets stopped; "did not finish in 45 minutes" is a result and goes on the board.
+:::
+
 ## Now measure it yourself — open 4.3
 
 1. `pixi run jupyter lab` → `mlgeo_4.3_CNN.ipynb`: run the convolution and LeNet warm-up quickly
