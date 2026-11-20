@@ -34,6 +34,10 @@ DATA_SUFFIXES = {".csv", ".json", ".txt", ".py", ".nc", ".parquet", ".h5", ".hdf
                  ".yaml", ".yml", ".mseed", ".sac", ".gz", ".zip", ".dat", ".tsv", ".xml",
                  ".geojson"}
 SKIP_DIRS = {"data", "_build", ".ipynb_checkpoints", "__pycache__"}
+# Notebooks rendered without executing them: they need large downloads that CI does not
+# have, or run longer than the timeout. Students execute them on their own machines.
+# 4.9 needs miniPNW (671 MB) and trains about 60 networks.
+NO_EXECUTE = {"book/Chapter4-DeepLearning/mlgeo_4.9_training_clinic.ipynb"}
 
 
 def toc_notebooks():
@@ -124,6 +128,9 @@ def main():
         if args.only and args.only not in str(nb):
             continue
         rel = nb.relative_to(ROOT)
+        if str(rel) in NO_EXECUTE:
+            print(f"{'skip':>4} {'':>6}   {rel}  (NO_EXECUTE: rendered as committed)", flush=True)
+            continue
         key = fingerprint(nb, shared) if cache else ""
         cached = cache / f"{key}.ipynb" if cache else None
         if cache and not args.no_cache and cached.exists() and restore_outputs(nb, cached):
