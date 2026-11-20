@@ -61,16 +61,52 @@ A waveform, a spectrogram or a map is a grid: neighbors are related, and the sam
 Two minutes; the framework figure of the four core sessions, second row (after Battaglia et al. 2018, Table 1). Last session the input was a table of 61 hand-built features, with no order: fully connected. Today the same seismic events come as waveforms, a grid in time. Two assumptions fit that data: locality (a sample is related to its neighbors, so each neuron looks at a short window) and translation (a P wave is the same P wave at second 9 or at second 14, so the same weights are slid along the record). The previous slide showed what happens without them: a fully connected neuron loses an arrival moved by 0.1 s. The convolutional layer is the template matching of lecture 21, with the templates learned.
 :::
 
-## Convolution: one pattern detector, slid everywhere
+## Convolution: multiply, add, slide
 
-![](figs/mlgeo_4.3_CNN/fig_02.png){.r-stretch}
+![](figs/lec22_convolution/conv_slide_multiply_sum.gif){.r-stretch}
 
 ::: {.takeaway}
-A 3×3 kernel finds edges wherever they occur. A CNN learns its kernels from data — early layers rediscover edge detectors on their own. (Sample photograph, scikit-image.)
+At every position: multiply each weight by the sample under it, add, write one number. The output is largest (6.7) where the record looks like the kernel, at the P wave; before P it scatters with a spread of 1.0.
 :::
 
 ::: {.notes}
-Define convolution physically: a small set of weights (the kernel) slides across the input, computing the same weighted sum at every position. Hand-designed kernels the room may know: the mean filter blurs, Sobel filters approximate the gradient and light up edges — that is what this figure shows. The CNN's move: stop designing kernels, learn them by gradient descent, and stack layers so later kernels combine earlier features into larger-scale patterns. The key vocabulary, stated carefully (the book's corrected sentence): a convolution layer is translation *equivariant* — shift the input and the feature map shifts with it, so a pattern learned anywhere is detected everywhere. Approximate translation *invariance* — the same final answer wherever the pattern sits — comes from the pooling layers that discard position as they downsample. Equivariance in the features, invariance from pooling: that division of labor is the whole architecture.
+Three minutes; let the animation loop twice before speaking. Synthetic record from the course generator (mlgeo_synth): one event at 30 km, P at 10.0 s, S at 13.6 s, SNR 4, standardized. The kernel is the generator's own P wavelet (5 Hz, 0.6 s, 60 weights), so this is template matching, the black curve of the previous slide, written as a layer. Panel 2 is the whole computation: green bars where weight and sample have the same sign, red where they disagree; the sum is one output sample. Panel 3 collects one output per position: the feature map. Its largest value, 6.66, is at 10.3 s, against a standard deviation of 1.03 before the P arrival (figs/lec22_convolution/numbers.json). It responds less to the S wave, which has a lower dominant frequency (3 Hz) than the kernel. Ask the room: what would the output look like with a 3 Hz kernel? Vocabulary: PyTorch's Conv1d computes exactly this, without flipping the kernel (a cross-correlation; the mathematical convolution flips it). In a network the 60 weights are not chosen: they start as seeded random numbers and are updated by gradient descent, like the weights of lecture 21. The 4.3 detector uses kernels of 7 weights (0.07 s); 60 here so that the pattern is visible.
+:::
+
+## The same weights at every position
+
+![](figs/lec22_convolution/conv_same_weights_everywhere.gif){.r-stretch}
+
+::: {.takeaway}
+Shift the record and the feature map shifts with it; its maximum stays at 1.00. The fully connected neuron, one weight per position, falls to −0.62 after a shift of 0.5 s.
+:::
+
+::: {.notes}
+Two minutes; this answers the opening slide. Same synthetic event (20 km, SNR 5), the whole record moved later in steps of 0.25 s, from P at 8.3 s to P at 21.3 s. Left, bottom: the feature map of the P kernel after ReLU; the triangle marks its maximum, and it travels with the event. That is equivariance: shift the input, the map shifts the same way. Right: two single numbers, each divided by its value at the first position. Red: a fully connected neuron whose weights are the noise-free record at the first position (the neuron of lecture 21); its output drops at once and changes sign (−0.62 at a 0.5 s shift, a few cycles of the 5 Hz wave). Blue: the maximum over the feature map (max pooling over the whole record); it stays at 1.00 for every shift (numbers.json, gif2). Equivariance comes from sharing weights across positions; invariance comes from the pooling that throws the position away. Detection wants invariance; picking an arrival time wants to keep the position, so a picker does not pool it away.
+:::
+
+## One layer, several kernels: each sees something else
+
+![](figs/lec22_convolution/conv_kernel_bank_real.gif){.r-stretch}
+
+::: {.takeaway}
+Three kernels, one real record: an average keeps the slow motion, a difference keeps the sharp changes, a 5 Hz wavelet keeps the P-wave band. The first layer of the 4.3 detector has 8 kernels, learned, not chosen.
+:::
+
+::: {.notes}
+Two minutes. Real data: the M3.9 earthquake 9 km NNE of Snoqualmie, WA, 2023-08-08 10:17:23.87 UTC, depth 15.9 km (USGS ComCat uw61939452), recorded 36 km away at UW.SP2, Seward Park in Seattle (HHZ, 100 Hz; EarthScope FDSN web service). Raw counts, mean removed, scaled to its peak (37,024 counts); P arrives about 6.5 s after the origin time, S about 11 s. Each output is scaled to its own maximum. Read the three kernels as filters the room knows from 2.8 and 2.9: the 1 s average is a low-pass filter; the difference of two samples 0.05 s apart is a high-pass filter that marks sudden changes; the 5 Hz wavelet is a band-pass filter at the P-wave frequency. A convolutional layer is a bank of such filters run in parallel; each output is one channel of the next layer. What is new in a network is only that the filters are learned for the task. Ask: which of the three would you keep to detect this earthquake against microseism noise near 0.2 Hz? Script: figscripts/lec22_convolution_gifs.py.
+:::
+
+## In 2-D: the same sum over a 3×3 window
+
+![](figs/lec22_convolution/conv_2d_temperature_front.gif){.r-stretch}
+
+::: {.takeaway}
+North row −¼ −½ −¼, south row +¼ +½ +¼: the output is how much warmer it is 5° to the south. It traces the edge of the Arctic air mass of 7 January 2014 across North America.
+:::
+
+::: {.notes}
+Two minutes. NCEP/NCAR Reanalysis 1 air temperature at sigma 0.995 (Kalnay et al., 1996) on its 2.5° grid, 2014-01-07 00 UTC, during the Arctic outbreak of early January 2014 (same file and checksum as notebook 2.5: pydata/xarray-data air_temperature.nc at commit 2baf0c2). The middle column is the whole computation for the box: nine temperatures, nine weights, one sum, in °C per 5° of latitude. This kernel is a Sobel filter (from image processing) for the north-south gradient, the same kind of edge detector the first layers of image networks learn on their own. Strong positive values (orange) mark where it is much colder to the north: along the edge of the cold air from Alberta to the Gulf of Mexico, and along the coasts and the edge of the Greenland ice sheet, where the largest value, 31 °C per 5°, sits at 62.5° N, 45° W (numbers.json, gif4; the sigma 0.995 level follows the terrain, so the ice sheet is cold air at high elevation). The one-row and one-column border is lost: a 3×3 kernel has no full window there (padding fills it in a network). Next slide: a network with such kernels, trained on 30 maps, reads a warming trend.
 :::
 
 ## 2-D case: reading a warming trend from a gridded field
@@ -95,6 +131,18 @@ Event windows at low SNR are invisible by eye — exactly the regime where a det
 
 ::: {.notes}
 The data: 1,600 30-second windows at 100 Hz from the course generator — a P arrival then a stronger S on colored noise, or noise alone — each with exact metadata: arrival times and SNR (peak signal amplitude over noise standard deviation). Point at the top trace: SNR near 0.6, nothing visible; that is where we want to know detector behavior, and real data can never tell us, because catalogs only contain the events someone already found — a bias against exactly the low-SNR regime. The model: three Conv1d–ReLU–MaxPool blocks, global average pooling, a 2-class head — 4,658 parameters against LeNet's 61,706. Per-trace standardization first, so the network cannot classify on amplitude alone. Synthetic test accuracy: 87.9%, imperfect because the set deliberately includes near-undetectable events. The interesting question is not the average — it is *where* it fails. Next slide.
+:::
+
+## How far one unit sees: 1.9 s in this detector
+
+![](figs/lec22_convolution/conv_receptive_field.gif){.r-stretch}
+
+::: {.takeaway}
+Each block widens the view: 0.07, 0.34, 1.42 s after the three convolutions, 1.90 s after the last pooling. S − P exceeds 1.9 s beyond about 16 km, so no unit sees the P and S waves together.
+:::
+
+::: {.notes}
+Two minutes; rubric item C2.1 (receptive field against the physical scale of the pattern). The detector of notebook 4.3: three blocks of convolution (kernel 7) and max pooling by 4, then a global average. The receptive field r grows by (kernel − 1) × the spacing of the layer's input, and the spacing grows by 4 after each pooling: 7, 10, 34, 46, 142, 190 samples (numbers.json, gif5). At 100 Hz, 1.90 s. The generator's S − P time is distance × (1/3.5 − 1/6) s/km: 0.6 s at 5 km to 9.5 s at 80 km, so beyond 16 km no unit spans both arrivals; the global average adds evidence from separate P and S detectors but cannot use the S − P time. Two ways to see further: more blocks or wider pooling, or dilated convolutions (gaps between the weights). In the dry run of this morning's agent task, the rubric-guided run built a detector whose receptive field was 14.8 s, and justified it against the same 0.6 to 9.5 s range.
 :::
 
 ## Reality check 1: same traces, classical opponent
