@@ -36,8 +36,9 @@ DATA_SUFFIXES = {".csv", ".json", ".txt", ".py", ".nc", ".parquet", ".h5", ".hdf
 SKIP_DIRS = {"data", "_build", ".ipynb_checkpoints", "__pycache__"}
 # Notebooks rendered without executing them: they need large downloads that CI does not
 # have, or run longer than the timeout. Students execute them on their own machines.
-# 4.9 needs miniPNW (671 MB) and trains about 60 networks.
-NO_EXECUTE = {"book/Chapter4-DeepLearning/mlgeo_4.9_training_clinic.ipynb"}
+# 4.9 and Homework_DL need miniPNW (671 MB); 4.9 also trains about 60 networks.
+NO_EXECUTE = {"book/Chapter4-DeepLearning/mlgeo_4.9_training_clinic.ipynb",
+              "book/Chapter4-DeepLearning/Homework_DL.ipynb"}
 
 
 def toc_notebooks():
