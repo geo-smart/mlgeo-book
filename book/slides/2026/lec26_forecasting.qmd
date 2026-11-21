@@ -20,7 +20,7 @@ Reading: [4.10 Time series forecasting](https://geo-smart.github.io/mlgeo-book/m
 :::
 
 ::: {.notes}
-Geoscience runs on forecasts: atmospheric CO2, river discharge, glacier flow, groundwater, space weather. Today is a shootout — five model families, two real series, one temporal split, one metric helper, one programmatically built table — and then the three questions a single score hides: is the ranking stable across seeds, do the intervals mean what they claim, and where does skill run out (in lead time, and in event size). The persistence baseline discipline from 3.8 returns as the denominator of the day. Announce: the forecasting leaderboard opens today and closes Wed Dec 9; the Ch 4 quiz opens tomorrow.
+Geoscience runs on forecasts: atmospheric CO2, river discharge, glacier flow, groundwater, space weather. Today is a shootout — five model families, one real series, one temporal split, one metric helper, one programmatically built table — and then the three questions a single score hides: is the ranking stable across seeds, do the intervals mean what they claim, and where does skill run out (in lead time, and in event size). The persistence baseline discipline from 3.8 returns as the denominator of the day. Announce: the forecasting leaderboard opens today and closes Wed Dec 9; the Ch 4 quiz opens tomorrow.
 :::
 
 ## This lecture in the literature
@@ -37,7 +37,7 @@ Two minutes. Hyndman & Koehler: the metric paper — why percentage errors misle
 
 ## The shootout
 
-- **Series**: Mauna Loa monthly CO₂ (real — NOAA GML, 1958–2023); Jakobshavn ice speed, the hard case
+- **Series**: Mauna Loa monthly CO₂ (real — NOAA GML, 1958–2023)
 - **Contestants**: persistence → seasonal naive → SARIMA → gradient boosting → LSTM → transformer
 - **Protocol**: one temporal split — train through 2019-08, test 48 months; features from the past only
 
@@ -80,7 +80,7 @@ As configured — no row or feature subsampling — LightGBM is deterministic: t
 :::
 
 ::: {.notes}
-A table entry from one training run is a sample from a distribution over seeds; reporting a sample as the mean is the same sin as reporting a point forecast without an interval. The zero is its own lesson: five identical scores do not demonstrate stability, they demonstrate that nothing random was running — check what your seed actually feeds before citing it. Here the ranges do not overlap, so the shootout order survives the seeds — a conclusion stated with evidence instead of hope, and not a general law: on the short Jakobshavn series the gaps between models are the same size as these spreads, so its ranking should not be trusted from a single run. Deterministic entries (baselines, SARIMA) have no spread by construction.
+A table entry from one training run is a sample from a distribution over seeds; reporting a sample as the mean is the same sin as reporting a point forecast without an interval. The zero is its own lesson: five identical scores do not demonstrate stability, they demonstrate that nothing random was running — check what your seed actually feeds before citing it. Here the ranges do not overlap, so the shootout order survives the seeds — a conclusion stated with evidence instead of hope, and not a general law: on a short series the gaps between models can be the size of these spreads, and a ranking from one run should not be trusted. Deterministic entries (baselines, SARIMA) have no spread by construction.
 :::
 
 ## From a number to a range — and a check
@@ -126,7 +126,7 @@ On CO₂ (Mauna Loa — NOAA GML) the learned models beat persistence at every l
 :::
 
 ::: {.notes}
-Rolling-origin evaluation, the way operational systems are scored: models frozen as trained, the origin slides month by month through the test window, errors averaged per lead over 37 origins. Vocabulary: the skill horizon is the lead beyond which a model stops beating the reference — beyond it the model adds nothing over "no change". Weather models lose to climatology around two weeks because atmospheric chaos destroys the information in the initial state; monthly CO2 keeps its skill at every lead we measured because the structure carrying the forecast — trend plus annual cycle — never stops applying. That is the opposite answer to the same question, and the reason to always ask it. The references are instructive too: seasonal naive beats persistence only at intermediate leads (3–9) — near lead 12, persistence lands back in the same season. A single-number summary hides this whole dimension. For a series where the horizon arrives almost immediately, the notebook points at Jakobshavn.
+Rolling-origin evaluation, the way operational systems are scored: models frozen as trained, the origin slides month by month through the test window, errors averaged per lead over 37 origins. Vocabulary: the skill horizon is the lead beyond which a model stops beating the reference — beyond it the model adds nothing over "no change". Weather models lose to climatology around two weeks because atmospheric chaos destroys the information in the initial state; monthly CO2 keeps its skill at every lead we measured because the structure carrying the forecast — trend plus annual cycle — never stops applying. That is the opposite answer to the same question, and the reason to always ask it. The references are instructive too: seasonal naive beats persistence only at intermediate leads (3–9) — near lead 12, persistence lands back in the same season. A single-number summary hides this whole dimension.
 :::
 
 ## The largest event, missed in full
@@ -183,9 +183,9 @@ The table stands alone as the session summary; each row is a section of 4.10 the
 
 1. `pixi run jupyter lab` → `mlgeo_4.10_timeseriesforecast.ipynb`
 2. Run the CO₂ shootout; then Exercise 1 — drop `lag_12`/`lag_24` and explain the MASE change
-3. Run the quantile head: check the printed coverage; compare CRPS against the point models
+3. Quantile head: **Your turn (2)** computes the coverage; compare CRPS against the point models
 4. Produce both leaderboard files (`forecast_<uwnetid>.csv`, `forecast_hidden_<uwnetid>.csv`) and open the pull request
-5. Ice series + rare events if time remains — expect the ranking to wobble, and say so
+5. Rare events (section 4) if time remains: which stratum does the bulk MAE hide?
 
 ::: {.dim}
 Enrichment: autoencoders (4.6) + PINNs (4.7) — required for 569, optional for 469 · Ch 4 quiz Thu Dec 3 → Mon Dec 7 · leaderboard closes Wed Dec 9

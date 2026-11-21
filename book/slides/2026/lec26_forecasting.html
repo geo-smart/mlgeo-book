@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="lec26_forecasting_files/libs/revealjs/dist/theme/quarto-8722113eb7b5f704701650a2e9faf159.css">
+  <link rel="stylesheet" href="lec26_forecasting_files/libs/revealjs/dist/theme/quarto-78dea2cbd685bed2b396a070a9bae9ee.css">
   <link href="lec26_forecasting_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="lec26_forecasting_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="lec26_forecasting_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -147,7 +147,7 @@
 <p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-10-timeseriesforecast">4.10 Time series forecasting</a> · Forecasting leaderboard opens today</p>
 </div>
 <aside class="notes">
-<p>Geoscience runs on forecasts: atmospheric CO2, river discharge, glacier flow, groundwater, space weather. Today is a shootout — five model families, two real series, one temporal split, one metric helper, one programmatically built table — and then the three questions a single score hides: is the ranking stable across seeds, do the intervals mean what they claim, and where does skill run out (in lead time, and in event size). The persistence baseline discipline from 3.8 returns as the denominator of the day. Announce: the forecasting leaderboard opens today and closes Wed Dec 9; the Ch 4 quiz opens tomorrow.</p>
+<p>Geoscience runs on forecasts: atmospheric CO2, river discharge, glacier flow, groundwater, space weather. Today is a shootout — five model families, one real series, one temporal split, one metric helper, one programmatically built table — and then the three questions a single score hides: is the ranking stable across seeds, do the intervals mean what they claim, and where does skill run out (in lead time, and in event size). The persistence baseline discipline from 3.8 returns as the denominator of the day. Announce: the forecasting leaderboard opens today and closes Wed Dec 9; the Ch 4 quiz opens tomorrow.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -203,7 +203,7 @@
 <section id="the-shootout" class="slide level2">
 <h2>The shootout</h2>
 <ul>
-<li><strong>Series</strong>: Mauna Loa monthly CO₂ (real — NOAA GML, 1958–2023); Jakobshavn ice speed, the hard case</li>
+<li><strong>Series</strong>: Mauna Loa monthly CO₂ (real — NOAA GML, 1958–2023)</li>
 <li><strong>Contestants</strong>: persistence → seasonal naive → SARIMA → gradient boosting → LSTM → transformer</li>
 <li><strong>Protocol</strong>: one temporal split — train through 2019-08, test 48 months; features from the past only</li>
 </ul>
@@ -259,7 +259,7 @@
 <p>“We varied the seed” is evidence of robustness only when the algorithm actually consumes the seed. Report mean and spread; let the reader see whether the gaps beat the noise.</p>
 </div>
 <aside class="notes">
-<p>A table entry from one training run is a sample from a distribution over seeds; reporting a sample as the mean is the same sin as reporting a point forecast without an interval. The zero is its own lesson: five identical scores do not demonstrate stability, they demonstrate that nothing random was running — check what your seed actually feeds before citing it. Here the ranges do not overlap, so the shootout order survives the seeds — a conclusion stated with evidence instead of hope, and not a general law: on the short Jakobshavn series the gaps between models are the same size as these spreads, so its ranking should not be trusted from a single run. Deterministic entries (baselines, SARIMA) have no spread by construction.</p>
+<p>A table entry from one training run is a sample from a distribution over seeds; reporting a sample as the mean is the same sin as reporting a point forecast without an interval. The zero is its own lesson: five identical scores do not demonstrate stability, they demonstrate that nothing random was running — check what your seed actually feeds before citing it. Here the ranges do not overlap, so the shootout order survives the seeds — a conclusion stated with evidence instead of hope, and not a general law: on a short series the gaps between models can be the size of these spreads, and a ranking from one run should not be trusted. Deterministic entries (baselines, SARIMA) have no spread by construction.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -327,7 +327,7 @@
 <p>On CO₂ (Mauna Loa — NOAA GML) the learned models beat persistence at every lead tested — their skill horizon lies beyond a year. Weather’s is two weeks. The horizon is a property of the <em>series</em> as much as of the model.</p>
 </div>
 <aside class="notes">
-<p>Rolling-origin evaluation, the way operational systems are scored: models frozen as trained, the origin slides month by month through the test window, errors averaged per lead over 37 origins. Vocabulary: the skill horizon is the lead beyond which a model stops beating the reference — beyond it the model adds nothing over “no change”. Weather models lose to climatology around two weeks because atmospheric chaos destroys the information in the initial state; monthly CO2 keeps its skill at every lead we measured because the structure carrying the forecast — trend plus annual cycle — never stops applying. That is the opposite answer to the same question, and the reason to always ask it. The references are instructive too: seasonal naive beats persistence only at intermediate leads (3–9) — near lead 12, persistence lands back in the same season. A single-number summary hides this whole dimension. For a series where the horizon arrives almost immediately, the notebook points at Jakobshavn.</p>
+<p>Rolling-origin evaluation, the way operational systems are scored: models frozen as trained, the origin slides month by month through the test window, errors averaged per lead over 37 origins. Vocabulary: the skill horizon is the lead beyond which a model stops beating the reference — beyond it the model adds nothing over “no change”. Weather models lose to climatology around two weeks because atmospheric chaos destroys the information in the initial state; monthly CO2 keeps its skill at every lead we measured because the structure carrying the forecast — trend plus annual cycle — never stops applying. That is the opposite answer to the same question, and the reason to always ask it. The references are instructive too: seasonal naive beats persistence only at intermediate leads (3–9) — near lead 12, persistence lands back in the same season. A single-number summary hides this whole dimension.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -482,9 +482,9 @@
 <ol type="1">
 <li><code>pixi run jupyter lab</code> → <code>mlgeo_4.10_timeseriesforecast.ipynb</code></li>
 <li>Run the CO₂ shootout; then Exercise 1 — drop <code>lag_12</code>/<code>lag_24</code> and explain the MASE change</li>
-<li>Run the quantile head: check the printed coverage; compare CRPS against the point models</li>
+<li>Quantile head: <strong>Your turn (2)</strong> computes the coverage; compare CRPS against the point models</li>
 <li>Produce both leaderboard files (<code>forecast_&lt;uwnetid&gt;.csv</code>, <code>forecast_hidden_&lt;uwnetid&gt;.csv</code>) and open the pull request</li>
-<li>Ice series + rare events if time remains — expect the ranking to wobble, and say so</li>
+<li>Rare events (section 4) if time remains: which stratum does the bulk MAE hide?</li>
 </ol>
 <div class="dim">
 <p>Enrichment: autoencoders (4.6) + PINNs (4.7) — required for 569, optional for 469 · Ch 4 quiz Thu Dec 3 → Mon Dec 7 · leaderboard closes Wed Dec 9</p>
