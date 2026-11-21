@@ -608,10 +608,10 @@
 <h2>Reality check 1: same traces, classical opponent</h2>
 <img data-src="figs/mlgeo_4.3_CNN/detection_floor_slide.png" class="r-stretch">
 <div class="takeaway">
-<p>At matched ~1% false alarms: CNN crosses 50% at SNR ≈ 1.5, the trigger at ≈ 4.8. At SNR 2 the CNN catches 92% of events; STA/LTA catches 7%. Half a decade of SNR is the entire territory the learned detector wins.</p>
+<p>At ~1% false alarms the CNN crosses 50% at SNR ≈ 1.4, STA/LTA at ≈ 9. At SNR 2: 90% of events against 2%.</p>
 </div>
 <aside class="notes">
-<p>The design makes the comparison fair, and each choice is worth naming: identical traces for both detectors; the trigger’s threshold set from noise alone (99th percentile of 600 noise-only windows → 1% false alarms by construction, no peeking at events); CNN false alarms measured at 0–5%, comparable, so the detection curves can be read directly; 60 trials per point with binomial error bars. Three regimes: below SNR ~0.8 both detectors sit at their false-alarm floor — no algorithm rescues a signal buried in noise of the same color; above ~8 both detect everything, and there the classical trigger is the right engineering choice — free to train, impossible to drift. The shaded band is the CNN’s whole case. Whether that band matters is a scientific question, not an architectural one — in seismology it is where most small earthquakes live, which is why learned detectors displaced energy triggers in catalog building (Perol et al.; the pickers that followed). Also in the notebook: template matching, the classical method that beats both at low SNR when the source repeats — narrower question, different tool.</p>
+<p>The design makes the comparison fair, and each choice is worth naming: identical traces for both detectors; the trigger’s threshold set from noise alone (99th percentile of 600 noise-only windows → 1% false alarms by construction, no peeking at events); CNN false alarms measured at 0–5%, comparable, so the detection curves can be read directly; 60 trials per point with binomial error bars. Three regimes: below SNR ~0.8 both detectors sit at their false-alarm floor — no algorithm rescues a signal buried in noise of the same color; at SNR 20 both detect nearly everything, and there the classical trigger is the right engineering choice — free to train, impossible to drift. The shaded band is the CNN’s whole case. Whether that band matters is a scientific question, not an architectural one — in seismology it is where most small earthquakes live, which is why learned detectors displaced energy triggers in catalog building (Perol et al.; the pickers that followed). Also in the notebook: template matching, the classical method that beats both at low SNR when the source repeats — narrower question, different tool.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -628,7 +628,7 @@
 <h2>Reality check 2: real waveforms, no retraining</h2>
 <img data-src="figs/mlgeo_4.3_CNN/synth_to_real_slide.png" class="r-stretch">
 <div class="takeaway">
-<p>87.9% on synthetic test → 46.8% on real miniPNW: chance. The network flags 93% of real <em>noise</em> windows — it responds to Pacific Northwest microseism noise, not to earthquakes. The gap is the measurement. Real data: miniPNW (Ni et al.&nbsp;2023).</p>
+<p>87.9% on synthetic test → 46.8% on real miniPNW, with 93% of real <em>noise</em> windows flagged. Measured 2026-11-20 (4.3 at commit 4b4775c).</p>
 </div>
 <aside class="notes">
 <p>The uncomfortable question the book insists on asking: every number so far came from the same generator that produced the training data — so score the unchanged detector on real labeled miniPNW waveforms (a few hundred earthquake windows, P pick 7 s in, plus matched pre-event noise windows; preprocessing mirrors training exactly, no threshold moved, no bandpass chosen to fix things afterward). Left panel: balanced accuracy collapses 41 points to chance. Right panel is the diagnosis: detection is <em>highest</em> (99%) in the lowest-SNR quartile — where the window is mostly noise — and the whole curve is indistinguishable from the 93% false-alarm line. The network is not responding to earthquakes at all: it learned “synthetic event vs the one synthetic noise model,” and real nonstationary, microseism-dominated noise resembles neither, so nearly everything triggers. Name the concept: <strong>distribution shift</strong> — train and deployment data drawn from different distributions — and this is Geirhos’s shortcut learning measured by us. The sentence to leave in the room: a model validated only on synthetic data has not been validated. Closing the gap takes real data on the training side (fine-tune on miniPNW, or physics-informed noise from 2.10) — that path is the notebook’s, and 4.6 continues it.</p>
@@ -865,16 +865,16 @@ Rules: run all code with `pixi run python`, on the CPU, with less than 10 minute
 <section id="now-measure-it-yourself-open-4.3" class="slide level2">
 <h2>Now measure it yourself — open 4.3</h2>
 <ol type="1">
-<li><code>pixi run jupyter lab</code> → <code>mlgeo_4.3_CNN.ipynb</code>: run the convolution and LeNet warm-up quickly</li>
+<li><code>mlgeo_4.3_CNN.ipynb</code>: sections 1–2, with the two Your-turn cells (a kernel by hand, the weights of a layer)</li>
 <li>Run the detection-floor sweep; estimate both 50% crossings from the printed table</li>
 <li>Retrain with only 2 epochs, rerun the sweep: whose floor moves — the CNN’s or STA/LTA’s, and why?</li>
-<li>Run the miniPNW reality check; report the balanced-accuracy gap as measured</li>
+<li>Real seismograms: the same detector on miniPNW is Homework_DL</li>
 </ol>
 <div class="dim">
 <p>PyTorch names live here: <code>nn.Conv1d</code>/<code>nn.Conv2d</code>, <code>nn.MaxPool1d</code>, <code>nn.AdaptiveAvgPool1d</code>, <code>torchinfo.summary</code> · HW-CML due today · Mon: sequence models (4.4), HW-DL assigned</p>
 </div>
 <aside class="notes">
-<p>Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, this deck ~20 min, guided notebook work ~40 min, synthesis ~10 min. If time is short, cut task 1 to a skim — tasks 2–4 are the payload. Task 3 is the conceptual trap worth circulating for: the CNN’s floor rises when undertrained, STA/LTA’s does not move because it has no parameters to undertrain — that is what makes it a stable baseline. Section 7 of the notebook (recoding the Rouet-Leduc tremor CNN from its published architecture table, verified by shape checks with <code>torchinfo.summary</code>) is the take-home skill for reading papers — flag it for project teams reproducing published models. Synthesis question to collect: for your project, what is your STA/LTA — the zero-parameter method your model must beat on identical data? That question is graded in check-in #2.</p>
+<p>Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, this deck ~20 min, guided notebook work ~40 min, synthesis ~10 min. If time is short, cut task 1 to a skim — tasks 2–4 are the payload. Task 3 is the conceptual trap worth circulating for: the CNN’s floor rises when undertrained, STA/LTA’s does not move because it has no parameters to undertrain — that is what makes it a stable baseline. Section 5 of the notebook (recoding the Rouet-Leduc tremor CNN from its published architecture table, verified by shape checks with <code>torchinfo.summary</code>) is the take-home skill for reading papers — flag it for project teams reproducing published models. Synthesis question to collect: for your project, what is your STA/LTA — the zero-parameter method your model must beat on identical data? That question is graded in check-in #2.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

@@ -1,7 +1,10 @@
 """Slide figures: the 1-D CNN detector's two reality checks (lecture 22).
 
 Two figures, re-plotted at lecture scale from the executed outputs of book
-notebook 4.3 (mlgeo_4.3_CNN.ipynb, sections 5.4 and 6). The arrays below are
+notebook 4.3 (mlgeo_4.3_CNN.ipynb). Figure 1: section 4.4 of the notebook at commit
+c13d6d9 (noise color and dominant frequency drawn per window, mlgeo_synth 2.1.0).
+Figure 2: section 6 of the notebook at commit 4b4775c (2026-11-20); that section
+was later cut, and real data moved to Homework_DL. The arrays below are
 copied verbatim from the notebook's printed sweep table and miniPNW summary;
 retraining the detector here would produce a figure inconsistent with the
 book, so the executed numbers are the source of truth. If the notebook is
@@ -29,12 +32,21 @@ plt.rcParams.update({
 FIGS = Path(__file__).resolve().parent.parent / "figs" / "mlgeo_4.3_CNN"
 FIGS.mkdir(parents=True, exist_ok=True)
 
-# ---- executed sweep table, notebook 4.3 section 5.4 (60 trials per point) ----
+# ---- executed sweep table, notebook 4.3 section 4.4 (60 trials per point) ----
 snrs = np.array([0.32, 0.50, 0.79, 1.26, 2.00, 3.16, 5.01, 7.94, 12.59, 19.95])
-cnn_detect = np.array([0.02, 0.02, 0.07, 0.23, 0.92, 1.00, 1.00, 1.00, 1.00, 1.00])
-cnn_fa = np.array([0.00, 0.05, 0.00, 0.00, 0.00, 0.02, 0.00, 0.00, 0.00, 0.00])
-sta_detect = np.array([0.02, 0.03, 0.00, 0.03, 0.07, 0.05, 0.57, 1.00, 1.00, 1.00])
+cnn_detect = np.array([0.00, 0.03, 0.07, 0.38, 0.90, 0.97, 1.00, 1.00, 1.00, 1.00])
+cnn_fa = np.array([0.02, 0.00, 0.00, 0.00, 0.02, 0.03, 0.03, 0.02, 0.05, 0.00])
+sta_detect = np.array([0.00, 0.00, 0.02, 0.02, 0.02, 0.03, 0.13, 0.33, 0.77, 0.98])
 N_PER = 60
+
+
+def crossing(p):
+    """SNR where a detection curve crosses 0.5 (linear interpolation in log SNR)."""
+    return float(10 ** np.interp(0.5, p, np.log10(snrs)))
+
+
+x_cnn, x_sta = crossing(cnn_detect), crossing(sta_detect)
+print(f"50% crossings: CNN {x_cnn:.2f}, STA/LTA {x_sta:.2f}")
 
 
 def wilson(p, n, z=1.0):
@@ -57,13 +69,13 @@ ax.plot(snrs, cnn_fa, ls="--", lw=1.5, marker="^", ms=6, color="#b3402a",
 ax.axhline(0.01, ls=":", lw=1.5, color="#6e675c",
            label="STA/LTA false alarms (pinned at 1%)")
 ax.axhline(0.5, color="#6e675c", lw=1, alpha=0.5)
-ax.axvspan(1.5, 4.8, color="#116b66", alpha=0.10)
-ax.text(3.1, 0.70, "the band the learned\ndetector wins", ha="center", va="center",
+ax.axvspan(x_cnn, x_sta, color="#116b66", alpha=0.10)
+ax.text(np.sqrt(x_cnn * x_sta), 0.70, "the band the learned\ndetector wins", ha="center", va="center",
         fontsize=18, fontweight="bold", color="#116b66")
-ax.annotate("50% crossing\nSNR ≈ 1.5", xy=(1.5, 0.5), xytext=(0.5, 0.62),
+ax.annotate(f"50% crossing\nSNR ≈ {x_cnn:.1f}", xy=(x_cnn, 0.5), xytext=(0.6, 0.42),
             fontsize=18, color="#1f77b4", ha="center",
             arrowprops=dict(arrowstyle="->", color="#1f77b4"))
-ax.annotate("50% crossing\nSNR ≈ 4.8", xy=(4.8, 0.5), xytext=(11.0, 0.55),
+ax.annotate(f"50% crossing\nSNR ≈ {x_sta:.0f}", xy=(x_sta, 0.5), xytext=(15.0, 0.30),
             fontsize=18, color="#ff7f0e", ha="center",
             arrowprops=dict(arrowstyle="->", color="#ff7f0e"))
 ax.set_xscale("log")
@@ -71,7 +83,7 @@ ax.set_ylim(-0.05, 1.06)
 ax.set_xlabel("SNR (peak signal amplitude / noise standard deviation)")
 ax.set_ylabel("fraction of event windows detected")
 ax.set_title("Two detectors, identical traces, matched false-alarm budgets", loc="left")
-ax.legend(loc="lower right", bbox_to_anchor=(1.0, 0.06), framealpha=0.95)
+ax.legend(loc="upper left", framealpha=0.95, fontsize=15)
 ax.grid(alpha=0.3, which="both")
 fig.suptitle("Synthetic seismograms (mlgeo_synth) — 60 trials per point, Wilson error bars",
              x=0.01, ha="left", fontsize=20, fontweight="normal", color="#6e675c")
