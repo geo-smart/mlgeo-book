@@ -1,6 +1,6 @@
 ---
 title: "The three pillars lab, session II:<br>uncertainty you can defend"
-subtitle: "Session 25 · Mon Nov 30 · Book section 4.5 (§4–5)"
+subtitle: "Session 25 · Mon Nov 30 · Book section 4.5 (§4–7)"
 title-slide-attributes:
   data-background-color: "#faf7f2"
 ---
@@ -16,11 +16,11 @@ Two ways to get an uncertainty estimate: five training runs, or one.
 **When your model says 80%, should anyone believe it — and did you check?**
 
 ::: {.dim}
-Resume at Wednesday's checkpoint: [4.5](https://geo-smart.github.io/mlgeo-book/mlgeo-4-5-modeltraining) §4–5 · Ch 5 flipped reading assigned today (quiz closes Thu Dec 3)
+Resume at Wednesday's checkpoint: [4.5](https://geo-smart.github.io/mlgeo-book/mlgeo-4-5-modeltraining) §4–7 · Ch 5 flipped reading assigned today (quiz closes Thu Dec 3)
 :::
 
 ::: {.notes}
-Second lab session on the same notebook; ten minutes of deck, then the room resumes at the marked checkpoint (restart the kernel, rerun the Section 1 setup and helper cells, continue from Section 4). Today's arc: two uncertainty methods head-to-head, then two distinct questions to ask of any uncertainty estimate — can I trust the ranking (discrimination), can I trust the number (calibration) — and finally what happens when the model leaves the range it was trained on. Announce the flipped Ch 5 reading (5.1–5.5, reproducibility through data at scale) — it is examinable through the quiz that closes Thursday, and Friday's session discusses it. The question on screen is the session's discipline: every probability you report is a claim someone else may act on.
+Second lab session on the same notebook; ten minutes of deck, then the room resumes at the marked checkpoint (restart the kernel, rerun sections 1 and 2, continue from section 4). Today's arc: two uncertainty methods head-to-head, then two distinct questions to ask of any uncertainty estimate — can I trust the ranking (discrimination), can I trust the number (calibration) — and finally what happens when the model leaves the range it was trained on. Announce the flipped Ch 5 reading (5.1–5.5, reproducibility through data at scale) — it is examinable through the quiz that closes Thursday, and Friday's session discusses it. The question on screen is the session's discipline: every probability you report is a claim someone else may act on.
 :::
 
 ## This lecture in the literature
@@ -92,18 +92,18 @@ The range statement belongs next to the model, in writing — it cannot be infer
 This is the slide to hold for a beat. Deployment breaks the in-range assumption routinely: the mapped area ends, the next pluton is more evolved than anything in the survey, the new station sits on softer ground. Accuracy, ECE, the quintile plots — all terms of a contract whose jurisdiction is the training ranges. For final projects this becomes a required sentence in the report: the ranges your training data covered, stated alongside every score. Ask each team to draft that sentence during synthesis.
 :::
 
-## Now run it yourself — resume 4.5 at Section 4
+## Now run it yourself — resume 4.5 at section 4
 
-1. Restart the kernel; rerun the Section 1 setup and helper cells; continue from **Section 4**
-2. Train the 5-member ensemble, then the MC dropout model; reproduce the head-to-head table
-3. Run the reliability and quintile diagnostics — which question does each answer?
-4. Run the out-of-range experiment; find the silent failure and explain its mechanism
-5. Section 5 sweeps (learning rate, batch size, early stopping) + the six broken runs — diagnose before opening the solution
+1. Restart the kernel; run sections 1 and 2; continue from **section 4**
+2. Width and depth (§4); starting weights, learning rate, batch size, early stopping (§5)
+3. §6: the 5-member ensemble and MC dropout; reliability and quintile diagnostics
+4. The out-of-range experiment: find the silent failure and explain its mechanism
+5. §7: the six broken runs — diagnose before opening the solution
 
 ::: {.dim}
 Wed: forecasting shootout (4.10), leaderboard opens · Ch 5 quiz closes Thu Dec 3 · HW-DL due Fri Dec 4
 :::
 
 ::: {.notes}
-Timing for the 80-minute block (10:00–11:20): no pulse talks on 4.5 lab days; deck ~10 min, lab ~60 min, synthesis ~10 min — collect each team's one-sentence training-range contract, and one diagnosis from the six broken runs. The six broken runs are the exam real projects keep administering: overfitting, leakage, learning rate too high/too low, label noise, underfitting — curves first, code after. Implementation names live in the notebook (dropout stays in train() mode for MC passes; reliability helper computes ECE). Students short on time: prioritize tasks 2–4; Section 5's sweeps can be homework-adjacent since HW-DL exercises the same diagnostics.
+Timing for the 80-minute block (10:00–11:20): no pulse talks on 4.5 lab days; deck ~10 min, lab ~60 min, synthesis ~10 min — collect each team's one-sentence training-range contract, and one diagnosis from the six broken runs. The six broken runs are the exam real projects keep administering: overfitting, leakage, learning rate too high/too low, label noise, underfitting — curves first, code after. Implementation names live in the notebook (dropout stays in train() mode for MC passes; reliability helper computes ECE). Students short on time: prioritize tasks 3–4 (the uncertainty arc of today's deck); §4–5 sweeps can be homework-adjacent since HW-DL exercises the same decisions on real seismograms.
 :::
