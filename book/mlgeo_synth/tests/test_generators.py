@@ -44,6 +44,27 @@ def test_seismogram_dataset_labels():
     assert np.isfinite(X).all()
 
 
+def _noise_slopes(X, y, fs):
+    f = np.fft.rfftfreq(X.shape[1], 1 / fs)[1:]
+    logA = np.log(np.abs(np.fft.rfft(X, axis=1))[:, 1:] + 1e-12)
+    return np.polyfit(np.log(f), logA.T, 1)[0][y == 0]
+
+
+def test_seismogram_dataset_ranges_are_opt_in():
+    # Default: every noise window has the same spectral slope (the known shortcut).
+    X0, y0, _ = seismogram_dataset(n_events=50, n_noise=50, fs=25.0, seed=1)
+    a, _, _ = seismogram_dataset(n_events=50, n_noise=50, fs=25.0, seed=1,
+                                 noise_color_range=None, f0_range=None)
+    assert np.array_equal(X0, a)
+    assert _noise_slopes(X0, y0, 25.0).std() < 0.01
+    # With ranges: the slope varies from window to window, and metas record the draws.
+    X1, y1, m1 = seismogram_dataset(n_events=50, n_noise=50, fs=25.0, seed=1,
+                                    noise_color_range=(0.5, 2.0), f0_range=(2.0, 8.0))
+    assert _noise_slopes(X1, y1, 25.0).std() > 0.1
+    assert all(2.0 <= m["f0"] <= 8.0 for m in m1[:50])
+    assert all(0.5 <= m["noise_color"] <= 2.0 for m in m1)
+
+
 def test_spectrum_matched_noise_is_real_and_matched():
     rng = np.random.default_rng(4)
     ref = rng.standard_normal(4096)

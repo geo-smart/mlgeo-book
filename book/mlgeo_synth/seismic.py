@@ -65,11 +65,19 @@ def synthetic_seismogram(
     return t, signal + noise, meta
 
 
-def seismogram_dataset(n_events=500, n_noise=500, fs=100.0, duration_s=30.0, seed=0):
+def seismogram_dataset(n_events=500, n_noise=500, fs=100.0, duration_s=30.0, seed=0,
+                       noise_color_range=None, f0_range=None):
     """Labeled 2-class dataset of event and noise windows for detection lessons.
 
     Events draw magnitude ~ U(1, 4), distance ~ U(5, 80) km, SNR ~ logU(0.5, 20).
     Returns (X, y, meta_list): X has shape (n, duration*fs), y is 1 for event.
+
+    By default every window has the same noise spectrum (exponent 1) and every
+    event the same dominant frequency (5 Hz), so a classifier can separate the
+    classes from the spectral shape alone. ``noise_color_range=(a, b)`` draws the
+    noise exponent of each window from U(a, b); ``f0_range=(a, b)`` draws the
+    dominant frequency of each event from U(a, b) Hz. Left at None, the output is
+    identical to earlier versions for the same seed.
     """
     rng = np.random.default_rng(seed)
     n_samp = int(duration_s * fs)
@@ -77,23 +85,28 @@ def seismogram_dataset(n_events=500, n_noise=500, fs=100.0, duration_s=30.0, see
     y = np.zeros(n_events + n_noise, dtype=int)
     metas = []
     for i in range(n_events):
-        _, tr, meta = synthetic_seismogram(
-            duration_s,
-            fs,
+        kw = dict(
             magnitude=rng.uniform(1, 4),
             distance_km=rng.uniform(5, 80),
             snr=float(np.exp(rng.uniform(np.log(0.5), np.log(20)))),
             seed=rng.integers(2**31),
         )
+        if noise_color_range is not None:
+            kw["noise_color"] = float(rng.uniform(*noise_color_range))
+        if f0_range is not None:
+            kw["f0"] = float(rng.uniform(*f0_range))
+        _, tr, meta = synthetic_seismogram(duration_s, fs, **kw)
+        meta.update({k: kw[k] for k in ("magnitude", "distance_km", "noise_color", "f0") if k in kw})
         X[i] = tr / np.abs(tr).max()
         y[i] = 1
         metas.append(meta)
     for i in range(n_noise):
-        _, tr, meta = synthetic_seismogram(
-            duration_s, fs, magnitude=-10, snr=1e-12, seed=rng.integers(2**31)
-        )
+        kw = dict(magnitude=-10, snr=1e-12, seed=rng.integers(2**31))
+        if noise_color_range is not None:
+            kw["noise_color"] = float(rng.uniform(*noise_color_range))
+        _, tr, meta = synthetic_seismogram(duration_s, fs, **kw)
         X[n_events + i] = tr / np.abs(tr).max()
-        metas.append({"noise": True})
+        metas.append({"noise": True, **({"noise_color": kw["noise_color"]} if "noise_color" in kw else {})})
     return X, y, metas
 
 
