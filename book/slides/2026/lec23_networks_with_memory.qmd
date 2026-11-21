@@ -25,14 +25,18 @@ Frame the session: Friday's convolution slides one pattern across time; today's 
 
 ## This lecture in the literature
 
-{{< include refs/lec23_refs.qmd >}}
+![](figs/lit_timelines/rnn_thread.png){.r-stretch}
 
 ::: {.takeaway}
-Memory (1997) → attention (2014) → attention only (2017) → the weather (2023). One thread, and today we build each link.
+Memory → attention → attention only; then baselines first, rivers, the weather.
+:::
+
+::: {.credit}
+Hochreiter & Schmidhuber (1997) *Neural Comput.* 9, 1735–1780 · Bahdanau, Cho & Bengio (2015) *ICLR*, arXiv:1409.0473 (2014) · Vaswani et al. (2017) *NeurIPS* 30 · Makridakis, Spiliotis & Assimakopoulos (2018) *PLOS ONE* 13, e0194889 · Kratzert et al. (2019) *Hydrol. Earth Syst. Sci.* 23, 5089–5110 · Bi et al. (2023) *Nature* 619, 533–538. Icons drawn.
 :::
 
 ::: {.notes}
-Two minutes. Hochreiter & Schmidhuber: the LSTM predates most of the room; it solved a specific measured pathology (vanishing gradients — slide 5) with gates, and ran everything from speech recognition to flood forecasting for two decades. Bahdanau: attention entered as a *fix bolted onto* recurrent translation models — the attribution the book is careful about, because popular history starts at 2017; Vaswani et al. then showed the recurrence could be dropped entirely. Makridakis: the M-competition finding that fashionable ML forecasters lost to simple statistical methods across thousands of series — the field had skipped its baselines; today's persistence row is that discipline in miniature. Bi et al.: Pangu-Weather, a 3-D transformer that beat the operational ECMWF forecast on its own headline metrics — attention applied at planetary scale *and* judged against the right baseline. The arc: mechanism first, honest scoreboard always.
+Two minutes. Kratzert et al. (2019): one LSTM trained on 531 basins of the US CAMELS dataset, daily meteorology in, streamflow out, better than conceptual hydrological models calibrated basin by basin; the LSTM's cell state was found to track snow storage, a memory with a physical meaning. It is the geoscience proof that gated memory earns its keep when the process has long memory, which our GNSS series mostly does not. Hochreiter & Schmidhuber: the LSTM predates most of the room; it solved a specific measured pathology (vanishing gradients — slide 5) with gates, and ran everything from speech recognition to flood forecasting for two decades. Bahdanau: attention entered as a *fix bolted onto* recurrent translation models — the attribution the book is careful about, because popular history starts at 2017; Vaswani et al. then showed the recurrence could be dropped entirely. Makridakis: the M-competition finding that fashionable ML forecasters lost to simple statistical methods across thousands of series — the field had skipped its baselines; today's persistence row is that discipline in miniature. Bi et al.: Pangu-Weather, a 3-D transformer that beat the operational ECMWF forecast on its own headline metrics — attention applied at planetary scale *and* judged against the right baseline. The arc: mechanism first, honest scoreboard always.
 :::
 
 ## The task: 90 days in, 30 days out
