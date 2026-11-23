@@ -14,11 +14,19 @@ Verifies, for every entry in translations/*/MANIFEST.yml:
 Also checks that every file in each translation's myst.yml toc has a
 MANIFEST entry. Exit code 1 on any failure — suitable for CI.
 
+Each entry's `source_commit` names the English version it was translated from.
+A translation that fails against today's English but passes against the English
+at that commit is reported as stale (a warning, not a failure):
+the translated edition ships its own committed outputs, so an older but
+self-consistent translation never breaks the site. Retranslate, then move the
+pin forward. CI needs the full history (checkout fetch-depth: 0) for this.
+
 Usage: python tools/check_translations.py [fr|es ...]
 """
 
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -39,8 +47,16 @@ def code_fences(text: str) -> list:
     return FENCE_RE.findall(text)
 
 
-def check_ipynb(src: Path, dst: Path, localized: bool, errors: list) -> None:
-    a = json.loads(src.read_text())["cells"]
+def git_show(commit: str, rel: str):
+    """The text of `rel` (repository path) at `commit`, or None if unavailable."""
+    r = subprocess.run(["git", "show", f"{commit}:{rel}"], cwd=ROOT,
+                       capture_output=True, text=True)
+    return r.stdout if r.returncode == 0 else None
+
+
+def check_ipynb(src: Path, dst: Path, localized: bool, errors: list,
+                src_text: str = None) -> None:
+    a = json.loads(src_text if src_text is not None else src.read_text())["cells"]
     b = json.loads(dst.read_text())["cells"]
     if [c["cell_type"] for c in a] != [c["cell_type"] for c in b]:
         errors.append(f"{dst}: cell structure differs from {src}")
@@ -99,8 +115,9 @@ def plain_fences(text: str) -> list:
     return [f for f in code_fences(text) if not f.lstrip("`").startswith("{")]
 
 
-def check_md(src: Path, dst: Path, errors: list) -> None:
-    fa, fb = plain_fences(src.read_text()), plain_fences(dst.read_text())
+def check_md(src: Path, dst: Path, errors: list, src_text: str = None) -> None:
+    fa = plain_fences(src_text if src_text is not None else src.read_text())
+    fb = plain_fences(dst.read_text())
     if len(fa) != len(fb):
         errors.append(f"{dst}: {len(fb)} code fences vs {len(fa)} in English source")
         return
@@ -121,7 +138,7 @@ def toc_files(myst_yml: Path) -> list:
     return list(walk(cfg["project"]["toc"]))
 
 
-def check_language(lang: str) -> list:
+def check_language(lang: str, warnings: list) -> list:
     errors: list = []
     manifest = yaml.safe_load((TRANSLATIONS / lang / "MANIFEST.yml").read_text())
     covered = set()
@@ -138,11 +155,26 @@ def check_language(lang: str) -> list:
         if not src.exists():
             errors.append(f"{src}: English source listed in MANIFEST but missing")
             continue
-        if dst.suffix == ".ipynb":
-            localized = "localization" in entry or "localized_data" in entry
-            check_ipynb(src, dst, localized, errors)
-        elif dst.suffix == ".md":
-            check_md(src, dst, errors)
+        localized = "localization" in entry or "localized_data" in entry
+
+        def run(src_text=None):
+            errs: list = []
+            if dst.suffix == ".ipynb":
+                check_ipynb(src, dst, localized, errs, src_text)
+            elif dst.suffix == ".md":
+                check_md(src, dst, errs, src_text)
+            return errs
+
+        # Matches today's English: fine. Otherwise, if it matches the English
+        # it was translated from (source_commit), it is only stale.
+        errs = run()
+        commit = entry.get("source_commit")
+        if errs and commit:
+            pinned = git_show(commit, entry["source"])
+            if pinned is not None and not run(pinned):
+                warnings.append(f"{dst}: stale, English changed since {commit[:7]}")
+                errs = []
+        errors += errs
     myst_yml = TRANSLATIONS / lang / "myst.yml"
     if myst_yml.exists():
         for f in toc_files(myst_yml):
@@ -153,11 +185,15 @@ def check_language(lang: str) -> list:
 
 def main() -> None:
     langs = sys.argv[1:] or ["fr", "es"]
-    failures = []
+    failures, warnings = [], []
     for lang in langs:
-        errs = check_language(lang)
-        print(f"{lang}: {'OK' if not errs else f'{len(errs)} problem(s)'}")
+        nw = len(warnings)
+        errs = check_language(lang, warnings)
+        print(f"{lang}: {'OK' if not errs else f'{len(errs)} problem(s)'}, "
+              f"{len(warnings) - nw} stale")
         failures += errs
+    for w in warnings:
+        print(f"  STALE {w}")
     for e in failures:
         print(f"  FAIL {e}")
     sys.exit(1 if failures else 0)
