@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+<script src="lec26b_chapter4_compared_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lec26b_chapter4_compared_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lec26b_chapter4_compared_files/libs/quarto-html/popper.min.js"></script>
+<script src="lec26b_chapter4_compared_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lec26b_chapter4_compared_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lec26b_chapter4_compared_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="lec26b_chapter4_compared_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
+
+  <meta name="author" content="">
+  <title>Chapter 4 side by side: one loop, four kinds of network</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="lec26b_chapter4_compared_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lec26b_chapter4_compared_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="lec26b_chapter4_compared_files/libs/revealjs/dist/theme/quarto-78dea2cbd685bed2b396a070a9bae9ee.css">
+  <link href="lec26b_chapter4_compared_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lec26b_chapter4_compared_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lec26b_chapter4_compared_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lec26b_chapter4_compared_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
+  <h1 class="title">Chapter 4 side by side:<br>one loop, four kinds of network</h1>
+  <p class="subtitle">Summary and reference · Book sections 4.0–4.10 and 4.8</p>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="section" class="slide level2" data-background-color="#faf7f2">
+<h2></h2>
+<p><span class="lecture-icon">🧭</span></p>
+<h3 id="the-question-of-the-chapter">The question of the chapter</h3>
+<p>Fully connected, convolutional, recurrent, attention.</p>
+<p><strong>Given a geoscience dataset, which network, which baseline, and how do we know it was worth it?</strong></p>
+<div class="dim">
+<p>Reference deck for the end of Chapter 4 and for projects · rubric: <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-8-dl-rubric">4.8</a></p>
+</div>
+<aside class="notes">
+<p>A deck to come back to, not a new lecture: every number on it was measured in a notebook of this chapter, and each slide names where. Use it at the end of Chapter 4, at the project check-ins, and whenever a team has to justify its choice of network. Order: what each network assumes and connects; what it costs in weights; how each one did against its baseline in this chapter; the training loop and checklist they all share; the design checks that differ; the failures we met; the decision guide; the literature.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-data-structure-chooses-the-network" class="slide level2">
+<h2>The data structure chooses the network</h2>
+<img data-src="figs/lec_framework/framework_all.png" class="r-stretch">
+<div class="takeaway">
+<p>Each layer assumes how its inputs are related. Choose the one whose assumption holds for your data.</p>
+</div>
+<aside class="notes">
+<p>Table 1 of Battaglia et al.&nbsp;(2018, arXiv:1806.01261), redrawn with our examples. Fully connected: no assumption, every input to every unit. Convolutional: local relations, the same pattern anywhere in space or time. Recurrent: order, and the same rule at every time step. Graph: relations along the edges of a network of stations or cells, invariant to the order nodes are listed (not covered in the course; GraphCast is the example). The value of an assumption is what it rules out: when it holds, the network needs fewer weights and fewer samples; when it is false, it costs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-one-layer-connects" class="slide level2">
+<h2>What one layer connects</h2>
+<img data-src="figs/ch4_compared/connectivity.png" class="r-stretch">
+<div class="takeaway">
+<p>Dense: all pairs, all different. Convolution: neighbors, shared. Recurrence: one step at a time, with memory. Attention: all pairs, weighted by the data.</p>
+</div>
+<aside class="notes">
+<p>The same 8 samples of a record, four layers. Fully connected: 64 different weights, so a pattern learned at one position is not known at another (lecture 21, the shift-blindness figure). Convolution: 3 weights reused at every position; how far one output sees grows with depth (the receptive field, lecture 22). Recurrence: the same weights at every step, and a memory h that carries the past forward; a spike fades by about w_h per step (lecture 23), the LSTM’s gates slow that fading. Attention: every output can read every input directly, nothing fades with distance, and the weights are computed from the data by the softmax of query-key scores; the cost is a table of n × n weights, and positions must be added because attention alone is blind to order. Drawn by figscripts/ch4_compared.py; the attention widths are an example.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-many-weights" class="slide level2">
+<h2>How many weights?</h2>
+<img data-src="figs/ch4_compared/weights.png" class="r-stretch">
+<div class="takeaway">
+<p>Every network of the chapter has 2,000 to 18,000 weights. One dense layer on a 30-s record would need 192,064: sharing weights is what keeps them small.</p>
+</div>
+<aside class="notes">
+<p>Counts printed by the notebooks (torchinfo or a sum over model.parameters()), recorded with the lecture figures. 4.1 one hidden layer of 32 on 61 features, 2,116. 4.3 1-D detector, three convolution blocks, 4,658. 4.3 2-D CNN on 30 yearly maps, 17,953. 4.4: RNN 2,110, LSTM 5,470 (four gates), one attention head 4,126, Transformer encoder 18,142. For scale: a dense layer from 3,000 samples (30 s at 100 Hz) to 64 neurons has 192,064 weights, 40 times the whole detector. A recurrent layer costs the same weights for 90 or 900 days; it costs more computation, one step per day. Compare the weights with the number of training samples: 2,400 events in 4.1, 1,120 traces in 4.3.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="each-network-against-its-baseline" class="slide level2">
+<h2>Each network against its baseline</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Data (notebook)</th>
+<th>Network</th>
+<th>Baseline</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PNW features (4.1)</td>
+<td>89.2%</td>
+<td>forest 88.5%</td>
+<td>tie</td>
+</tr>
+<tr class="even">
+<td>P395 summaries (4.2)</td>
+<td>0.70 mm</td>
+<td>linear 0.63</td>
+<td>linear</td>
+</tr>
+<tr class="odd">
+<td>waveforms (4.3)</td>
+<td>SNR 1.4</td>
+<td>STA/LTA ≈ 9</td>
+<td>network</td>
+</tr>
+<tr class="even">
+<td>warming maps (4.3)</td>
+<td>0.008</td>
+<td>known terms 0.009</td>
+<td>tie</td>
+</tr>
+<tr class="odd">
+<td>GNSS series (4.4)</td>
+<td>1.83 mm</td>
+<td>persistence 2.10</td>
+<td>network</td>
+</tr>
+<tr class="even">
+<td>CO₂ (4.10)</td>
+<td>MASE 0.327</td>
+<td>SARIMA 0.256</td>
+<td>SARIMA</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>The scoreboard of the chapter, each row from its notebook; units in the notes. 4.1: three hidden layers with dropout, test accuracy on 800 events; logistic regression 86.8%, random forest 88.5%; one standard error is 1.2 points, so the gain over the forest is a tie. 4.2: test MAE of the 30-day position, network predicting the change (MAE loss, mean of three seeds), persistence 1.02 mm. 4.3 detector: SNR at which half of the events are detected at 1% false alarms. 4.3 maps: MAE of the warming trend in °C per decade; the straight-line fit alone gives 0.083, adding the generator’s 5-year mode gives 0.009. 4.4: validation MAE at the 30-day horizon. 4.10: test MASE over 48 months, best network (transformer; the LSTM 0.808); seasonal naive 5.44. Networks win where the structure is in the raw record and no classical method reads it (waveforms); they tie or lose where hand-built features or a classical model already encode the structure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-same-loop-for-every-network" class="slide level2">
+<h2>The same loop for every network</h2>
+<img data-src="figs/lec23_rnn/training_loop.png" class="r-stretch">
+<div class="takeaway">
+<p>Four lines per batch, one check per epoch. Only <code>model</code> changes between the four kinds of network.</p>
+</div>
+<aside class="notes">
+<p>From lecture 23, part 1. train_model in 4.3, 4.4 and 4.5 and the loop in 4.1 are this drawing: forward pass, mean loss over the batch, backward pass, optimizer step; after each epoch, the validation loss with gradients off, and a copy of the weights when it is the lowest so far.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-training-checklist-for-any-network" class="slide level2">
+<h2>The training checklist, for any network</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Practice</th>
+<th>Rubric</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Before</td>
+<td>split, scale, baseline, ranges</td>
+<td>A3–A7</td>
+</tr>
+<tr class="even">
+<td>Start</td>
+<td>seeded random weights</td>
+<td>D1</td>
+</tr>
+<tr class="odd">
+<td>Loss</td>
+<td>fits Y and its errors; class weights if unbalanced</td>
+<td>D2</td>
+</tr>
+<tr class="even">
+<td>Optimizer</td>
+<td>Adam at 0.001; look at the curve</td>
+<td>D5</td>
+</tr>
+<tr class="odd">
+<td>Stop</td>
+<td>lowest validation loss; checkpoint</td>
+<td>D4, D6</td>
+</tr>
+<tr class="even">
+<td>Report</td>
+<td>three seeds; test once; ties are ties</td>
+<td>D7, D8, E3</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Rubric sections A and D of book section 4.8. Notebook 4.5 measures most rows on one task: the split and leakage, class weights (recall of the rare andesite class), starting weights, learning rate and batch size, early stopping.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-differs-design-checks-per-network" class="slide level2">
+<h2>What differs: design checks per network</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Fully connected</th>
+<th>Convolutional</th>
+<th>Recurrent</th>
+<th>Attention</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Input</td>
+<td>standardized features</td>
+<td>normalized records</td>
+<td>causal windows</td>
+<td>windows + positions</td>
+</tr>
+<tr class="even">
+<td>Size it by</td>
+<td>samples per weight</td>
+<td>receptive field</td>
+<td>memory needed</td>
+<td>context; cost n²</td>
+</tr>
+<tr class="odd">
+<td>Baseline</td>
+<td>linear, forest</td>
+<td>STA/LTA, known terms</td>
+<td>persistence, seasonal</td>
+<td>same</td>
+</tr>
+<tr class="even">
+<td>Report</td>
+<td>confusion matrix</td>
+<td>score vs SNR</td>
+<td>error vs horizon</td>
+<td>same</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Rubric section C of 4.8, one column per network. Fully connected: standardize with training statistics; keep weights well below the number of samples. Convolutional: normalize each record so amplitude is not a shortcut; the receptive field (in seconds or pixels) must hold the pattern; report the score against SNR or another physical variable. Recurrent: windows that end before the forecast starts; a context long enough for the memory the process needs; persistence and a seasonal forecast at every horizon; error against lead time. Attention: the same, plus a positional encoding, and a cost that grows with the square of the window length (90 × 90 weights per head in 4.4).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="six-failures-we-met-and-the-check-that-catches-each" class="slide level2">
+<h2>Six failures we met, and the check that catches each</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Failure</th>
+<th>Where, measured</th>
+<th>Check</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>test outside training range</td>
+<td>4.2: worse than persistence</td>
+<td>A7</td>
+</tr>
+<tr class="even">
+<td>baseline misses the trend</td>
+<td>4.4: 15.5 against 2.1 mm</td>
+<td>C3.3</td>
+</tr>
+<tr class="odd">
+<td>baseline misses a term</td>
+<td>4.3: 0.083 → 0.009</td>
+<td>A6</td>
+</tr>
+<tr class="even">
+<td>training too long</td>
+<td>21b: best epoch 13 of 1,000</td>
+<td>D6</td>
+</tr>
+<tr class="odd">
+<td>a seed that changes nothing</td>
+<td>4.10: spread 0.000</td>
+<td>D7</td>
+</tr>
+<tr class="even">
+<td>synthetic to real</td>
+<td>4.3: 87.9% → 46.8%</td>
+<td>E5</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Each failure appeared in a notebook of this chapter. 4.2: the network predicting the P395 position lost to persistence with every seed, because the test positions lie below the training range; predicting the change fixed it. 4.4: the value of 365 days earlier is about 12 mm low on a 12 mm/yr trend, so seasonal naive is the wrong baseline for this series. 4.3: the CNN beat the straight-line fit by 10 times, and tied the fit that included the generator’s 5-year mode. Lecture 21b: P395, validation loss lowest at epoch 13 of 1,000. 4.10: LightGBM, as configured, does not use its seed, so its spread over seeds says nothing; the transformer moves from 0.327 to 0.403. 4.3 at commit 4b4775c: the synthetic-trained detector scored 87.9% on synthetic test windows and 46.8% on labeled miniPNW waveforms; Homework DL trains on the real records.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-decision-guide" class="slide level2">
+<h2>A decision guide</h2>
+<img data-src="figs/lec23b_architecture/decision_guide.png" class="r-stretch">
+<div class="takeaway">
+<p>Start from one data sample and ask what it is. The answer chooses the network and the baseline it must beat.</p>
+</div>
+<aside class="notes">
+<p>Walk it top to bottom. A table of features: fully connected, after trees and linear models, which are often as good. A grid where patterns can move: convolutional, after the classical filter, template or regression with the known terms. A sequence where the past informs the future: recurrent or attention, after persistence and a seasonal forecast. Stations or cells linked in a network: a graph network, after spatial interpolation. Data with two structures combine layers: ConvLSTM for radar maps in time (Shi et al.&nbsp;2015); a phase picker combines convolution, recurrence and attention. When the physics is known, encode it: 4.7, physics-informed networks. Rubric section B.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="in-the-literature-one-result-for-each-kind-of-network" class="slide level2">
+<h2>In the literature: one result for each kind of network</h2>
+<!-- Literature cards for lecture 23b: one published geoscience result per kind of network in the framework
+     (table, grid, sequence, graph). All four papers are already cited and checked in this course:
+     Bolibar et al. 2020 in lecture 21 (full text, CC BY 4.0); Ham et al. 2019, Nearing et al. 2024 and
+     Lam et al. 2023 in lecture 1 (DOIs checked there). Numbers copied from those slides' notes. -->
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="lit-card">
+<p><span class="lit-num">Table</span></p>
+<p><span class="lit-msg">Fully connected. Glacier mass balance, French Alps, from features: error 0.51 m w.e. per year on held-out glaciers, against 0.74 for Lasso.</span></p>
+<p><span class="lit-cite">Bolibar et al.&nbsp;(2020). <em>The Cryosphere</em>, 14, 565–584. CC BY 4.0.</span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num">Grid</span></p>
+<p><span class="lit-msg">Convolutional. El Niño from ocean maps: useful skill for about 1.5 years, above dynamical forecast systems.</span></p>
+<p><span class="lit-cite">Ham, Kim &amp; Luo (2019). <em>Nature</em>, 573, 568–572.</span></p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="lit-card">
+<p><span class="lit-num">Sequence</span></p>
+<p><span class="lit-msg">Recurrent (LSTM). Floods in ungauged rivers, 5 days ahead, as reliable as same-day global nowcasts; operational in over 80 countries.</span></p>
+<p><span class="lit-cite">Nearing et al.&nbsp;(2024). <em>Nature</em>, 627, 559–563.</span></p>
+</div>
+<div class="lit-card">
+<p><span class="lit-num">Graph</span></p>
+<p><span class="lit-msg">Graph network. 10-day global weather on a mesh of cells: better than ECMWF’s deterministic forecast on 90% of 1,380 targets.</span></p>
+<p><span class="lit-cite">Lam et al.&nbsp;(2023). <em>Science</em>, 382, 1416–1421.</span></p>
+</div>
+</div></div>
+<aside class="notes">
+<p>Bolibar et al.&nbsp;(2020, The Cryosphere 14, 565–584, doi:10.5194/tc-14-565-2020): fully connected network on topographic and climate features per glacier and year, 0.51 against 0.74 m w.e./yr for Lasso on held-out glaciers. Ham, Kim and Luo (2019, Nature 573, 568–572, doi:10.1038/s41586-019-1559-7): CNN on ocean maps for ENSO forecasts. Nearing et al.&nbsp;(2024, Nature 627, 559–563, doi:10.1038/s41586-024-07145-1): LSTM on daily weather sequences for floods in ungauged basins. Lam et al.&nbsp;(2023, Science 382, 1416–1421, doi:10.1126/science.adi2336): GraphCast, a graph network on a global mesh.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="for-your-project" class="slide level2">
+<h2>For your project</h2>
+<ol type="1">
+<li>What is one sample? Table, grid, sequence or network of stations</li>
+<li>Which network does that choose, and which baseline must it beat?</li>
+<li>Run the training checklist; three seeds; test once</li>
+<li>One test along the deployment axis: a later period, another region, real records</li>
+</ol>
+<div class="dim">
+<p>Book section 4.8 is the rubric; give it to your coding assistant and check its evidence yourself</p>
+</div>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>ESS 469/569 · Machine Learning in the Geosciences · Autumn 2026</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="lec26b_chapter4_compared_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="lec26b_chapter4_compared_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lec26b_chapter4_compared_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lec26b_chapter4_compared_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lec26b_chapter4_compared_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lec26b_chapter4_compared_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="lec26b_chapter4_compared_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lec26b_chapter4_compared_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lec26b_chapter4_compared_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lec26b_chapter4_compared_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 4.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

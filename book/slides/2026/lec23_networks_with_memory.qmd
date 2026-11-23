@@ -20,8 +20,104 @@ Reading: [4.4 Sequence models](https://geo-smart.github.io/mlgeo-book/mlgeo-4-4-
 :::
 
 ::: {.notes}
-Frame the session: Friday's convolution slides one pattern across time; today's architectures *carry state* across time — memory. We build four of them on one forecasting task and end at a table where the winner is a baseline question, not an architecture question. Announce: HW-DL is assigned today, due Fri Dec 4 — it uses everything from 4.1 through today. Also: the classification leaderboard closes tomorrow. Ask the room: who can define "forecast horizon" from their own field (weather, hydrology, aftershocks)?
+Frame the session in two parts. Part 1 (12 minutes): how any network of this chapter is trained, the loop and its checks, before Wednesday's training lab. Part 2: Friday's convolution slides one pattern across time; today's architectures *carry state* across time — memory. We build four of them on one forecasting task and end at a table where the winner is a baseline question, not an architecture question. Announce: HW-DL is assigned today, due Fri Dec 4 — it uses everything from 4.1 through today. Also: the classification leaderboard closes tomorrow. Ask the room: who can define "forecast horizon" from their own field (weather, hydrology, aftershocks)?
 :::
+
+## Part 1. Training any network: one loop
+
+![](figs/lec23_rnn/training_loop.png){.r-stretch}
+
+::: {.takeaway}
+Four lines per batch, one check per epoch. A fully connected, convolutional, recurrent or attention network changes only `model`.
+:::
+
+::: {.notes}
+Part 1, about 12 minutes: a reminder of how every network of this chapter is trained, before today's new architectures and before Wednesday's training lab (4.5). Walk the ring once. A batch of samples and their labels; the forward pass gives predictions; the loss compares them with the labels (one number, the mean over the batch, rubric D3); the backward pass gives one gradient per weight; the optimizer moves each weight against its gradient, scaled by the learning rate. In PyTorch, opt.zero_grad() clears the gradients of the previous batch before the next backward pass. After all batches, one epoch: the validation loss, with gradients off and no update, and a copy of the weights when it is the lowest so far. This is train_model in 4.3, 4.4 and 4.5 and the loop in 4.1. Drawn by figscripts/lec23_training_loop.py; no data.
+:::
+
+## Before the first epoch: four checks
+
+| Check | What goes wrong without it | Rubric |
+|---|---|---|
+| Split along how the model will be used | a random split leaks neighbors into validation | A3, A4 |
+| Scale with training statistics only | the validation set leaks into training | A5 |
+| A baseline that learns nothing | no number to beat | A6 |
+| Print the ranges of X and Y | the network extrapolates, silently | A7 |
+
+::: {.takeaway}
+Today: windows split in time, no window across the boundary; persistence is the baseline (2.10 mm).
+:::
+
+::: {.notes}
+Two minutes. These are rubric section A of book section 4.8, and they come before any training. Examples from the chapter. Split: P395 was split in time with a 30-day gap (lecture 21b); today's GNSS windows are split at 8 years with no window crossing. Scaling: today's series is standardized with the mean and standard deviation of the first 8 years only. Baseline: persistence, 2.10 mm at the 30-day horizon in 4.4. Ranges: P395's test positions (−132 to −111 mm) lie entirely below the training range (−94 to 0 mm), and every network that predicted the position failed; predicting the change fixed it (lecture 21b). Today's windows are anchored to their last day for the same reason.
+:::
+
+## Start from seeded random weights
+
+![](figs/lec21_neuron/gd_start_seeds.png){.r-stretch}
+
+::: {.takeaway}
+Random, so that the neurons of a layer differ; seeded, so that the run can be repeated. Never zeros: every neuron would get the same gradient.
+:::
+
+::: {.notes}
+One minute; the figure of lecture 21 (notebook 4.0 section 2): three seeds, three starting lines, all far from the data, and training starts from there. With all weights at zero, every neuron of a hidden layer computes the same output and receives the same gradient, so they stay identical forever: a layer of 32 neurons behaves like one. PyTorch draws random weights by default, scaled to the size of the layer; torch.manual_seed fixes the draw. Wednesday's lab (4.5 station 3) measures what the starting weights do. Rubric D1.
+:::
+
+## The learning rate sets how fast the loss falls
+
+![](figs/lec21b_train_evaluate/learning_rates.png){.r-stretch}
+
+::: {.takeaway}
+Adam, same network, same seed. 0.0001 crawls, 0.001 descends, 0.03 jumps. Start at 0.001 and look at the curve.
+:::
+
+::: {.notes}
+One minute; lecture 21b, P395 network predicting the change, 200 epochs. Adam scales each weight's step by the running size of its gradients, but still needs a learning rate. If the loss crawls, raise it by 3 to 10; if it jumps or diverges, lower it. Batch size is the other setting: a larger batch gives a smoother, slower descent. Recurrent networks add one: the gradient through many steps can explode (slide on vanishing gradients, later today), and gradient clipping (torch.nn.utils.clip_grad_norm_) caps it; 4.4 does not need it. Rubric D5.
+:::
+
+## Stop at the lowest validation loss
+
+![](figs/lec21b_train_evaluate/early_stopping.png){.r-stretch}
+
+::: {.takeaway}
+Training loss falls for 1,000 epochs; validation loss is lowest at epoch 13. Keep those weights: the checkpoint.
+:::
+
+::: {.notes}
+One minute; lecture 21b, P395, 1,000 epochs, seed 0. A falling training loss is not progress: from epoch 13 the network fits details of the training years that do not come back. In order: early stopping with a checkpoint, a smaller network, then dropout or weight decay once the curves part. Every train_model in this chapter keeps the weights of the best validation epoch and restores them at the end. Rubric D4, D6.
+:::
+
+## One run is one draw: train three seeds
+
+![](figs/lec21b_train_evaluate/p395_scores.png){.r-stretch}
+
+::: {.takeaway}
+Predicting the position: 1.15 to 4.60 mm over three seeds. Predicting the change: 0.70 to 0.73 mm, each ± 0.02. A gap inside the spread is a tie.
+:::
+
+::: {.notes}
+One minute; lecture 21b, test error on P395, seeds 0, 1 and 2. The spread over seeds is the noise floor of any comparison: differences smaller than it are ties (rubric D7, E3). Today's four sequence networks land at 1.83 to 1.87 mm on one seed; keep this slide in mind when we read that table. The test set is touched once, after every choice (D8).
+:::
+
+## The training checklist, for any network
+
+| Step | Practice | Rubric |
+|---|---|---|
+| Before | split, scale, baseline, ranges | A3–A7 |
+| Start | seeded random weights | D1 |
+| Loss | fits Y and its errors; class weights if unbalanced | D2 |
+| Optimizer | Adam at 0.001; look at the curve | D5 |
+| Stop | lowest validation loss; checkpoint | D4, D6 |
+| Report | three seeds; test once; ties are ties | D7, D8, E3 |
+
+::: {.notes}
+Leave this up for a moment; it is rubric section D of book section 4.8 in one screen. Wednesday (4.5, stations 1 to 3) and next Monday (stations 4 to 7) measure each row on one task. Now, part 2: the same loop, with a network that has memory.
+:::
+
+## Part 2. Networks with memory {background-color="#faf7f2"}
+
+The same loop, a new `model`: it reads a sequence one day at a time.
 
 ## This lecture in the literature
 
@@ -236,5 +332,5 @@ PyTorch names live here: `nn.RNN`, `nn.LSTM`, `nn.TransformerEncoderLayer`, `reg
 :::
 
 ::: {.notes}
-Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, this deck ~20 min, guided notebook work ~40 min, synthesis ~10 min. The models are tiny and train on CPU in seconds to half a minute (the notebook deliberately pins CPU — recurrent layers launch one small op per step, so accelerator overhead dominates); nobody needs a GPU today. Circulate during task 3: the per-lead-day error growth (day 60 much worse than day 31) is where forecast-horizon intuition forms. Implementation spellings: `nn.RNN`/`nn.LSTM` are one-line swaps in the same module; the from-scratch attention head uses plain `nn.Linear` maps for Q, K, V; `nn.TransformerEncoderLayer` wraps attention + feed-forward + residuals + layer norm. HW-DL guidance to say aloud: it chains 4.1→4.4 skills; teams should budget the Thanksgiving-short week — Wednesday's lab is the last new scaffolding before it. Synthesis question to collect: what is the persistence forecast in your project's domain, and what would seasonal-naive's failure mode be on your data?
+Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, part 1 (training) ~12 min, part 2 ~20 min, guided notebook work ~30 min, synthesis ~8 min. The models are tiny and train on CPU in seconds to half a minute (the notebook deliberately pins CPU — recurrent layers launch one small op per step, so accelerator overhead dominates); nobody needs a GPU today. Circulate during task 3: the per-lead-day error growth (day 60 much worse than day 31) is where forecast-horizon intuition forms. Implementation spellings: `nn.RNN`/`nn.LSTM` are one-line swaps in the same module; the from-scratch attention head uses plain `nn.Linear` maps for Q, K, V; `nn.TransformerEncoderLayer` wraps attention + feed-forward + residuals + layer norm. HW-DL guidance to say aloud: it chains 4.1→4.4 skills; teams should budget the Thanksgiving-short week — Wednesday's lab is the last new scaffolding before it. Synthesis question to collect: what is the persistence forecast in your project's domain, and what would seasonal-naive's failure mode be on your data?
 :::
