@@ -5,6 +5,10 @@ inductive bias, invariance), redrawn with the geoscience examples of this book. 
 
 Writes figs/lec_framework/framework_all.png and one version per network with its row highlighted:
 framework_fcn.png, framework_cnn.png, framework_rnn.png.
+
+Also writes the statement that opens and closes every Chapter 4 deck, the canonical networks and
+what each is good for: canonical_all.png, and canonical_fcn/cnn/rnn/gnn.png with the deck's rows
+highlighted (rnn highlights recurrent and attention, the two of notebook 4.4).
 Regenerate: pixi run python book/slides/2026/figscripts/lec_framework.py
 """
 from pathlib import Path
@@ -29,9 +33,9 @@ ROWS = [
     ("cnn", "Grid: waveform, map;\nneighbors related", "", "Convolutional", "local, same weights\nslid along", "locality; a pattern\nanywhere",
      "detector on waveforms (4.3)\ntrend in a gridded field (4.3)"),
     ("rnn", "Sequence in time:\norder matters", "", "Recurrent or\nattention", "past to present,\nsame rule each day", "order; the same rule\nat every time",
-     "GNSS: 90 days in, 30 out (4.4)\nforecasting shootout (4.10)"),
+     "GNSS: 90 days in, 30 out (4.4)\nforecasting shootout (4.9)"),
     ("gnn", "Stations with links:\nany neighbors", "", "Graph network", "along the edges\nof a graph", "given relations;\nany station order",
-     "network of stations\n(not covered)"),
+     "shaking at stations\nwithout a recording (4.5)"),
 ]
 
 
@@ -50,6 +54,12 @@ def icon(ax, kind, x, y, color):
             ax.add_patch(Circle((x - 0.8 + 0.4 * k, y), 0.12, fc="white", ec=color, lw=2))
             if k < 4:
                 ax.add_patch(FancyArrowPatch((x - 0.66 + 0.4 * k, y), (x - 0.54 + 0.4 * k, y), arrowstyle="-|>", mutation_scale=10, color=color, lw=1.5))
+    elif kind == "att":
+        for k in range(5):
+            ax.add_patch(Circle((x - 0.8 + 0.4 * k, y - 0.12), 0.12, fc="white", ec=color, lw=2, zorder=3))
+            if k < 4:
+                ax.add_patch(FancyArrowPatch((x - 0.8 + 0.4 * k, y), (x + 0.8, y), connectionstyle="arc3,rad=-0.5",
+                                             arrowstyle="-", color=color, lw=1.4 + 0.5 * k))
     else:
         pts = np.array([[-0.7, 0.2], [-0.2, 0.35], [0.4, 0.25], [-0.4, -0.25], [0.2, -0.3], [0.75, -0.15]])
         for a, b in [(0, 1), (1, 2), (0, 3), (3, 4), (1, 4), (4, 5), (2, 5)]:
@@ -83,7 +93,54 @@ def draw(highlight=None, name="framework_all"):
     plt.close(fig)
 
 
+CANON = [
+    ("fcn", "fcn", "Table of features", "Fully connected", "4.1, 4.2", "nothing; every input\nto every neuron",
+     "computed features:\ncatalogs, lab data", "linear or logistic\nregression; a forest"),
+    ("cnn", "cnn", "Waveform, map", "Convolutional", "4.3", "local patterns, the\nsame anywhere",
+     "detecting, picking;\nmaps and images", "STA/LTA, a template;\nfit with known terms"),
+    ("rnn", "rnn", "Sequence in time", "Recurrent, LSTM", "4.4, 4.9", "order; a memory;\none rule each step",
+     "forecasts from the recent\npast: GNSS, rivers", "persistence, seasonal\nnaive, SARIMA"),
+    ("att", "att", "Long sequence, set", "Attention", "4.4, 4.9", "every element can\nread every other",
+     "long context; pretrained\nweather models", "persistence, SARIMA;\na recurrent network"),
+    ("gnn", "gnn", "Linked stations", "Graph network", "4.5",
+     "relations along\nthe edges", "station networks,\nweather meshes", "spatial\ninterpolation"),
+]
+CCOL = dict(COLORS, att="#E69F00")
+
+
+def canonical(highlight=(), name="canonical_all"):
+    fig, ax = plt.subplots(figsize=(21, 7.4))
+    ax.set(xlim=(0, 22.4), ylim=(0.35, 8.5)); ax.axis("off")
+    heads = [(1.9, "Data"), (5.8, "Network"), (10.1, "Assumes"), (14.8, "Good for"), (19.7, "Beat first")]
+    for x, h in heads:
+        ax.text(x, 8.2, h, ha="center", va="center", fontsize=26, fontweight="bold", color=INK)
+    for r, (kind, ik, data, net, nb, assume, good, base) in enumerate(CANON):
+        y = 7.15 - r * 1.5
+        on = not highlight or kind in highlight
+        color = CCOL[kind] if on else LIGHT
+        text = INK if on else "#b5afa4"
+        ax.add_patch(FancyBboxPatch((0.15, y - 0.66), 22.1, 1.32, boxstyle="round,pad=0.05",
+                                    fc=(CCOL[kind] + "1f") if on else "#f4f2ee",
+                                    ec=color if kind in highlight else "none", lw=3.5))
+        icon(ax, ik, 1.9, y + 0.24, color)
+        ax.text(1.9, y - 0.5, data, ha="center", va="center", fontsize=16, color=text)
+        ax.text(5.8, y + 0.15, net, ha="center", va="center", fontsize=24, fontweight="bold", color=color if on else text)
+        ax.text(5.8, y - 0.42, nb, ha="center", va="center", fontsize=17, color=MUTED if on else text)
+        ax.text(10.1, y, assume, ha="center", va="center", fontsize=19, color=text)
+        ax.text(14.8, y, good, ha="center", va="center", fontsize=19, color=text)
+        ax.text(19.7, y, base, ha="center", va="center", fontsize=19, color=text)
+    fig.text(0.5, 0.02, "Assumptions after Battaglia et al. (2018), Table 1. Book notebooks under each network.",
+             ha="center", fontsize=16, color=MUTED)
+    fig.savefig(FIGS / f"{name}.png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+
+
 draw()
 for kind in ("fcn", "cnn", "rnn"):
     draw(kind, f"framework_{kind}")
+canonical()
+canonical(("fcn",), "canonical_fcn")
+canonical(("cnn",), "canonical_cnn")
+canonical(("rnn", "att"), "canonical_rnn")
+canonical(("gnn",), "canonical_gnn")
 print("written")

@@ -13,6 +13,8 @@ figs/ch4_compared/:
                         4.3 2-D trend CNN 17,953             lecture 22 (notebook 4.3, section 3)
                         4.4 RNN 2,110, LSTM 5,470,
                             attention 4,126, Transformer 18,142   figs/lec23_rnn/numbers.json
+                        4.5 fully connected 32,040,
+                            message passing 4,577             figs/lec23b_gnn/numbers.json (read here)
                         one dense layer, 3,000 samples -> 64: 192,064   figs/lec22_cnn/numbers.json
 Regenerate: pixi run python book/slides/2026/figscripts/ch4_compared.py
 """
@@ -23,6 +25,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
+import json  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 FIGS = HERE.parent / "figs" / "ch4_compared"
@@ -30,6 +33,7 @@ FIGS.mkdir(parents=True, exist_ok=True)
 plt.rcParams.update({"font.size": 18})
 INK, MUTED = "#26241f", "#6e675c"
 FCN, CNN, RNN, ATT = "#6e675c", "#0072B2", "#009E73", "#D55E00"
+GNN = "#CC79A7"
 
 # ------------------------------------------------------------------ 1. connectivity
 n = 8
@@ -95,17 +99,20 @@ fig.tight_layout(rect=(0, 0.04, 1, 1))
 fig.savefig(FIGS / "connectivity.png", dpi=110); plt.close(fig)
 
 # ------------------------------------------------------------------ 2. weights
+GNN_LB = json.loads((HERE.parent / "figs" / "lec23b_gnn" / "numbers.json").read_text())["leaderboard"]
 rows = [
     ("one dense layer: 3,000 samples → 64", 192064, FCN, "for scale, lecture 22"),
+    ("4.5 fully connected", GNN_LB["fully connected"]["weights"], FCN, "shaking at 40 stations"),
     ("4.4 Transformer encoder", 18142, ATT, "GNSS forecast"),
     ("4.3 2-D CNN", 17953, CNN, "warming trend from maps"),
     ("4.4 LSTM", 5470, RNN, "GNSS forecast"),
     ("4.3 1-D CNN", 4658, CNN, "earthquake detector"),
+    ("4.5 message passing", GNN_LB["message passing"]["weights"], GNN, "shaking at any stations"),
     ("4.4 attention, one head", 4126, ATT, "GNSS forecast"),
     ("4.1 one hidden layer", 2116, FCN, "PNW seismic sources"),
     ("4.4 RNN", 2110, RNN, "GNSS forecast"),
 ]
-fig, ax = plt.subplots(figsize=(16, 7.2))
+fig, ax = plt.subplots(figsize=(16, 8.6))
 y = np.arange(len(rows))[::-1]
 for yi, (name, w, col, task) in zip(y, rows):
     ax.barh(yi, w, color=col, alpha=0.9 if "dense layer" not in name else 0.35, height=0.62)
@@ -115,8 +122,8 @@ ax.set_xscale("log"); ax.set_xlim(1e3, 6e5)
 ax.set_xlabel("number of weights (log scale)")
 for s in ["top", "right"]:
     ax.spines[s].set_visible(False)
-fig.text(0.99, 0.01, "Counts printed by notebooks 4.1, 4.3 and 4.4 (torchinfo); recorded in figs/lec21b_mlp, "
-         "lec22_cnn and lec23_rnn numbers.json.", ha="right", fontsize=12, color=MUTED)
+fig.text(0.99, 0.01, "Counts printed by notebooks 4.1, 4.3, 4.4 and 4.5; recorded in figs/lec21b_mlp, "
+         "lec22_cnn, lec23_rnn and lec23b_gnn numbers.json.", ha="right", fontsize=12, color=MUTED)
 fig.tight_layout(rect=(0, 0.03, 1, 1))
 fig.savefig(FIGS / "weights.png", dpi=110); plt.close(fig)
 print("wrote", sorted(p.name for p in FIGS.glob("*.png")))

@@ -1,6 +1,6 @@
 ---
 title: "Forecasting: skill, horizons,<br>and honest intervals"
-subtitle: "Session 26 · Wed Dec 2 · Book section 4.10"
+subtitle: "Session 26 · Wed Dec 2 · Book section 4.9"
 title-slide-attributes:
   data-background-color: "#faf7f2"
 ---
@@ -16,7 +16,7 @@ Every forecast competes with a one-line rule: *tomorrow equals today*.
 **When does a trained model actually beat it — at which lead time, on which samples, by how much?**
 
 ::: {.dim}
-Reading: [4.10 Time series forecasting](https://geo-smart.github.io/mlgeo-book/mlgeo-4-10-timeseriesforecast) · Forecasting leaderboard opens today
+Reading: [4.9 Time series forecasting](https://geo-smart.github.io/mlgeo-book/mlgeo-4-9-timeseriesforecast) · Forecasting leaderboard opens today
 :::
 
 ::: {.notes}
@@ -51,7 +51,7 @@ The friendly case first: CO2 is long, regular, strongly seasonal, smooth trend �
 
 ## The ranking, and what it cost
 
-![](figs/mlgeo_4.10_timeseriesforecast/shootout_mase_slide.png){.r-stretch}
+![](figs/mlgeo_4.9_timeseriesforecast/shootout_mase_slide.png){.r-stretch}
 
 ::: {.takeaway}
 SARIMA wins with a handful of parameters: it encodes exactly what this series is made of. Problem structure, not model capacity, is the bottleneck.
@@ -85,7 +85,7 @@ A table entry from one training run is a sample from a distribution over seeds; 
 
 ## From a number to a range — and a check
 
-![](figs/mlgeo_4.10_timeseriesforecast/fig_05.png){.r-stretch}
+![](figs/mlgeo_4.9_timeseriesforecast/fig_05.png){.r-stretch}
 
 ::: {.takeaway}
 The 90% interval caught 44 of 48 test months — 91.7% measured coverage. Nobody told the model that uncertainty compounds with lead time: the interval grows 2.3 → 6.3 ppm on its own. Mauna Loa CO₂ — NOAA GML.
@@ -119,7 +119,7 @@ The three numbers in one argument. The quantile model's CRPS beats its own media
 
 ## Where does skill run out? Plot error vs lead time
 
-![](figs/mlgeo_4.10_timeseriesforecast/fig_06.png){.r-stretch}
+![](figs/mlgeo_4.9_timeseriesforecast/fig_06.png){.r-stretch}
 
 ::: {.takeaway}
 On CO₂ (Mauna Loa — NOAA GML) the learned models beat persistence at every lead tested — their skill horizon lies beyond a year. Weather's is two weeks. The horizon is a property of the *series* as much as of the model.
@@ -131,14 +131,14 @@ Rolling-origin evaluation, the way operational systems are scored: models frozen
 
 ## The largest event, missed in full
 
-![](figs/mlgeo_4.10_timeseriesforecast/fig_08.png){.r-stretch}
+![](figs/mlgeo_4.9_timeseriesforecast/fig_08.png){.r-stretch}
 
 ::: {.takeaway}
 Bulk MAE 0.97 — excellent. The largest injected event, amplitude 50.2, was missed by 50.8: the model forecast the seasonal background and the flood happened anyway. Stratify your scoring by event size. Synthetic series (mlgeo_synth).
 :::
 
 ::: {.notes}
-Synthetic on purpose (mlgeo_synth.inject_rare_events): we need ground truth about event amplitudes, which is exactly what a bulk metric never sees. Eight years of daily seasonal background, ~6 events per year, amplitudes drawn from a generalized Pareto tail (shape 0.5) — the extreme-value regime of real flood and surge records, where the largest future event routinely exceeds the largest yet observed. The forecaster gets every advantage (one-step-ahead, yesterday always in the features) and still: quiet days 0.62, mid-size events ~10.6, largest stratum 18.3 — thirty times the quiet floor, hidden because event samples are 56 of 730 test days. Both causes are structural: onsets are unpredictable from lag features, and the heavy tail guarantees the exam contains a magnitude the textbook never showed — 4.5's out-of-range lesson, now in amplitude instead of feature space. The repair is in the metric: stratified tables, event-window recall, or amplitude-weighted losses. A leaderboard scored on overall MAE would congratulate this model — which is the bridge to the next slide.
+Synthetic on purpose (mlgeo_synth.inject_rare_events): we need ground truth about event amplitudes, which is exactly what a bulk metric never sees. Eight years of daily seasonal background, ~6 events per year, amplitudes drawn from a generalized Pareto tail (shape 0.5) — the extreme-value regime of real flood and surge records, where the largest future event routinely exceeds the largest yet observed. The forecaster gets every advantage (one-step-ahead, yesterday always in the features) and still: quiet days 0.62, mid-size events ~10.6, largest stratum 18.3 — thirty times the quiet floor, hidden because event samples are 56 of 730 test days. Both causes are structural: onsets are unpredictable from lag features, and the heavy tail guarantees the exam contains a magnitude the textbook never showed — 4.7's out-of-range lesson, now in amplitude instead of feature space. The repair is in the metric: stratified tables, event-window recall, or amplitude-weighted losses. A leaderboard scored on overall MAE would congratulate this model — which is the bridge to the next slide.
 :::
 
 ## The leaderboard contract: two tracks
@@ -176,19 +176,19 @@ One temporal split, one metric helper, one computed table — and five questions
 :::
 
 ::: {.notes}
-The table stands alone as the session summary; each row is a section of 4.10 the students run today. If one thing survives the quarter: baselines before models, and every claimed skill number comes with the question it answers — the same discipline as 3.8's validation ladder, extended along lead time, probability, and event size.
+The table stands alone as the session summary; each row is a section of 4.9 the students run today. If one thing survives the quarter: baselines before models, and every claimed skill number comes with the question it answers — the same discipline as 3.8's validation ladder, extended along lead time, probability, and event size.
 :::
 
-## Now run it yourself — open 4.10
+## Now run it yourself — open 4.9
 
-1. `pixi run jupyter lab` → `mlgeo_4.10_timeseriesforecast.ipynb`
+1. `pixi run jupyter lab` → `mlgeo_4.9_timeseriesforecast.ipynb`
 2. Run the CO₂ shootout; then Exercise 1 — drop `lag_12`/`lag_24` and explain the MASE change
 3. Quantile head: **Your turn (2)** computes the coverage; compare CRPS against the point models
 4. Produce both leaderboard files (`forecast_<uwnetid>.csv`, `forecast_hidden_<uwnetid>.csv`) and open the pull request
 5. Rare events (section 4) if time remains: which stratum does the bulk MAE hide?
 
 ::: {.dim}
-Enrichment: autoencoders (4.6) + PINNs (4.7) — required for 569, optional for 469 · Ch 4 quiz Thu Dec 3 → Mon Dec 7 · leaderboard closes Wed Dec 9
+Enrichment: autoencoders (4.6) + PINNs (4.8) — required for 569, optional for 469 · Ch 4 quiz Thu Dec 3 → Mon Dec 7 · leaderboard closes Wed Dec 9
 :::
 
 ::: {.notes}

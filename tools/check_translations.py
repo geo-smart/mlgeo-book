@@ -170,7 +170,7 @@ def check_language(lang: str, warnings: list) -> list:
         errs = run()
         commit = entry.get("source_commit")
         if errs and commit:
-            pinned = git_show(commit, entry["source"])
+            pinned = git_show(commit, entry.get("source_at_commit", entry["source"]))
             if pinned is not None and not run(pinned):
                 warnings.append(f"{dst}: stale, English changed since {commit[:7]}")
                 errs = []

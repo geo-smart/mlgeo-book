@@ -131,7 +131,7 @@
 
 <section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
   <h1 class="title">Forecasting: skill, horizons,<br>and honest intervals</h1>
-  <p class="subtitle">Session 26 · Wed Dec 2 · Book section 4.10</p>
+  <p class="subtitle">Session 26 · Wed Dec 2 · Book section 4.9</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -144,7 +144,7 @@
 <p>Every forecast competes with a one-line rule: <em>tomorrow equals today</em>.</p>
 <p><strong>When does a trained model actually beat it — at which lead time, on which samples, by how much?</strong></p>
 <div class="dim">
-<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-10-timeseriesforecast">4.10 Time series forecasting</a> · Forecasting leaderboard opens today</p>
+<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-9-timeseriesforecast">4.9 Time series forecasting</a> · Forecasting leaderboard opens today</p>
 </div>
 <aside class="notes">
 <p>Geoscience runs on forecasts: atmospheric CO2, river discharge, glacier flow, groundwater, space weather. Today is a shootout — five model families, one real series, one temporal split, one metric helper, one programmatically built table — and then the three questions a single score hides: is the ranking stable across seeds, do the intervals mean what they claim, and where does skill run out (in lead time, and in event size). The persistence baseline discipline from 3.8 returns as the denominator of the day. Announce: the forecasting leaderboard opens today and closes Wed Dec 9; the Ch 4 quiz opens tomorrow.</p>
@@ -226,7 +226,7 @@
 </section>
 <section id="the-ranking-and-what-it-cost" class="slide level2">
 <h2>The ranking, and what it cost</h2>
-<img data-src="figs/mlgeo_4.10_timeseriesforecast/shootout_mase_slide.png" class="r-stretch">
+<img data-src="figs/mlgeo_4.9_timeseriesforecast/shootout_mase_slide.png" class="r-stretch">
 <div class="takeaway">
 <p>SARIMA wins with a handful of parameters: it encodes exactly what this series is made of. Problem structure, not model capacity, is the bottleneck.</p>
 </div>
@@ -274,7 +274,7 @@
 </section>
 <section id="from-a-number-to-a-range-and-a-check" class="slide level2">
 <h2>From a number to a range — and a check</h2>
-<img data-src="figs/mlgeo_4.10_timeseriesforecast/fig_05.png" class="r-stretch">
+<img data-src="figs/mlgeo_4.9_timeseriesforecast/fig_05.png" class="r-stretch">
 <div class="takeaway">
 <p>The 90% interval caught 44 of 48 test months — 91.7% measured coverage. Nobody told the model that uncertainty compounds with lead time: the interval grows 2.3 → 6.3 ppm on its own. Mauna Loa CO₂ — NOAA GML.</p>
 </div>
@@ -322,7 +322,7 @@
 </section>
 <section id="where-does-skill-run-out-plot-error-vs-lead-time" class="slide level2">
 <h2>Where does skill run out? Plot error vs lead time</h2>
-<img data-src="figs/mlgeo_4.10_timeseriesforecast/fig_06.png" class="r-stretch">
+<img data-src="figs/mlgeo_4.9_timeseriesforecast/fig_06.png" class="r-stretch">
 <div class="takeaway">
 <p>On CO₂ (Mauna Loa — NOAA GML) the learned models beat persistence at every lead tested — their skill horizon lies beyond a year. Weather’s is two weeks. The horizon is a property of the <em>series</em> as much as of the model.</p>
 </div>
@@ -342,12 +342,12 @@
 </section>
 <section id="the-largest-event-missed-in-full" class="slide level2">
 <h2>The largest event, missed in full</h2>
-<img data-src="figs/mlgeo_4.10_timeseriesforecast/fig_08.png" class="r-stretch">
+<img data-src="figs/mlgeo_4.9_timeseriesforecast/fig_08.png" class="r-stretch">
 <div class="takeaway">
 <p>Bulk MAE 0.97 — excellent. The largest injected event, amplitude 50.2, was missed by 50.8: the model forecast the seasonal background and the flood happened anyway. Stratify your scoring by event size. Synthetic series (mlgeo_synth).</p>
 </div>
 <aside class="notes">
-<p>Synthetic on purpose (mlgeo_synth.inject_rare_events): we need ground truth about event amplitudes, which is exactly what a bulk metric never sees. Eight years of daily seasonal background, ~6 events per year, amplitudes drawn from a generalized Pareto tail (shape 0.5) — the extreme-value regime of real flood and surge records, where the largest future event routinely exceeds the largest yet observed. The forecaster gets every advantage (one-step-ahead, yesterday always in the features) and still: quiet days 0.62, mid-size events ~10.6, largest stratum 18.3 — thirty times the quiet floor, hidden because event samples are 56 of 730 test days. Both causes are structural: onsets are unpredictable from lag features, and the heavy tail guarantees the exam contains a magnitude the textbook never showed — 4.5’s out-of-range lesson, now in amplitude instead of feature space. The repair is in the metric: stratified tables, event-window recall, or amplitude-weighted losses. A leaderboard scored on overall MAE would congratulate this model — which is the bridge to the next slide.</p>
+<p>Synthetic on purpose (mlgeo_synth.inject_rare_events): we need ground truth about event amplitudes, which is exactly what a bulk metric never sees. Eight years of daily seasonal background, ~6 events per year, amplitudes drawn from a generalized Pareto tail (shape 0.5) — the extreme-value regime of real flood and surge records, where the largest future event routinely exceeds the largest yet observed. The forecaster gets every advantage (one-step-ahead, yesterday always in the features) and still: quiet days 0.62, mid-size events ~10.6, largest stratum 18.3 — thirty times the quiet floor, hidden because event samples are 56 of 730 test days. Both causes are structural: onsets are unpredictable from lag features, and the heavy tail guarantees the exam contains a magnitude the textbook never showed — 4.7’s out-of-range lesson, now in amplitude instead of feature space. The repair is in the metric: stratified tables, event-window recall, or amplitude-weighted losses. A leaderboard scored on overall MAE would congratulate this model — which is the bridge to the next slide.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -464,7 +464,7 @@
 <p>One temporal split, one metric helper, one computed table — and five questions no single score answers.</p>
 </div>
 <aside class="notes">
-<p>The table stands alone as the session summary; each row is a section of 4.10 the students run today. If one thing survives the quarter: baselines before models, and every claimed skill number comes with the question it answers — the same discipline as 3.8’s validation ladder, extended along lead time, probability, and event size.</p>
+<p>The table stands alone as the session summary; each row is a section of 4.9 the students run today. If one thing survives the quarter: baselines before models, and every claimed skill number comes with the question it answers — the same discipline as 3.8’s validation ladder, extended along lead time, probability, and event size.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -477,17 +477,17 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="now-run-it-yourself-open-4.10" class="slide level2">
-<h2>Now run it yourself — open 4.10</h2>
+<section id="now-run-it-yourself-open-4.9" class="slide level2">
+<h2>Now run it yourself — open 4.9</h2>
 <ol type="1">
-<li><code>pixi run jupyter lab</code> → <code>mlgeo_4.10_timeseriesforecast.ipynb</code></li>
+<li><code>pixi run jupyter lab</code> → <code>mlgeo_4.9_timeseriesforecast.ipynb</code></li>
 <li>Run the CO₂ shootout; then Exercise 1 — drop <code>lag_12</code>/<code>lag_24</code> and explain the MASE change</li>
 <li>Quantile head: <strong>Your turn (2)</strong> computes the coverage; compare CRPS against the point models</li>
 <li>Produce both leaderboard files (<code>forecast_&lt;uwnetid&gt;.csv</code>, <code>forecast_hidden_&lt;uwnetid&gt;.csv</code>) and open the pull request</li>
 <li>Rare events (section 4) if time remains: which stratum does the bulk MAE hide?</li>
 </ol>
 <div class="dim">
-<p>Enrichment: autoencoders (4.6) + PINNs (4.7) — required for 569, optional for 469 · Ch 4 quiz Thu Dec 3 → Mon Dec 7 · leaderboard closes Wed Dec 9</p>
+<p>Enrichment: autoencoders (4.6) + PINNs (4.8) — required for 569, optional for 469 · Ch 4 quiz Thu Dec 3 → Mon Dec 7 · leaderboard closes Wed Dec 9</p>
 </div>
 <aside class="notes">
 <p>Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, deck ~20 min, notebook exercise ~40 min (the shootout cells run in a few minutes; circulate during the leaderboard-file step — the PR mechanics trip more students than the modeling), synthesis ~10 min: collect one skill-horizon claim per team, phrased with its lead time and reference. Friday: Ch 5 discussion from the flipped reading plus communicating your science (7.1–7.2), and HW-DL is due. The scikit-learn/torch spellings live in the notebook (SARIMAX order (1,1,1)×(1,1,1,12), LGBMRegressor on lag features, pinball loss over 19 quantile levels); the concept-to-deployment mapping is the graded skill.</p>

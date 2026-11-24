@@ -1,5 +1,5 @@
 """Slide figure: error and ensemble disagreement across the training bound
-(lecture 25, book 4.5 §4.6).
+(lecture 25, book 4.7 §6.4).
 
 Left: error rate per compositional-range bin. Right: mean ensemble
 disagreement per bin. The training bound (|differentiation index| = 1) is
@@ -7,7 +7,7 @@ where the mapped range of the field campaign ends; both quantities rise
 past it, and the annotation carries the silent-failure count.
 
 Every number is copied from the executed outputs of
-book/Chapter4-DeepLearning/mlgeo_4.5_ModelTraining.ipynb (Section 4.6
+book/Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb (Section 6.4
 out-of-range table: n / error rate / mean disagreement per range bin, and
 the 77-errors / 1-silent-failure printout); re-verify there after any
 notebook re-run. Data: synthetic lithology table (mlgeo_synth.geochem_table).
@@ -63,13 +63,13 @@ axr.text(0.03, 0.99,
          fontweight="bold", color="#116b66")
 
 fig.suptitle("Ensemble trained only on typical compositions, tested on the full range — "
-             "synthetic (mlgeo_synth.geochem_table), executed 4.5 notebook",
+             "synthetic (mlgeo_synth.geochem_table), executed 4.7 notebook",
              x=0.01, y=0.995, ha="left", va="top",
              fontsize=17, fontweight="normal", color="#6e675c")
 fig.tight_layout(rect=(0, 0, 1, 0.88), w_pad=2.5)
 fig.subplots_adjust(top=0.78)
 
-out = (Path(__file__).resolve().parent.parent / "figs" / "mlgeo_4.5_ModelTraining"
+out = (Path(__file__).resolve().parent.parent / "figs" / "mlgeo_4.7_ModelTraining"
        / "out_of_range_slide.png")
 out.parent.mkdir(parents=True, exist_ok=True)
 fig.savefig(out, dpi=130, bbox_inches="tight", pad_inches=0.05)

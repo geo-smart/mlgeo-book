@@ -7,7 +7,10 @@ Reading in French or Spanish, or translating into another language? The [triling
 ```{glossary}
 
 Ablation
-: An experiment that removes one component of a model or workflow (a feature, a loss term, a layer) and retrains, so the score difference measures what that component contributes. Notebook 4.7 ablates the physics term of a PINN loss this way.
+: An experiment that removes one component of a model or workflow (a feature, a loss term, a layer) and retrains, so the score difference measures what that component contributes. Notebook 4.8 ablates the physics term of a PINN loss this way.
+
+Adjacency matrix
+: For a graph of n nodes, the n × n matrix whose entry $A_{ij}$ is 1 when nodes i and j are joined by an edge and 0 otherwise. Its row sums are the degrees (the number of neighbors of each node). Notebook 4.5 builds it for 40 seismic stations, each joined to its 6 nearest, and normalizes it so that each station is averaged with its neighbors.
 
 Agent
 : A large language model wrapped in a loop that can call tools (run code, read files, search), observe the results, and act again toward a goal, rather than producing a single text reply. Chapter 6 builds and evaluates agents for research tasks.
@@ -31,7 +34,7 @@ Data leakage
 : Any path by which information unavailable at prediction time reaches the model during training — fitting a scaler on the full dataset before splitting, test samples correlated with training samples, future values informing past predictions. Leakage inflates scores that then collapse on genuinely new data. See also *leakage (spatial and temporal)* and, for the unrelated signal-processing term, *spectral leakage*.
 
 Deep ensemble
-: Several copies of the same network trained from different random seeds. Averaging their predictions usually improves accuracy, and their disagreement on a sample estimates epistemic uncertainty (notebook 4.5).
+: Several copies of the same network trained from different random seeds. Averaging their predictions usually improves accuracy, and their disagreement on a sample estimates epistemic uncertainty (notebook 4.7).
 
 Dimensionality reduction
 : Compressing many features into few while preserving structure, either to visualize data (PCA, t-SNE, UMAP) or to feed a smaller representation to a model. An autoencoder's bottleneck is a learned form of it.
@@ -43,7 +46,7 @@ Eval set
 : A curated collection of test cases with known answers and an automatic scoring rule, used to measure an LLM or agent system instead of trusting impressions. Notebook 6.3 builds one from synthetic data with known ground truth.
 
 Expected calibration error (ECE)
-: A single-number summary of a reliability diagram: the average gap between stated confidence and observed accuracy, weighted by how many predictions fall in each confidence bin. Computed alongside reliability diagrams in notebooks 3.6 and 4.5.
+: A single-number summary of a reliability diagram: the average gap between stated confidence and observed accuracy, weighted by how many predictions fall in each confidence bin. Computed alongside reliability diagrams in notebooks 3.6 and 4.7.
 
 Feature engineering
 : Constructing informative model inputs from raw data using domain knowledge: STA/LTA ratios, spectral statistics, rolling means, kurtosis. Classical machine learning (Chapter 3) depends on it; deep networks learn many features from raw data instead.
@@ -57,20 +60,26 @@ Flicker noise
 [GitHub](https://github.com)
 : The hosting service where the course repositories, datasets, and student projects live, built around Git plus issues and pull requests.
 
+Graph (node, edge)
+: A set of objects, the nodes, and of links between pairs of them, the edges. A seismic network is a graph when stations are nodes and edges join nearby stations; a river network or a mesh around the globe is one too. Nodes and edges carry numbers: node features (a recorded amplitude, a mask flag) and edge features (distance and direction between two stations). Notebook 4.5.
+
+Graph convolution
+: A network layer that multiplies each node's numbers by one weight matrix shared by all nodes, then takes a normalized average over the node and its neighbors with the normalized adjacency matrix (Kipf & Welling, 2017). It knows who is a neighbor, not how far away or in which direction. The convolution of 4.3 is the same operation on a regular grid of pixels (notebook 4.5).
+
 Grouped cross-validation
 : Cross-validation that keeps all samples sharing a group — the same station, field site, or earthquake — in the same fold. Scores then measure generalization to new groups instead of interpolation within familiar ones (Chapter 3.8).
 
 Heteroscedastic noise
-: Noise whose magnitude varies across samples — a mixed network of lab-grade and field-grade instruments, or stations with different site conditions. When the per-sample noise level is known, variance-weighted losses recover accuracy that ignoring the metadata gives up (notebook 4.5).
+: Noise whose magnitude varies across samples — a mixed network of lab-grade and field-grade instruments, or stations with different site conditions. When the per-sample noise level is known, variance-weighted losses recover accuracy that ignoring the metadata gives up (notebook 4.7).
 
 Hidden test set
-: Held-out data that is never inspected or touched during model development and is scored once, at the end. The class forecasting leaderboard (4.10) uses one; touching it repeatedly turns it into a validation set.
+: Held-out data that is never inspected or touched during model development and is scored once, at the end. The class forecasting leaderboard (4.9) uses one; touching it repeatedly turns it into a validation set.
 
 Instrument response
 : The transfer function of a sensor and recording system, mapping true ground motion to the recorded counts. Seismic and geodetic records must be corrected for it before amplitudes carry physical units.
 
 Interpolation vs extrapolation
-: Prediction inside the region covered by training data versus outside it. Most learned models degrade sharply, and sometimes silently, when extrapolating; the training distribution is a contract, and split design (3.8) plus out-of-range checks (4.5) test whether a score speaks to one regime or the other.
+: Prediction inside the region covered by training data versus outside it. Most learned models degrade sharply, and sometimes silently, when extrapolating; the training distribution is a contract, and split design (3.8) plus out-of-range checks (4.7) test whether a score speaks to one regime or the other.
 
 Jupyter notebook
 : A document mixing runnable code, its outputs, and narrative text; the format of most chapters of this book.
@@ -82,16 +91,22 @@ Linear probe
 : A classifier made of a frozen pretrained encoder plus a small trained linear head. It measures what the pretrained features alone carry; *fine-tuning*, by contrast, also updates the encoder weights. Notebook 4.6 runs a linear probe against training from scratch.
 
 MASE
-: Mean absolute scaled error: a forecast's mean absolute error divided by that of a naive baseline (persistence or seasonal-naive) on the same series. MASE below 1 beats the baseline; above 1, the model loses to it (notebook 4.10).
+: Mean absolute scaled error: a forecast's mean absolute error divided by that of a naive baseline (persistence or seasonal-naive) on the same series. MASE below 1 beats the baseline; above 1, the model loses to it (notebook 4.9).
 
 MC dropout (Monte Carlo dropout)
-: Running a trained network many times with dropout left on at prediction time. Each pass samples a slightly different subnetwork, and the spread of the outputs approximates epistemic uncertainty with a single trained model. Compared head-to-head with a deep ensemble in notebook 4.5.
+: Running a trained network many times with dropout left on at prediction time. Each pass samples a slightly different subnetwork, and the spread of the outputs approximates epistemic uncertainty with a single trained model. Compared head-to-head with a deep ensemble in notebook 4.7.
+
+Message passing
+: The general recipe of graph networks (Gilmer et al., 2017), in three steps for each node: each neighbor sends a message computed from its own numbers and the edge features (distance, direction); the node aggregates the messages with a function that works for any number of neighbors, such as a mean; the node updates its state from its own numbers and that aggregate. The same weights apply at every node (notebook 4.5).
 
 [MyST](https://mystmd.org)
 : Markedly Structured Text, the Markdown flavor and build system this book is written and published with.
 
+Permutation invariance
+: A result that does not change when the nodes of a graph are listed in another order, as a graph-level prediction (one magnitude per earthquake from all its stations) should. For a node-level prediction (one value per station) the property is called permutation equivariance: reordering the stations reorders the predictions in the same way and changes nothing else. Notebook 4.5 tests it by shuffling the station list; a fully connected network fails the test and graph networks pass it.
+
 Physics-informed neural network (PINN)
-: A network trained with the residual of a governing equation (conservation law, diffusion equation) added to the loss alongside data misfit, so predictions are pulled toward physically consistent solutions (notebook 4.7).
+: A network trained with the residual of a governing equation (conservation law, diffusion equation) added to the loss alongside data misfit, so predictions are pulled toward physically consistent solutions (notebook 4.8).
 
 [pixi](https://pixi.sh)
 : The package and environment manager used to install the course software stack. It resolves conda-ecosystem packages into a lockfile, so every student and the CI build the identical environment.

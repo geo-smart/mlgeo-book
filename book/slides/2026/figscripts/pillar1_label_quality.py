@@ -1,4 +1,4 @@
-"""Slide figure: what label-error structure costs (lecture 24, book 4.5 §3.1).
+"""Slide figure: what label-error structure costs (lecture 24, book 4.7 §3.1).
 
 Two panels at lecture scale. Left: clean-test accuracy for the same MLP
 trained on clean labels, 30% uniform flips, and 30% adjacent-class
@@ -7,7 +7,7 @@ three seeds. Right: the clean-test confusion matrix after training on
 adjacent-class disagreement.
 
 Every number is copied from the executed outputs of
-book/Chapter4-DeepLearning/mlgeo_4.5_ModelTraining.ipynb (Sections 3.1
+book/Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb (Sections 3.1
 "Label noise" and "Structured disagreement"); re-verify there after any
 notebook re-run. Data: synthetic lithology table (mlgeo_synth.geochem_table).
 
@@ -79,13 +79,13 @@ cb = fig.colorbar(im, ax=axr, fraction=0.046, pad=0.03)
 cb.set_label("fraction of true class", fontsize=17)
 cb.ax.tick_params(labelsize=15)
 
-fig.suptitle("Synthetic lithology table (mlgeo_synth.geochem_table) — executed 4.5 notebook",
+fig.suptitle("Synthetic lithology table (mlgeo_synth.geochem_table) — executed 4.7 notebook",
              x=0.01, y=0.995, ha="left", va="top",
              fontsize=18, fontweight="normal", color="#6e675c")
 fig.tight_layout(rect=(0, 0, 1, 0.89), w_pad=2.5)
 fig.subplots_adjust(top=0.80)
 
-out = (Path(__file__).resolve().parent.parent / "figs" / "mlgeo_4.5_ModelTraining"
+out = (Path(__file__).resolve().parent.parent / "figs" / "mlgeo_4.7_ModelTraining"
        / "label_quality_slide.png")
 out.parent.mkdir(parents=True, exist_ok=True)
 fig.savefig(out, dpi=130, bbox_inches="tight", pad_inches=0.05)

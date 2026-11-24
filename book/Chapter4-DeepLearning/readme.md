@@ -39,12 +39,10 @@ This chapter teaches deep learning by building it up one piece at a time, in PyT
    - LSTMs, self-attention from scratch, and a small transformer encoder
    - All compared on the same forecasting task, against persistence and seasonal-naive baselines
 
-6. **The three pillars of model development** (4.5)
-   - Pillar 1: training-data curation — label noise, structured label disagreement, class imbalance, sensor noise, heteroscedastic quality
-   - Pillar 2: architecture — width, depth, baselines, deep ensembles and MC dropout for uncertainty, calibration vs discrimination, out-of-range behavior
-   - Pillar 3: training strategies — learning rate, batch size, early stopping, schedulers
-   - Diagnosing broken training runs from their loss curves
-   - Hyperparameter search with Optuna
+6. **Graph networks** (4.5)
+   - A synthetic seismic network as a graph: stations as nodes, the 6 nearest stations as edges, the adjacency matrix and its normalized form
+   - Shaking at stations without a recording: a fully connected network, a graph convolution and message passing with distance and direction on the edges, ranked against inverse-distance weighting and floors from the known truth
+   - Two tests a fully connected network fails: reorder the stations, add ten new stations; and why station terms need a recording history or Vs30
 
 7. **Autoencoders and self-supervision** (4.6)
    - Dense, convolutional, and denoising autoencoders on seismic spectrograms
@@ -52,18 +50,24 @@ This chapter teaches deep learning by building it up one piece at a time, in PyT
    - Reusing a pretrained encoder when labels are scarce
    - A miniPNW transfer probe: features cross the synthetic-to-real gap, decision boundaries do not
 
-8. **Physics-informed learning** (4.7)
+8. **Training and evaluating a network: the lab, the clinic and the rubric** (4.7)
+   - Pillar 1: training-data curation — label noise, structured label disagreement, class imbalance, sensor noise, heteroscedastic quality
+   - Pillar 2: architecture — width, depth, baselines, deep ensembles and MC dropout for uncertainty, calibration vs discrimination, out-of-range behavior
+   - Pillar 3: training strategies — learning rate, batch size, early stopping, schedulers
+   - Diagnosing broken training runs from their loss curves
+   - The training clinic (optional): one convolutional detector on real miniPNW seismograms, six decisions measured station by station
+   - Hyperparameter search with Optuna
+   - The rubric: which network for which data structure (tables, grids, sequences, graphs)
+   - Checks with evidence for framing, design, training, evaluation and reporting, for students and AI assistants
+
+9. **Physics-informed learning** (4.8)
    - Physics constraints as loss terms
    - A cooling-law ablation and a 1-D heat-diffusion PINN
    - A finite-difference baseline that beats the PINN on the forward problem (~750x faster, 100x more accurate)
    - An inverse PINN recovering diffusivity from 40 noisy samples, and a break-the-PINN loss-imbalance exercise
    - Where PINNs stand in 2026, and neural operators as successors
 
-9. **A best-practice rubric for deep learning** (4.8)
-   - Which network for which data structure: tables, grids, sequences, graphs
-   - Checks with evidence for framing, design, training, evaluation and reporting, for students and AI assistants
-
-10. **Time-series forecasting shootout** (4.10)
+10. **Time-series forecasting shootout** (4.9)
    - Baselines, SARIMA, gradient boosting, LSTM, and a transformer encoder on real geoscience series
    - Honest temporal splits and MASE
    - The class forecasting leaderboard

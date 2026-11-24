@@ -9,11 +9,11 @@ Students submit via PR:
 - `results/predictions_<uwnetid>.csv` (`row_id,prediction`) — Chapter 3.5 track,
   scored with macro-F1 against the canonical split (seed 2026, stratified 25%
   test) of the Zenodo seismic-source dataset.
-- `results/forecast_<uwnetid>.csv` — Chapter 4.10 **diagnostic** track, scored
+- `results/forecast_<uwnetid>.csv` — Chapter 4.9 **diagnostic** track, scored
   with MASE against `leaderboard/co2_holdout.csv`, scaled by the naive one-step
   MAE of `leaderboard/co2_train_tail.csv` (textbook MASE: training-series
   denominator, not the holdout's own naive error).
-- `results/forecast_hidden_<uwnetid>.csv` — Chapter 4.10 **graded** track,
+- `results/forecast_hidden_<uwnetid>.csv` — Chapter 4.9 **graded** track,
   scored with MASE against `leaderboard/private/synth_forecast_truth.csv`,
   scaled by the naive one-step MAE of the committed
   `leaderboard/synth_forecast_history.csv`.
@@ -34,7 +34,7 @@ Hold a hidden set and score it at the end:
    their repo), or simply compare their claimed CV numbers to your rerun.
 2. **Forecast diagnostic track (CO2)**: the holdout is public NOAA data cached
    on every student's disk — copying `leaderboard/co2_holdout.csv` into a
-   submission scores MASE = 0.0. That exploit is deliberate pedagogy (4.10 says
+   submission scores MASE = 0.0. That exploit is deliberate pedagogy (4.9 says
    so in print): the public score is a diagnostic and carries **no grading
    weight**. Do not try to harden it; the hidden track below is the grade.
 3. **Forecast graded track (hidden synthetic series)**: students are given
@@ -72,7 +72,7 @@ Report both public and hidden scores to the class: the gap is the lesson.
 - [ ] Pick new private seeds; store them outside the repo.
 - [ ] Refresh `leaderboard/co2_holdout.csv` horizon AND
       `leaderboard/co2_train_tail.csv` (last 120 pre-holdout months) to match
-      the holdout defined in 4.10 Section 1.2.
+      the holdout defined in 4.9 Section 1.2.
 - [ ] Regenerate the hidden forecast track (recipe above) with the new seed;
       commit the new history file, keep the truth in `leaderboard/private/`.
 - [ ] Clear `results/` on a new-year branch.

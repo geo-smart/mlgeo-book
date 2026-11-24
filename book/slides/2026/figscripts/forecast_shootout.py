@@ -1,5 +1,5 @@
 """Slide figure: the CO2 forecasting shootout ranking with seed spread
-(lecture 26, book 4.10 §3.6 + §3.9).
+(lecture 26, book 4.9 §3.6 + §3.9).
 
 Horizontal MASE bars on a log axis, one per contestant, ordered by skill.
 Stochastic entries (LSTM, transformer) show their seed mean with a min-max
@@ -7,7 +7,7 @@ whisker; deterministic entries carry a "no seed consumed" note — including
 LightGBM, whose five seeds returned the identical score (std 0.000).
 
 Every number is copied from the executed outputs of
-book/Chapter4-DeepLearning/mlgeo_4.10_timeseriesforecast.ipynb (the 3.6
+book/Chapter4-DeepLearning/mlgeo_4.9_timeseriesforecast.ipynb (the 3.6
 comparison table and the 3.9 seed-spread table); re-verify there after any
 notebook re-run. Data: Mauna Loa monthly CO2 (NOAA Global Monitoring
 Laboratory), temporal split, 48-month test window 2019-09 .. 2023-08.
@@ -66,11 +66,11 @@ ax.set_title("Four years of CO$_2$ ahead: the ranking, with its seed spread", lo
 ax.spines[["top", "right", "left"]].set_visible(False)
 
 fig.suptitle("Mauna Loa monthly CO$_2$ — NOAA Global Monitoring Laboratory; "
-             "train 1958-2019, test 2019-2023 (executed 4.10 notebook)",
+             "train 1958-2019, test 2019-2023 (executed 4.9 notebook)",
              x=0.01, ha="left", fontsize=17, fontweight="normal", color="#6e675c")
 fig.tight_layout(rect=(0, 0, 1, 0.95))
 
-out = (Path(__file__).resolve().parent.parent / "figs" / "mlgeo_4.10_timeseriesforecast"
+out = (Path(__file__).resolve().parent.parent / "figs" / "mlgeo_4.9_timeseriesforecast"
        / "shootout_mase_slide.png")
 out.parent.mkdir(parents=True, exist_ok=True)
 fig.savefig(out, dpi=130, bbox_inches="tight", pad_inches=0.05)

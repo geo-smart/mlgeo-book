@@ -5,7 +5,7 @@
                            figs/lec21b_train_evaluate/numbers.json) and as a 90-day sequence (notebook 4.4,
                            synthetic GNSS series, validation MAE as reported in lecture 23)
   decision_guide.png       questions that lead from the data to a kind of network (schematic)
-  assistant_workflow.png   how the rubric of book section 4.8 drives and checks an AI assistant (schematic)
+  assistant_workflow.png   how the rubric of book section 4.7 drives and checks an AI assistant (schematic)
 
 Regenerate: pixi run python book/slides/2026/figscripts/lec23b_architecture.py
 (run lec21b_train_evaluate.py first)
@@ -85,7 +85,7 @@ plt.close(fig)
 # --- the assistant workflow ---------------------------------------------------------------------
 fig, ax = plt.subplots(figsize=(21, 7.6))
 ax.set(xlim=(0, 21), ylim=(0, 7.6)); ax.axis("off")
-steps = [(2.2, "Rubric 4.8", "items, checks,\nevidence", BLUE),
+steps = [(2.2, "Rubric 4.7", "items, checks,\nevidence", BLUE),
          (6.4, "Assistant", "builds, trains,\nevaluates", PURPLE),
          (10.6, "Report", "one row per item:\npass / fail + evidence", GREEN),
          (14.8, "Scientist", "checks the evidence;\nreruns the scripts", RED),

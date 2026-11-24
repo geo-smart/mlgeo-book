@@ -24,9 +24,9 @@ Everything required below is taught with working code in this chapter. When a re
 ## 3. Model Architecture Exploration (30%)
 
 - **At least three architectures (8%)**: Implement and train at least three of: MLP, 1-D or 2-D CNN, LSTM, transformer encoder, autoencoder + classification/regression head. All five are built in notebooks 4.1-4.6. U-Net is optional, not required. Justify each choice against your data and problem type. Write out each architecture with layer dimensions and activation functions.
-- **Hyperparameter exploration (7%)**: Explore learning rate, layer sizes, and other hyperparameters systematically, following the notebook 4.5 lab. Document every experiment; a table of runs beats scattered prose.
+- **Hyperparameter exploration (7%)**: Explore learning rate, layer sizes, and other hyperparameters systematically, following the notebook 4.7 lab. Document every experiment; a table of runs beats scattered prose.
 - **Ablation study (5%)** — required: Remove one component of your best model (a layer block, dropout, batch normalization, a feature group, or a loss term) and report the change in performance. One ablation done carefully is enough; state what it tells you about the component.
-- **Physics-informed loss (4%)**: Add a physics-informed or otherwise domain-aware loss term where your problem supports one (notebook 4.7 pattern). If your problem does not support one, say why in a short paragraph; a well-argued negative answer earns full credit.
+- **Physics-informed loss (4%)**: Add a physics-informed or otherwise domain-aware loss term where your problem supports one (notebook 4.8 pattern). If your problem does not support one, say why in a short paragraph; a well-argued negative answer earns full credit.
 - **Innovation (6%)**: Hybrid architectures, custom loss functions, or geoscience-specific data augmentation.
 
 ---
@@ -37,7 +37,7 @@ Everything required below is taught with working code in this chapter. When a re
 - **Generalization and out-of-distribution testing (7%)**: Evaluate on unseen or out-of-distribution data and discuss overfitting or underfitting.
 - **Chosen experiment (4%)** — pick ONE:
   - *Pretraining vs from scratch*: pretrain an encoder on your data without labels (autoencoder or masked reconstruction, notebook 4.6 pattern), then train a linear probe on the frozen encoder — or fine-tune the whole encoder — with a small labeled fraction, and compare against training from scratch on the same fraction. Say which of the two you did; a probe keeps the encoder weights fixed, fine-tuning updates them.
-  - *Deep-ensemble uncertainty*: train your best model from 5 random seeds, report ensemble-mean performance and per-sample prediction variance, and show which samples the ensemble disagrees on (notebook 4.5 pattern).
+  - *Deep-ensemble uncertainty*: train your best model from 5 random seeds, report ensemble-mean performance and per-sample prediction variance, and show which samples the ensemble disagrees on (notebook 4.7 pattern).
 - **Visualization of results (3%)**: Confusion matrices, loss-vs-epoch plots, error maps, or equivalents.
 
 ---
@@ -54,7 +54,7 @@ Everything required below is taught with working code in this chapter. When a re
 
 - **Scientific communication (3%)**: Clear, concise report with appropriate figures and tables.
 - **Domain insights (2%)**: What the results mean for the geoscience problem: physical relevance, data limitations, potential applications.
-- **Training-diagnostics appendix (5%)** — required: Learning curves for your final model AND for at least one failed or flawed run (diverging loss, overfitting, a learning rate that crawled). Diagnose the failed run in 2-3 sentences using the vocabulary of notebook 4.5. Failed runs are evidence of systematic work, not something to hide.
+- **Training-diagnostics appendix (5%)** — required: Learning curves for your final model AND for at least one failed or flawed run (diverging loss, overfitting, a learning rate that crawled). Diagnose the failed run in 2-3 sentences using the vocabulary of notebook 4.7. Failed runs are evidence of systematic work, not something to hide.
 
 ---
 

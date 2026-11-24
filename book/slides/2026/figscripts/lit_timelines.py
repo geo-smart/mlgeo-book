@@ -1,4 +1,4 @@
-"""Literature timelines for the three network lectures (21b MLP, 22 CNN, 23 RNN).
+"""Literature timelines for the network lectures (21b MLP, 22 CNN, 23 RNN, 23b graph networks).
 
 Six dated cards per figure, linked by arrows; each card has a verdict band
 (method: gray-blue; applied well: green; a warning: red), a small drawn icon and
@@ -6,8 +6,11 @@ one finding. Numbers on the cards come from the papers, except the aftershock
 areas under the curve, which are the course's rerun (figs/lit_aftershock_2018/
 numbers.json, figscripts/aftershock_auc_rerun.py), and LeNet-5's weight count,
 printed by notebook 4.3. Full citations are in the slide credit lines.
+The graph-network cards (gnn) use only the papers verified against Crossref, PMLR and
+arXiv on 2026-11-24 for notebook 4.5; the Kipf & Welling numbers are their Table 2 (Cora),
+the GraphCast numbers the abstract of Lam et al. (2023).
 
-Writes figs/lit_timelines/{mlp,cnn,rnn}_thread.png.
+Writes figs/lit_timelines/{mlp,cnn,rnn,gnn}_thread.png.
 Regenerate: pixi run python book/slides/2026/figscripts/lit_timelines.py
 """
 import json
@@ -220,6 +223,69 @@ def ic_baseline(ax, x0, y0, w, h):
     ax.plot([x0 + 0.65 * w] * 2, [y0 + 0.1 * h, y0 + 0.9 * h], color=MUTED, ls=":", lw=1.5)
 
 
+def _graph(ax, pts, edges, x0, y0, w, h, color=PURPLE, node="o", fc=None, size=0.055):
+    P = [(x0 + a * w, y0 + b * h) for a, b in pts]
+    for i, j in edges:
+        ax.plot([P[i][0], P[j][0]], [P[i][1], P[j][1]], color=color, lw=2, zorder=1)
+    for k, (x, y) in enumerate(P):
+        c = fc[k] if fc else "white"
+        if node == "o":
+            ax.add_patch(Circle((x, y), size * w, fc=c, ec=color, lw=2, zorder=2))
+        else:
+            ax.add_patch(plt.Polygon([[x - size * w, y - 0.8 * size * w], [x + size * w, y - 0.8 * size * w],
+                                      [x, y + 1.1 * size * w]], fc=c, ec=INK, lw=1.2, zorder=2))
+    return P
+
+
+def ic_graph(ax, x0, y0, w, h):
+    pts = [(0.15, 0.6), (0.4, 0.85), (0.45, 0.45), (0.75, 0.8), (0.85, 0.35), (0.3, 0.15), (0.65, 0.12)]
+    edges = [(0, 1), (0, 2), (1, 2), (1, 3), (2, 3), (3, 4), (2, 4), (2, 5), (5, 6), (4, 6), (0, 5)]
+    fc = ["white", "white", PURPLE, "white", "white", "white", "white"]
+    _graph(ax, pts, edges, x0, y0, w, h, fc=fc)
+
+
+def ic_station_graph(ax, x0, y0, w, h):
+    pts = [(0.12, 0.7), (0.38, 0.88), (0.35, 0.45), (0.65, 0.65), (0.88, 0.8), (0.82, 0.3), (0.5, 0.12), (0.15, 0.2)]
+    edges = [(0, 1), (0, 2), (1, 2), (1, 3), (2, 3), (3, 4), (3, 5), (4, 5), (2, 6), (5, 6), (6, 7), (2, 7), (0, 7)]
+    _graph(ax, pts, edges, x0, y0, w, h, node="^", fc=[BLUE] * 8)
+    ax.plot(x0 + 0.55 * w, y0 + 0.4 * h, marker="*", ms=22, color=RED, mec=INK, zorder=3)
+
+
+def ic_mesh_globe(ax, x0, y0, w, h):
+    cx, cy, r = x0 + w / 2, y0 + h / 2, 0.42 * min(w, h)
+    ax.add_patch(Circle((cx, cy), r, fc="#d6e6f4", ec=INK, lw=1.5))
+    th = np.linspace(0, 2 * np.pi, 7)[:-1] + 0.3
+    ring = [(cx + 0.62 * r * np.cos(t), cy + 0.62 * r * np.sin(t)) for t in th]
+    pts = [(cx, cy)] + ring
+    for k in range(6):
+        for a, b in ((0, k + 1), (k + 1, (k + 1) % 6 + 1)):
+            ax.plot([pts[a][0], pts[b][0]], [pts[a][1], pts[b][1]], color=PURPLE, lw=1.8)
+    for x, y in pts:
+        ax.add_patch(Circle((x, y), 0.035 * w, fc=PURPLE, ec="none"))
+
+
+def ic_river_graph(ax, x0, y0, w, h):
+    pts = [(0.15, 0.9), (0.45, 0.85), (0.8, 0.88), (0.3, 0.6), (0.68, 0.55), (0.5, 0.3), (0.55, 0.06)]
+    edges = [(0, 3), (1, 3), (2, 4), (3, 5), (4, 5), (5, 6)]
+    for i, j in edges:
+        ax.plot([x0 + pts[i][0] * w, x0 + pts[j][0] * w], [y0 + pts[i][1] * h, y0 + pts[j][1] * h], color=BLUE, lw=3.5)
+    for a, b in pts:
+        ax.add_patch(Circle((x0 + a * w, y0 + b * h), 0.05 * w, fc="white", ec=INK, lw=1.5))
+    ax.text(x0 + 0.88 * w, y0 + 0.28 * h, "?", fontsize=30, color=RED, ha="center", va="center", weight="bold")
+
+
+def ic_shakemap(ax, x0, y0, w, h):
+    cx, cy = x0 + 0.45 * w, y0 + 0.5 * h
+    for k, a in enumerate((0.42, 0.3, 0.18)):
+        ax.add_patch(Circle((cx, cy), a * w, fc=plt.cm.YlOrRd(0.25 + 0.25 * k), ec="none", alpha=0.8))
+    ax.plot(cx, cy, marker="*", ms=20, color=RED, mec=INK)
+    for (a, b), c in [((0.12, 0.8), BLUE), ((0.8, 0.75), BLUE), ((0.2, 0.15), BLUE), ((0.75, 0.2), "white")]:
+        x, y = x0 + a * w, y0 + b * h
+        ax.add_patch(plt.Polygon([[x - 0.05 * w, y - 0.04 * w], [x + 0.05 * w, y - 0.04 * w], [x, y + 0.055 * w]],
+                                 fc=c, ec=INK, lw=1.5))
+    ax.text(x0 + 0.92 * w, y0 + 0.2 * h, "?", fontsize=24, color=RED, ha="center", va="center", weight="bold")
+
+
 # ------------------------------------------------------------------ the figure
 def thread(cards, name):
     fig, ax = plt.subplots(figsize=(17.5, 8.0))
@@ -287,3 +353,23 @@ thread([
     dict(year="2023", kind="good", head="the weather", icon=ic_globe,
          fact="Pangu-Weather, a 3-D Transformer, beats the operational forecast on its own scores.", who="Bi et al."),
 ], "rnn")
+
+thread([
+    dict(year="2009", kind="method", head="graphs in", icon=ic_graph,
+         fact="Each node updates its state from its neighbors; one network for any graph.", who="Scarselli et al."),
+    dict(year="2017", kind="method", head="graph\nconvolution", icon=lambda ax, x0, y0, w, h: ic_bars(
+        ax, x0, y0, w, h, [75.7, 81.5], ["before", "GCN"], [GRAY, PURPLE], vmax=100, fmt="{:.1f}%"),
+         fact="One weight matrix, then a normalized average with the neighbors: 81.5% against 75.7% on a citation graph.",
+         who="Kipf & Welling"),
+    dict(year="2020", kind="good", head="stations\nas nodes", icon=ic_station_graph,
+         fact="Any stations, any order: location and magnitude, better than location-blind models.",
+         who="van den Ende and Ampuero"),
+    dict(year="2023", kind="good", head="the weather", icon=ic_mesh_globe,
+         fact="GraphCast, a mesh over the globe: beats the best operational forecast on 90% of 1,380 targets.",
+         who="Lam et al."),
+    dict(year="2024", kind="bad", head="is the graph\nused?", icon=ic_river_graph,
+         fact="River gauges as a graph: the forecasts gained nothing from the river network.", who="Kirschstein & Sun"),
+    dict(year="2026", kind="good", head="shaking with\nno station", icon=ic_shakemap,
+         fact="Ground motion at sites with no recording: in line with the standard statistical interpolation.",
+         who="Schill & Bradley"),
+], "gnn")

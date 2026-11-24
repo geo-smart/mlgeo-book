@@ -1,6 +1,6 @@
 ---
 title: "From a neuron to a network:<br>templates, logistic regression, layers"
-subtitle: "Session 21 · Mon Nov 16 and Wed Nov 18 · Book sections 4.0–4.2"
+subtitle: "Session 21 · Mon Nov 16 and Wed Nov 18 · Book section 4.0"
 title-slide-attributes:
   data-background-color: "#faf7f2"
 ---
@@ -21,6 +21,18 @@ Part 1, Monday: one neuron (4.0). Wednesday: Part 2, gradient descent (4.0), the
 
 ::: {.notes}
 This deck covers two class meetings. Part 1 (Monday Nov 16) is the perceptron: about 25 minutes of slides and 15 minutes in notebook 4.0, after the project check-ins. Wednesday Nov 18 has two parts. Part 2 is gradient descent on one neuron, one step at a time, in the notation of notebook 3.6 (observation, prediction, error, loss, gradient, learning rate): about 20 minutes of slides, then notebook 4.0 section 2. Part 3 builds a network and trains it with the same loop: about 15 minutes of slides, then notebook 4.1. The plan for Part 1 is to show that students already know the neuron: it is the weighted sum of template matching (lecture 1, section 2.9) and of logistic regression (lecture 16, notebook 3.6). Ask the room before starting: who thinks a neural network is a different kind of object from the regressions we have fitted? Come back to the answers on the summary slide. Reading: 4.0 Perceptrons, 4.1 Neural networks, 4.2 MLPs.
+:::
+
+## Chapter 4: four canonical networks
+
+![](figs/lec_framework/canonical_all.png){.r-stretch}
+
+::: {.takeaway}
+The data choose the network, and each network must first beat a simpler method. Every row is built from one neuron: today.
+:::
+
+::: {.notes}
+The statement that opens and closes every deck of Chapter 4. Read it row by row: what one data sample is, the network, what it assumes, what it is good for, the baseline it must beat first. Each later deck highlights its own row: fully connected (lecture 21b, notebooks 4.1 and 4.2), convolutional (lecture 22, 4.3), recurrent and attention (lecture 23, 4.4), graph networks (lecture 23b, 4.5). Training and evaluating any of them: lecture 24a (4.7). Today, notebook 4.0: the neuron inside every row, and how its weights are found. Drawn by figscripts/lec_framework.py; assumptions after Battaglia et al. (2018, arXiv:1806.01261), Table 1.
 :::
 
 ## One neuron: a weighted sum, then an activation
@@ -606,4 +618,17 @@ PyTorch names: `nn.Module`, `nn.Linear`, `nn.ReLU`, `nn.CrossEntropyLoss`, `Adam
 
 ::: {.notes}
 Timing for Wednesday (10:00 to 11:20): Part 2 slides about 20 minutes, notebook 4.0 section 2 about 25 minutes, Part 3 slides about 15 minutes, notebook 4.1 for the rest; 4.2 is then finished outside class. Priorities if time is short: task 1 (the backward pass written by hand: one line, `backError = 2 * error[:, None] * W2 * (1 - H ** 2)`; expected values at 142 m: +0.041, −0.126, −0.081; loss 3.76 °C → 0.31 °C after 20,000 epochs) and task 2 (finding in the PyTorch loop the lines of Part 2: the loss is `criterion(outputs, targets)`, a mean over the batch; the gradient is `loss.backward()`; the update is `optimizer.step()`) and task 3 (the gap between training and validation curves opening when dropout is removed). PyTorch spellings students will meet: a subclass of `nn.Module` with `__init__` and `forward`, `nn.Linear`, `nn.ReLU`, `nn.CrossEntropyLoss` (the softmax is inside the loss, not the model, which often causes confusion), `torch.optim.Adam`, `Dataset` and `DataLoader`, `model.train()` against `model.eval()` (dropout and batch normalization behave differently in the two modes, 4.2 section 4.4). Dropout: during training, a random fraction of the hidden outputs is set to zero at each step, which limits overfitting. Question to collect at the end: where in your project data does position or order matter, and would a fully connected network see it?
+:::
+
+
+## Chapter 4: the neuron inside every network
+
+![](figs/lec_framework/canonical_all.png){.r-stretch}
+
+::: {.takeaway}
+Each row is today's neuron, repeated and connected in a different way, and trained by the same gradient descent.
+:::
+
+::: {.notes}
+The closing statement, the same figure as the opening. A fully connected layer is many neurons reading every input (Wednesday, lecture 21b, 4.1 and 4.2); a convolutional layer is one neuron slid along a record (Friday, lecture 22, 4.3); a recurrent layer is one neuron that also reads its own previous output (lecture 23, 4.4); a graph layer is one neuron applied at every station, reading its neighbors (lecture 23b, 4.5). The loss, the gradient and the update of today are unchanged in all of them (lecture 24a).
 :::

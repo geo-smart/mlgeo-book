@@ -160,6 +160,26 @@
           display:block!important;
       }</style></aside>
 </section>
+<section id="four-canonical-networks-today-convolutional" class="slide level2">
+<h2>Four canonical networks: today, convolutional</h2>
+<img data-src="figs/lec_framework/canonical_cnn.png" class="r-stretch">
+<div class="takeaway">
+<p>A waveform, a spectrogram or a map is a grid: neighbors are related, and the same pattern can appear anywhere. A convolutional layer assumes both, and pays for each pattern once.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; the figure that opens and closes every deck of Chapter 4, second row: data, network, what it assumes, what it is good for, the baseline to beat first (assumptions after Battaglia et al.&nbsp;2018, Table 1). Last session the input was a table of 61 hand-built features, with no order: fully connected. Today the same seismic events come as waveforms, a grid in time. Two assumptions fit that data: locality (a sample is related to its neighbors, so each neuron looks at a short window) and translation (a P wave is the same P wave at second 9 or at second 14, so the same weights are slid along the record). The slide after the literature shows what happens without them: a fully connected neuron loses an arrival moved by 0.1 s. The convolutional layer is the template matching of lecture 21, with the templates learned.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="this-lecture-in-the-literature" class="slide level2">
 <h2>This lecture in the literature</h2>
 <img data-src="figs/lit_timelines/cnn_thread.png" class="r-stretch">
@@ -192,26 +212,6 @@
 <aside class="notes">
 <p>Three minutes; the problem this lecture solves. Recall the neuron of lecture 21 (notebook 4.0 section 5) on waveform windows, fitted on events whose P wave always arrived 0.83 s into the window. Now the arrival comes later, by the amount on the horizontal axis; 200 event windows per point, synthetic (mlgeo_synth). Green: the fraction the neuron still calls events. It halves at 0.05 s and is zero from 0.08 s. Each weight multiplies one position in the window; move the waveform by a third of a period and its peaks meet weights of the opposite sign. Ask the room why detection returns near 0.33 s: that is one period of the 3 Hz S wave, so the largest peaks line up with the right weights again, one cycle late. Black: template matching as it is done in practice, the same weighted sum computed at every lag (here within ±0.6 s), keeping the largest; threshold set on noise windows, false alarms 1% to 5%. It does not depend on where the event is.</p>
 <p>A fully connected network has the same limit as the single neuron: every weight is tied to one input position. On the 61 features this is harmless, because features have no order. On a waveform, an image or a map, the network would have to see every pattern at every position during training. Today’s convolutional layer takes the idea in black: one small set of weights, slid along the record. Next slide. Ask: which of your project data have patterns that can occur anywhere? (Tremor in a spectrogram, storm cells in radar, transits in a light curve.)</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="where-the-convolutional-network-fits-data-on-a-grid" class="slide level2">
-<h2>Where the convolutional network fits: data on a grid</h2>
-<img data-src="figs/lec_framework/framework_cnn.png" class="r-stretch">
-<div class="takeaway">
-<p>A waveform, a spectrogram or a map is a grid: neighbors are related, and the same pattern can appear anywhere. A convolutional layer assumes both, and pays for each pattern once.</p>
-</div>
-<aside class="notes">
-<p>Two minutes; the framework figure of the four core sessions, second row (after Battaglia et al.&nbsp;2018, Table 1). Last session the input was a table of 61 hand-built features, with no order: fully connected. Today the same seismic events come as waveforms, a grid in time. Two assumptions fit that data: locality (a sample is related to its neighbors, so each neuron looks at a short window) and translation (a P wave is the same P wave at second 9 or at second 14, so the same weights are slid along the record). The previous slide showed what happens without them: a fully connected neuron loses an arrival moved by 0.1 s. The convolutional layer is the template matching of lecture 21, with the templates learned.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -584,6 +584,51 @@
           display:block!important;
       }</style></aside>
 </section>
+<section id="leaderboard-1-a-warming-trend-from-maps-4.3" class="slide level2">
+<h2>Leaderboard 1: a warming trend from maps (4.3)</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Weights</th>
+<th>Test error (°C/decade)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2-D CNN</td>
+<td>17,953</td>
+<td><strong>0.008</strong></td>
+</tr>
+<tr class="even">
+<td>least squares, with the known 5-year mode</td>
+<td>—</td>
+<td>0.009</td>
+</tr>
+<tr class="odd">
+<td>least squares, straight line</td>
+<td>—</td>
+<td>0.083</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>A 10× win over the straight line; a tie with the fit that knows the generator’s terms. Always ask what the baseline was denied.</p>
+</div>
+<aside class="notes">
+<p>Leaderboard format of lecture 24a: ranked by the score, baselines as rows. Notebook 4.3 section 3, executed output: test MAE of the local warming trend on 300 patches from 6 held-out fields (900 training patches from 18 fields), “naive least squares: 0.083, + known mode: 0.009, 2-D CNN: 0.008”. One seed: the 0.001 gap is a tie until a seed spread says otherwise (rubric E3). Weights: 17,953 counted from the model_clim definition in 4.3; the least-squares fits have a handful of coefficients per patch.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="d-case-an-earthquake-detector-in-4658-weights" class="slide level2">
 <h2>1-D case: an earthquake detector in 4,658 weights</h2>
 <img data-src="figs/mlgeo_4.3_CNN/fig_07.png" class="r-stretch">
@@ -624,14 +669,37 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="reality-check-2-real-waveforms-no-retraining" class="slide level2">
-<h2>Reality check 2: real waveforms, no retraining</h2>
-<img data-src="figs/mlgeo_4.3_CNN/synth_to_real_slide.png" class="r-stretch">
+<section id="leaderboard-2-the-earthquake-detector-4.3" class="slide level2">
+<h2>Leaderboard 2: the earthquake detector (4.3)</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Detector</th>
+<th>Weights</th>
+<th>50% detected at SNR</th>
+<th>Detected at SNR 2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1-D CNN</td>
+<td>4,658</td>
+<td><strong>≈ 1.4</strong></td>
+<td>90%</td>
+</tr>
+<tr class="even">
+<td>STA/LTA, threshold at 1% false alarms</td>
+<td>0</td>
+<td>≈ 9</td>
+<td>2%</td>
+</tr>
+</tbody>
+</table>
 <div class="takeaway">
-<p>87.9% on synthetic test → 46.8% on real miniPNW, with 93% of real <em>noise</em> windows flagged. Measured 2026-11-20 (4.3 at commit 4b4775c).</p>
+<p>Lower is better: the CNN detects half of the events at an SNR six times lower. It earns its keep where the classical method cannot reach.</p>
 </div>
 <aside class="notes">
-<p>The uncomfortable question the book insists on asking: every number so far came from the same generator that produced the training data — so score the unchanged detector on real labeled miniPNW waveforms (a few hundred earthquake windows, P pick 7 s in, plus matched pre-event noise windows; preprocessing mirrors training exactly, no threshold moved, no bandpass chosen to fix things afterward). Left panel: balanced accuracy collapses 41 points to chance. Right panel is the diagnosis: detection is <em>highest</em> (99%) in the lowest-SNR quartile — where the window is mostly noise — and the whole curve is indistinguishable from the 93% false-alarm line. The network is not responding to earthquakes at all: it learned “synthetic event vs the one synthetic noise model,” and real nonstationary, microseism-dominated noise resembles neither, so nearly everything triggers. Name the concept: <strong>distribution shift</strong> — train and deployment data drawn from different distributions — and this is Geirhos’s shortcut learning measured by us. The sentence to leave in the room: a model validated only on synthetic data has not been validated. Closing the gap takes real data on the training side (fine-tune on miniPNW, or physics-informed noise from 2.10) — that path is the notebook’s, and 4.6 continues it.</p>
+<p>Notebook 4.3 section 4.4, executed table, 40 events and noise windows per SNR level (synthetic, mlgeo_synth with noise colors 0.5–2.0 and dominant frequencies 2–8 Hz). CNN: 0.38 detected at SNR 1.26 and 0.90 at 2.00, false alarms 0 to 5%; STA/LTA with its threshold at the 99th percentile of noise-only peaks (4.11): 0.33 at 7.94, 0.77 at 12.59. The 50% crossings are read between those levels. Test accuracy of the CNN on the synthetic test windows: 81.7%. One seed; the next slide is the deployment test (rubric E5).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -644,54 +712,14 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="two-baselines-two-verdicts" class="slide level2">
-<h2>Two baselines, two verdicts</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Case</th>
-<th>Naive classical</th>
-<th>Informed classical</th>
-<th>CNN</th>
-<th>Verdict</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Warming trend (2-D)</td>
-<td>0.083 °C/dec</td>
-<td><strong>0.009</strong> °C/dec</td>
-<td>0.008 °C/dec</td>
-<td>write the physics down and they tie</td>
-</tr>
-<tr class="even">
-<td>Detection floor (1-D)</td>
-<td>50% at SNR ≈ 4.8</td>
-<td>—</td>
-<td>50% at <strong>SNR ≈ 1.5</strong></td>
-<td>CNN wins the low-SNR band</td>
-</tr>
-<tr class="odd">
-<td>Real miniPNW</td>
-<td>—</td>
-<td>—</td>
-<td><strong>46.8%</strong> (chance)</td>
-<td>synthetic-only validation is not validation</td>
-</tr>
-</tbody>
-</table>
+<section id="reality-check-2-real-waveforms-no-retraining" class="slide level2">
+<h2>Reality check 2: real waveforms, no retraining</h2>
+<img data-src="figs/mlgeo_4.3_CNN/synth_to_real_slide.png" class="r-stretch">
 <div class="takeaway">
-<p>The learned detector earns its keep only where the classical method cannot reach — and only on data from the world it was trained in.</p>
+<p>87.9% on synthetic test → 46.8% on real miniPNW, with 93% of real <em>noise</em> windows flagged. Measured 2026-11-20 (4.3 at commit 4b4775c).</p>
 </div>
 <aside class="notes">
-<p>Leave this up for questions; it is the lecture in one screen. Row 1: the CNN’s 10× headline dissolves when the classical baseline gets the one regressor it was missing — always ask what the baseline was denied. Row 2: with matched false-alarm budgets on identical traces, the CNN genuinely extends detection half a decade of SNR deeper — the honest win, and the reason this architecture took over catalog building. Row 3: the same detector, on real ground motion, is a coin flip — distribution shift eats the entire margin. The three rows are one discipline applied three times: baseline first, matched conditions, report the failure as measured. Connect forward: Monday’s forecasting shootout carries a persistence baseline row for exactly the same reason.</p>
+<p>The uncomfortable question the book insists on asking: every number so far came from the same generator that produced the training data — so score the unchanged detector on real labeled miniPNW waveforms (a few hundred earthquake windows, P pick 7 s in, plus matched pre-event noise windows; preprocessing mirrors training exactly, no threshold moved, no bandpass chosen to fix things afterward). Left panel: balanced accuracy collapses 41 points to chance. Right panel is the diagnosis: detection is <em>highest</em> (99%) in the lowest-SNR quartile — where the window is mostly noise — and the whole curve is indistinguishable from the 93% false-alarm line. The network is not responding to earthquakes at all: it learned “synthetic event vs the one synthetic noise model,” and real nonstationary, microseism-dominated noise resembles neither, so nearly everything triggers. Name the concept: <strong>distribution shift</strong> — train and deployment data drawn from different distributions — and this is Geirhos’s shortcut learning measured by us. The sentence to leave in the room: a model validated only on synthetic data has not been validated. Closing the gap takes real data on the training side (fine-tune on miniPNW, or physics-informed noise from 2.10) — that path is the notebook’s, and 4.6 continues it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -748,7 +776,7 @@
 </tbody>
 </table>
 <aside class="notes">
-<p>Leave this up. Each row is a line of the rubric in book section 4.8, and each comes from today’s numbers. C2.1: the three convolution blocks see a window long enough to hold a P wave and its coda; check the receptive field in seconds against the period of the phase. C2.2: per-trace standardization, so the network cannot classify on amplitude. C2.3: global average pooling makes the detector independent of the arrival time; a picker, which must report the time, would keep position. C2.4: the trend case tied the informed regression (0.008 against 0.009 °C per decade); the detector beat STA/LTA at matched 1% false alarms (50% detection at SNR 1.4 against about 9). E4: report detection as a function of SNR, not one accuracy. E5: 87.9% on synthetic test windows fell to 46.8% on real miniPNW waveforms; validation on synthetics alone is not validation. The rubric grows by these six items today.</p>
+<p>Leave this up. Each row is a line of the rubric in book section 4.7, and each comes from today’s numbers. C2.1: the three convolution blocks see a window long enough to hold a P wave and its coda; check the receptive field in seconds against the period of the phase. C2.2: per-trace standardization, so the network cannot classify on amplitude. C2.3: global average pooling makes the detector independent of the arrival time; a picker, which must report the time, would keep position. C2.4: the trend case tied the informed regression (0.008 against 0.009 °C per decade); the detector beat STA/LTA at matched 1% false alarms (50% detection at SNR 1.4 against about 9). E4: report detection as a function of SNR, not one accuracy. E5: 87.9% on synthetic test windows fell to 46.8% on real miniPNW waveforms; validation on synthetics alone is not validation. The rubric grows by these six items today.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -814,7 +842,7 @@
 
 Rules: run all code with `pixi run python`, on the CPU, with less than 10 minutes of training in total. Do not download anything. Write files only in book/Chapter4-DeepLearning/s22_agent_runs/team&lt;team&gt;_&lt;A or B&gt;/. Do not edit, commit, push or stash any other file.</code></pre>
 <p><strong>Run B only</strong>, add:</p>
-<pre class="text"><code>Follow every item of book/Chapter4-DeepLearning/mlgeo_4.8_dl_rubric.md. End report.md with a table of item ID, pass or fail, and evidence; then list the items you could not check, and why.</code></pre>
+<pre class="text"><code>Follow every item of book/Chapter4-DeepLearning/mlgeo_4.7_dl_rubric.md. End report.md with a table of item ID, pass or fail, and evidence; then list the items you could not check, and why.</code></pre>
 </div>
 <div class="dim">
 <p><strong>Purple only</strong>, add: <em>You cannot run code. Write the script and the report you expect it to produce, and mark every number as not computed.</em></p>
@@ -875,6 +903,26 @@ Rules: run all code with `pixi run python`, on the CPU, with less than 10 minute
 </div>
 <aside class="notes">
 <p>Timing for the 80-minute block (10:00–11:20): pulse talks ~10 min, this deck ~20 min, guided notebook work ~40 min, synthesis ~10 min. If time is short, cut task 1 to a skim — tasks 2–4 are the payload. Task 3 is the conceptual trap worth circulating for: the CNN’s floor rises when undertrained, STA/LTA’s does not move because it has no parameters to undertrain — that is what makes it a stable baseline. Section 5 of the notebook (recoding the Rouet-Leduc tremor CNN from its published architecture table, verified by shape checks with <code>torchinfo.summary</code>) is the take-home skill for reading papers — flag it for project teams reproducing published models. Synthesis question to collect: for your project, what is your STA/LTA — the zero-parameter method your model must beat on identical data? That question is graded in check-in #2.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="four-canonical-networks-where-convolutional-fits" class="slide level2">
+<h2>Four canonical networks: where convolutional fits</h2>
+<img data-src="figs/lec_framework/canonical_cnn.png" class="r-stretch">
+<div class="takeaway">
+<p>Convolutional: for patterns that can sit anywhere on a grid. It beat STA/LTA by a factor of six in SNR, and tied the fit that knew the physics.</p>
+</div>
+<aside class="notes">
+<p>The closing statement, the same figure as the opening. What is left out by a convolution: order and memory along time beyond the receptive field (Monday, recurrence and attention). The real-data test of this detector is Homework_DL (miniPNW), with a leaderboard that has STA/LTA as a row. Training and leaderboard format: lecture 24a.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

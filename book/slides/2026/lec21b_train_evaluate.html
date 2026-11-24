@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="">
-  <title>Training and judging a network: a class and a number</title>
+  <title>Fully connected networks: a class and a number</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -130,8 +130,8 @@
     <div class="slides">
 
 <section id="title-slide" data-background-color="#faf7f2" class="quarto-title-block center">
-  <h1 class="title">Training and judging a network:<br>a class and a number</h1>
-  <p class="subtitle">Session 22 · Book sections 4.1, 4.2 and 4.8</p>
+  <h1 class="title">Fully connected networks:<br>a class and a number</h1>
+  <p class="subtitle">Session 21 · Wed Nov 18 · Book sections 4.1–4.2</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -141,13 +141,33 @@
 <h2></h2>
 <p><span class="lecture-icon">🎯</span></p>
 <h3 id="todays-question">Today’s question</h3>
-<p>A network always produces an answer.</p>
-<p><strong>How do we train it, and how do we know the answer is any good?</strong></p>
+<p>A table of features has no order between its columns.</p>
+<p><strong>What does a fully connected network add to logistic regression and a forest, for a class and for a number?</strong></p>
 <div class="dim">
-<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-1-nn">4.1 Neural networks (classification)</a> · <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-2-mlp">4.2 Regression with a neural network</a> · <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-8-dl-rubric">4.8 The rubric</a></p>
+<p>Reading: <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-1-nn">4.1 Neural networks (classification)</a> · <a href="https://geo-smart.github.io/mlgeo-book/mlgeo-4-2-mlp">4.2 Regression with a neural network</a> · training and evaluating any network: <a href="lec24a_train_and_evaluate.html">lecture 24a</a></p>
 </div>
 <aside class="notes">
-<p>This session is the first of four on the core of deep learning, one per kind of network: fully connected (today), convolutional, recurrent and attention, then how to choose among them. Each session ends with the best practices for its network, which become items of the rubric in book section 4.8, the specification our AI assistant will follow. Today: the fully connected network, on two problems that differ only in what is predicted, a class or a number. Lecture 21 trained one neuron and a small network by hand. Today the same loop runs in PyTorch, and the questions are the ones of a working scientist: which loss, which learning rate, when to stop, and how to tell whether the network is better than something simpler.</p>
+<p>The deck of the fully connected network, tied to notebooks 4.1 (a class: four Pacific Northwest source types from 61 features) and 4.2 (a number: the position of GNSS station P395 in 30 days). It opens and closes on the canonical networks of Chapter 4, with today’s row highlighted. The training loop, the learning rate, early stopping and the leaderboard format are in the reference deck lecture 24a; this deck keeps what is specific to the fully connected network: the dense layer, its weights, scaling, dropout, the head and its loss, and its two leaderboards.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="four-canonical-networks-today-fully-connected" class="slide level2">
+<h2>Four canonical networks: today, fully connected</h2>
+<img data-src="figs/lec_framework/canonical_fcn.png" class="r-stretch">
+<div class="takeaway">
+<p>The structure of the data chooses the network. A table of features has no order: every input connects to every neuron, and the network assumes nothing.</p>
+</div>
+<aside class="notes">
+<p>Two minutes; this figure opens and closes every deck of Chapter 4, with its own row highlighted. The columns: what one data sample is, the network, what it assumes, what it is good for, and the baseline it must beat first. The assumptions follow Battaglia et al.&nbsp;(2018, arXiv:1806.01261), Table 1, which lists for each standard layer the entities it works on, how they are related, and what that relation lets the network assume (its inductive bias). A fully connected layer assumes nothing about how the inputs are related: shuffle the 61 features of a seismic event, consistently in every sample, and the network learns the same thing. That is right for a table of hand-built features. It is wasteful for a waveform, where neighboring samples are related (next session, convolution), and for a series in time, where order matters (the session after, recurrence and attention). The last row, graphs, is where a seismic or GNSS network of stations goes: lecture 23b and notebook 4.5, where this fully connected network is a baseline that cannot survive a reordering of the stations. Today: two problems that are tables.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -171,26 +191,6 @@
 </div>
 <aside class="notes">
 <p>Two minutes; the history of the fully connected network in six cards, ending on the two lessons of this session. Rosenblatt’s perceptron is lecture 21’s neuron. Rumelhart, Hinton and Williams made hidden layers trainable with backpropagation, the chain rule of lecture 21. Cybenko and Hornik et al.&nbsp;proved that one hidden layer with enough neurons can approximate any continuous function: the guarantee says nothing about how many neurons, how much data, or whether training finds the weights. Then geoscience: DeVries et al.&nbsp;trained a network of 13,451 weights to predict where aftershocks occur from the stress change of the mainshock (area under the curve 0.849 in our rerun); Mignan and Broccardo showed that one neuron on one stress input does as well (0.847). Grinsztajn et al.&nbsp;benchmarked deep networks against tree ensembles on tabular datasets of medium size: the trees still win. Both lessons are rubric items: always run the simple model (A6, C1.4), and on a table, a random forest is the baseline to beat.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="four-sessions-four-kinds-of-network-today-a-table" class="slide level2">
-<h2>Four sessions, four kinds of network: today, a table</h2>
-<img data-src="figs/lec_framework/framework_fcn.png" class="r-stretch">
-<div class="takeaway">
-<p>The structure of the data chooses the network. A table of features has no order between its columns: every input connects to every neuron, and the network assumes nothing.</p>
-</div>
-<aside class="notes">
-<p>Two minutes; this figure returns in each of the next three sessions with its own row highlighted. It follows Battaglia et al.&nbsp;(2018, arXiv:1806.01261), Table 1, which lists for each standard layer the entities it works on, how they are related, and what that relation lets the network assume (its inductive bias). A fully connected layer assumes nothing about how the inputs are related: shuffle the 61 features of a seismic event, consistently in every sample, and the network learns the same thing. That is right for a table of hand-built features. It is wasteful for a waveform, where neighboring samples are related (next session, convolution), and for a series in time, where order matters (the session after, recurrence and attention). The last row, graphs, is where a seismic or GNSS network of stations would go; this course does not cover it. Today: two problems that are tables.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -496,46 +496,6 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="optimization-the-learning-rate-sets-how-fast-the-loss-falls" class="slide level2">
-<h2>Optimization: the learning rate sets how fast the loss falls</h2>
-<img data-src="figs/lec21b_train_evaluate/learning_rates.png" class="r-stretch">
-<div class="takeaway">
-<p>Adam, 200 epochs. At 0.0001 the training loss falls slowly and smoothly; at 0.001 faster; at 0.03 fastest, with jumps from update to update.</p>
-</div>
-<aside class="notes">
-<p>Two minutes. Optimization is the method that turns gradients into updates. Plain gradient descent (lecture 21) multiplies every gradient by the same learning rate. Adam, the default in this chapter, keeps a running average of each weight’s gradients and of their squares, and scales each weight’s update by them; it still needs a learning rate. The figure: the training loss of the P395 network for three learning rates, same seed. The rule of practice: start at 0.001 with Adam; if the loss crawls, raise the learning rate by a factor of 3 to 10; if it jumps or diverges, lower it; always look at this curve. Batch size is the other setting: 64 samples here, so 17 updates per epoch; a larger batch gives a smoother but slower descent. Rubric item D5. Note what the figure does not show: a lower training loss is not a better model. The next slide.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="training-stop-at-the-lowest-validation-loss" class="slide level2">
-<h2>Training: stop at the lowest validation loss</h2>
-<img data-src="figs/lec21b_train_evaluate/early_stopping.png" class="r-stretch">
-<div class="takeaway">
-<p>Over 1,000 epochs the training loss keeps falling, but the validation loss is lowest at epoch 13 and rises after. Keep the weights of that epoch: early stopping with a checkpoint.</p>
-</div>
-<aside class="notes">
-<p>Three minutes. The same network trained for 1,000 epochs, with the loss on the training samples and on the validation samples (later in time, never used for a gradient). From epoch 13 on, the network fits details of the training years that do not repeat in the validation years: overfitting. Three strategies, in the order to try them: stop at the lowest validation loss and keep a copy of those weights (a checkpoint; notebook 4.1 section 8); make the network smaller; regularize, with dropout or weight decay (notebook 4.1 section 7), only once the two curves part. And train with several seeds: one curve is one draw. Rubric items D4, D6, D7.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
 <section id="classification-loss-curves-confusion-matrix" class="slide level2">
 <h2>Classification: loss curves, confusion matrix</h2>
 <img data-src="figs/lec21b_train_evaluate/cls_evaluation.png" class="r-stretch">
@@ -545,6 +505,66 @@
 </div>
 <aside class="notes">
 <p>Three minutes. Pacific Northwest seismic sources, notebook 4.1, 61 waveform features, 2,400 events to train, 800 to validate, 800 to test. Left three panels: training (solid) and validation (dashed) loss per epoch. One hidden layer of 32 neurons: the curves stay together; test accuracy 87.1%. Three hidden layers (128, 64, 32 neurons) with batch normalization and dropout 0.3: lower losses, curves still together, 89.2%. The same network without dropout: the training loss falls toward zero while the validation loss is lowest at epoch 11 and then climbs: overfitting; its last-epoch weights give 87.6%, and its checkpoint (notebook 4.1 section 8.2) 88.8%. Dropout sets a random 30% of the hidden outputs to zero at each update, so no neuron can rely on another; it is used only during training (<code>model.train()</code> against <code>model.eval()</code>). Right: the confusion matrix of the one-hidden-layer network on the 800 test events. Noise is recognized best (recall 0.95), earthquakes and explosions are confused most (recall 0.82 and 0.83): they produce similar waveforms, the same pattern as in Chapter 3. Two baselines to state with these numbers: the majority class gives 25% (balanced classes), and logistic regression, the network with no hidden layer, 86.8% (lecture 21). One standard error on 800 events is 1.2 points: the one-hidden-layer network ties logistic regression; the deeper network with dropout beats both by about two standard errors, on one split and one seed, so the claim needs the seed spread (rubric D7, E3). Numbers: figs/lec21b_train_evaluate/numbers_classification.json, from figscripts/lec21b_classification.py, which runs the notebook’s code.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="leaderboard-1-four-source-types-4.1" class="slide level2">
+<h2>Leaderboard 1: four source types (4.1)</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Weights</th>
+<th>Test accuracy, 800 events</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>three hidden layers, dropout</td>
+<td>18,852</td>
+<td><strong>89.2%</strong></td>
+</tr>
+<tr class="even">
+<td>random forest, 300 trees</td>
+<td>—</td>
+<td>88.5%</td>
+</tr>
+<tr class="odd">
+<td>three hidden layers, no dropout</td>
+<td>18,852</td>
+<td>87.6%</td>
+</tr>
+<tr class="even">
+<td>one hidden layer of 32</td>
+<td>2,116</td>
+<td>87.1%</td>
+</tr>
+<tr class="odd">
+<td>logistic regression</td>
+<td>248</td>
+<td>86.8%</td>
+</tr>
+<tr class="even">
+<td>majority class</td>
+<td>0</td>
+<td>25%</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>One split, one seed; one standard error is 1.2 points. The best network ties the forest, and the one-layer network ties logistic regression.</p>
+</div>
+<aside class="notes">
+<p>The leaderboard format of lecture 24a: ranked by the score, baselines as rows, weights as the cost. Notebook 4.1, test set of 800 events. Networks: figs/lec21b_train_evaluate/numbers_classification.json (figscripts/lec21b_classification.py runs the notebook’s code); the no-dropout row is its last-epoch weights, its checkpoint gives 88.8%. Logistic regression and the forest with 300 trees: figs/lec21_neuron/numbers.json. Weights: 61 × 4 + 4 = 248; 61 × 32 + 32 + 32 × 4 + 4 = 2,116; DeepMLP (128, 64, 32 neurons with batch normalization) 7,936 + 256 + 8,256 + 128 + 2,080 + 64 + 132 = 18,852, counted from its definition in 4.1. Majority class: the four classes are balanced. Standard error √(p(1−p)/800) ≈ 1.2 points. Missing for a full leaderboard: three seeds per network (rubric D7); that is the exercise.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -577,14 +597,54 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="regression-test-error-in-millimeters-three-seeds" class="slide level2">
-<h2>Regression: test error in millimeters, three seeds</h2>
-<img data-src="figs/lec21b_train_evaluate/p395_scores.png" class="r-stretch">
+<section id="leaderboard-2-p395-30-days-ahead-4.2" class="slide level2">
+<h2>Leaderboard 2: P395, 30 days ahead (4.2)</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Weights</th>
+<th>Test error (mm), 3 seeds</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>linear regression</td>
+<td>7</td>
+<td><strong>0.63</strong></td>
+</tr>
+<tr class="even">
+<td>network on the change, absolute error</td>
+<td>1,313</td>
+<td>0.70 ± 0.01</td>
+</tr>
+<tr class="odd">
+<td>network on the change, Huber</td>
+<td>1,313</td>
+<td>0.72 ± 0.01</td>
+</tr>
+<tr class="even">
+<td>network on the change, squared error</td>
+<td>1,313</td>
+<td>0.73 ± 0.02</td>
+</tr>
+<tr class="odd">
+<td>persistence</td>
+<td>0</td>
+<td>1.02</td>
+</tr>
+<tr class="even">
+<td>network on the position</td>
+<td>1,313</td>
+<td>2.45 ± 1.88</td>
+</tr>
+</tbody>
+</table>
 <div class="takeaway">
-<p>Predicting the change, the network reaches 0.70 to 0.73 mm, better than persistence (1.02) but not than linear regression (0.63). The linear model is the one to use.</p>
+<p>The linear model wins; the three losses tie; predicting the position loses to persistence. On six hand-built numbers the network adds weights and no skill.</p>
 </div>
 <aside class="notes">
-<p>Three minutes. Test error, mean absolute error of the 30-day position in mm, test period 2023.6–2026.6; networks trained with seeds 0, 1 and 2, mean ± standard deviation. Persistence 1.02. Linear regression 0.63. Network predicting the position 2.45 ± 1.53 (1.15 to 4.60): worse than persistence, and the spread over seeds is itself a warning. Network predicting the change: 0.73 with squared error, 0.70 with absolute error, 0.72 with Huber, each ± 0.01 to 0.02. The absolute-error loss is best, consistent with heavy-tailed GNSS errors, and the differences between losses are a few hundredths of a mm. The conclusion a scientist writes: on six hand-built numbers, a linear model already captures the forecast; the network adds weights and no skill. That is a result, not a failure. Rubric items E1, E3, F4. Numbers: figs/lec21b_train_evaluate/numbers.json; notebook 4.2 reproduces them.</p>
+<p>Three minutes. Test error, mean absolute error of the 30-day position in mm, test period 2023.6–2026.6; networks trained with seeds 0, 1 and 2, mean ± standard deviation. Persistence 1.02. Linear regression 0.63. Network predicting the position 2.45 ± 1.88, sample standard deviation (1.53 with n, as in numbers.json; 1.15 to 4.60): worse than persistence, and the spread over seeds is itself a warning. Network predicting the change: 0.73 with squared error, 0.70 with absolute error, 0.72 with Huber, each ± 0.01 to 0.02. The absolute-error loss is best, consistent with heavy-tailed GNSS errors, and the differences between losses are a few hundredths of a mm. The conclusion a scientist writes: on six hand-built numbers, a linear model already captures the forecast; the network adds weights and no skill. That is a result, not a failure. Rubric items E1, E3, F4. Numbers: figs/lec21b_train_evaluate/numbers.json; notebook 4.2 reproduces them.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -641,27 +701,7 @@
 </tbody>
 </table>
 <aside class="notes">
-<p>Leave this up. Each row is a line of the rubric in book section 4.8, with its identifier. The rubric is a draft: every session of Chapter 4 adds the items of its network. Ask the room: which of these rows does your project already satisfy, and which has no evidence yet?</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="our-rubric-what-the-ai-assistant-must-show" class="slide level2">
-<h2>Our rubric: what the AI assistant must show</h2>
-<img data-src="figs/lec21b_train_evaluate/rubric_sections.png" class="r-stretch">
-<div class="takeaway">
-<p>Each rubric item has an identifier, a check and the evidence. The assistant reports pass or fail for each item, with the evidence, and says which items it could not check.</p>
-</div>
-<aside class="notes">
-<p>Three minutes. Why a rubric: a coding agent will happily build and train a network and report a single good number. The rubric turns the habits of this course into a specification it must follow, and into the checklist you use to review its work (lecture 19 built evaluation sets for agents; this is the same idea for deep learning). Six sections: A framing, B choosing the network from the data structure (session 25), C design checks for each network, D training, E evaluation, F reporting. The evidence column is what makes it checkable: a seed in the code, a figure of the loss curves, a table of baselines. Item A7 is the one that catches today’s regression before training, and F4 the one that stops a claim of improvement smaller than the seed spread.</p>
+<p>Leave this up. Each row is a line of the rubric in book section 4.7, with its identifier. The rubric is a draft: every session of Chapter 4 adds the items of its network. Ask the room: which of these rows does your project already satisfy, and which has no evidence yet?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -687,6 +727,26 @@
 </div>
 <aside class="notes">
 <p>Timing for 80 minutes: slides 25 minutes, notebooks 45, synthesis 10. Priorities if time is short: task 3 (the time split and persistence) and task 4 (predicting the change), because the next three sessions reuse the habit. Expected results: 4.2 test errors as on the score slide, within a few hundredths of a mm. Synthesis question: for your project, write the rubric rows A1, A3, A6 and A7 with their evidence.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="four-canonical-networks-where-fully-connected-fits" class="slide level2">
+<h2>Four canonical networks: where fully connected fits</h2>
+<img data-src="figs/lec_framework/canonical_fcn.png" class="r-stretch">
+<div class="takeaway">
+<p>Fully connected: for features already computed. It tied a forest on 61 features (4.1) and lost to a linear model on 6 numbers (4.2).</p>
+</div>
+<aside class="notes">
+<p>The closing statement, the same figure as the opening. When the data are a waveform or a map, the fully connected network ignores the order of the samples (the no-order slide): Friday’s convolutional network uses it. When the data are a sequence in time, the recurrent network and attention (lecture 23). When they are a network of stations, a graph network (lecture 23b, 4.5). Leaderboards of this deck: 4.1 and 4.2; the training and leaderboard format: lecture 24a.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

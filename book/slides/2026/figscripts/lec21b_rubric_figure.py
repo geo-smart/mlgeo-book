@@ -1,6 +1,6 @@
-"""Slide figure: the six sections of the deep-learning rubric (book section 4.8), with one item and its evidence each.
+"""Slide figure: the six sections of the deep-learning rubric (book section 4.7), with one item and its evidence each.
 
-Schematic, no data. The items quoted are copied from book/Chapter4-DeepLearning/mlgeo_4.8_dl_rubric.md.
+Schematic, no data. The items quoted are copied from book/Chapter4-DeepLearning/mlgeo_4.7_dl_rubric.md.
 Writes figs/lec21b_train_evaluate/rubric_sections.png.
 Regenerate: pixi run python book/slides/2026/figscripts/lec21b_rubric_figure.py
 """

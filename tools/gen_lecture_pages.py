@@ -78,7 +78,7 @@ def main():
         url = f"{SITE}/{d['stem']}.html"
         note = f" (sections {', '.join(d['missing'])} have no book page yet)" if d["missing"] else ""
         page = (f"---\ntitle: \"Session {d['n']} · {d['title']}\"\n---\n\n" + HEADER +
-                f"**{d['date']}, {YEAR}** · Book sections: {' · '.join(d['links']) or d['sections']}{note}\n\n"
+                (f"**{d['date']}, {YEAR}** · " if d["date"] else "") + f"Book sections: {' · '.join(d['links']) or d['sections']}{note}\n\n"
                 f"🖥️ [Open the slides in a new tab]({url}) · press `S` for speaker notes, `Esc` for the slide overview\n\n"
                 f":::{{iframe}} {url}\n:width: 100%\n:::\n")
         (OUT / f"{d['stem']}.md").write_text(page)

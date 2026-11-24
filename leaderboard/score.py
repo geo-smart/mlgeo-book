@@ -4,10 +4,10 @@ Two tracks:
 - classification (Chapter 3.5): results/predictions_<uwnetid>.csv with header
   row_id,prediction — scored with macro-F1 against the canonical test split of
   the Zenodo 4-class seismic-source dataset (record 14025693).
-- forecast (Chapter 4.10), DIAGNOSTIC: results/forecast_<uwnetid>.csv — scored
+- forecast (Chapter 4.9), DIAGNOSTIC: results/forecast_<uwnetid>.csv — scored
   with MASE against the held-out tail of the CO2 series. The holdout is public
   NOAA data, so this score is a diagnostic, not a grade.
-- forecast_hidden (Chapter 4.10), GRADED: results/forecast_hidden_<uwnetid>.csv
+- forecast_hidden (Chapter 4.9), GRADED: results/forecast_hidden_<uwnetid>.csv
   — scored with MASE against a synthetic series regenerated yearly from a
   private seed. The truth file lives in the gitignored leaderboard/private/;
   when it is absent (every public CI run), the section renders as pending and
@@ -170,7 +170,7 @@ def main():
     lines.append("")
 
     fc, forecast_config_ok = score_forecast()
-    lines += ["## CO2 forecasting diagnostic (Chapter 4.10) — MASE, lower is better", "",
+    lines += ["## CO2 forecasting diagnostic (Chapter 4.9) — MASE, lower is better", "",
               "This track is a diagnostic, not a grade: the holdout months are "
               "public NOAA data. Grading weight sits on the hidden synthetic "
               "track below.", ""]
@@ -185,7 +185,7 @@ def main():
     lines.append("")
 
     hid, hidden_status = score_forecast_hidden()
-    lines += ["## Hidden synthetic forecast (Chapter 4.10, graded) — MASE, lower is better", ""]
+    lines += ["## Hidden synthetic forecast (Chapter 4.9, graded) — MASE, lower is better", ""]
     if hidden_status == "scored" and not hid:
         lines.append(EMPTY_MSG)
     elif hidden_status == "scored":
