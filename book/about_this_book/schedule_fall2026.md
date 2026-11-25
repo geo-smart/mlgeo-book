@@ -80,7 +80,7 @@ Chapter 7 has no quiz: its outcomes (audience translation, downstream impact) ar
 
 **Week 9 — Sequence models and the training lab** (short week — Thanksgiving)
 - Mon Nov 23 — Sequence models: RNN, LSTM, attention ([4.4](../Chapter4-DeepLearning/mlgeo_4.4_RNN.ipynb)). HW-DL assigned. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec23_networks_with_memory.html)
-- Wed Nov 25 — Model training lab, session I: data curation and label quality ([4.7](../Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb) sections 1–3). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec24_three_pillars_lab_I.html)
+- Wed Nov 25 — Graph networks: stations as nodes ([4.5](../Chapter4-DeepLearning/mlgeo_4.5_GNN.ipynb)), short lecture · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec23b_graph_networks.html). Then model training lab, session I: data curation and label quality ([4.7](../Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb) sections 1–3). · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec24_three_pillars_lab_I.html)
 
 **Week 10 — Uncertainty, forecasting, flipped workflows** (Ch 5 quiz Mon–Thu; classification leaderboard closed Nov 24)
 - Mon Nov 30 — Model training lab, session II: architecture, uncertainty, calibration, out-of-range behavior (4.7 sections 4–5). Ch 5 ([5.1](../Chapter5-ModelWorkflows/5.1_reproducibility.md)–[5.5](../Chapter5-ModelWorkflows/5.5_data_at_scale.ipynb)) assigned as flipped reading. · [slides](https://geo-smart.github.io/mlgeo-book/slides/2026/lec25_three_pillars_lab_II.html)

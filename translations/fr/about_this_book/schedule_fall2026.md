@@ -81,7 +81,7 @@ Le chapitre 7 n'a pas de quiz : ses résultats d'apprentissage (traduction pour
 
 **Semaine 9 — Modèles de séquences et TP d'entraînement** (semaine courte — Thanksgiving)
 - Lun. 23 nov. — Modèles de séquences : RNN, LSTM, attention ([4.4](../Chapter4-DeepLearning/mlgeo_4.4_RNN.ipynb)). Devoir HW-DL donné. · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec23_networks_with_memory.html)
-- Mer. 25 nov. — TP d'entraînement de modèles, séance I : curation des données et qualité des étiquettes ([4.7](../Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb), sections 1 à 3). · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec24_three_pillars_lab_I.html)
+- Mer. 25 nov. — Réseaux de graphes : les stations comme nœuds ([4.5](https://geo-smart.github.io/mlgeo-book/mlgeo-4-5-gnn/), en anglais), cours court · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec23b_graph_networks.html). Puis TP d'entraînement de modèles, séance I : curation des données et qualité des étiquettes ([4.7](../Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb), sections 1 à 3). · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec24_three_pillars_lab_I.html)
 
 **Semaine 10 — Incertitude, prévision, chapitres inversés** (quiz du ch. 5, lun.–jeu. ; classement de classification fermé le 24 nov.)
 - Lun. 30 nov. — TP d'entraînement de modèles, séance II : architecture, incertitude, calibration, comportement hors plage (4.7, sections 4 et 5). Le chapitre 5 ([5.1](../Chapter5-ModelWorkflows/5.1_reproducibility.md)–[5.5](../Chapter5-ModelWorkflows/5.5_data_at_scale.ipynb)) est donné en lecture inversée. · [diapositives](https://geo-smart.github.io/mlgeo-book/slides/2026/lec25_three_pillars_lab_II.html)

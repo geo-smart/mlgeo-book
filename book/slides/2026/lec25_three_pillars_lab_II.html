@@ -214,14 +214,14 @@
 <tbody>
 <tr class="odd">
 <td>Deep ensemble (5 members)</td>
-<td>0.949</td>
-<td>0.017</td>
+<td>0.952</td>
+<td><strong>0.010</strong></td>
 <td>5</td>
 </tr>
 <tr class="even">
 <td>MC dropout (T = 50 passes)</td>
-<td><strong>0.952</strong></td>
-<td><strong>0.011</strong></td>
+<td>0.953</td>
+<td>0.017</td>
 <td><strong>1</strong></td>
 </tr>
 </tbody>
@@ -230,10 +230,10 @@
 <p>ECE, expected calibration error: the average gap between stated confidence and observed accuracy. The 50 dropout passes are the cheap side; training runs are the expensive one.</p>
 </div>
 <div class="takeaway">
-<p>On this task, the single dropout model matched the 5-member ensemble at a fifth of the training cost. The numbers refuse to crown the expensive method.</p>
+<p>On this task, the single dropout model matched the 5-member ensemble on accuracy at a fifth of the training cost; the ensemble was better calibrated. The table is a budget decision.</p>
 </div>
 <aside class="notes">
-<p>The honest comparison: same data, same test set, cost stated next to the scores. MC dropout matches on accuracy (the 0.003 gap sits inside a single run’s seed spread), edges the ensemble on calibration, and draws the same discrimination curve — accuracy in the highest-spread quintile 0.79 vs 0.77, the other four quintiles agreeing to three decimals. When one training run takes a week, this table is a budget decision. Why ensembles survive in practice anyway: their documented calibration advantage appears on large networks under distribution shift (the Ovadia result), members train in parallel, and their disagreement comes from genuinely independent solutions — the property the out-of-range experiment uses. The final-project milestone asks for one of these two analyses on your own model.</p>
+<p>The honest comparison: same data, same test set, cost stated next to the scores. MC dropout matches on accuracy (the 0.001 gap sits inside a single run’s seed spread), is a little worse on calibration (ECE 0.017 against 0.010), and draws a similar discrimination curve: accuracy falls to about 0.8 in the highest-spread quintile for both (read from the 4.7 figure). When one training run takes a week, this table is a budget decision. Why ensembles survive in practice anyway: their documented calibration advantage appears on large networks under distribution shift (the Ovadia result), members train in parallel, and their disagreement comes from genuinely independent solutions — the property the out-of-range experiment uses. The final-project milestone asks for one of these two analyses on your own model.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -248,12 +248,12 @@
 </section>
 <section id="calibration-is-a-measurement-not-a-method-property" class="slide level2">
 <h2>Calibration is a measurement, not a method property</h2>
-<img data-src="figs/mlgeo_4.7_ModelTraining/fig_10.png" class="r-stretch">
+<img data-src="figs/mlgeo_4.7_ModelTraining/fig_14.png" class="r-stretch">
 <div class="takeaway">
 <p>An earlier draft of the book claimed the ensemble improves calibration. The measurement said no — on this task there was nothing to fix. “Well calibrated” is a number you attach after running the cell. Synthetic lithology table (mlgeo_synth).</p>
 </div>
 <aside class="notes">
-<p>Synthetic lithology task (mlgeo_synth), clean test set. Left: reliability — bin samples by stated confidence, plot observed accuracy; the diagonal is honesty; both methods hug it, ECE 0.011 vs 0.017. Right: discrimination — bin by spread, watch accuracy fall across quintiles; both fall the same way. Keep the two diagnostics distinct in write-ups: the quintile plot answers “can I trust the ranking?” (routing samples to an analyst — only order matters); the reliability diagram answers “can I trust the number?” (required whenever the probability feeds a decision threshold someone else owns — lesson 3.6’s warning). Reporting one as evidence for the other is the exact error the earlier draft contained, and it survives peer review depressingly often. The published literature’s ensemble-calibration advantage is real on large networks under shift; our two-layer MLP was simply not miscalibrated enough to fix. Both claims can be true — that is the point.</p>
+<p>Synthetic lithology task (mlgeo_synth), clean test set. Left: reliability — bin samples by stated confidence, plot observed accuracy; the diagonal is honesty; both methods stay close to it, ECE 0.010 for the ensemble and 0.017 for MC dropout; a single member also scores 0.010, so the ensemble fixed nothing. Right: discrimination — bin by spread, watch accuracy fall across quintiles; both fall the same way. Keep the two diagnostics distinct in write-ups: the quintile plot answers “can I trust the ranking?” (routing samples to an analyst — only order matters); the reliability diagram answers “can I trust the number?” (required whenever the probability feeds a decision threshold someone else owns — lesson 3.6’s warning). Reporting one as evidence for the other is the exact error the earlier draft contained, and it survives peer review depressingly often. The published literature’s ensemble-calibration advantage is real on large networks under shift; our two-layer MLP was simply not miscalibrated enough to fix. Both claims can be true — that is the point.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -270,10 +270,10 @@
 <h2>Out of range: does disagreement warn you?</h2>
 <img data-src="figs/mlgeo_4.7_ModelTraining/out_of_range_slide.png" class="r-stretch">
 <div class="takeaway">
-<p>Disagreement flagged 76 of the 77 extrapolation errors. The one silent failure is today’s discussion: its features drifted into a <em>neighboring</em> class’s familiar territory, so all five members confidently agreed — on the wrong label.</p>
+<p>Disagreement flagged 73 of the 74 extrapolation errors. The one silent failure is today’s discussion: its features drifted into a <em>neighboring</em> class’s familiar territory, so all five members confidently agreed — on the wrong label.</p>
 </div>
 <aside class="notes">
-<p>The setup: the field campaign mapped only typical granites, basalts, andesites — training keeps samples within one standard deviation of each unit’s typical composition — then the test draw spans the full range, including compositions the model never saw. Error nearly doubles across the training bound (4.9% → 8.0% → 8.5%); mean disagreement rises with it. The mechanism to memorize is the one failure the flag missed: an extreme composition that came to <em>look</em> familiar. Disagreement flags unfamiliar regions of feature space; it cannot flag a sample whose label changed while its features landed somewhere the model knows. Under a larger shift, that one sample becomes a population. Second caution from the notebook’s scatter: the in-range and out-of-range disagreement distributions overlap heavily — no threshold on the spread reconstructs the training bound. The bound is metadata only you have. Connect back to 3.8: interpolation and extrapolation are different claims, and the split decides which claim your score supports.</p>
+<p>The setup: the field campaign mapped only typical granites, basalts, andesites — training keeps samples within one standard deviation of each unit’s typical composition — then the test draw spans the full range, including compositions the model never saw. Error rises by more than half across the training bound (5.0% → 7.6% → 8.5%); mean disagreement rises with it. The mechanism to memorize is the one failure the flag missed: an extreme composition that came to <em>look</em> familiar. Disagreement flags unfamiliar regions of feature space; it cannot flag a sample whose label changed while its features landed somewhere the model knows. Under a larger shift, that one sample becomes a population. Second caution from the notebook’s scatter: the in-range and out-of-range disagreement distributions overlap heavily — no threshold on the spread reconstructs the training bound. The bound is metadata only you have. Connect back to 3.8: interpolation and extrapolation are different claims, and the split decides which claim your score supports.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

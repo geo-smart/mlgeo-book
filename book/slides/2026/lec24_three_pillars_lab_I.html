@@ -200,10 +200,10 @@
 <h2>Same error rate, different damage</h2>
 <img data-src="figs/mlgeo_4.7_ModelTraining/label_quality_slide.png" class="r-stretch">
 <div class="takeaway">
-<p>30% uniform flips cost 3.5 points. 30% adjacent-class disagreement costs 12.5 — the two mappers vote coherently, and more data makes the model more confident in their shared mistake.</p>
+<p>30% uniform flips cost 0.6 points. 30% adjacent-class disagreement costs 2.7: the two mappers vote coherently, and more data makes the model more confident in their shared mistake.</p>
 </div>
 <aside class="notes">
-<p>Walk the left panel: same model, same 3000 training samples, same training budget, clean test set throughout. Random flips scatter in all directions and cancel — cross-entropy averages over samples, the correct majority still pins the boundaries. The third bar is the two-mappers experiment: two simulated geologists split the field area; each mislabels 30% of their samples, but only ever between adjacent lithologies on the differentiation axis — granite slides to andesite, basalt slides to andesite, never basalt to granite. That is how real mapping disagreement behaves. Right panel: the errors all pour into andesite, which annexes its neighbors’ boundary zones — 14% of true granites and 16% of true basalts come back andesite; andesite recall falls to 0.61. Say the consequence plainly: inter-rater agreement is a ceiling on the accuracy any model can demonstrate, because the model is graded against labels that carry the disagreement. Ask the room: for your project labels, what would two independent experts disagree on?</p>
+<p>Walk the left panel: same model, same 3000 training samples, same training budget, clean test set throughout. Random flips scatter in all directions and cancel — cross-entropy averages over samples, the correct majority still pins the boundaries. The third bar is the two-mappers experiment: two simulated geologists split the field area; each mislabels 30% of their samples, but only ever between adjacent lithologies on the differentiation axis — granite slides to andesite, basalt slides to andesite, never basalt to granite. That is how real mapping disagreement behaves. Right panel: the errors sit on the two boundaries of andesite, the class both mappers argue about. 20% of true andesites come back granite and 9% of true basalts come back andesite; granite and basalt are confused 1% of the time or less. All numbers are with the checkpoint of train_model (best epoch kept); 4.7 section 3.1 shows that without it, on 600 samples, 30% uniform flips cost 5.6 points instead of 1.6. Say the consequence plainly: inter-rater agreement is a ceiling on the accuracy any model can demonstrate, because the model is graded against labels that carry the disagreement. Ask the room: for your project labels, what would two independent experts disagree on?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -218,12 +218,12 @@
 </section>
 <section id="the-rare-class-disappears-quietly" class="slide level2">
 <h2>The rare class disappears quietly</h2>
-<img data-src="figs/mlgeo_4.7_ModelTraining/fig_04.png" class="r-stretch">
+<img data-src="figs/mlgeo_4.7_ModelTraining/fig_05.png" class="r-stretch">
 <div class="takeaway">
-<p>Shrinking the rare class: overall accuracy drifts 0.946 → 0.881, while andesite recall collapses 0.735 → 0.000. Report per-class recall and the confusion matrix; never accuracy alone. Synthetic lithology table (mlgeo_synth).</p>
+<p>Shrinking the rare class: overall accuracy drifts 0.945 → 0.881, while andesite recall collapses 0.742 → 0.000. Report per-class recall and the confusion matrix; never accuracy alone. Synthetic lithology table (mlgeo_synth).</p>
 </div>
 <aside class="notes">
-<p>Synthetic lithology table again (mlgeo_synth); andesite is the rare class by construction, and we shrink it further. Two columns to read against each other: overall accuracy loses a few points — nothing a dashboard would flag — while the model stops predicting the rare class entirely. Note the head start: even at full data, andesite recall is 0.74 against 0.97 for the majority classes. This is the most common silent failure in geoscience classification, because the rare class is the one the model exists for: the eruption, the induced event, the landslide. Fixes belong to the lab: class weights in the loss, oversampling, augmented minority examples — and the check is that the fix shows up in recall, not just in the loss. Echo of 3.4’s imbalance lecture, now in the deep learning setting.</p>
+<p>Synthetic lithology table again (mlgeo_synth); andesite is the rare class by construction, and we shrink it further. Two columns to read against each other: overall accuracy loses a few points — nothing a dashboard would flag — while the model stops predicting the rare class entirely. Note the head start: even at full data, andesite recall is 0.74 against 0.96 and 0.97 for the majority classes. This is the most common silent failure in geoscience classification, because the rare class is the one the model exists for: the eruption, the induced event, the landslide. Fixes belong to the lab: class weights in the loss, oversampling, augmented minority examples — and the check is that the fix shows up in recall, not just in the loss. Echo of 3.4’s imbalance lecture, now in the deep learning setting.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -239,19 +239,19 @@
 <section id="the-metadata-you-are-throwing-away" class="slide level2">
 <h2>The metadata you are throwing away</h2>
 <div class="big-number">
-<p>0.933 <span class="unit">mixed lab- and field-grade data, variance ignored</span></p>
+<p>0.936 <span class="unit">mixed lab- and field-grade data, variance ignored</span></p>
 </div>
 <div class="big-number">
 <p>0.946 <span class="unit">same data, loss weighted by 1/σ²</span></p>
 </div>
 <div class="dim">
-<p>All-lab-grade reference: 0.950. Heteroscedastic = the noise level varies sample to sample — and the metadata usually says by how much.</p>
+<p>All-lab-grade reference: 0.949. Heteroscedastic = the noise level varies sample to sample — and the metadata usually says by how much.</p>
 </div>
 <div class="takeaway">
 <p>One line of loss code recovers most of what mixed data quality costs. Any column named <code>uncertainty</code>, <code>std_err</code>, or <code>pick_weight</code> is an invitation.</p>
 </div>
 <aside class="notes">
-<p>The setup: half the geochemistry from a laboratory XRF with tight analytical error, half from a portable field unit several times worse — and the metadata says which is which, because analytical uncertainty is reported per sample. Standard cross-entropy treats every sample as equally trustworthy; weighting each sample’s loss by inverse variance is the classification analogue of weighted least squares. The seed bands of the two schemes do not overlap (0.932–0.935 vs 0.939–0.951), so the gain is not initialization luck. Down-weighting is also the honest alternative to deleting the noisy half: field-grade samples still carry signal, just less per sample, and the weights price that in. Seismic catalogs, geochemical databases, and GNSS solutions all ship such a column; most pipelines drop it at ingest.</p>
+<p>The setup: half the geochemistry from a laboratory XRF with tight analytical error, half from a portable field unit several times worse — and the metadata says which is which, because analytical uncertainty is reported per sample. Standard cross-entropy treats every sample as equally trustworthy; weighting each sample’s loss by inverse variance is the classification analogue of weighted least squares. The seed bands of the two schemes do not overlap (0.934–0.937 vs 0.939–0.951), so the gain is not initialization luck. Down-weighting is also the honest alternative to deleting the noisy half: field-grade samples still carry signal, just less per sample, and the weights price that in. Seismic catalogs, geochemical databases, and GNSS solutions all ship such a column; most pipelines drop it at ingest.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -282,12 +282,12 @@
 <tbody>
 <tr class="odd">
 <td>Uniform label noise</td>
-<td>validation ceiling sags only on small datasets</td>
-<td>audit labels; more data</td>
+<td>validation ceiling sags on small datasets, most without a checkpoint</td>
+<td>audit labels; keep the best epoch; more data</td>
 </tr>
 <tr class="even">
 <td>Structured disagreement</td>
-<td>one class annexes its neighbors; ceiling capped</td>
+<td>errors pile up on the boundaries of the disputed class; ceiling capped</td>
 <td>measure inter-rater agreement, relabel</td>
 </tr>
 <tr class="odd">

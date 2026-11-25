@@ -31,7 +31,7 @@ The course meets three times a week, and the sessions draw on the book out of ch
 | 21 | Wed Nov 18 | [Fully connected networks: a class and a number](lec21b_train_evaluate.md) | [4.1](../Chapter4-DeepLearning/mlgeo_4.1_NN.ipynb) · [4.2](../Chapter4-DeepLearning/mlgeo_4.2_MLP.ipynb) |
 | 22 | Fri Nov 20 | [Convolution meets the classical detector: where a CNN earns its keep](lec22_convolution_detector.md) | [4.3](../Chapter4-DeepLearning/mlgeo_4.3_CNN.ipynb) |
 | 23 | Mon Nov 23 | [Networks with memory: recurrence, gates, and attention](lec23_networks_with_memory.md) | [4.4](../Chapter4-DeepLearning/mlgeo_4.4_RNN.ipynb) |
-| 23 |  | [Graph networks: stations as nodes](lec23b_graph_networks.md) | [4.5](../Chapter4-DeepLearning/mlgeo_4.5_GNN.ipynb) |
+| 24 | Wed Nov 25 | [Graph networks: stations as nodes](lec23b_graph_networks.md) | [4.5](../Chapter4-DeepLearning/mlgeo_4.5_GNN.ipynb) |
 | 24 | Wed Nov 25 | [The three pillars lab, session I: your data decide your ceiling](lec24_three_pillars_lab_I.md) | [4.7](../Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb) |
 | 24 | Wed Nov 25 | [Training and evaluating any network: one loop, one leaderboard](lec24a_train_and_evaluate.md) | [4.7](../Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb) |
 | 25 | Mon Nov 30 | [The three pillars lab, session II: uncertainty you can defend](lec25_three_pillars_lab_II.md) | [4.7](../Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb) |

@@ -39,31 +39,31 @@ Two minutes. Lakshminarayanan: deep ensembles — train the same architecture fr
 
 | | test accuracy | ECE | models trained |
 |---|---|---|---|
-| Deep ensemble (5 members) | 0.949 | 0.017 | 5 |
-| MC dropout (T = 50 passes) | **0.952** | **0.011** | **1** |
+| Deep ensemble (5 members) | 0.952 | **0.010** | 5 |
+| MC dropout (T = 50 passes) | 0.953 | 0.017 | **1** |
 
 ::: {.dim}
 ECE, expected calibration error: the average gap between stated confidence and observed accuracy. The 50 dropout passes are the cheap side; training runs are the expensive one.
 :::
 
 ::: {.takeaway}
-On this task, the single dropout model matched the 5-member ensemble at a fifth of the training cost. The numbers refuse to crown the expensive method.
+On this task, the single dropout model matched the 5-member ensemble on accuracy at a fifth of the training cost; the ensemble was better calibrated. The table is a budget decision.
 :::
 
 ::: {.notes}
-The honest comparison: same data, same test set, cost stated next to the scores. MC dropout matches on accuracy (the 0.003 gap sits inside a single run's seed spread), edges the ensemble on calibration, and draws the same discrimination curve — accuracy in the highest-spread quintile 0.79 vs 0.77, the other four quintiles agreeing to three decimals. When one training run takes a week, this table is a budget decision. Why ensembles survive in practice anyway: their documented calibration advantage appears on large networks under distribution shift (the Ovadia result), members train in parallel, and their disagreement comes from genuinely independent solutions — the property the out-of-range experiment uses. The final-project milestone asks for one of these two analyses on your own model.
+The honest comparison: same data, same test set, cost stated next to the scores. MC dropout matches on accuracy (the 0.001 gap sits inside a single run's seed spread), is a little worse on calibration (ECE 0.017 against 0.010), and draws a similar discrimination curve: accuracy falls to about 0.8 in the highest-spread quintile for both (read from the 4.7 figure). When one training run takes a week, this table is a budget decision. Why ensembles survive in practice anyway: their documented calibration advantage appears on large networks under distribution shift (the Ovadia result), members train in parallel, and their disagreement comes from genuinely independent solutions — the property the out-of-range experiment uses. The final-project milestone asks for one of these two analyses on your own model.
 :::
 
 ## Calibration is a measurement, not a method property
 
-![](figs/mlgeo_4.7_ModelTraining/fig_10.png){.r-stretch}
+![](figs/mlgeo_4.7_ModelTraining/fig_14.png){.r-stretch}
 
 ::: {.takeaway}
 An earlier draft of the book claimed the ensemble improves calibration. The measurement said no — on this task there was nothing to fix. "Well calibrated" is a number you attach after running the cell. Synthetic lithology table (mlgeo_synth).
 :::
 
 ::: {.notes}
-Synthetic lithology task (mlgeo_synth), clean test set. Left: reliability — bin samples by stated confidence, plot observed accuracy; the diagonal is honesty; both methods hug it, ECE 0.011 vs 0.017. Right: discrimination — bin by spread, watch accuracy fall across quintiles; both fall the same way. Keep the two diagnostics distinct in write-ups: the quintile plot answers "can I trust the ranking?" (routing samples to an analyst — only order matters); the reliability diagram answers "can I trust the number?" (required whenever the probability feeds a decision threshold someone else owns — lesson 3.6's warning). Reporting one as evidence for the other is the exact error the earlier draft contained, and it survives peer review depressingly often. The published literature's ensemble-calibration advantage is real on large networks under shift; our two-layer MLP was simply not miscalibrated enough to fix. Both claims can be true — that is the point.
+Synthetic lithology task (mlgeo_synth), clean test set. Left: reliability — bin samples by stated confidence, plot observed accuracy; the diagonal is honesty; both methods stay close to it, ECE 0.010 for the ensemble and 0.017 for MC dropout; a single member also scores 0.010, so the ensemble fixed nothing. Right: discrimination — bin by spread, watch accuracy fall across quintiles; both fall the same way. Keep the two diagnostics distinct in write-ups: the quintile plot answers "can I trust the ranking?" (routing samples to an analyst — only order matters); the reliability diagram answers "can I trust the number?" (required whenever the probability feeds a decision threshold someone else owns — lesson 3.6's warning). Reporting one as evidence for the other is the exact error the earlier draft contained, and it survives peer review depressingly often. The published literature's ensemble-calibration advantage is real on large networks under shift; our two-layer MLP was simply not miscalibrated enough to fix. Both claims can be true — that is the point.
 :::
 
 ## Out of range: does disagreement warn you?
@@ -71,11 +71,11 @@ Synthetic lithology task (mlgeo_synth), clean test set. Left: reliability — bi
 ![](figs/mlgeo_4.7_ModelTraining/out_of_range_slide.png){.r-stretch}
 
 ::: {.takeaway}
-Disagreement flagged 76 of the 77 extrapolation errors. The one silent failure is today's discussion: its features drifted into a *neighboring* class's familiar territory, so all five members confidently agreed — on the wrong label.
+Disagreement flagged 73 of the 74 extrapolation errors. The one silent failure is today's discussion: its features drifted into a *neighboring* class's familiar territory, so all five members confidently agreed — on the wrong label.
 :::
 
 ::: {.notes}
-The setup: the field campaign mapped only typical granites, basalts, andesites — training keeps samples within one standard deviation of each unit's typical composition — then the test draw spans the full range, including compositions the model never saw. Error nearly doubles across the training bound (4.9% → 8.0% → 8.5%); mean disagreement rises with it. The mechanism to memorize is the one failure the flag missed: an extreme composition that came to *look* familiar. Disagreement flags unfamiliar regions of feature space; it cannot flag a sample whose label changed while its features landed somewhere the model knows. Under a larger shift, that one sample becomes a population. Second caution from the notebook's scatter: the in-range and out-of-range disagreement distributions overlap heavily — no threshold on the spread reconstructs the training bound. The bound is metadata only you have. Connect back to 3.8: interpolation and extrapolation are different claims, and the split decides which claim your score supports.
+The setup: the field campaign mapped only typical granites, basalts, andesites — training keeps samples within one standard deviation of each unit's typical composition — then the test draw spans the full range, including compositions the model never saw. Error rises by more than half across the training bound (5.0% → 7.6% → 8.5%); mean disagreement rises with it. The mechanism to memorize is the one failure the flag missed: an extreme composition that came to *look* familiar. Disagreement flags unfamiliar regions of feature space; it cannot flag a sample whose label changed while its features landed somewhere the model knows. Under a larger shift, that one sample becomes a population. Second caution from the notebook's scatter: the in-range and out-of-range disagreement distributions overlap heavily — no threshold on the spread reconstructs the training bound. The bound is metadata only you have. Connect back to 3.8: interpolation and extrapolation are different claims, and the split decides which claim your score supports.
 :::
 
 ## Your training distribution is a contract

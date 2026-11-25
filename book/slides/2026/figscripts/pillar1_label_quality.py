@@ -29,17 +29,18 @@ plt.rcParams.update({
 # Executed-notebook numbers (clean-test accuracy, 3000 training samples,
 # mean over 3 seeds with min-max seed span).
 conditions = ["no label\nerrors", "30% uniform\nflips", "30% adjacent\ndisagreement"]
-acc = np.array([0.945, 0.910, 0.820])
-span_lo = np.array([0.943, 0.899, 0.799])
-span_hi = np.array([0.946, 0.919, 0.850])
+acc = np.array([0.949, 0.943, 0.922])
+span_lo = np.array([0.948, 0.937, 0.919])
+span_hi = np.array([0.951, 0.948, 0.927])
 
 # Clean-test confusion after training on adjacent-class disagreement
-# (rows = true class, columns = predicted class; fractions of true class).
+# (rows = true class, columns = predicted class; fractions of true class),
+# printed by the same cell since the 2026-11-25 re-run (train_model keeps the best epoch).
 classes = ["granite", "basalt", "andesite"]
 confusion = np.array([
-    [0.86, 0.01, 0.14],
-    [0.01, 0.82, 0.16],
-    [0.29, 0.10, 0.61],
+    [0.97, 0.00, 0.02],
+    [0.01, 0.90, 0.09],
+    [0.20, 0.07, 0.73],
 ])
 
 fig, (axl, axr) = plt.subplots(
@@ -51,12 +52,12 @@ colors = ["#116b66", "#1f77b4", "#b3402a"]
 bars = axl.bar(conditions, acc, color=colors, width=0.62)
 axl.errorbar(conditions, acc, yerr=[acc - span_lo, span_hi - acc],
              fmt="none", ecolor="#3a3630", elinewidth=2.2, capsize=7, capthick=2.2)
-for b, a in zip(bars, acc):
-    axl.text(b.get_x() + b.get_width() / 2, a + 0.017, f"{a:.3f}",
+for b, a, hi in zip(bars, acc, span_hi):
+    axl.text(b.get_x() + b.get_width() / 2, hi + 0.004, f"{a:.3f}",
              ha="center", va="bottom", fontsize=20, fontweight="bold")
-axl.set_ylim(0.75, 1.0)
+axl.set_ylim(0.85, 0.98)
 axl.set_ylabel("accuracy on clean test set")
-axl.set_title("Same 30% error rate,\nthree times the damage", loc="left")
+axl.set_title("Same 30% error rate,\nfour times the damage", loc="left")
 axl.tick_params(axis="x", labelsize=16)
 axl.text(0.98, 0.98, "whiskers: min-max over 3 seeds",
          transform=axl.transAxes, ha="right", va="top",
@@ -69,7 +70,7 @@ axr.set_xticks(range(3), classes)
 axr.set_yticks(range(3), classes)
 axr.set_xlabel("predicted")
 axr.set_ylabel("true")
-axr.set_title("Where the errors went:\neverything slides to andesite", loc="left")
+axr.set_title("Where the errors went:\nthe two boundaries of andesite", loc="left")
 for i in range(3):
     for j in range(3):
         v = confusion[i, j]

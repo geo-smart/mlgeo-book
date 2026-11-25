@@ -9,7 +9,7 @@ past it, and the annotation carries the silent-failure count.
 Every number is copied from the executed outputs of
 book/Chapter4-DeepLearning/mlgeo_4.7_ModelTraining.ipynb (Section 6.4
 out-of-range table: n / error rate / mean disagreement per range bin, and
-the 77-errors / 1-silent-failure printout); re-verify there after any
+the 74-errors / 1-silent-failure printout); re-verify there after any
 notebook re-run. Data: synthetic lithology table (mlgeo_synth.geochem_table).
 
 Regenerate: pixi run python book/slides/2026/figscripts/out_of_range_flag.py
@@ -30,15 +30,15 @@ plt.rcParams.update({
 # Executed-notebook numbers (Section 4.6 ood_table).
 bins = ["in range\n(mapped)", "just past\nthe bound", "far out\nof range"]
 n = [2046, 824, 130]
-error_rate = np.array([0.049, 0.080, 0.085])
-disagreement = np.array([0.013, 0.017, 0.021])
+error_rate = np.array([0.050, 0.076, 0.085])
+disagreement = np.array([0.011, 0.015, 0.019])
 
 fig, (axl, axr) = plt.subplots(1, 2, figsize=(15, 5.9), sharex=True,
                                gridspec_kw={"wspace": 0.32})
 
 for ax, vals, color, ylabel, title in [
     (axl, error_rate, "#b3402a", "error rate on fresh samples",
-     "Error nearly doubles\npast the mapped range"),
+     "Error rises by more than half\npast the mapped range"),
     (axr, disagreement, "#1f77b4", "mean ensemble disagreement",
      "Disagreement rises with it —\nthe flag mostly works"),
 ]:
@@ -50,7 +50,7 @@ for ax, vals, color, ylabel, title in [
                 ha="center", va="bottom", fontsize=15, color="white")
     ax.set_ylabel(ylabel)
     ax.set_title(title, loc="left")
-    ax.set_ylim(0, vals.max() * 1.3)
+    ax.set_ylim(0, vals.max() * 1.55)
     ax.spines[["top", "right"]].set_visible(False)
     ax.axvline(0.5, color="#3a3630", lw=2, ls="--",
                ymax=0.99 if ax is axl else 0.62)
@@ -58,7 +58,7 @@ for ax, vals, color, ylabel, title in [
             color="#3a3630", ha="right", rotation=90, va="center")
 
 axr.text(0.03, 0.99,
-         "77 out-of-range errors:\ndisagreement flagged 76,\n1 silent failure",
+         "74 out-of-range errors:\ndisagreement flagged 73,\n1 silent failure",
          transform=axr.transAxes, ha="left", va="top", fontsize=19,
          fontweight="bold", color="#116b66")
 
